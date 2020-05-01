@@ -1,0 +1,21 @@
+﻿Nota del autor
+
+Desarrollé la app en mi tiempo libre (mi vida es del asco). Solo busqué y busco divertirme desarrollando la app y no, no he hackeado el sistema de la u (eso lo explico más abajo). Me contento con que entiendan que este es un trabajo casero, y que cuando salga la app oficial del SIGA (confío en que saldrá) exijan algo mejor que esto.
+_________________________
+
+Este producto NO es la aplicación oficial del Sistema Integrado de Gestión Académica (SIGA) de la Universidad Nacional de Piura ni guarda relación directa con los servidores de la institución. Su manera de operar es mediante Web Scraping, por lo que su funcionamiento depende en su totalidad de la web academico.unp.edu.pe. Hasta la fecha no existen impedimentos legales para este procedimiento.
+
+La app otorga una interfaz de Android nativa a la mayoría de las funciones del SIGA. Sin embargo, algunas funcionalidades como Inscripción de cursos no han sido implementadas debido al carácter delicado de los datos del usuario que implica el proceso y por los ajustados periodos de disponibilidad del proceso en la web (el scraping que realiza la app requiere un tiempo considerable para su desarrollo). Algunas otras características deseadas, como notificaciones a tiempo real de la subida de notas al sistema no pueden ser implementadas debido a la naturaleza de la extracción de datos.
+
+Esta aplicación es un esfuerzo desinteresado por otorgar una experiencia móvil de usuario mucho más cómoda para los estudiantes de la UNP, y también una demostración de que la implementación de la aplicación móvil que tanto necesitamos es totalmente posible y más sencilla de lo que se cree. Lamentablemente no hay esfuerzos por parte de las autoridades de la UNP, en donde la política utiliza estas necesidades para su publicidad. 
+_________________________
+
+Casa de herrero y cuchara de palo eh? Si te gustó la app házmelo saber y compártela :)
+
+Un abrazo
+
+Calle Briceño José Daniel
+Promoción 2017 < Ingeniería Informática < UNP
+29/03/2020
+
+P.D.: Ya encontraste el easter egg?
