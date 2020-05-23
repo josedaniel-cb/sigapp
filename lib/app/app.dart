@@ -12,9 +12,9 @@ import 'package:flutter/services.dart' show rootBundle;
 
 class App{
   // App info
-  static String version = '1.1.0+0';
+  static String version = '1.1.1+0';
   static bool beta = false;
-  static String versionFlutter = '1.15.17';
+  static String versionFlutter = '1.17.1';
 
   // Navegador
   static BrowserController browserController;
