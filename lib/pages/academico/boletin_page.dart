@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:SIGApp/app/app.dart';
 import 'package:SIGApp/blocs/boletin_bloc/bloc.dart';
-import 'package:SIGApp/browser/browser_controller.dart';
 import 'package:SIGApp/pages/academico/notas_page.dart';
 import 'package:SIGApp/widgets/lista_cursos_widget/curso_widget.dart';
 import 'package:SIGApp/widgets/lista_cursos_widget/lista_cursos_widget.dart';
 import 'package:SIGApp/widgets/loading_mask_widget.dart';
 import 'package:SIGApp/widgets/simple_loading_body_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:SIGApp/browser/my_pages.dart';
 
 class BoletinPage extends StatefulWidget{
   @override
@@ -34,7 +34,8 @@ class BoletinPageState extends State<BoletinPage>{
   void dispose() {
     _bloc.close();
     App.browserController.solicitudActiva = false;
-    App.browserController.currentPage = Page.Home;
+    // App.browserController.currentPage = Page.Home;
+    App.browserController.currentPage = MyPages.Home;
     super.dispose();
   }
 

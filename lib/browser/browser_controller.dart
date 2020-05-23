@@ -24,6 +24,7 @@ import 'package:SIGApp/models/home_model.dart';
 import 'package:SIGApp/models/horario_model/horario_model.dart';
 import 'package:SIGApp/models/login_model.dart';
 // import 'package:SIGApp/models/plan_model/plan_model.dart';
+import 'my_pages.dart';
 
 import 'scripts.dart';
 import 'scraper.dart';
@@ -43,7 +44,7 @@ class BrowserController{
 
   FlutterWebviewPlugin _webView;
   Preferencias _preferencias;
-  Page currentPage;
+  MyPages currentPage;
 
   final int _tiempoDeEsperaMs = 250;
   bool solicitudActiva;
@@ -80,10 +81,10 @@ class BrowserController{
         }
       }
       _print('Cargando web ${event*100}%');
-    });
+    }); 
 
     // Arrancar navegador
-    currentPage = Page.Login;
+    currentPage = MyPages.Login;
     _webView.launch(Urls.SALIR, hidden: true, withJavascript: true, appCacheEnabled: true);
   }
 
@@ -103,7 +104,7 @@ class BrowserController{
 
   set homeBloc(HomeBloc bloc){
     _homeBloc = bloc;
-    currentPage = Page.Home;
+    currentPage = MyPages.Home;
   }
 
   set horarioBloc(HorarioBloc bloc){
@@ -114,7 +115,7 @@ class BrowserController{
   set boletinBloc(BoletinBloc bloc){
     _boletinBloc = bloc;
     solicitudActiva = true;    
-    currentPage = Page.Boletin;
+    currentPage = MyPages.Boletin;
   }
 
   set planBloc(PlanBloc bloc){
@@ -306,34 +307,34 @@ class BrowserController{
   void _urlListener(String url){
     _print("$url");
     switch(currentPage){
-      case Page.Login:
+      case MyPages.Login:
         _loginUrlListener(url);
         break;
-      case Page.Home:
+      case MyPages.Home:
         _homeUrlListener(url);
         break;
-      case Page.Horario:
+      case MyPages.Horario:
         // TODO: Handle this case.
         break;
-      case Page.Boletin:
+      case MyPages.Boletin:
         _boletinListener(url);
         break;
-      case Page.Plan:
+      case MyPages.Plan:
         // TODO: Handle this case.
         break;
-      case Page.Programacion:
+      case MyPages.Programacion:
         // TODO: Handle this case.
         break;
-      case Page.Verificacion:
+      case MyPages.Verificacion:
         // TODO: Handle this case.
         break;
-      case Page.Historial:
+      case MyPages.Historial:
         // TODO: Handle this case.
         break;
-      case Page.Informe:
+      case MyPages.Informe:
         // TODO: Handle this case.
         break;
-      case Page.Notas:
+      case MyPages.Notas:
         // TODO: Handle this case.
         break;
     }
@@ -432,17 +433,4 @@ class BrowserController{
       _webView.hide();
     }
   }
-}
-
-enum Page {
-  Login,
-  Home,
-  Horario,
-  Boletin,
-  Plan,
-  Programacion,
-  Verificacion,
-  Historial,
-  Informe,
-  Notas,
 }

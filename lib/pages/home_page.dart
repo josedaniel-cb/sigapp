@@ -1,4 +1,5 @@
 import 'package:SIGApp/browser/gestor_firebase.dart';
+import 'package:SIGApp/browser/my_pages.dart';
 import 'package:SIGApp/pages/about_page.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,6 @@ import 'package:SIGApp/blocs/horario_bloc/bloc.dart';
 import 'package:SIGApp/blocs/informe_bloc/bloc.dart';
 import 'package:SIGApp/blocs/plan_bloc/plan_bloc.dart';
 import 'package:SIGApp/blocs/programacion_bloc/bloc.dart';
-import 'package:SIGApp/browser/browser_controller.dart';
 import 'package:SIGApp/pages/academico/plan_page/plan_page.dart';
 import 'package:SIGApp/pages/academico/programacion_page.dart';
 import 'package:SIGApp/widgets/emergentes/critical_error_message.dart';
@@ -53,7 +53,7 @@ class HomePageState extends State<HomePage>{
   @override
   void dispose(){
     _homeBloc.close();
-    App.browserController.currentPage = Page.Login;
+    App.browserController.currentPage = MyPages.Login;
     super.dispose();
   }
 
