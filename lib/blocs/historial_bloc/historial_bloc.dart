@@ -6,14 +6,15 @@ import './bloc.dart';
 class HistorialBloc extends Bloc<HistorialEvent, HistorialState> {
   HistorialModel modelo;
 
-  @override
-  HistorialState get initialState => Loading();
+  // @override
+  // HistorialState get initialState => Loading();
+  HistorialBloc() : super(Loading());
 
   @override
   Stream<HistorialState> mapEventToState(
     HistorialEvent event,
   ) async* {
-    if(event is HistorialControllerReady){
+    if (event is HistorialControllerReady) {
       modelo = event.modelo;
       yield Ready();
     }

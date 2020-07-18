@@ -10,30 +10,50 @@ import 'browser/browser_controller.dart';
 import 'pages/login_page.dart';
 
 void main() {
-  BlocSupervisor.delegate = SigappBlocDelegate();
+  // BlocSupervisor.delegate = SigappBlocDelegate();
+  Bloc.observer = SigappBlocObserver();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BotToastInit(
-      child: MaterialApp(
-        navigatorObservers: [BotToastNavigatorObserver()],
-        title: 'The Siga App',
-        theme: ThemeData(
-          primarySwatch: App.blueColor, 
-          fontFamily: 'ProductSans',
-        ),
-        home: BlocProvider(
-          create: (context) {          
-            LoginBloc loginBloc = LoginBloc();
-            App.browserController = BrowserController(loginBloc);
-            return loginBloc;
-          },
-          child: LoginPage(),
-        ),
+    return MaterialApp(
+      title: 'The Siga App',
+      builder: BotToastInit(), //1. call BotToastInit
+      navigatorObservers: [
+        BotToastNavigatorObserver()
+      ], //2. registered route observer
+      theme: ThemeData(
+        primarySwatch: App.blueColor,
+        fontFamily: 'ProductSans',
+      ),
+      home: BlocProvider(
+        create: (context) {
+          LoginBloc loginBloc = LoginBloc();
+          App.browserController = BrowserController(loginBloc);
+          return loginBloc;
+        },
+        child: LoginPage(),
       ),
     );
+    // return BotToastInit(
+    //   child: MaterialApp(
+    //     navigatorObservers: [BotToastNavigatorObserver()],
+    //     title: 'The Siga App',
+    //     theme: ThemeData(
+    //       primarySwatch: App.blueColor,
+    //       fontFamily: 'ProductSans',
+    //     ),
+    //     home: BlocProvider(
+    //       create: (context) {
+    //         LoginBloc loginBloc = LoginBloc();
+    //         App.browserController = BrowserController(loginBloc);
+    //         return loginBloc;
+    //       },
+    //       child: LoginPage(),
+    //     ),
+    //   ),
+    // );
   }
 }

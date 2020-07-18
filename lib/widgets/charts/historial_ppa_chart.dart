@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:SIGApp/models/historial_model.dart';
 
-class HistorialPPAChart extends StatelessWidget{
+class HistorialPPAChart extends StatelessWidget {
   final HistorialModel model;
   final TipoPonderado criterio;
 
@@ -43,23 +43,21 @@ class HistorialPPAChart extends StatelessWidget{
       aspectRatio: 1.3,
       child: Container(
         decoration: BoxDecoration(
-          // borderRadius: const BorderRadius.all(
-          //   Radius.circular(15),
-          // ),
-          borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(15),
-            bottomRight: Radius.circular(15),
-          ),
-          color: const Color(0xff08465E)
-        ),
+            // borderRadius: const BorderRadius.all(
+            //   Radius.circular(15),
+            // ),
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(15),
+              bottomRight: Radius.circular(15),
+            ),
+            color: const Color(0xff08465E)),
         // color: Colors.lightBlueAccent,
         child: Padding(
           padding: EdgeInsets.only(
-            right: margen*1.5,
-            left: margen,
-            // top: margen*1.5,
-            bottom: margen*0.8
-          ),
+              right: margen * 1.5,
+              left: margen,
+              // top: margen*1.5,
+              bottom: margen * 0.8),
           child: LineChart(
             _mainData(),
             swapAnimationDuration: Duration(milliseconds: 700),
@@ -75,14 +73,14 @@ class HistorialPPAChart extends StatelessWidget{
         show: true,
         drawVerticalLine: true,
         getDrawingHorizontalLine: (value) {
-          return const FlLine(
+          return FlLine(
             // color: Color(0xFF92C4DE),
             color: Color(0xFF729AB0),
             strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
-          return const FlLine(
+          return FlLine(
             color: Color(0xff3C5D75),
             strokeWidth: 1,
           );
@@ -94,10 +92,9 @@ class HistorialPPAChart extends StatelessWidget{
           showTitles: true,
           reservedSize: 20,
           textStyle: TextStyle(
-            color: const Color(0xffCADEE8),
-            fontWeight: FontWeight.bold,
-            fontSize: 14
-          ),
+              color: const Color(0xffCADEE8),
+              fontWeight: FontWeight.bold,
+              fontSize: 14),
           getTitles: (values) => xAxisGetLabels(values),
           margin: 10,
         ),
@@ -131,13 +128,20 @@ class HistorialPPAChart extends StatelessWidget{
           colors: gradientColors,
           barWidth: 5,
           isStrokeCapRound: true,
-          dotData: const FlDotData(
-            dotColor: Colors.white,
+          dotData: FlDotData(
+            // dotColor: Colors.white,
             show: true,
+            // show: false,
+            getDotPainter: (spot, percent, barData, index) =>
+                FlDotCirclePainter(
+              radius: 5,
+              color: Colors.white,
+            ),
           ),
           belowBarData: BarAreaData(
             show: true,
-            colors: gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+            colors:
+                gradientColors.map((color) => color.withOpacity(0.3)).toList(),
           ),
         ),
       ],
@@ -166,14 +170,24 @@ class HistorialPPAChart extends StatelessWidget{
   //   return label;
   // }
 
-  String xAxisGetLabels(double value){
+  String xAxisGetLabels(double value) {
     String label;
     int n;
 
     label = '';
     n = value.toInt();
-    const List<String> romanos = ['I', 'II', 'III', 'IV', 'V', 'VI',
-      'VII', 'VIII', 'IX', 'X'];
+    const List<String> romanos = [
+      'I',
+      'II',
+      'III',
+      'IV',
+      'V',
+      'VI',
+      'VII',
+      'VIII',
+      'IX',
+      'X'
+    ];
 
     // if(model.ciclosRegulares.length == 1){
     //   if(n <= 10){
@@ -199,7 +213,7 @@ class HistorialPPAChart extends StatelessWidget{
     //   }
     // }
 
-    if(n <= 10){
+    if (n <= 10) {
       label = romanos[n - 1];
     } else {
       label = n.toString();
@@ -208,10 +222,10 @@ class HistorialPPAChart extends StatelessWidget{
     return label;
   }
 
-  String yAxisGetLabels(double value){
+  String yAxisGetLabels(double value) {
     String label;
 
-    switch(value.toInt()){
+    switch (value.toInt()) {
       case 10:
         label = '10.0';
         break;
@@ -238,14 +252,14 @@ class HistorialPPAChart extends StatelessWidget{
     return label;
   }
 
-  List<FlSpot> _getSpots(){
+  List<FlSpot> _getSpots() {
     List<FlSpot> puntos = List<FlSpot>();
     double contador = 1;
     double pp;
 
-    for(int i = 0; i < model.ciclos.length; i++){
-      if(model.ciclos[i].matrizInformacion != null){
-        switch(criterio){
+    for (int i = 0; i < model.ciclos.length; i++) {
+      if (model.ciclos[i].matrizInformacion != null) {
+        switch (criterio) {
           case TipoPonderado.PPSemestral:
             pp = model.ciclos[i].pps;
             break;
@@ -267,7 +281,7 @@ class HistorialPPAChart extends StatelessWidget{
   }
 }
 
-enum TipoPonderado{
+enum TipoPonderado {
   PPSemestral,
   PPSemestralAprobado,
   PPAcumulado,

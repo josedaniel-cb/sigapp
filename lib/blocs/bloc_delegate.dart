@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 
-class SigappBlocDelegate extends BlocDelegate {
+class SigappBlocObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object event) {
     super.onEvent(bloc, event);
@@ -19,7 +19,7 @@ class SigappBlocDelegate extends BlocDelegate {
     _print(error);
   }
 
-  void _print(Object mensaje){
+  void _print(Object mensaje) {
     print("🤡: $mensaje");
   }
 }

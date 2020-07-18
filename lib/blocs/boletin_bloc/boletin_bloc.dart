@@ -12,41 +12,37 @@ class BoletinBloc extends Bloc<BoletinEvent, BoletinState> {
   // int selectedCursoNotasIndex;
   NotasModel notasModel;
 
-  @override
-  BoletinState get initialState => BoletinLoading();
+  // @override
+  // BoletinState get initialState => BoletinLoading();
+  BoletinBloc() : super(BoletinLoading());
 
   @override
   Stream<BoletinState> mapEventToState(
     BoletinEvent event,
   ) async* {
-    if(event is BoletinControllerReady){
+    if (event is BoletinControllerReady) {
       modelo = event.modelo;
       semestres = event.semestres;
       selectedSemestreIndex = 0;
       yield BoletinReady();
-    } 
-    else if(event is BoletinUserChange){
+    } else if (event is BoletinUserChange) {
       selectedSemestreIndex = event.semestreIndex;
       yield BoletinLoading();
       App.browserController.boletinSolicitarOtro(event.semestreIndex);
-    } 
-    else if(event is BoletinControllerChanged){
+    } else if (event is BoletinControllerChanged) {
       modelo = event.modelo;
       yield BoletinReady();
-    }
-
-    else if(event is BoletinControllerLoggedOut){
+    } else if (event is BoletinControllerLoggedOut) {
       yield BoletinLoggedOut();
     }
 
     // Notas
-    else if(event is BoletinUserRequestNotas){
+    else if (event is BoletinUserRequestNotas) {
       // selectedCursoNotasIndex = event.indexCurso;
       // App.browserController.cargarUrl(currentModel.cursos[selectedCursoNotasIndex].notasUrl);
       App.browserController.boletinSolicitarNotas(event.indexCurso);
       yield BoletinLoadingNotas();
-    }
-    else if(event is BoletinControllerNotasReady){
+    } else if (event is BoletinControllerNotasReady) {
       notasModel = event.modelo;
       yield BoletinNotasReady(event.modelo);
     }

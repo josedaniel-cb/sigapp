@@ -9,23 +9,24 @@ class HorarioBloc extends Bloc<HorarioEvent, HorarioState> {
   List<String> semestres;
   int selectedSemestreIndex;
 
-  @override
-  HorarioState get initialState => HorarioLoading();
+  // @override
+  // HorarioState get initialState => HorarioLoading();
+  HorarioBloc() : super(HorarioLoading());
 
   @override
   Stream<HorarioState> mapEventToState(
     HorarioEvent event,
   ) async* {
-    if(event is HorarioControllerReady){
+    if (event is HorarioControllerReady) {
       currentModel = event.modelo;
       semestres = event.semestres;
       selectedSemestreIndex = 0;
       yield HorarioReady();
-    } else if(event is HorarioUserChange){
+    } else if (event is HorarioUserChange) {
       selectedSemestreIndex = event.semestreIndex;
       yield HorarioLoading();
       App.browserController.horarioSolicitarOtro(event.semestreIndex);
-    } else if(event is HorarioControllerChanged){
+    } else if (event is HorarioControllerChanged) {
       currentModel = event.modelo;
       yield HorarioChanged();
     }

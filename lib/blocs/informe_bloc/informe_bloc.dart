@@ -6,14 +6,15 @@ import './bloc.dart';
 class InformeBloc extends Bloc<InformeEvent, InformeState> {
   InformeModel modelo;
 
-  @override
-  InformeState get initialState => Loading();
+  // @override
+  // InformeState get initialState => Loading();
+  InformeBloc() : super(Loading());
 
   @override
   Stream<InformeState> mapEventToState(
     InformeEvent event,
   ) async* {
-    if(event is InformeControllerReady){
+    if (event is InformeControllerReady) {
       modelo = event.modelo;
       yield Ready();
     }

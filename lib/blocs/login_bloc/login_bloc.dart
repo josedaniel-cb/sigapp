@@ -9,13 +9,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   int intentosDeIngreso;
   LoginModel loginModel;
 
-  LoginBloc(){
-    intentosDeIngreso = 0; 
+  LoginBloc() : super(LoginLoading()) {
+    intentosDeIngreso = 0;
     loginModel = LoginModel('', '', true);
   }
-
-  @override
-  LoginState get initialState => LoginLoading();
+  // @override
+  // LoginState get initialState => LoginLoading();
 
   @override
   Stream<LoginState> mapEventToState(
@@ -37,28 +36,24 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     // - Error
     // - NotLoggedIn
 
-    ///Nota: Es necesario actualizar [loginModel] desde la LoginPage para poder realizar operaciones 
-    if(event is LoginUserRequestLogIn){
+    ///Nota: Es necesario actualizar [loginModel] desde la LoginPage para poder realizar operaciones
+    if (event is LoginUserRequestLogIn) {
       yield LoginLoading();
       // intentosDeIngreso++;
-      App.browserController.loginSolicitarIngreso(loginModel.user, loginModel.password);
-    }
-    else if(event is LoginControllerReady){
+      App.browserController
+          .loginSolicitarIngreso(loginModel.user, loginModel.password);
+    } else if (event is LoginControllerReady) {
       loginModel = event.loginModel;
       yield LoginReady();
-    }
-    else if(event is LoginControllerError){
+    } else if (event is LoginControllerError) {
       yield LoginCriticalError(event.url);
-    }
-    else if(event is LoginControllerLoggingIn){
+    } else if (event is LoginControllerLoggingIn) {
       loginModel.user = event.usuario;
       loginModel.password = event.pass;
       yield LoginLoggingIn();
-    }
-    else if(event is LoginControllerLoggedIn){
+    } else if (event is LoginControllerLoggedIn) {
       yield LoginLoggedIn();
-    }
-    else if(event is LoginControllerNotLoggedIn){
+    } else if (event is LoginControllerNotLoggedIn) {
       yield LoginNotLoggedIn();
     }
   }

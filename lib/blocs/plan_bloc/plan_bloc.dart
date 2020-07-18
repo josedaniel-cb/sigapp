@@ -6,14 +6,15 @@ import './bloc.dart';
 class PlanBloc extends Bloc<PlanEvent, PlanState> {
   PlanModel modelo;
 
-  @override
-  PlanState get initialState => Loading();
+  // @override
+  // PlanState get initialState => Loading();
+  PlanBloc() : super(Loading());
 
   @override
   Stream<PlanState> mapEventToState(
     PlanEvent event,
   ) async* {
-    if(event is PlanControllerReady){
+    if (event is PlanControllerReady) {
       modelo = event.modelo;
       yield Ready();
     }

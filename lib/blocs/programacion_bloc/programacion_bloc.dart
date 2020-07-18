@@ -6,14 +6,15 @@ import './bloc.dart';
 class ProgramacionBloc extends Bloc<ProgramacionEvent, ProgramacionState> {
   ProgramacionModel modelo;
 
-  @override
-  ProgramacionState get initialState => Loading();
+  // @override
+  // ProgramacionState get initialState => Loading();
+  ProgramacionBloc() : super(Loading());
 
   @override
   Stream<ProgramacionState> mapEventToState(
     ProgramacionEvent event,
   ) async* {
-    if(event is ProgramacionControllerReady){
+    if (event is ProgramacionControllerReady) {
       modelo = event.modelo;
       yield Ready();
     }
