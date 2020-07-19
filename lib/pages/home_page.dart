@@ -29,10 +29,10 @@ class HomePage extends StatefulWidget {
   State<StatefulWidget> createState() => HomePageState();
 }
 
-class HomePageState extends State<HomePage>{
+class HomePageState extends State<HomePage> {
   final double _titleItemSize = 16;
   final FontWeight _titleItemFontWeight = FontWeight.w600;
-  
+
   HomeBloc _homeBloc;
 
   List<Color> _userColors;
@@ -40,7 +40,7 @@ class HomePageState extends State<HomePage>{
   bool _busy;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _userColors = ColoresGradiente.blueDefault;
     _busy = true;
@@ -51,60 +51,60 @@ class HomePageState extends State<HomePage>{
   }
 
   @override
-  void dispose(){
+  void dispose() {
     _homeBloc.close();
     App.browserController.currentPage = MyPages.Login;
     super.dispose();
   }
 
-  void _print(String mensaje){
+  void _print(String mensaje) {
     print("HomePage: $mensaje");
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<HomeBloc, HomeState>(
-      listener: (context, state){
-        if(state is HomeLoading){
+      listener: (context, state) {
+        if (state is HomeLoading) {
           _busy = true;
         } else {
           _busy = false;
-          if(state is HomeReady){
-            _userColors = ColoresGradiente.generarColores(_homeBloc.homeModel.iniciales);
-          } else if(state is HomeLogOut){
+          if (state is HomeReady) {
+            _userColors =
+                ColoresGradiente.generarColores(_homeBloc.homeModel.iniciales);
+          } else if (state is HomeLogOut) {
             _logOut();
-          } else if(state is HomeHorario){
+          } else if (state is HomeHorario) {
             _lanzarHorarioPage();
-          }  else if(state is HomeBoletin){
+          } else if (state is HomeBoletin) {
             _lanzarBoletinPage();
-          } else if(state is HomePlan){
+          } else if (state is HomePlan) {
             _lanzarPlanPage();
-          } else if(state is HomeProgramacion){
+          } else if (state is HomeProgramacion) {
             _lanzarProgramacionPage();
-          } else if(state is HomeHistorial){
+          } else if (state is HomeHistorial) {
             _lanzarHistorialPage();
-          } else if(state is HomeInforme){
+          } else if (state is HomeInforme) {
             _lanzarInformePage();
-          } else if(state is HomeCriticalError){
+          } else if (state is HomeCriticalError) {
             showDialog(
-              context: context,
-              builder: (context) => CriticalErrorMessage(state.mensaje)
-            );
+                context: context,
+                builder: (context) => CriticalErrorMessage(state.mensaje));
           }
         }
       },
       child: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state){
-          return  WillPopScope(
+        builder: (context, state) {
+          return WillPopScope(
             onWillPop: () => null,
-            child: _buildScaffold(), 
+            child: _buildScaffold(),
           );
         },
       ),
     );
   }
 
-  Widget _buildScaffold(){
+  Widget _buildScaffold() {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -127,21 +127,21 @@ class HomePageState extends State<HomePage>{
       ),
     );
   }
-  
-  PreferredSize _buildProgressIndicator(){
+
+  PreferredSize _buildProgressIndicator() {
     return PreferredSize(
-      preferredSize: Size(double.infinity, 0.0),
-      child: SizedBox(
-        height: 4.0,
-        child: _busy ? LinearProgressIndicator(
-          backgroundColor: Colors.white70,
-        )
-        : null,
-      )
-    );
+        preferredSize: Size(double.infinity, 0.0),
+        child: SizedBox(
+          height: 4.0,
+          child: _busy
+              ? LinearProgressIndicator(
+                  backgroundColor: Colors.white70,
+                )
+              : null,
+        ));
   }
 
-  Widget _buildBody(){
+  Widget _buildBody() {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -167,7 +167,7 @@ class HomePageState extends State<HomePage>{
             //       decoration: BoxDecoration(
             //         color: Colors.white,
             //         borderRadius: BorderRadius.only(
-            //           topLeft: Radius.circular(20), 
+            //           topLeft: Radius.circular(20),
             //           topRight: Radius.circular(20),
             //         ),
             //       ),
@@ -184,13 +184,15 @@ class HomePageState extends State<HomePage>{
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20), 
+                        topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
                       ),
                     ),
                     margin: EdgeInsets.symmetric(horizontal: 10),
                     // child: _buildMenu(),
-                    child: FadeIn(child: _buildMenu(),),
+                    child: FadeIn(
+                      child: _buildMenu(),
+                    ),
                   ),
                 ],
               ),
@@ -201,133 +203,130 @@ class HomePageState extends State<HomePage>{
     );
   }
 
-  Widget _buildMenu(){
+  Widget _buildMenu() {
     return Column(
       children: <Widget>[
-        SizedBox(height: 14),        
+        SizedBox(height: 14),
         _buildCategoria(
-          titulo: 'Semestre actual',
-          backgroundBoton: Colors.primaries[6],
-          colorTextoBoton: Colors.white,
-          botones: <BotonInfo>[
-            BotonInfo(
-              // icono: Icons.calendar_today,
-              // icono: Icons.dashboard,
-              icono: Icons.event_note,
-              name: 'Horario de clases',
-              onPressed: _tapHorario,
-            ),
-            BotonInfo(
-              // icono: Icons.calendar_today,
-              icono: Icons.format_list_numbered_rtl,
-              name: 'Boletín de cursos',
-              onPressed: _tapBoletin,
-            ),
-          ]
-        ),
+            titulo: 'Semestre actual',
+            backgroundBoton: Colors.primaries[6],
+            colorTextoBoton: Colors.white,
+            botones: <BotonInfo>[
+              BotonInfo(
+                // icono: Icons.calendar_today,
+                // icono: Icons.dashboard,
+                icono: Icons.event_note,
+                name: 'Horario de clases',
+                onPressed: _tapHorario,
+              ),
+              BotonInfo(
+                // icono: Icons.calendar_today,
+                icono: Icons.format_list_numbered_rtl,
+                name: 'Boletín de cursos',
+                onPressed: _tapBoletin,
+              ),
+            ]),
         _buildCategoria(
-          titulo: 'Procesos académicos',
-          backgroundBoton: Colors.red,
-          colorTextoBoton: Colors.white,
-          botones: <BotonInfo>[
-            BotonInfo(
-              icono: Icons.book,
-              name: 'Plan de estudios',
-              onPressed: _tapPlanDeEstudios,
-            ),
-            BotonInfo(
-              // icono: Icons.book,              
-              icono: Icons.format_list_bulleted,
-              name: 'Programación académica',
-              onPressed: _tapProgramacionAcademica,
-            ),
-          ]
-        ),
+            titulo: 'Procesos académicos',
+            backgroundBoton: Colors.red,
+            colorTextoBoton: Colors.white,
+            botones: <BotonInfo>[
+              BotonInfo(
+                icono: Icons.book,
+                name: 'Plan de estudios',
+                onPressed: _tapPlanDeEstudios,
+              ),
+              BotonInfo(
+                // icono: Icons.book,
+                icono: Icons.format_list_bulleted,
+                name: 'Programación académica',
+                onPressed: _tapProgramacionAcademica,
+              ),
+            ]),
         _buildCategoria(
-          titulo: 'Resultados académicos',
-          // backgroundBoton: Colors.green,
-          backgroundBoton: Color(0xFF18cc04),
-          colorTextoBoton: Colors.white,
-          botones: <BotonInfo>[
-            BotonInfo(
-              // icono: Icons.check,
-              // icono: Icons.done_outline,
-              icono: Icons.assessment,
-              name: 'Historial académico',
-              // onPressed: () => App.showToast('Próximamente'),
-              onPressed: _tapHistorialAcademico,
-            ),
-            BotonInfo(
-              // icono: Icons.check,
-              icono: Icons.assignment_ind,
-              name: 'Informe académico',
-              onPressed: _tapInformeAcademico,
-            ),
-          ]
-        ),
+            titulo: 'Resultados académicos',
+            // backgroundBoton: Colors.green,
+            backgroundBoton: Color(0xFF18cc04),
+            colorTextoBoton: Colors.white,
+            botones: <BotonInfo>[
+              BotonInfo(
+                // icono: Icons.check,
+                // icono: Icons.done_outline,
+                icono: Icons.assessment,
+                name: 'Historial académico',
+                // onPressed: () => App.showToast('Próximamente'),
+                onPressed: _tapHistorialAcademico,
+              ),
+              BotonInfo(
+                // icono: Icons.check,
+                icono: Icons.assignment_ind,
+                name: 'Informe académico',
+                onPressed: _tapInformeAcademico,
+              ),
+            ]),
         _buildCategoria(
-          titulo: 'Enlaces de interés',
-          // colorTitulo: Colors.grey,,
-          // colorTextoBoton: Colors.grey,
-          colorTitulo: Color(0xFF474647),
-          backgroundBoton: Color(0xFFEAEAEA),
-          colorTextoBoton: Color(0xFF474647),
-          botones: <BotonInfo>[
-            BotonInfo(
-              icono: Icons.attach_money,
-              name: 'Consulta de pagos',
-              onPressed: () {
-                App.browserController.gestorFirebase.registrarUso(CasosDeUso.ConsultaDePagos);
-                _launchURL(Urls.REPORTE_PAGOS);
-              },
-            ),
-            BotonInfo(
-              icono: Icons.laptop,
-              name: 'Plataforma virtual',
-              onPressed: (){
-                App.browserController.gestorFirebase.registrarUso(CasosDeUso.PlataformaVirtual);
-                _launchURL(Urls.PLATAFORMA_VIRTUAL);
-              },
-            ),
-            BotonInfo(
-              icono: Icons.home,
-              name: 'SIGA',
-              onPressed: (){
-                App.browserController.gestorFirebase.registrarUso(CasosDeUso.Siga);
-                _launchURL(Urls.INICIO_SESION);
-              },
-            ),
-          ]
-        ),
+            titulo: 'Enlaces de interés',
+            // colorTitulo: Colors.grey,,
+            // colorTextoBoton: Colors.grey,
+            colorTitulo: Color(0xFF474647),
+            backgroundBoton: Color(0xFFEAEAEA),
+            colorTextoBoton: Color(0xFF474647),
+            botones: <BotonInfo>[
+              BotonInfo(
+                icono: Icons.attach_money,
+                name: 'Consulta de pagos',
+                onPressed: () {
+                  App.browserController.gestorFirebase
+                      .registrarUso(CasosDeUso.ConsultaDePagos);
+                  _launchURL(Urls.REPORTE_PAGOS);
+                },
+              ),
+              BotonInfo(
+                icono: Icons.laptop,
+                name: 'Plataforma virtual',
+                onPressed: () {
+                  App.browserController.gestorFirebase
+                      .registrarUso(CasosDeUso.PlataformaVirtual);
+                  _launchURL(Urls.PLATAFORMA_VIRTUAL);
+                },
+              ),
+              BotonInfo(
+                icono: Icons.home,
+                name: 'SIGA',
+                onPressed: () {
+                  App.browserController.gestorFirebase
+                      .registrarUso(CasosDeUso.Siga);
+                  _launchURL(Urls.INICIO_SESION);
+                },
+              ),
+            ]),
         _buildCategoria(
-          titulo: 'Salir',
-          backgroundBoton: Colors.grey,
-          colorTextoBoton: Colors.white,
-          botones: <BotonInfo>[
-            BotonInfo(
-              icono: Icons.exit_to_app,
-              name: 'Cerrar sesión',
-              onPressed: _tapCerrarSesion,
-            ),
-          ]
-        ),
+            titulo: 'Salir',
+            backgroundBoton: Colors.grey,
+            colorTextoBoton: Colors.white,
+            botones: <BotonInfo>[
+              BotonInfo(
+                icono: Icons.exit_to_app,
+                name: 'Cerrar sesión',
+                onPressed: _tapCerrarSesion,
+              ),
+            ]),
         _buildCategoria(
-          titulo: 'Enlace de descarga',
-          backgroundBoton: App.greenColor,
-          colorTextoBoton: Colors.white,
-          botones: <BotonInfo>[
-            BotonInfo(
-              icono: Icons.favorite,
-              name: 'Compartir app',
-              onPressed: App.compartirApp,
-            ),
-          ]
-        ),
+            titulo: 'Enlace de descarga',
+            backgroundBoton: App.greenColor,
+            colorTextoBoton: Colors.white,
+            botones: <BotonInfo>[
+              BotonInfo(
+                icono: Icons.favorite,
+                name: 'Compartir app',
+                onPressed: App.compartirApp,
+              ),
+            ]),
       ],
     );
   }
 
-  Widget _buildUser(){
+  Widget _buildUser() {
     final double fontSize = 15;
     final double margen = 20;
     return Container(
@@ -349,48 +348,47 @@ class HomePageState extends State<HomePage>{
                 ),
               ),
               backgroundColor: Colors.black54,
-            ),  
+            ),
           ),
           Expanded(
-            child: Container(
-              margin: EdgeInsets.only(top: margen, bottom: margen, right: margen),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      _homeBloc.homeModel.apellidosNombres,
-                      // 'ANCAJIMA RUIZ, LUIS ELIAN',
-                      style: TextStyle(
-                        fontSize: fontSize,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                      ),
+              child: Container(
+            margin: EdgeInsets.only(top: margen, bottom: margen, right: margen),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  child: Text(
+                    _homeBloc.homeModel.apellidosNombres,
+                    // 'ANCAJIMA RUIZ, LUIS ELIAN',
+                    style: TextStyle(
+                      fontSize: fontSize,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 2),
-                    child: Text(
-                      _homeBloc.homeModel.escuela,
-                      // 'INGENIERIA ELECTRONICA',
-                      style: TextStyle(                    
-                        fontSize: fontSize - 3,
-                        // color: Colors.white,
-                        color: Color(0xFFE7E7E7),
-                        fontWeight: FontWeight.w500,
-                      ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 2),
+                  child: Text(
+                    _homeBloc.homeModel.escuela,
+                    // 'INGENIERIA ELECTRONICA',
+                    style: TextStyle(
+                      fontSize: fontSize - 3,
+                      // color: Colors.white,
+                      color: Color(0xFFE7E7E7),
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                ],
-              ),
-            )
-          ),
+                ),
+              ],
+            ),
+          )),
         ],
       ),
     );
   }
 
-  Widget _buildInvisibleUser(){
+  Widget _buildInvisibleUser() {
     final double fontSize = 15;
     final double margen = 20;
     return Container(
@@ -411,39 +409,38 @@ class HomePageState extends State<HomePage>{
                 ),
               ),
               backgroundColor: Colors.transparent,
-            ),  
+            ),
           ),
           Expanded(
-            child: Container(
-              margin: EdgeInsets.only(top: margen, bottom: margen, right: margen),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      _homeBloc.homeModel.apellidosNombres,
-                      style: TextStyle(
-                        fontSize: fontSize,
-                        color: Colors.transparent,
-                        fontWeight: FontWeight.w700,
-                      ),
+              child: Container(
+            margin: EdgeInsets.only(top: margen, bottom: margen, right: margen),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  child: Text(
+                    _homeBloc.homeModel.apellidosNombres,
+                    style: TextStyle(
+                      fontSize: fontSize,
+                      color: Colors.transparent,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(top: 2),
-                    child: Text(
-                      _homeBloc.homeModel.escuela,
-                      style: TextStyle(                    
-                        fontSize: fontSize - 3,
-                        color: Colors.transparent,
-                        fontWeight: FontWeight.w500,
-                      ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 2),
+                  child: Text(
+                    _homeBloc.homeModel.escuela,
+                    style: TextStyle(
+                      fontSize: fontSize - 3,
+                      color: Colors.transparent,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                ],
-              ),
-            )
-          ),
+                ),
+              ],
+            ),
+          )),
         ],
       ),
     );
@@ -455,7 +452,7 @@ class HomePageState extends State<HomePage>{
     @required Color backgroundBoton,
     @required Color colorTextoBoton,
     @required List<BotonInfo> botones,
-  }){
+  }) {
     return Container(
       padding: EdgeInsets.only(
         left: 20,
@@ -471,7 +468,7 @@ class HomePageState extends State<HomePage>{
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(            
+          Container(
             margin: EdgeInsets.only(bottom: 5),
             child: Text(
               titulo,
@@ -483,7 +480,7 @@ class HomePageState extends State<HomePage>{
             ),
           ),
           Column(
-            children: List.generate(botones.length, (int i){
+            children: List.generate(botones.length, (int i) {
               return _buildExpandedButton(
                 text: botones[i].name,
                 icon: botones[i].icono,
@@ -498,13 +495,12 @@ class HomePageState extends State<HomePage>{
     );
   }
 
-  Widget _buildExpandedButton({
-      @required String text, 
-      @required Color textColor, 
-      @required Color background, 
-      @required IconData icon, 
-      @required Function function
-    }){
+  Widget _buildExpandedButton(
+      {@required String text,
+      @required Color textColor,
+      @required Color background,
+      @required IconData icon,
+      @required Function function}) {
     return Row(
       children: <Widget>[
         Expanded(
@@ -526,7 +522,7 @@ class HomePageState extends State<HomePage>{
                     child: Row(
                       children: <Widget>[
                         Expanded(
-                          child: Container(                            
+                          child: Container(
                             // color: Colors.green,
                             margin: EdgeInsets.only(right: 8),
                             child: Icon(
@@ -569,141 +565,134 @@ class HomePageState extends State<HomePage>{
     );
   }
 
-  void _tapHorario(){
-    if(!_busy){
+  void _tapHorario() {
+    if (!_busy) {
       _homeBloc.add(HomeUserHorario());
       App.browserController.gestorFirebase.registrarUso(CasosDeUso.Horario);
       // App.browserController.gestorFirebase.registrarUso(GestorFirebase.HORARIO);
     }
   }
 
-  void _tapBoletin(){
-    if(!_busy){
+  void _tapBoletin() {
+    if (!_busy) {
       _homeBloc.add(HomeUserBoletin());
       App.browserController.gestorFirebase.registrarUso(CasosDeUso.Boletin);
     }
   }
 
   void _tapPlanDeEstudios() {
-    if(!_busy){
+    if (!_busy) {
       _homeBloc.add(HomeUserPlan());
-      App.browserController.gestorFirebase.registrarUso(CasosDeUso.PlanEstudios);
+      App.browserController.gestorFirebase
+          .registrarUso(CasosDeUso.PlanEstudios);
     }
   }
 
-  void _tapHistorialAcademico(){
-    if(!_busy){
+  void _tapHistorialAcademico() {
+    if (!_busy) {
       _homeBloc.add(HomeUserHistorial());
-      App.browserController.gestorFirebase.registrarUso(CasosDeUso.HistorialAcademico);
+      App.browserController.gestorFirebase
+          .registrarUso(CasosDeUso.HistorialAcademico);
     }
   }
 
   void _tapInformeAcademico() {
-    if(!_busy){
+    if (!_busy) {
       _homeBloc.add(HomeUserInforme());
-      App.browserController.gestorFirebase.registrarUso(CasosDeUso.InformeAcademico);
+      App.browserController.gestorFirebase
+          .registrarUso(CasosDeUso.InformeAcademico);
     }
   }
 
   void _tapProgramacionAcademica() {
-    if(!_busy){
+    if (!_busy) {
       _homeBloc.add(HomeUserProgramacion());
-      App.browserController.gestorFirebase.registrarUso(CasosDeUso.ProgramacionAcademica);
+      App.browserController.gestorFirebase
+          .registrarUso(CasosDeUso.ProgramacionAcademica);
     }
   }
 
-  void _tapCerrarSesion(){
-    if(!_busy){
+  void _tapCerrarSesion() {
+    if (!_busy) {
       _homeBloc.add(HomeUserLogOut());
-      App.browserController.gestorFirebase.registrarUso(CasosDeUso.CerrarSesion);
+      App.browserController.gestorFirebase
+          .registrarUso(CasosDeUso.CerrarSesion);
     }
   }
 
-  void _logOut(){
+  void _logOut() {
     Navigator.of(context).pop();
   }
 
   void _lanzarHorarioPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context){
-          return BlocProvider(
-            create: (BuildContext context) => HorarioBloc(),
-            child: HorarioPage(),
-          );
-        }
-      ),
+      MaterialPageRoute(builder: (context) {
+        return BlocProvider(
+          create: (BuildContext context) => HorarioBloc(),
+          child: HorarioPage(),
+        );
+      }),
     );
   }
 
   void _lanzarBoletinPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context){
-          return BlocProvider(
-            create: (BuildContext context) => BoletinBloc(),
-            child: BoletinPage(),
-          );
-        }
-      ),
+      MaterialPageRoute(builder: (context) {
+        return BlocProvider(
+          create: (BuildContext context) => BoletinBloc(),
+          child: BoletinPage(),
+        );
+      }),
     );
   }
 
   void _lanzarPlanPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context){
-          return BlocProvider(
-            create: (BuildContext context) => PlanBloc(),
-            child: PlanPage(),
-          );
-        }
-      ),
+      MaterialPageRoute(builder: (context) {
+        return BlocProvider(
+          create: (BuildContext context) => PlanBloc(),
+          child: PlanPage(),
+        );
+      }),
     );
   }
 
   void _lanzarProgramacionPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context){
-          return BlocProvider(
-            create: (BuildContext context) => ProgramacionBloc(),
-            child: ProgramacionPage(),
-          );
-        }
-      ),
+      MaterialPageRoute(builder: (context) {
+        return BlocProvider(
+          create: (BuildContext context) => ProgramacionBloc(),
+          child: ProgramacionPage(),
+        );
+      }),
     );
   }
 
-  void _lanzarHistorialPage(){
+  void _lanzarHistorialPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context){
-          return BlocProvider(
-            create: (BuildContext context) => HistorialBloc(),
-            child: HistorialPage(),
-          );
-        }
-      ),
+      MaterialPageRoute(builder: (context) {
+        return BlocProvider(
+          create: (BuildContext context) => HistorialBloc(),
+          child: HistorialPage(),
+        );
+      }),
     );
   }
 
   void _lanzarInformePage() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context){
-          return BlocProvider(
-            create: (BuildContext context) => InformeBloc(),
-            child: InformePage(),
-          );
-        }
-      ),
+      MaterialPageRoute(builder: (context) {
+        return BlocProvider(
+          create: (BuildContext context) => InformeBloc(),
+          child: InformePage(),
+        );
+      }),
     );
   }
 
@@ -724,27 +713,22 @@ class HomePageState extends State<HomePage>{
   //   );
   // }
 
-  void _tapAbout() {    
+  void _tapAbout() {
     App.browserController.gestorFirebase.registrarUso(CasosDeUso.About);
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context){
-          return AboutPage();
-        }
-      ),
+      MaterialPageRoute(builder: (context) {
+        return AboutPage();
+      }),
     );
   }
 }
 
-class BotonInfo{
+class BotonInfo {
   final IconData icono;
   final String name;
   final Function onPressed;
 
-  BotonInfo({
-    @required this.name, 
-    @required this.icono, 
-    @required this.onPressed
-  });
+  BotonInfo(
+      {@required this.name, @required this.icono, @required this.onPressed});
 }

@@ -1,3 +1,5 @@
+import 'package:SIGApp/pages/text_page.dart';
+import 'package:SIGApp/widgets/emergentes/AFFECTION_widget.dart';
 import 'package:SIGApp/widgets/emergentes/terminos_widget.dart';
 import 'package:SIGApp/widgets/sigapp_info/sigapp_logotipo_widget.dart';
 import 'package:flutter/gestures.dart';
@@ -14,8 +16,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'home_page.dart';
 
-class LoginPage extends StatefulWidget {  
-  LoginPage({Key key, }) : super(key: key);
+class LoginPage extends StatefulWidget {
+  LoginPage({
+    Key key,
+  }) : super(key: key);
 
   @override
   LoginPageState createState() => LoginPageState();
@@ -25,18 +29,18 @@ class LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _passwordFocusNode = FocusNode();
   final TextEditingController _usuarioController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();  
+  final TextEditingController _passwordController = TextEditingController();
   // final double _bodyHeight = 420;
   final double _margenVertical = 18;
 
   LoginBloc _loginBloc;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _loginBloc = BlocProvider.of<LoginBloc>(context);
   }
-  
+
   /// LISTA DE ESTADOS:
   /// Loading
   /// Ready
@@ -47,45 +51,51 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
-      listener: (context, state){
-        if(state is LoginNotLoggedIn){
+      listener: (context, state) {
+        if (state is LoginNotLoggedIn) {
           // _mostrarMensaje("El usuario o la contraseña no son correctos");
           App.showToast("El usuario o la contraseña no son correctos");
-        } else if(state is LoginLoggedIn){
+        } else if (state is LoginLoggedIn) {
           // _passwordController.text = '';
-          _passwordController.clear();       
+          _passwordController.clear();
           _lanzarHomePage();
-        } else if(state is LoginCriticalError){            
+        } else if (state is LoginCriticalError) {
           showDialog(
-            context: context,
-            builder: (context) => CriticalErrorMessage(
-              state.mensaje,
-              mensaje: 'Revisa tu conexión a internet y vuelve a intentarlo más tarde',
-            )
-          );
-        } else if(state is LoginReady){
+              context: context,
+              builder: (context) => CriticalErrorMessage(
+                    state.mensaje,
+                    mensaje:
+                        'Revisa tu conexión a internet y vuelve a intentarlo más tarde',
+                  ));
+        } else if (state is LoginReady) {
           bool ban = App.browserController.preferencias.primerUso;
-          if (ban == true || ban == null){
+          if (ban == true || ban == null) {
             showDialog(
               context: context,
               builder: (BuildContext context) {
                 return TerminosWidget();
               },
             );
-          } 
+          }
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AffectionWidget();
+            },
+          );
         }
       },
       child: Scaffold(
         body: BlocBuilder<LoginBloc, LoginState>(
           builder: (context, state) {
             // _print('BlocBuilder dice: $state');
-            if(state is LoginLoading){
+            if (state is LoginLoading) {
               return _buildMaskedBody(_buildLoadingMessage('Cargando'));
-            } else if(state is LoginLoggingIn){
+            } else if (state is LoginLoggingIn) {
               _usuarioController.text = _loginBloc.loginModel.user;
               return _buildMaskedBody(_buildLoadingMessage('Iniciando sesión'));
             } else {
-              // LoginReady              
+              // LoginReady
               return _buildBody();
             }
           },
@@ -94,7 +104,7 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildMaskedBody(Widget maskWidget){
+  Widget _buildMaskedBody(Widget maskWidget) {
     return Stack(
       children: <Widget>[
         _buildBody(),
@@ -116,16 +126,14 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildLoadingMessage(String mensaje){
+  Widget _buildLoadingMessage(String mensaje) {
     final double lateralMargins = 20;
-    return Container(  
+    return Container(
       padding: EdgeInsets.all(lateralMargins),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(lateralMargins)
-        ),
-      ),        
+        borderRadius: BorderRadius.all(Radius.circular(lateralMargins)),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
@@ -144,10 +152,10 @@ class LoginPageState extends State<LoginPage> {
           ),
         ],
       ),
-    ); 
+    );
   }
 
-  Widget _buildBody(){
+  Widget _buildBody() {
     return Container(
       color: const Color(0xFF036FB8),
       child: SafeArea(
@@ -159,14 +167,14 @@ class LoginPageState extends State<LoginPage> {
                   child: Container(
                     margin: EdgeInsets.only(right: 2, top: 2),
                     child: Text(
-                      'v${App.version}', 
+                      'v${App.version}',
                       textAlign: TextAlign.end,
                       style: TextStyle(
                         color: Colors.white70,
                         fontSize: 10,
                       ),
                     ),
-                  ),  
+                  ),
                 ),
               ],
             ),
@@ -176,15 +184,13 @@ class LoginPageState extends State<LoginPage> {
                   margin: EdgeInsets.all(30),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(25)
-                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(25)),
                   ),
                   child: SingleChildScrollView(
                     child: Container(
                       margin: EdgeInsets.symmetric(
                         // horizontal: _margenVertical*1.5,
-                        horizontal: _margenVertical*1.5,
+                        horizontal: _margenVertical * 1.5,
                         vertical: _margenVertical,
                       ),
                       child: _buildFormulario(),
@@ -199,35 +205,45 @@ class LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   Expanded(
                     child: Text(
-                      '#UniversidadNacionalDePiura', 
+                      '#UniversidadNacionalDePiura',
                       style: TextStyle(
                         color: Colors.white70,
                         fontSize: 11,
                       ),
-                    ),  
+                    ),
                   ),
                   RichText(
                     text: TextSpan(
                       text: 'Ver nota de autor',
                       style: TextStyle(
-                          color: Colors.white70,
-                          fontFamily: 'ProductSans',
-                          fontSize: 13,
-                        ),
+                        color: Colors.white70,
+                        fontFamily: 'ProductSans',
+                        fontSize: 13,
+                      ),
                       recognizer: TapGestureRecognizer()
-                        ..onTap = () => launch(Urls.DESCARGAR_MEGA),
+                        // ..onTap = () => launch(Urls.DESCARGAR_MEGA),
+                        ..onTap = () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TextPage(
+                                cualMensaje: MensajesTextPage.NotaDeAutor,
+                              ),
+                            ),
+                          );
+                        },
                     ),
                   )
                 ],
               ),
-              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildFormulario(){
+  Widget _buildFormulario() {
     return Form(
       key: _formKey,
       child: Column(
@@ -272,12 +288,11 @@ class LoginPageState extends State<LoginPage> {
         maxLines: 1,
         keyboardType: TextInputType.number,
         decoration: InputDecoration(
-          hintText: 'Código universitario',
-          icon: Icon(
-            Icons.account_circle,
-            color: App.blueColor,
-          )
-        ),
+            hintText: 'Código universitario',
+            icon: Icon(
+              Icons.account_circle,
+              color: App.blueColor,
+            )),
         validator: (valor) {
           if (valor.isEmpty) {
             return 'Por favor ingrese su código universitario';
@@ -286,7 +301,7 @@ class LoginPageState extends State<LoginPage> {
           }
         },
         // onSaved: (value) => _loginBloc.loginModel.user = value,
-        onSaved: (value){
+        onSaved: (value) {
           _print('+ Guardando usuario en modelo de loginBloc: $value');
           _loginBloc.loginModel.user = value;
         },
@@ -311,12 +326,11 @@ class LoginPageState extends State<LoginPage> {
         autofocus: false,
         focusNode: _passwordFocusNode,
         decoration: InputDecoration(
-          hintText: 'Clave web',
-          icon: Icon(
-            Icons.lock,
-            color: App.blueColor,
-          )
-        ),
+            hintText: 'Clave web',
+            icon: Icon(
+              Icons.lock,
+              color: App.blueColor,
+            )),
         validator: (valor) {
           if (valor.isEmpty) {
             return 'Por favor ingrese su clave web';
@@ -325,7 +339,7 @@ class LoginPageState extends State<LoginPage> {
           }
         },
         // onSaved: (value) => _loginBloc.loginModel.password = value,
-        onSaved: (value){
+        onSaved: (value) {
           _print('+ Guardando contraseña en modelo de loginBloc: $value');
           _loginBloc.loginModel.password = value;
         },
@@ -339,7 +353,7 @@ class LoginPageState extends State<LoginPage> {
 
   Widget _buildCheckBox() {
     return Container(
-      margin: EdgeInsets.only(top: _margenVertical - _margenVertical*0.5),
+      margin: EdgeInsets.only(top: _margenVertical - _margenVertical * 0.5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         mainAxisSize: MainAxisSize.max,
@@ -362,59 +376,49 @@ class LoginPageState extends State<LoginPage> {
 
   Widget _buildSubmitButton() {
     return Container(
-      margin: EdgeInsets.only(top: _margenVertical),
-      child: SizedBox(
-        height: 40.0,
-        width: 280.0,
-        child: RaisedButton(
-          elevation: 5.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0),
+        margin: EdgeInsets.only(top: _margenVertical),
+        child: SizedBox(
+          height: 40.0,
+          width: 280.0,
+          child: RaisedButton(
+            elevation: 5.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+            color: App.blueColor,
+            child: Text('Ingresar',
+                style: TextStyle(fontSize: 20.0, color: Colors.white)),
+            onPressed: _solicitarIngreso,
           ),
-          color: App.blueColor,
-          child: Text(
-            'Ingresar',
-            style: TextStyle(
-              fontSize: 20.0, 
-              color: Colors.white
-            )
-          ),
-          onPressed: _solicitarIngreso,
-        ),
-      )
-    );
+        ));
   }
 
   Widget _buildHelpButton() {
     return Container(
       child: FlatButton(
-        child: Text(
-          '¿Ha olvidado su contraseña?',
-          style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300)
-        ),
+        child: Text('¿Ha olvidado su contraseña?',
+            style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300)),
         onPressed: () => _launchURL(Urls.RESET_PASSWORD),
       ),
     );
   }
 
-  void _solicitarIngreso(){
-    if(_formKey.currentState.validate()){
+  void _solicitarIngreso() {
+    if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       _loginBloc.add(LoginUserRequestLogIn());
     }
   }
-  
+
   Future _lanzarHomePage() async {
     await Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context){
-          return BlocProvider(
-            create: (BuildContext context) => HomeBloc(),
-            child: HomePage(),
-          );
-        }
-      ),
+      MaterialPageRoute(builder: (context) {
+        return BlocProvider(
+          create: (BuildContext context) => HomeBloc(),
+          child: HomePage(),
+        );
+      }),
     );
   }
 
@@ -426,7 +430,7 @@ class LoginPageState extends State<LoginPage> {
     }
   }
 
-  void _print(String mensaje){
+  void _print(String mensaje) {
     print("LoginScreen: $mensaje");
   }
 }

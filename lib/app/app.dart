@@ -12,7 +12,7 @@ import 'package:flutter/services.dart' show rootBundle;
 
 class App {
   // App info
-  static String version = '1.1.1+1';
+  static String version = '1.1.2+1';
   static bool beta = false;
   static String versionFlutter = '1.17.5';
 
@@ -42,6 +42,8 @@ class App {
   static MaterialColor get blueColor => getMaterialColor(_hexBlueColor);
 
   static MaterialColor get greenColor => getMaterialColor(_hexGreenColor);
+
+  static Color get darkGreenColor => Color(0xFF14b8a1);
 
   // Otros
   static const double bordeRadio = 10;

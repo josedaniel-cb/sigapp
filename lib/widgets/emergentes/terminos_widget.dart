@@ -1,15 +1,15 @@
 import 'dart:io';
 import 'package:SIGApp/app/app.dart';
-import 'package:SIGApp/pages/terminos_page.dart';
+import 'package:SIGApp/pages/text_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 
-class TerminosWidget extends StatefulWidget{
+class TerminosWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _TerminosWidget();
 }
 
-class _TerminosWidget extends State<TerminosWidget>{
+class _TerminosWidget extends State<TerminosWidget> {
   bool terminosAceptados = false;
 
   @override
@@ -28,39 +28,34 @@ class _TerminosWidget extends State<TerminosWidget>{
                 children: <Widget>[
                   Checkbox(
                     value: terminosAceptados,
-                    onChanged: (ban){
-                      setState(() { terminosAceptados =  ban;});
+                    onChanged: (ban) {
+                      setState(() {
+                        terminosAceptados = ban;
+                      });
                     },
                   ),
                   Expanded(
                     child: RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
+                      text: TextSpan(children: [
+                        TextSpan(
                             text: 'Acepto los ',
                             style: TextStyle(
                               color: Colors.black,
-                            )
-                          ),
-                          _buildLinkText(
-                            'Términos y Condiciones de Uso', 
-                            () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => TerminosPage(),
-                                ),
-                              );
-                            }
-                          ),
-                          TextSpan(
+                            )),
+                        _buildLinkText('Términos y Condiciones de Uso', () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TextPage(),
+                            ),
+                          );
+                        }),
+                        TextSpan(
                             text: '.',
                             style: TextStyle(
                               color: Colors.black,
-                            )
-                          ),
-                        ]
-                      ),
+                            )),
+                      ]),
                     ),
                   ),
                 ],
@@ -83,8 +78,8 @@ class _TerminosWidget extends State<TerminosWidget>{
     );
   }
 
-  void continuarPressed(){
-    if(terminosAceptados){
+  void continuarPressed() {
+    if (terminosAceptados) {
       App.browserController.preferencias.guardarPrimerUso(false);
       Navigator.pop(context);
     } else {
@@ -92,7 +87,7 @@ class _TerminosWidget extends State<TerminosWidget>{
     }
   }
 
-  TextSpan _buildLinkText(String url, Function onTap){
+  TextSpan _buildLinkText(String url, Function onTap) {
     return TextSpan(
       text: url,
       style: TextStyle(
@@ -101,8 +96,7 @@ class _TerminosWidget extends State<TerminosWidget>{
         // fontWeight: FontWeight.bold,
         decoration: TextDecoration.underline,
       ),
-      recognizer: TapGestureRecognizer()
-        ..onTap = onTap,
+      recognizer: TapGestureRecognizer()..onTap = onTap,
     );
   }
 }

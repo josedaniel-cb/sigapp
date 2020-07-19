@@ -2,7 +2,7 @@ import 'package:SIGApp/app/app.dart';
 import 'package:SIGApp/app/urls.dart';
 import 'package:SIGApp/browser/gestor_firebase.dart';
 import 'package:SIGApp/pages/easter_egg_page.dart';
-import 'package:SIGApp/pages/terminos_page.dart';
+import 'package:SIGApp/pages/text_page.dart';
 import 'package:SIGApp/widgets/sigapp_info/sigapp_logotipo_widget.dart';
 import 'package:SIGApp/widgets/sigapp_info/sigapp_version_widget.dart';
 // import 'package:clipboard_manager/clipboard_manager.dart';
@@ -229,7 +229,7 @@ class AboutPageState extends State<AboutPage>{
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => TerminosPage(),
+                                builder: (context) => TextPage(),
                               ),
                             );
                           }
