@@ -53,9 +53,9 @@ android {
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        // Para deploy 2
-        versionCode 2
-        versionName "1.1.1"
+        // Para deploy
+        versionCode 3
+        versionName "1.1.2"
 
         multiDexEnabled true
     }

@@ -12,7 +12,7 @@ import 'package:flutter/services.dart' show rootBundle;
 
 class App {
   // App info
-  static String version = '1.1.2+1';
+  static String version = '1.1.2+0';
   static bool beta = false;
   static String versionFlutter = '1.17.5';
 
