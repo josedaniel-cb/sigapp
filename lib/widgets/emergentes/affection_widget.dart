@@ -44,7 +44,7 @@ class _AffectionWidget extends State<AffectionWidget> {
                               'es solo un puente hacia la web del SIGA, se '
                               'basa totalmente en lo que disponga ',
                           style: TextStyle(color: Colors.black)),
-                      _buildLinkText('http://academico.unp.edu.pe/',
+                      _buildLinkText('https://academico.unp.edu.pe/',
                           () => _launchURL(Urls.INICIO_SESION)),
                       TextSpan(
                           text:

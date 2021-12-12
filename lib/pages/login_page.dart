@@ -1,5 +1,5 @@
 import 'package:SIGApp/pages/text_page.dart';
-import 'package:SIGApp/widgets/emergentes/AFFECTION_widget.dart';
+import 'package:SIGApp/widgets/emergentes/affection_widget.dart';
 import 'package:SIGApp/widgets/emergentes/terminos_widget.dart';
 import 'package:SIGApp/widgets/sigapp_info/sigapp_logotipo_widget.dart';
 import 'package:flutter/gestures.dart';
