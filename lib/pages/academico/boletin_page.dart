@@ -185,15 +185,17 @@ class BoletinPageState extends State<BoletinPage>{
   }
 
   Widget _buildBoton({@required String text, @required Function onPressed}){
-    return RaisedButton(
+    return ElevatedButton(
       onPressed: onPressed,
-      textColor: Colors.white,
-      color: Colors.blueAccent,
-      child: Text(text),
-      elevation: 5.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(App.bordeRadio),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blueAccent,
+        foregroundColor: Colors.white,
+        elevation: 5.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(App.bordeRadio),
+        ),
       ),
+      child: Text(text),
     );
   }
 
@@ -258,7 +260,7 @@ class BoletinPageState extends State<BoletinPage>{
           Container(
             // color: Colors.green,
             margin: EdgeInsets.only(right: 8),
-            child: FlatButton(
+            child: TextButton(
               child: Text(
                 "Comprendido",
                 style: TextStyle(

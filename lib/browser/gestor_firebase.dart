@@ -72,7 +72,7 @@ class GestorFirebase {
   final String coleccionSesionesID = 'sesiones';
   final String coleccionUsosID = 'usos';
   
-  Firestore refDatabase;
+  FirebaseFirestore refDatabase;
   DocumentReference refUsuario;
   DocumentReference refSesion;
 
@@ -80,19 +80,19 @@ class GestorFirebase {
   String sesionID;  
 
   GestorFirebase(){
-    refDatabase = Firestore.instance;
+    refDatabase = FirebaseFirestore.instance;
   }
 
   Future registrarInicioSesion(String codigoUniversitario){
     _print('Registrando sesión de usuario $codigoUniversitario');
-    refUsuario = refDatabase.collection(coleccionUsuariosID).document(codigoUniversitario);    
-    refSesion = refUsuario.collection(coleccionSesionesID).document();  
-
-    return refSesion.setData({'fecha': Timestamp.now()})
+    refUsuario = refDatabase.collection(coleccionUsuariosID).doc(codigoUniversitario);    
+    refSesion = refUsuario.collection(coleccionSesionesID).doc();  
+  
+    return refSesion.set({'fecha': Timestamp.now()})
       .then((value) async {
-        _print('Sesión registrada con éxito. ID: \'${refSesion.documentID}\' ✅');
+        _print('Sesión registrada con éxito. ID: \'${refSesion.id}\' ✅');
         usuarioID = codigoUniversitario;
-        sesionID = refSesion.documentID;
+        sesionID = refSesion.id;
       })
       .catchError((Object error){
         _print('Sesión registrada sin éxito: $error ❌');
@@ -117,15 +117,15 @@ class GestorFirebase {
     _print('Registrar uso ${casoDeUso.toString()}');
     var huella = Timestamp.now();
     // var batch = refDatabase.batch();
-    var refNuevoUso = refSesion.collection(coleccionUsosID).document();
-    // _print('ID de uso: \'${refNuevoUso.documentID}\'');
-    // batch.setData(refNuevoUso, {'uso': _getCodigoCasoDeUso(casoDeUso)});
-    refNuevoUso.setData({
+    var refNuevoUso = refSesion.collection(coleccionUsosID).doc();
+    // _print('ID de uso: \'${refNuevoUso.id}\'');
+    // batch.set(refNuevoUso, {'uso': _getCodigoCasoDeUso(casoDeUso)});
+    refNuevoUso.set({
       'uso': _getCodigoCasoDeUso(casoDeUso),
       'huella': huella,
     })
     .then((value){
-      _print('Uso registrado con éxito. ID: \'${refNuevoUso.documentID}\' ✅');
+      _print('Uso registrado con éxito. ID: \'${refNuevoUso.id}\' ✅');
     })  
     .catchError((Object error){
       _print('Uso registrada sin éxito: $error ❌');
@@ -135,7 +135,7 @@ class GestorFirebase {
   Future<String> _obtenerArchivoTexto(String path) async {
     // Obtener dirección de descarga 
     _print('Estableciendo referencia a $path');
-    StorageReference refArchivo = FirebaseStorage.instance.ref().child(path);
+    Reference refArchivo = FirebaseStorage.instance.ref(path);
     String direccionDescarga = await refArchivo.getDownloadURL();   
     // _print('DownloadURL: $direccionDescarga'); 
 

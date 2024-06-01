@@ -5,10 +5,11 @@ import 'package:SIGApp/browser/gestor_firebase.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:SIGApp/browser/browser_controller.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart' show Uint8List, rootBundle;
 
 class App {
   // App info
@@ -57,9 +58,13 @@ class App {
 
   static Future compartirCaptura(ScreenshotController screenshotController,
       String fileName, String descripcion) async {
-    screenshotController.capture().then((File image) async {
+    screenshotController.capture().then((Uint8List imageBytes) async {
+      final tempDir = await getTemporaryDirectory();
+      final file = await File('${tempDir.path}/$fileName.png').create();
+      await file.writeAsBytes(imageBytes);
+
       await Share.file(
-          'Compartir', '$fileName.png', image.readAsBytesSync(), 'image/png',
+          'Compartir', '$fileName.png', file.readAsBytesSync(), 'image/png',
           text: descripcion);
     }).catchError((onError) {
       print(onError);

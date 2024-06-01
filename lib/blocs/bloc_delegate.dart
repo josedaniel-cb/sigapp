@@ -14,7 +14,7 @@ class SigappBlocObserver extends BlocObserver {
   }
 
   @override
-  void onError(Bloc bloc, Object error, StackTrace stacktrace) {
+  void onError(BlocBase<dynamic> bloc, Object error, StackTrace stacktrace) {
     super.onError(bloc, error, stacktrace);
     _print(error);
   }
