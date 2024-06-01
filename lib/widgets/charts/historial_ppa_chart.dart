@@ -86,28 +86,82 @@ class HistorialPPAChart extends StatelessWidget {
           );
         },
       ),
+      // titlesData: FlTitlesData(
+      //   // show: true,
+      //   bottomTitles: SideTitles(
+      //     showTitles: true,
+      //     reservedSize: 20,
+      //     textStyle: TextStyle(
+      //         color: const Color(0xffCADEE8),
+      //         fontWeight: FontWeight.bold,
+      //         fontSize: 14),
+      //     getTitles: (values) => xAxisGetLabels(values),
+      //     margin: 10,
+      //   ),
+      //   leftTitles: SideTitles(
+      //     showTitles: true,
+      //     textStyle: TextStyle(
+      //       color: const Color(0xffCADEE8),
+      //       fontWeight: FontWeight.bold,
+      //       fontSize: 12,
+      //     ),
+      //     getTitles: (values) => yAxisGetLabels(values),
+      //     reservedSize: 28,
+      //     margin: 12,
+      //   ),
+      // ),
       titlesData: FlTitlesData(
         // show: true,
-        bottomTitles: SideTitles(
-          showTitles: true,
-          reservedSize: 20,
-          textStyle: TextStyle(
-              color: const Color(0xffCADEE8),
-              fontWeight: FontWeight.bold,
-              fontSize: 14),
-          getTitles: (values) => xAxisGetLabels(values),
-          margin: 10,
-        ),
-        leftTitles: SideTitles(
-          showTitles: true,
-          textStyle: TextStyle(
-            color: const Color(0xffCADEE8),
-            fontWeight: FontWeight.bold,
-            fontSize: 12,
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 20,
+            // textStyle: TextStyle(
+            //     color: const Color(0xffCADEE8),
+            //     fontWeight: FontWeight.bold,
+            //     fontSize: 14),
+            // getTitles: (values) => xAxisGetLabels(values),
+            // margin: 10,
+            getTitlesWidget: (value, meta) => Container(
+              margin: EdgeInsets.only(top: 10),
+              child: Text(
+                xAxisGetLabels(value),
+                style: TextStyle(
+                  color: const Color(0xffCADEE8),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+            ),
           ),
-          getTitles: (values) => yAxisGetLabels(values),
-          reservedSize: 28,
-          margin: 12,
+        ),
+        // leftTitles: AxisTitles(
+        //   showTitles: true,
+        //   textStyle: TextStyle(
+        //     color: const Color(0xffCADEE8),
+        //     fontWeight: FontWeight.bold,
+        //     fontSize: 12,
+        //   ),
+        //   getTitles: (values) => yAxisGetLabels(values),
+        //   reservedSize: 28,
+        //   margin: 12,
+        // ),
+        leftTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 28,
+            getTitlesWidget: (value, meta) => Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Text(
+                yAxisGetLabels(value),
+                style: TextStyle(
+                  color: const Color(0xffCADEE8),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),  
+            ),
+          ),
         ),
       ),
       // borderData: FlBorderData(
@@ -124,8 +178,11 @@ class HistorialPPAChart extends StatelessWidget {
       lineBarsData: [
         LineChartBarData(
           spots: _getSpots(),
-          // isCurved: true,
-          colors: gradientColors,
+          // colors: gradientColors,
+          gradient: LinearGradient(
+            colors: gradientColors,
+            stops: [0.0, 1.0],
+          ),
           barWidth: 5,
           isStrokeCapRound: true,
           dotData: FlDotData(
@@ -140,8 +197,12 @@ class HistorialPPAChart extends StatelessWidget {
           ),
           belowBarData: BarAreaData(
             show: true,
-            colors:
-                gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+            // colors:
+            //     gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+            gradient: LinearGradient(
+              colors: gradientColors.map((color) => color.withOpacity(0.3)).toList(),
+              stops: [0.0, 1.0],
+            ),
           ),
         ),
       ],

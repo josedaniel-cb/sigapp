@@ -66,7 +66,7 @@ class _TerminosWidget extends State<TerminosWidget> {
         actions: <Widget>[
           Container(
             margin: EdgeInsets.only(right: 15),
-            child: FlatButton(
+            child: TextButton(
               child: Text(
                 "Continuar",
               ),

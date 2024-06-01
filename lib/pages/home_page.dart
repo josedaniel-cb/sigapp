@@ -506,13 +506,15 @@ class HomePageState extends State<HomePage> {
         Expanded(
           child: Container(
             margin: EdgeInsets.only(top: 2),
-            child: RaisedButton(
-              padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: background,
+                padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
               ),
-              color: background,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -523,7 +525,6 @@ class HomePageState extends State<HomePage> {
                       children: <Widget>[
                         Expanded(
                           child: Container(
-                            // color: Colors.green,
                             margin: EdgeInsets.only(right: 8),
                             child: Icon(
                               icon,
@@ -540,8 +541,6 @@ class HomePageState extends State<HomePage> {
                       children: <Widget>[
                         Expanded(
                           child: Container(
-                            // color: Colors.red,
-                            // padding: EdgeInsets.symmetric(vertical: 7),
                             child: Text(
                               text,
                               style: TextStyle(

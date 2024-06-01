@@ -139,7 +139,7 @@ class AcercaDeWidget extends StatelessWidget{
             // right: 8,
             bottom: 10  
           ),
-          child: FlatButton(
+          child: TextButton(
             child: Text(
               "Entendido",
               style: TextStyle(
@@ -158,7 +158,7 @@ class AcercaDeWidget extends StatelessWidget{
             right: 15,
             bottom: 10  
           ),
-          child: RaisedButton(
+          child: ElevatedButton(
             child: Text(
               "Leer más",
               style: TextStyle(
@@ -167,8 +167,9 @@ class AcercaDeWidget extends StatelessWidget{
                 fontWeight: FontWeight.bold,
               ),
             ),
-            autofocus: true,
-            color: Colors.blue,
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.blue),
+            ),
             onPressed: (){
               Navigator.pop(context);
               Navigator.push(

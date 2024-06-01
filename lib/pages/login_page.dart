@@ -380,12 +380,14 @@ class LoginPageState extends State<LoginPage> {
         child: SizedBox(
           height: 40.0,
           width: 280.0,
-          child: RaisedButton(
-            elevation: 5.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: App.blueColor, // This replaces 'color' parameter
+              elevation: 5.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
             ),
-            color: App.blueColor,
             child: Text('Ingresar',
                 style: TextStyle(fontSize: 20.0, color: Colors.white)),
             onPressed: _solicitarIngreso,
@@ -395,7 +397,7 @@ class LoginPageState extends State<LoginPage> {
 
   Widget _buildHelpButton() {
     return Container(
-      child: FlatButton(
+      child: TextButton(
         child: Text('¿Ha olvidado su contraseña?',
             style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300)),
         onPressed: () => _launchURL(Urls.RESET_PASSWORD),

@@ -72,10 +72,12 @@ class _AffectionWidget extends State<AffectionWidget> {
       actions: <Widget>[
         Container(
           margin: EdgeInsets.only(right: 15, bottom: 6),
-          child: RaisedButton(
+          child: ElevatedButton(
             child: Text('Entiendo'),
             autofocus: true,
-            color: Colors.blue,
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.blue),
+            ),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),

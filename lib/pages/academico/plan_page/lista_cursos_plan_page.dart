@@ -56,14 +56,20 @@ class ListaCursosPlanPageState extends State<ListaCursosPlanPage>{
   }
 
   Widget _buildBoton({@required String text, @required Function onPressed}){
-    return RaisedButton(
+    return ElevatedButton(
       onPressed: onPressed,
-      textColor: Colors.white,
-      color: Colors.blueAccent,
-      child: Text(text),
-      elevation: 5.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(App.bordeRadio),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all<Color>(Colors.blueAccent),
+        elevation: MaterialStateProperty.all<double>(5.0),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(App.bordeRadio),
+          ),
+        ),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(color: Colors.white),
       ),
     );
   }

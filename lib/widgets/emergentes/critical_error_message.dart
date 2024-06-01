@@ -40,7 +40,7 @@ class CriticalErrorMessage extends StatelessWidget{
         actions: <Widget>[
           Container(
             margin: EdgeInsets.only(right: 15),
-            child: FlatButton(
+            child: TextButton(
               child: Text(
                 "Dar un vistazo",
               ),
@@ -49,7 +49,7 @@ class CriticalErrorMessage extends StatelessWidget{
           ),
           Container(
             margin: EdgeInsets.only(right: 15),
-            child: FlatButton(
+            child: TextButton(
               child: Text(
                 "Entendido :/",
               ),
