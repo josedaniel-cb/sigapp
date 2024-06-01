@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:SIGApp/app/urls.dart';
 import 'package:SIGApp/browser/gestor_firebase.dart';
 import 'package:bot_toast/bot_toast.dart';
-import 'package:esys_flutter_share/esys_flutter_share.dart';
+import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
 import 'package:flutter/material.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:screenshot/screenshot.dart';

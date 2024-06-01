@@ -1,6 +1,5 @@
 import 'package:SIGApp/widgets/sigapp_info/sigapp_logotipo_widget.dart';
 import 'package:animate_do/animate_do.dart';
-import 'package:diagonal_scrollview/diagonal_scrollview.dart';
 import 'package:flutter/material.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:SIGApp/app/app.dart';
@@ -27,7 +26,7 @@ class HorarioWidget extends StatelessWidget{
 
   Widget _buildHorario(){
     double altura, ancho, alturaAdicionalTexto;
-
+  
     alturaAdicionalTexto = 33;
     altura = 
       (HorarioWidgetConsts.cursoHeight + HorarioWidgetConsts.margen*2)*(horarioModel.filas.length) + //longitud altura de casilleros normales
@@ -38,39 +37,42 @@ class HorarioWidget extends StatelessWidget{
       (HorarioWidgetConsts.cursoWidth + HorarioWidgetConsts.margen*2)*(horarioModel.filas[0].cursos.length) + //longitud ancho de cursos
       (HorarioWidgetConsts.horasWidth + HorarioWidgetConsts.margen*2) + //longitud ancho de casilleros hora
       HorarioWidgetConsts.margen*2; //margen horizontal
-
-    return DiagonalScrollView(
-      enableFling: true,
-      enableZoom: true,
-      maxHeight: altura,
-      maxWidth: ancho,
-      child: Screenshot(
-        controller: _screenshotController,
-        child: Container(
-          color: Colors.white,
-          height: altura,
-          width: ancho,
-          padding: EdgeInsets.all(HorarioWidgetConsts.margen),
-          child: Column(
-            children: <Widget>[
-              _buildTitulosSuperiores(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(horarioModel.filas.length, (int i) {
-                  return Row(
-                    children: List.generate(horarioModel.filas[i].cursos.length, (int j) {
-                      return CursoHorarioWidget(horarioModel.filas[i].cursos[j]);
-                    })..insert(0, _buildCasilleroTitulo(
-                      text: "${horarioModel.filas[i].inicio.toString()}\n▫\n${horarioModel.filas[i].fin.toString()}",
-                      height: HorarioWidgetConsts.cursoHeight,
-                      width: HorarioWidgetConsts.horasWidth,
-                      color: Colors.grey,
-                    ),),
-                  );
-                },),
-              ),
-              _buildInfo(alturaAdicionalTexto),
-            ],
+  
+    return InteractiveViewer(
+      boundaryMargin: EdgeInsets.all(20.0),
+      minScale: 0.1,
+      maxScale: 1.6,
+      child: Container(
+        height: altura,
+        width: ancho,
+        child: Screenshot(
+          controller: _screenshotController,
+          child: Container(
+            color: Colors.white,
+            height: altura,
+            width: ancho,
+            padding: EdgeInsets.all(HorarioWidgetConsts.margen),
+            child: Column(
+              children: <Widget>[
+                _buildTitulosSuperiores(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: List.generate(horarioModel.filas.length, (int i) {
+                    return Row(
+                      children: List.generate(horarioModel.filas[i].cursos.length, (int j) {
+                        return CursoHorarioWidget(horarioModel.filas[i].cursos[j]);
+                      })..insert(0, _buildCasilleroTitulo(
+                        text: "${horarioModel.filas[i].inicio.toString()}\n▫\n${horarioModel.filas[i].fin.toString()}",
+                        height: HorarioWidgetConsts.cursoHeight,
+                        width: HorarioWidgetConsts.horasWidth,
+                        color: Colors.grey,
+                      ),),
+                    );
+                  },),
+                ),
+                _buildInfo(alturaAdicionalTexto),
+              ],
+            ),
           ),
         ),
       ),

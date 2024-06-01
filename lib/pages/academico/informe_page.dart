@@ -4,7 +4,7 @@ import 'package:SIGApp/app/urls.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_circular_chart/flutter_circular_chart.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:SIGApp/app/app.dart';
 import 'package:SIGApp/blocs/informe_bloc/bloc.dart';
 import 'package:SIGApp/models/informe_model.dart';
@@ -418,48 +418,36 @@ class InformePageState extends State<InformePage>{
     );
   }
 
-  Widget _buildChart(){
-    final GlobalKey<AnimatedCircularChartState> _chartKey = new GlobalKey<AnimatedCircularChartState>();
-    double longitud = (MediaQuery.of(context).size.width - _margen*2) / 2;
-
+  Widget _buildChart() {
+    double longitud = (MediaQuery.of(context).size.width - _margen * 2) / 2;
+  
     return Container(
       margin: EdgeInsets.only(top: _margen),
-      // color: Colors.green,
-      child: AnimatedCircularChart(
-        key: _chartKey,
-        // size: Size(180, 180),
-        size: Size(longitud, longitud),
-        initialChartData: <CircularStackEntry>[
-          CircularStackEntry(
-            <CircularSegmentEntry>[
-              CircularSegmentEntry(
-                _credObligPorcentaje,
-                Colors.blueAccent,
-                rankKey: 'credObligatorios',
+      child: SizedBox(
+        width: longitud,
+        height: longitud,
+        child: PieChart(
+          PieChartData(
+            sectionsSpace: 0,
+            centerSpaceRadius: longitud / 2,
+            sections: [
+              PieChartSectionData(
+                color: Colors.blueAccent,
+                value: _credObligPorcentaje,
+                title: '${(_credObligPorcentaje).toStringAsFixed(1)}%',
               ),
-              CircularSegmentEntry(
-                _credElectPorcentaje,
-                Colors.cyan,
-                rankKey: 'credElectivos',
+              PieChartSectionData(
+                color: Colors.cyan,
+                value: _credElectPorcentaje,
+                title: '${(_credElectPorcentaje).toStringAsFixed(1)}%',
               ),
-              CircularSegmentEntry(
-                _restantePorcentaje,
-                Color(0x1A000000),
-                rankKey: 'credRestantes',
+              PieChartSectionData(
+                color: Color(0x1A000000),
+                value: _restantePorcentaje,
+                title: '${(_restantePorcentaje).toStringAsFixed(1)}%',
               ),
             ],
-            rankKey: "progress",
           ),
-        ],
-        // chartType: CircularChartType.Radial,
-        chartType: CircularChartType.Radial,
-        percentageValues: true,
-        // holeLabel: "${progreso.toStringAsFixed(2)}%",
-        holeLabel: "${_credTotalPorcentaje.toStringAsFixed(1)}%",
-        labelStyle: TextStyle(
-          color: Colors.blueGrey[600],
-          fontWeight: FontWeight.bold,
-          fontSize: 25,
         ),
       ),
     );
