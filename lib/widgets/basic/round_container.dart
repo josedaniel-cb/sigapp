@@ -8,7 +8,7 @@ class RoundContainer extends StatelessWidget{
   final Color color;
 
   RoundContainer({
-    @required this.child, 
+    required this.child, 
     this.padding = const EdgeInsets.all(0),
     this.margin = const EdgeInsets.all(0),
     this.color = Colors.white,

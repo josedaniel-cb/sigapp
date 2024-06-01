@@ -2,27 +2,27 @@ import 'package:SIGApp/models/curso_model/curso_model.dart';
 
 class PlanModel{
   String etiqueta;
-  List<CicloPlanModel> ciclos;
+  late List<CicloPlanModel?> ciclos;
 
   PlanModel(this.etiqueta){
-    ciclos = List<CicloPlanModel>();
+    ciclos = [];
   }
 }
 
 class CicloPlanModel{
   String etiqueta;
-  List<CursoPlanModel> cursos;
+  List<CursoPlanModel>? cursos;
 
   CicloPlanModel(this.etiqueta){
-    cursos = List<CursoPlanModel>();
+    cursos = [];
   }
 }
 
 class CursoPlanModel extends CursoModel{
-  List<RequisitoCursoPlanModel> requisitos;
+  List<RequisitoCursoPlanModel>? requisitos;
 
-  CursoPlanModel(String curso, String codigo) : super(curso, codigo){
-    requisitos = List<RequisitoCursoPlanModel>();
+  CursoPlanModel(String curso, String? codigo) : super(curso, codigo){
+    requisitos = [];
   }
 
   String get requisitosData => caracteristicas[0].contenido;
@@ -32,8 +32,8 @@ class CursoPlanModel extends CursoModel{
 }
 
 class RequisitoCursoPlanModel{
-  final int cicloIndex;
-  final int cursoIndex;
+  final int? cicloIndex;
+  final int? cursoIndex;
 
   RequisitoCursoPlanModel(this.cicloIndex, this.cursoIndex);
 }

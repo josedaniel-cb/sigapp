@@ -10,12 +10,12 @@ class TerminosWidget extends StatefulWidget {
 }
 
 class _TerminosWidget extends State<TerminosWidget> {
-  bool terminosAceptados = false;
+  bool? terminosAceptados = false;
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => null,
+      onWillPop: (() => null) as Future<bool> Function()?,
       child: AlertDialog(
         // title: Text("T"),
         content: Container(
@@ -79,8 +79,8 @@ class _TerminosWidget extends State<TerminosWidget> {
   }
 
   void continuarPressed() {
-    if (terminosAceptados) {
-      App.browserController.preferencias.guardarPrimerUso(false);
+    if (terminosAceptados!) {
+      App.browserController.preferencias!.guardarPrimerUso(false);
       Navigator.pop(context);
     } else {
       exit(0);
@@ -96,7 +96,7 @@ class _TerminosWidget extends State<TerminosWidget> {
         // fontWeight: FontWeight.bold,
         decoration: TextDecoration.underline,
       ),
-      recognizer: TapGestureRecognizer()..onTap = onTap,
+      recognizer: TapGestureRecognizer()..onTap = onTap as void Function()?,
     );
   }
 }

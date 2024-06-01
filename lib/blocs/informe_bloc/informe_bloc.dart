@@ -4,7 +4,7 @@ import 'package:SIGApp/models/informe_model.dart';
 import './bloc.dart';
 
 class InformeBloc extends Bloc<InformeEvent, InformeState> {
-  InformeModel modelo;
+  late InformeModel modelo;
 
   // @override
   // InformeState get initialState => Loading();

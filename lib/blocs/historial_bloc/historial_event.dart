@@ -5,7 +5,7 @@ abstract class HistorialEvent extends Equatable {
   const HistorialEvent();
 
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
 class HistorialControllerReady extends HistorialEvent{

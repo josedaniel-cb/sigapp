@@ -6,7 +6,7 @@ import 'package:SIGApp/models/home_model.dart';
 import './bloc.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeModel homeModel;
+  late HomeModel homeModel;
 
   // HomeBloc(){
   //   homeModel = HomeModel('', '', '');

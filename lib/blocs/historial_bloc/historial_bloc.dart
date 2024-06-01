@@ -4,7 +4,7 @@ import 'package:SIGApp/models/historial_model.dart';
 import './bloc.dart';
 
 class HistorialBloc extends Bloc<HistorialEvent, HistorialState> {
-  HistorialModel modelo;
+  HistorialModel? modelo;
 
   // @override
   // HistorialState get initialState => Loading();

@@ -6,9 +6,9 @@ class LoadingMaskWidget extends StatelessWidget{
   final double ancho;
 
   LoadingMaskWidget({
-    @required this.mensaje, 
-    @required this.alto, 
-    @required this.ancho
+    required this.mensaje, 
+    required this.alto, 
+    required this.ancho
   });
 
   @override

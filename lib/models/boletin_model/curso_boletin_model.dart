@@ -1,7 +1,7 @@
 import 'package:SIGApp/models/curso_model/curso_model.dart';
 
 class CursoBoletinModel extends CursoModel{
-  String silaboUrl;
+  late String silaboUrl;
   // String notasUrl;
 
   CursoBoletinModel(String curso, String codigo) : super(curso, codigo);

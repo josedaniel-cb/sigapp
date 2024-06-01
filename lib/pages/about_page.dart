@@ -20,9 +20,9 @@ class AboutPage extends StatefulWidget{
 }
 
 class AboutPageState extends State<AboutPage>{
-  static String notaDelAutorCache;
+  static String? notaDelAutorCache;
   final double fontSize = 14;
-  String notaDeAutor;
+  String? notaDeAutor;
 
   @override
   void initState(){
@@ -282,11 +282,11 @@ class AboutPageState extends State<AboutPage>{
         decoration: TextDecoration.underline,
       ),
       recognizer: TapGestureRecognizer()
-        ..onTap = onTap,
+        ..onTap = onTap as void Function()?,
     );
   }
 
-  TextSpan _buildDefaultText(String text, {Color color, double size, bool bold = false}){
+  TextSpan _buildDefaultText(String text, {Color? color, double? size, bool bold = false}){
     return TextSpan(
       text: text,      
       style: TextStyle(

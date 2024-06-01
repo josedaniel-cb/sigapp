@@ -68,13 +68,13 @@ class CursoHorarioWidget extends StatelessWidget{
   }
 
   Widget _buildCurso({
-    @required EdgeInsetsGeometry margin,
-    @required BorderRadiusGeometry borderRadius,
-    @required double width,
-    @required double height,
-    @required CursoHorario curso,
-    @required int maxLinesCurso,
-    @required int maxLinesAula,
+    required EdgeInsetsGeometry margin,
+    required BorderRadiusGeometry borderRadius,
+    required double width,
+    required double height,
+    required CursoHorario? curso,
+    required int maxLinesCurso,
+    required int maxLinesAula,
   }){
     double fs = 14;
     return Container(

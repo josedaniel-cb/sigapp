@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:SIGApp/models/historial_model.dart';
 
 class HistorialPPAChart extends StatelessWidget {
-  final HistorialModel model;
-  final TipoPonderado criterio;
+  final HistorialModel? model;
+  final TipoPonderado? criterio;
 
   // final List<Color> gradientColors = [
   //   const Color(0xff23b6e6),
@@ -172,7 +172,7 @@ class HistorialPPAChart extends StatelessWidget {
       //   )
       // ),
       minX: 1,
-      maxX: model.ciclosRegulares.length.toDouble(),
+      maxX: model!.ciclosRegulares.length.toDouble(),
       minY: 10,
       maxY: 20,
       lineBarsData: [
@@ -314,24 +314,24 @@ class HistorialPPAChart extends StatelessWidget {
   }
 
   List<FlSpot> _getSpots() {
-    List<FlSpot> puntos = List<FlSpot>();
+    List<FlSpot> puntos = [];
     double contador = 1;
-    double pp;
+    late double pp;
 
-    for (int i = 0; i < model.ciclos.length; i++) {
-      if (model.ciclos[i].matrizInformacion != null) {
+    for (int i = 0; i < model!.ciclos.length; i++) {
+      if (model!.ciclos[i].matrizInformacion != null) {
         switch (criterio) {
           case TipoPonderado.PPSemestral:
-            pp = model.ciclos[i].pps;
+            pp = model!.ciclos[i].pps;
             break;
           case TipoPonderado.PPSemestralAprobado:
-            pp = model.ciclos[i].ppsAprob;
+            pp = model!.ciclos[i].ppsAprob;
             break;
           case TipoPonderado.PPAcumulado:
-            pp = model.ciclos[i].ppa;
+            pp = model!.ciclos[i].ppa;
             break;
           case TipoPonderado.PPAcumuladoAprobado:
-            pp = model.ciclos[i].ppaAprob;
+            pp = model!.ciclos[i].ppaAprob;
             break;
         }
         puntos.add(FlSpot(contador, pp));

@@ -16,7 +16,7 @@ class InformePage extends StatefulWidget{
 }
 
 class InformePageState extends State<InformePage>{
-  InformeBloc _informeBloc;
+  InformeBloc? _informeBloc;
 
   static const double _fontSize = 15;
 
@@ -51,7 +51,7 @@ class InformePageState extends State<InformePage>{
 
   final double _margen = 10;
   
-  double _credObligPorcentaje, _credElectPorcentaje, _restantePorcentaje, _credTotalPorcentaje;
+  double? _credObligPorcentaje, _credElectPorcentaje, _restantePorcentaje, _credTotalPorcentaje;
 
   @override
   void initState() {
@@ -63,7 +63,7 @@ class InformePageState extends State<InformePage>{
 
   @override
   void dispose() {
-    _informeBloc.close();
+    _informeBloc!.close();
     App.browserController.solicitudActiva = false;
     super.dispose();
   }
@@ -91,17 +91,17 @@ class InformePageState extends State<InformePage>{
             // _informeBloc.modelo.fechaActualizacionInforme = 'Informe actualizado hasta el semestre 2019-2';
             // Fin DEMO
 
-            double nroCreditosTotales = double.parse(_informeBloc.modelo.requisitos[2][0]);
-            _credObligPorcentaje = double.parse(_informeBloc.modelo.requisitos[0][1]) / nroCreditosTotales * 100;            
-            _credElectPorcentaje = double.parse(_informeBloc.modelo.requisitos[1][1]) / nroCreditosTotales * 100;            
-            _credTotalPorcentaje = double.parse(_informeBloc.modelo.requisitos[2][1]) / nroCreditosTotales * 100;
+            double nroCreditosTotales = double.parse(_informeBloc!.modelo.requisitos[2][0]);
+            _credObligPorcentaje = double.parse(_informeBloc!.modelo.requisitos[0][1]) / nroCreditosTotales * 100;            
+            _credElectPorcentaje = double.parse(_informeBloc!.modelo.requisitos[1][1]) / nroCreditosTotales * 100;            
+            _credTotalPorcentaje = double.parse(_informeBloc!.modelo.requisitos[2][1]) / nroCreditosTotales * 100;
             // _credObligPorcentaje = 170 / nroCreditosTotales * 100;
             // _credElectPorcentaje = 10 / nroCreditosTotales * 100;
             // _credTotalPorcentaje = 180 / nroCreditosTotales * 100;            
 
-            _restantePorcentaje = 100 - (_credObligPorcentaje + _credElectPorcentaje);
+            _restantePorcentaje = 100 - (_credObligPorcentaje! + _credElectPorcentaje!);
             // return _buildBody();
-            if(_informeBloc.modelo.fechaActualizacionInforme.endsWith('-') || _restantePorcentaje == 100){
+            if(_informeBloc!.modelo.fechaActualizacionInforme.endsWith('-') || _restantePorcentaje == 100){
               int duracionToastSeg = 2; 
               App.showToast('La web del Siga no dispone de tus datos en este momento', duracionSegundos: duracionToastSeg);
               Timer(Duration(milliseconds: duracionToastSeg*1000 + 500, ), (){
@@ -140,7 +140,7 @@ class InformePageState extends State<InformePage>{
   }
 
   Widget _buildAlumno() {
-    List<String> codigoNombres = _informeBloc.modelo.alumno.split('-');
+    List<String> codigoNombres = _informeBloc!.modelo.alumno.split('-');
     String codigo = codigoNombres[0].trim();
     String nombresApellidos = codigoNombres[1].trim();
 
@@ -177,7 +177,7 @@ class InformePageState extends State<InformePage>{
                     style: _normalTextSpanStyle,
                   ),
                   TextSpan(
-                    text: _informeBloc.modelo.facultad,
+                    text: _informeBloc!.modelo.facultad,
                     style: _negritaTextSpanStyle,
                   ),
                   TextSpan(
@@ -221,7 +221,7 @@ class InformePageState extends State<InformePage>{
                 //color: Colors.greenAccent,
                 margin: EdgeInsets.only(bottom: _margen),
                 child: Text(
-                  _informeBloc.modelo.contenidoAt(i),
+                  _informeBloc!.modelo.contenidoAt(i),
                   style: _negritaStyle,
                   textAlign: TextAlign.left,
                   maxLines: 1,
@@ -236,7 +236,7 @@ class InformePageState extends State<InformePage>{
   }
 
   Widget _descripcionItemInfo(int i) {
-    String text1, text2, text3;
+    String? text1, text2, text3;
     switch (i) {
       case 0:
         text1 = "";
@@ -319,21 +319,21 @@ class InformePageState extends State<InformePage>{
           _buildItemRequisitos(
             // "Número de créditos obligatorios:",
             "Créditos obligatorios",
-            _informeBloc.modelo.requisitos[0][0],
-            _informeBloc.modelo.requisitos[0][1],
-            _informeBloc.modelo.requisitos[0][2],
+            _informeBloc!.modelo.requisitos[0][0],
+            _informeBloc!.modelo.requisitos[0][1],
+            _informeBloc!.modelo.requisitos[0][2],
           ),
           _buildItemRequisitos(
             "Créditos electivos",
-            _informeBloc.modelo.requisitos[1][0],
-            _informeBloc.modelo.requisitos[1][1],
-            _informeBloc.modelo.requisitos[1][2],
+            _informeBloc!.modelo.requisitos[1][0],
+            _informeBloc!.modelo.requisitos[1][1],
+            _informeBloc!.modelo.requisitos[1][2],
           ),
           _buildItemRequisitos(
             "Total",
-            _informeBloc.modelo.requisitos[2][0],
-            _informeBloc.modelo.requisitos[2][1],
-            _informeBloc.modelo.requisitos[2][2],
+            _informeBloc!.modelo.requisitos[2][0],
+            _informeBloc!.modelo.requisitos[2][1],
+            _informeBloc!.modelo.requisitos[2][2],
           ),
         ],
       ),
@@ -402,9 +402,9 @@ class InformePageState extends State<InformePage>{
             // color: Colors.green,
             margin: EdgeInsets.only(top: 10),
             child: Text(              
-              _informeBloc.modelo.fechaActualizacionInforme.endsWith('-') ?
-                _informeBloc.modelo.fechaActualizacionInforme + ' ¿?' :
-                _informeBloc.modelo.fechaActualizacionInforme,
+              _informeBloc!.modelo.fechaActualizacionInforme.endsWith('-') ?
+                _informeBloc!.modelo.fechaActualizacionInforme + ' ¿?' :
+                _informeBloc!.modelo.fechaActualizacionInforme,
               // style: _normalStyle,
               style: TextStyle(
                 color: Colors.grey,
@@ -434,17 +434,17 @@ class InformePageState extends State<InformePage>{
               PieChartSectionData(
                 color: Colors.blueAccent,
                 value: _credObligPorcentaje,
-                title: '${(_credObligPorcentaje).toStringAsFixed(1)}%',
+                title: '${_credObligPorcentaje!.toStringAsFixed(1)}%',
               ),
               PieChartSectionData(
                 color: Colors.cyan,
                 value: _credElectPorcentaje,
-                title: '${(_credElectPorcentaje).toStringAsFixed(1)}%',
+                title: '${_credElectPorcentaje!.toStringAsFixed(1)}%',
               ),
               PieChartSectionData(
                 color: Color(0x1A000000),
                 value: _restantePorcentaje,
-                title: '${(_restantePorcentaje).toStringAsFixed(1)}%',
+                title: '${_restantePorcentaje!.toStringAsFixed(1)}%',
               ),
             ],
           ),
@@ -460,9 +460,9 @@ class InformePageState extends State<InformePage>{
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          _buildLeyendaItem(Colors.blueAccent, "Obligatorios\t${_credObligPorcentaje.toStringAsFixed(2)}%"),
-          _buildLeyendaItem(Colors.cyan, "Electivos\t${_credElectPorcentaje.toStringAsFixed(2)}%"),
-          _buildLeyendaItem(Color(0x1A000000), "Restante\t${_restantePorcentaje.toStringAsFixed(2)}%"),
+          _buildLeyendaItem(Colors.blueAccent, "Obligatorios\t${_credObligPorcentaje!.toStringAsFixed(2)}%"),
+          _buildLeyendaItem(Colors.cyan, "Electivos\t${_credElectPorcentaje!.toStringAsFixed(2)}%"),
+          _buildLeyendaItem(Color(0x1A000000), "Restante\t${_restantePorcentaje!.toStringAsFixed(2)}%"),
         ],
       ),
     );

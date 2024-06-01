@@ -13,7 +13,7 @@ class CriticalErrorMessage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () => null,
+      onWillPop: (() => null) as Future<bool> Function()?,
       child: AlertDialog(
         title: Text("Ocurrió un problema"),
         content: Container(

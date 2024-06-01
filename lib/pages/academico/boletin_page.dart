@@ -18,8 +18,8 @@ class BoletinPage extends StatefulWidget{
 }
   
 class BoletinPageState extends State<BoletinPage>{
-  BoletinBloc _bloc;
-  bool _busyForPop;
+  BoletinBloc? _bloc;
+  late bool _busyForPop;
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class BoletinPageState extends State<BoletinPage>{
 
   @override
   void dispose() {
-    _bloc.close();
+    _bloc!.close();
     App.browserController.solicitudActiva = false;
     // App.browserController.currentPage = Page.Home;
     App.browserController.currentPage = MyPages.Home;
@@ -84,7 +84,7 @@ class BoletinPageState extends State<BoletinPage>{
       child: Scaffold(        
         appBar: AppBar(
           automaticallyImplyLeading: !withMask,
-          title: Text(withMask ? 'Accediendo...' : 'Boletín ${_bloc.semestres[_bloc.selectedSemestreIndex]}'),
+          title: Text(withMask ? 'Accediendo...' : 'Boletín ${_bloc!.semestres[_bloc!.selectedSemestreIndex!]}'),
           actions: withMask ?
             <Widget>[]
             :
@@ -115,10 +115,10 @@ class BoletinPageState extends State<BoletinPage>{
       leyenda: _buildCabecera(),
       nadaQueMostrarMensaje: 'Puede que no tengas cursos inscritos en este semestre'
         'Puedes comprobarlo visitando ${Urls.LOGIN}',
-      cursos: List.generate(_bloc.modelo.cursos.length, (int i){
+      cursos: List.generate(_bloc!.modelo.cursos.length, (int i){
         return CursoWidget(
           index: i + 1,
-          cursoModel: _bloc.modelo.cursos[i],
+          cursoModel: _bloc!.modelo.cursos[i],
           botones: <Widget>[
             _buildBoton(
               text: 'Notas',
@@ -137,10 +137,10 @@ class BoletinPageState extends State<BoletinPage>{
   Widget _buildCabecera(){
     int totalCreditos, totalCursos;
 
-    totalCursos = _bloc.modelo.cursos.length;
+    totalCursos = _bloc!.modelo.cursos.length;
     totalCreditos = 0;
-    for(int i = 0; i < _bloc.modelo.cursos.length; i++){
-      totalCreditos += int.parse(_bloc.modelo.cursos[i].creditos);
+    for(int i = 0; i < _bloc!.modelo.cursos.length; i++){
+      totalCreditos += int.parse(_bloc!.modelo.cursos[i].creditos);
     }
 
     return Container(
@@ -171,22 +171,22 @@ class BoletinPageState extends State<BoletinPage>{
       icon: Icon(Icons.arrow_drop_down),
       onSelected: (selectedIndex){
         App.browserController.gestorFirebase.registrarUso(CasosDeUso.BoletinSeleccionarSemestre);
-        _bloc.add(BoletinUserChange(selectedIndex));
+        _bloc!.add(BoletinUserChange(selectedIndex));
       },
       itemBuilder: (BuildContext context){
-        return List.generate(_bloc.semestres.length, (int i){
+        return List.generate(_bloc!.semestres.length, (int i){
           return PopupMenuItem<int>(
             value: i,
-            child: Text(_bloc.semestres[i]),
+            child: Text(_bloc!.semestres[i]),
           );
         });
       },
     );
   }
 
-  Widget _buildBoton({@required String text, @required Function onPressed}){
+  Widget _buildBoton({required String text, required Function onPressed}){
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: onPressed as void Function()?,
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.blueAccent,
         foregroundColor: Colors.white,
@@ -201,19 +201,19 @@ class BoletinPageState extends State<BoletinPage>{
 
   void _tapNotas(int cursoIndex){
     App.browserController.gestorFirebase.registrarUso(CasosDeUso.BoletinNotas);
-    _bloc.add(BoletinUserRequestNotas(cursoIndex));
+    _bloc!.add(BoletinUserRequestNotas(cursoIndex));
   }
 
   void _tapSilabo(int index){  
     App.browserController.gestorFirebase.registrarUso(CasosDeUso.BoletinSilabo);
-    _launchURL(_bloc.modelo.cursos[index].silaboUrl);
+    _launchURL(_bloc!.modelo.cursos[index].silaboUrl);
   }
 
   void _lanzarNotasPage(){
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => NotasPage(_bloc.notasModel)
+        builder: (context) => NotasPage(_bloc!.notasModel)
       ),
     );
   }

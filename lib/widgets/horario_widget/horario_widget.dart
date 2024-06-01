@@ -9,7 +9,7 @@ import '../nada_que_mostrar_widget.dart';
 import 'curso_horario_widget.dart';
 
 class HorarioWidget extends StatelessWidget{
-  final HorarioModel horarioModel;
+  final HorarioModel? horarioModel;
   final String semestre;
   final ScreenshotController _screenshotController;
 
@@ -17,7 +17,7 @@ class HorarioWidget extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return horarioModel.filas.length > 0 
+    return horarioModel!.filas.length > 0 
       ? 
       FadeInRight( child: _buildHorario()) 
       : 
@@ -29,12 +29,12 @@ class HorarioWidget extends StatelessWidget{
   
     alturaAdicionalTexto = 33;
     altura = 
-      (HorarioWidgetConsts.cursoHeight + HorarioWidgetConsts.margen*2)*(horarioModel.filas.length) + //longitud altura de casilleros normales
+      (HorarioWidgetConsts.cursoHeight + HorarioWidgetConsts.margen*2)*(horarioModel!.filas.length) + //longitud altura de casilleros normales
       (HorarioWidgetConsts.tituloHeight + HorarioWidgetConsts.margen*2) + //longitud altura de casilleros titulo
       alturaAdicionalTexto + // altura de titulo
       HorarioWidgetConsts.margen*2; //margen vertical
     ancho = 
-      (HorarioWidgetConsts.cursoWidth + HorarioWidgetConsts.margen*2)*(horarioModel.filas[0].cursos.length) + //longitud ancho de cursos
+      (HorarioWidgetConsts.cursoWidth + HorarioWidgetConsts.margen*2)*(horarioModel!.filas[0].cursos.length) + //longitud ancho de cursos
       (HorarioWidgetConsts.horasWidth + HorarioWidgetConsts.margen*2) + //longitud ancho de casilleros hora
       HorarioWidgetConsts.margen*2; //margen horizontal
   
@@ -57,12 +57,12 @@ class HorarioWidget extends StatelessWidget{
                 _buildTitulosSuperiores(),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List.generate(horarioModel.filas.length, (int i) {
+                  children: List.generate(horarioModel!.filas.length, (int i) {
                     return Row(
-                      children: List.generate(horarioModel.filas[i].cursos.length, (int j) {
-                        return CursoHorarioWidget(horarioModel.filas[i].cursos[j]);
+                      children: List.generate(horarioModel!.filas[i].cursos.length, (int j) {
+                        return CursoHorarioWidget(horarioModel!.filas[i].cursos[j]);
                       })..insert(0, _buildCasilleroTitulo(
-                        text: "${horarioModel.filas[i].inicio.toString()}\n▫\n${horarioModel.filas[i].fin.toString()}",
+                        text: "${horarioModel!.filas[i].inicio.toString()}\n▫\n${horarioModel!.filas[i].fin.toString()}",
                         height: HorarioWidgetConsts.cursoHeight,
                         width: HorarioWidgetConsts.horasWidth,
                         color: Colors.grey,
@@ -127,7 +127,7 @@ class HorarioWidget extends StatelessWidget{
     );
   }
 
-  Widget _buildCasilleroTitulo({String text, double height, double width, Color color}){
+  Widget _buildCasilleroTitulo({required String text, double? height, double? width, Color? color}){
     return Container(
       padding: EdgeInsets.all(5),
       alignment: Alignment(0, 0),
@@ -152,7 +152,7 @@ class HorarioWidget extends StatelessWidget{
   }
 
   Widget _buildInfo(double alturaAsignada){
-    String alumnnoNombrApell = App.browserController.homeBloc.homeModel.apellidosNombres;
+    String alumnnoNombrApell = App.browserController.homeBloc!.homeModel.apellidosNombres;
     double textSize = alturaAsignada - HorarioWidgetConsts.margen*4;
     final TextStyle _semestreStyle = TextStyle(
       fontSize: textSize,

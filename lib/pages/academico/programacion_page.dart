@@ -12,7 +12,7 @@ class ProgramacionPage extends StatefulWidget{
 }
 
 class ProgramacionPageState extends State<ProgramacionPage>{
-  ProgramacionBloc _bloc;
+  ProgramacionBloc? _bloc;
 
   @override
   void initState() {
@@ -24,7 +24,7 @@ class ProgramacionPageState extends State<ProgramacionPage>{
   
   @override
   void dispose() {
-    _bloc.close();
+    _bloc!.close();
     App.browserController.solicitudActiva = false;
     super.dispose();
   }
@@ -35,7 +35,7 @@ class ProgramacionPageState extends State<ProgramacionPage>{
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(state is Loading? 'Programación académica' : ' Programación ${_bloc.modelo.semestre}'),
+            title: Text(state is Loading? 'Programación académica' : ' Programación ${_bloc!.modelo.semestre}'),
           ),
           body: state is Loading ? SimpleLoadingBodyWidget() : _buildBody(),
         );
@@ -46,13 +46,13 @@ class ProgramacionPageState extends State<ProgramacionPage>{
   Widget _buildBody(){
     return ListaCursosWidget(
       leyenda: Text(
-        ' Total de cursos:\t${_bloc.modelo.cursos.length}',
+        ' Total de cursos:\t${_bloc!.modelo.cursos.length}',
         textAlign: TextAlign.start,
       ),
-      cursos: List.generate(_bloc.modelo.cursos.length, (int i){
+      cursos: List.generate(_bloc!.modelo.cursos.length, (int i){
         return CursoWidget(
           enumerado: false,
-          cursoModel: _bloc.modelo.cursos[i],
+          cursoModel: _bloc!.modelo.cursos[i],
         );
       }),
     );

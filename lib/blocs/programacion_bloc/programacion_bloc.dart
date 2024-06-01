@@ -4,7 +4,7 @@ import 'package:SIGApp/models/programacion_model.dart';
 import './bloc.dart';
 
 class ProgramacionBloc extends Bloc<ProgramacionEvent, ProgramacionState> {
-  ProgramacionModel modelo;
+  late ProgramacionModel modelo;
 
   // @override
   // ProgramacionState get initialState => Loading();

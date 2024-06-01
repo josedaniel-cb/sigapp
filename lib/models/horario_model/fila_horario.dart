@@ -5,10 +5,10 @@ import 'casillero_horario.dart';
 class FilaHorario{
   HoraHorario inicio;
   HoraHorario fin;
-  List<CasilleroHorario> cursos;
+  late List<CasilleroHorario> cursos;
 
   FilaHorario(this.inicio, this.fin){
-    cursos = List<CasilleroHorario>();
+    cursos = [];
   }
 
   // get lunes => cursos[0];  

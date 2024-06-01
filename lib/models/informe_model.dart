@@ -17,17 +17,17 @@ class InformeModel{
   String fechaActualizacionInforme;
 
   InformeModel({
-    @required this.alumno,
-    @required this.facultad,
-    @required this.semestreIngreso,
-    @required this.promocion,
-    @required this.semestrePlanEstudios,
-    @required this.ppUltimo,
-    @required this.ppAcumulado,
-    @required this.ppAprobado,
-    @required this.creditosAprobados,
-    @required this.requisitos,
-    @required this.fechaActualizacionInforme,
+    required this.alumno,
+    required this.facultad,
+    required this.semestreIngreso,
+    required this.promocion,
+    required this.semestrePlanEstudios,
+    required this.ppUltimo,
+    required this.ppAcumulado,
+    required this.ppAprobado,
+    required this.creditosAprobados,
+    required this.requisitos,
+    required this.fechaActualizacionInforme,
   });
 
   static List<String> titulos = [

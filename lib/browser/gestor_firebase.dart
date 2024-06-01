@@ -72,18 +72,18 @@ class GestorFirebase {
   final String coleccionSesionesID = 'sesiones';
   final String coleccionUsosID = 'usos';
   
-  FirebaseFirestore refDatabase;
-  DocumentReference refUsuario;
-  DocumentReference refSesion;
+  late FirebaseFirestore refDatabase;
+  late DocumentReference refUsuario;
+  late DocumentReference refSesion;
 
-  String usuarioID;
-  String sesionID;  
+  String? usuarioID;
+  String? sesionID;  
 
   GestorFirebase(){
     refDatabase = FirebaseFirestore.instance;
   }
 
-  Future registrarInicioSesion(String codigoUniversitario){
+  Future registrarInicioSesion(String? codigoUniversitario){
     _print('Registrando sesión de usuario $codigoUniversitario');
     refUsuario = refDatabase.collection(coleccionUsuariosID).doc(codigoUniversitario);    
     refSesion = refUsuario.collection(coleccionSesionesID).doc();  

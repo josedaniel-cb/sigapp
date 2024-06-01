@@ -6,12 +6,12 @@ class Preferencias{
   final String _mantenerSesionKey = 'mantenerSesion';
   final String _iniciarSesionAutoKey = 'iniciarSesionAuto';
   final String _primerUso = 'primerUso';
-  String usuario;
-  String password;
-  bool mantenerSesion;
-  bool iniciarSesionAuto;
-  bool primerUso;
-  SharedPreferences _preferencias;
+  String? usuario;
+  String? password;
+  bool? mantenerSesion;
+  bool? iniciarSesionAuto;
+  bool? primerUso;
+  late SharedPreferences _preferencias;
 
   Future obtener() async {
     _preferencias = await SharedPreferences.getInstance();

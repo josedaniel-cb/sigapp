@@ -106,7 +106,7 @@ class AcercaDeWidget extends StatelessWidget{
         decoration: TextDecoration.underline,
       ),
       recognizer: TapGestureRecognizer()
-        ..onTap = onTap,
+        ..onTap = onTap as void Function()?,
     );
   }
 

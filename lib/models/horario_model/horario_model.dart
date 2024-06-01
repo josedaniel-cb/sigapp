@@ -1,9 +1,9 @@
 import 'fila_horario.dart';
 
 class HorarioModel{
-  List<FilaHorario> filas;
+  late List<FilaHorario> filas;
 
   HorarioModel(){
-    filas = List<FilaHorario>();
+    filas = [];
   }
 }

@@ -1,12 +1,12 @@
 import 'curso_model/curso_model.dart';
 
 class HistorialModel{
-  List<CicloHistorialModel> ciclos; // all
-  List<CicloHistorialModel> ciclosRegulares; // graficables
+  late List<CicloHistorialModel> ciclos; // all
+  late List<CicloHistorialModel> ciclosRegulares; // graficables
 
   HistorialModel(){
-    ciclos = List<CicloHistorialModel>();
-    ciclosRegulares = List<CicloHistorialModel>();
+    ciclos = [];
+    ciclosRegulares = [];
   }
 
   /*
@@ -47,31 +47,31 @@ class HistorialModel{
 }
 
 class CicloHistorialModel{
-  final String etiqueta;
-  final List<List<dynamic>> matrizInformacion;
-  List<CursoModel> cursos;
+  final String? etiqueta;
+  final List<List<dynamic>>? matrizInformacion;
+  late List<CursoModel> cursos;
 
   CicloHistorialModel({this.etiqueta, this.matrizInformacion}){
-    cursos = List<CursoModel>();
+    cursos = [];
   }
 
-  double get pps => matrizInformacion[0][0];
-  double get ppsAprob => matrizInformacion[0][1];
-  double get ppa => matrizInformacion[0][2];
-  double get ppaAprob => matrizInformacion[0][3];
+  double get pps => matrizInformacion![0][0];
+  double get ppsAprob => matrizInformacion![0][1];
+  double get ppa => matrizInformacion![0][2];
+  double get ppaAprob => matrizInformacion![0][3];
 
-  int get creOblLlev => matrizInformacion[0][4];
-  int get creOblApr => matrizInformacion[1][1];
-  int get creElLlev => matrizInformacion[1][0];
-  int get creElApr => matrizInformacion[1][2];
-  int get creOblConv => matrizInformacion[1][3];
-  int get creElConv => matrizInformacion[1][4];
+  int get creOblLlev => matrizInformacion![0][4];
+  int get creOblApr => matrizInformacion![1][1];
+  int get creElLlev => matrizInformacion![1][0];
+  int get creElApr => matrizInformacion![1][2];
+  int get creOblConv => matrizInformacion![1][3];
+  int get creElConv => matrizInformacion![1][4];
 
-  int get totalCredOblLlev => matrizInformacion[2][0];
-  int get totalCredElLlev => matrizInformacion[2][1];
-  int get totalCredOblAprob => matrizInformacion[2][2];
-  int get totalCredElAprob => matrizInformacion[2][3];
-  int get totalCredOblConv => matrizInformacion[2][4];
+  int get totalCredOblLlev => matrizInformacion![2][0];
+  int get totalCredElLlev => matrizInformacion![2][1];
+  int get totalCredOblAprob => matrizInformacion![2][2];
+  int get totalCredElAprob => matrizInformacion![2][3];
+  int get totalCredOblConv => matrizInformacion![2][4];
 
   static const String PPS = 'Promedio Ponderado Semestral';
   static const String PPS_Aprob = 'Promedio Ponderado Semestral Aprobado';

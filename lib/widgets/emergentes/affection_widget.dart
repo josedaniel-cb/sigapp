@@ -94,7 +94,7 @@ class _AffectionWidget extends State<AffectionWidget> {
         // fontWeight: FontWeight.bold,
         decoration: TextDecoration.underline,
       ),
-      recognizer: TapGestureRecognizer()..onTap = onTap,
+      recognizer: TapGestureRecognizer()..onTap = onTap as void Function()?,
     );
   }
 

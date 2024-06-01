@@ -5,9 +5,9 @@ import 'package:SIGApp/models/horario_model/horario_model.dart';
 import './bloc.dart';
 
 class HorarioBloc extends Bloc<HorarioEvent, HorarioState> {
-  HorarioModel currentModel;
-  List<String> semestres;
-  int selectedSemestreIndex;
+  HorarioModel? currentModel;
+  late List<String> semestres;
+  late int selectedSemestreIndex;
 
   // @override
   // HorarioState get initialState => HorarioLoading();

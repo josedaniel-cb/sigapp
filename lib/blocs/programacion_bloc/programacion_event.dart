@@ -5,7 +5,7 @@ abstract class ProgramacionEvent extends Equatable {
   const ProgramacionEvent();
 
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
 class ProgramacionControllerReady extends ProgramacionEvent{

@@ -5,7 +5,7 @@ import 'package:SIGApp/models/notas_model.dart';
 import 'package:SIGApp/widgets/nada_que_mostrar_widget.dart';
 
 class NotasPage extends StatelessWidget{
-  final NotasModel model; 
+  final NotasModel? model; 
 
   NotasPage(this.model);
 
@@ -23,7 +23,7 @@ class NotasPage extends StatelessWidget{
         backgroundColor: Colors.blueGrey,      
         title: Text('REGEVA'),        
       ),
-      body: model.error == null ? _buildBody() : NadaQueMostrarWidget(mensaje: model.error,),
+      body: model!.error == null ? _buildBody() : NadaQueMostrarWidget(mensaje: model!.error,),
     );
   }
 
@@ -67,7 +67,7 @@ class NotasPage extends StatelessWidget{
             ),
             // color: Colors.red,
             child: Text(
-              model.curso.nombre,
+              model!.curso!.nombre,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: _colorNegro,
@@ -100,9 +100,9 @@ class NotasPage extends StatelessWidget{
 
   Widget _buildCursoCaracteristica(int indexCaracteristicaCurso){
     return _buildCaracteristica(
-      texto: model.curso.caracteristicas[indexCaracteristicaCurso].nombre,
+      texto: model!.curso!.caracteristicas[indexCaracteristicaCurso].nombre,
       contenido: Text(
-        model.curso.caracteristicas[indexCaracteristicaCurso].contenido,
+        model!.curso!.caracteristicas[indexCaracteristicaCurso].contenido,
         style: TextStyle(
           color: _colorAzulTexto,
           fontSize: _tamFuente,
@@ -124,7 +124,7 @@ class NotasPage extends StatelessWidget{
       ),
       child: Column(
         children: List.generate(
-          model.criterios.length, 
+          model!.criterios.length, 
           (int indexCriterio) => _buildCriterio(indexCriterio)
         )..add(_buildNotaFinal()),
       ),
@@ -142,7 +142,7 @@ class NotasPage extends StatelessWidget{
             // mainAxisAlignment: MainAxisAlignment.start,
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: List.generate(
-              model.criterios[indexCriterio].examenes.length, 
+              model!.criterios[indexCriterio].examenes.length, 
               (int indexExamen) => _buildExamen(indexCriterio, indexExamen)
             )
             ..insert(
@@ -158,7 +158,7 @@ class NotasPage extends StatelessWidget{
                 children: <Widget>[
                   Expanded(
                     child: Text(
-                    '${model.criterios[indexCriterio].mensaje}',
+                    '${model!.criterios[indexCriterio].mensaje}',
                     style: TextStyle(
                       fontSize: _tamFuente * 1.1,
                     ),
@@ -182,7 +182,7 @@ class NotasPage extends StatelessWidget{
         children: <Widget>[
           Expanded(
             child: Text(
-              '${model.criterios[indexCriterio].titulo}',
+              '${model!.criterios[indexCriterio].titulo}',
               style: TextStyle(
                 color: App.blueColor,
                 fontSize: _tamFuente,
@@ -193,12 +193,12 @@ class NotasPage extends StatelessWidget{
           ),
           _buildInfoTipo1(
             color: Colors.green,
-            texto: '${model.criterios[indexCriterio].notaPromedio}'
+            texto: '${model!.criterios[indexCriterio].notaPromedio}'
           ),
           // SizedBox(width: _margen*0.3,),
           _buildInfoTipo3(
             color: Colors.blueGrey,
-            texto: '${model.criterios[indexCriterio].porcentaje} %'
+            texto: '${model!.criterios[indexCriterio].porcentaje} %'
           ),
         ],
       ),
@@ -206,10 +206,10 @@ class NotasPage extends StatelessWidget{
   }
 
   Widget _buildInfo({
-    @required Color color,
-    @required String texto,
-    @required BoxDecoration decoration,
-    double fontSize,
+    required Color color,
+    required String texto,
+    required BoxDecoration decoration,
+    double? fontSize,
   }){
     return Container(
       decoration: decoration,
@@ -228,8 +228,8 @@ class NotasPage extends StatelessWidget{
   }
 
   Widget _buildInfoTipo1({
-    @required Color color,
-    @required String texto
+    required Color color,
+    required String texto
   }){
     // double x = 25;
     // double y = 15;
@@ -249,8 +249,8 @@ class NotasPage extends StatelessWidget{
   }
 
   Widget _buildInfoTipo3({
-    @required Color color,
-    @required String texto
+    required Color color,
+    required String texto
   }){
     return _buildInfo(
       color: color,
@@ -266,8 +266,8 @@ class NotasPage extends StatelessWidget{
   }
 
   Widget _buildCaracteristica({
-    @required String texto,
-    @required Widget contenido,
+    required String texto,
+    required Widget contenido,
   }){
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -293,8 +293,8 @@ class NotasPage extends StatelessWidget{
     Color colorNota;
     String mensajeFechaRegistro;
 
-    if(model.criterios[indexCriterio].examenes[indexExamen].fechaRegistro != null){
-      if(model.criterios[indexCriterio].examenes[indexExamen].nota >= 11){
+    if(model!.criterios[indexCriterio].examenes[indexExamen].fechaRegistro != null){
+      if(model!.criterios[indexCriterio].examenes[indexExamen].nota >= 11){
         colorNota = Colors.green;
       } else {
         colorNota = Colors.red;
@@ -303,8 +303,8 @@ class NotasPage extends StatelessWidget{
       colorNota = Colors.grey;
     }
 
-    if(model.criterios[indexCriterio].examenes[indexExamen].fechaRegistro != null){
-      mensajeFechaRegistro = '📌 Registrado en ${model.criterios[indexCriterio].examenes[indexExamen].fechaRegistro}';
+    if(model!.criterios[indexCriterio].examenes[indexExamen].fechaRegistro != null){
+      mensajeFechaRegistro = '📌 Registrado en ${model!.criterios[indexCriterio].examenes[indexExamen].fechaRegistro}';
     } else {
       mensajeFechaRegistro = '⏳ No se ha registrado';
     }
@@ -324,7 +324,7 @@ class NotasPage extends StatelessWidget{
           _buildCaracteristica(
             texto: 'Fecha',
             contenido: _buildInfoTipo2(
-              texto: '${model.criterios[indexCriterio].examenes[indexExamen].fechaExamen}',
+              texto: '${model!.criterios[indexCriterio].examenes[indexExamen].fechaExamen}',
               // color: App.blueColor,
               color: Colors.black26,
             ),
@@ -332,7 +332,7 @@ class NotasPage extends StatelessWidget{
           _buildCaracteristica(
             texto: 'Nota',
             contenido: _buildInfoTipo2(
-              texto: '${model.criterios[indexCriterio].examenes[indexExamen].nota}', // .toStringAsFixed(2)
+              texto: '${model!.criterios[indexCriterio].examenes[indexExamen].nota}', // .toStringAsFixed(2)
               color: colorNota,
             ),
           ),
@@ -350,9 +350,9 @@ class NotasPage extends StatelessWidget{
   }
 
   Widget _buildInfoTipo2({
-    @required Color color,
-    @required String texto,
-    double fontSize,
+    required Color color,
+    required String texto,
+    double? fontSize,
   }){
     return _buildInfo(
       color: color,
@@ -372,8 +372,8 @@ class NotasPage extends StatelessWidget{
     List<Widget> contenido = [
       _buildCaracteristicaNotaFinal(
         // label: 'Nota final',
-        label: model.notaFinalLabel,
-        nota: model.notaFinal,
+        label: model!.notaFinalLabel,
+        nota: model!.notaFinal,
         // labelColor: Colors.white,
       ),
       // SizedBox(height: margenEspaciado,),
@@ -385,24 +385,24 @@ class NotasPage extends StatelessWidget{
       // ),
     ];
 
-    if(model.estadoLabel != null){
+    if(model!.estadoLabel != null){
       contenido.addAll([
         SizedBox(height: margenEspaciado,),
         _buildInfoTipo2(
-          texto: model.estadoLabel,
+          texto: model!.estadoLabel!,
           // texto: ' ${model.notaLabel} ',
-          color: model.estadoLabel == 'Aprobado' ? Colors.green : Colors.red,
+          color: model!.estadoLabel == 'Aprobado' ? Colors.green : Colors.red,
           fontSize: _tamFuente,
         ),
       ]);
     }
 
-    if(model.notaSustitutorio != null){
+    if(model!.notaSustitutorio != null){
       contenido.insert(0, Column(
         children: <Widget>[
           _buildCaracteristicaNotaFinal(
             label: 'Nota sustitutorio',
-            nota: model.notaSustitutorio,
+            nota: model!.notaSustitutorio,
             fontSize: _tamFuente,
             // labelColor: Colors.white,
           ),
@@ -429,9 +429,9 @@ class NotasPage extends StatelessWidget{
   }
 
   Widget _buildCaracteristicaNotaFinal({
-    @required String label,
-    @required double nota,
-    double fontSize,
+    required String? label,
+    required double? nota,
+    double? fontSize,
     Color labelColor = Colors.black,
   }){
     if(fontSize ==  null){
@@ -452,7 +452,7 @@ class NotasPage extends StatelessWidget{
           ),
           _buildInfoTipo2(
             texto: '$nota',
-            color: model.notaFinal >= 11 ? Colors.green : Colors.red,
+            color: model!.notaFinal! >= 11 ? Colors.green : Colors.red,
             fontSize: fontSize,
           )
         ],

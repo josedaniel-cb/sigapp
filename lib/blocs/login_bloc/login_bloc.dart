@@ -6,8 +6,8 @@ import 'package:SIGApp/models/login_model.dart';
 import './bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  int intentosDeIngreso;
-  LoginModel loginModel;
+  int? intentosDeIngreso;
+  late LoginModel loginModel;
 
   LoginBloc() : super(LoginLoading()) {
     intentosDeIngreso = 0;

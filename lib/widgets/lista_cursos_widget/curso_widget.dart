@@ -6,14 +6,14 @@ import 'package:SIGApp/models/curso_model/curso_model.dart';
 
 class CursoWidget extends StatelessWidget{
   final CursoModel cursoModel;
-  final List<Widget> botones;
-  final int index;
+  final List<Widget>? botones;
+  final int? index;
   final bool enumerado;
   
   static const double _tamFuente = 15;
 
   CursoWidget({
-    @required this.cursoModel, 
+    required this.cursoModel, 
     this.botones,
     this.index,
     this.enumerado = true,
@@ -32,7 +32,7 @@ class CursoWidget extends StatelessWidget{
     return _buildCurso(contenido: contenido);
   }
 
-  Widget _buildCurso({@required List<Widget> contenido}){
+  Widget _buildCurso({required List<Widget> contenido}){
     return Container(
       child: Card(
         elevation: 0,
@@ -104,7 +104,7 @@ class CursoWidget extends StatelessWidget{
       contenido.insert(
         1, 
         Text(
-          cursoModel.codigo, 
+          cursoModel.codigo!, 
           style: codigoStyle,
         ),
       );
@@ -191,11 +191,11 @@ class CursoWidget extends StatelessWidget{
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: List.generate(botones.length, (int i){
+              children: List.generate(botones!.length, (int i){
                 // return botones[i];
                 return Container(
                   margin: EdgeInsets.only(left: 17),
-                  child: botones[i],
+                  child: botones![i],
                 );
               }),
             ),

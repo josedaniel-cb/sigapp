@@ -6,15 +6,15 @@ import 'curso_widget.dart';
 
 class ListaCursosWidget extends StatelessWidget{  
   final List<CursoWidget> cursos;
-  final Widget leyenda;
-  final String nadaQueMostrarMensaje;
+  final Widget? leyenda;
+  final String? nadaQueMostrarMensaje;
 
   // final Color _background = Colors.black12;    
   final Color _background = Color(0xFFd1d1d1);    
   final double _margen = 10;
 
   ListaCursosWidget({
-    @required this.cursos,
+    required this.cursos,
     this.leyenda,
     this.nadaQueMostrarMensaje,
   }) : assert(cursos != null);
@@ -41,7 +41,7 @@ class ListaCursosWidget extends StatelessWidget{
     }
   }
 
-  Widget _buildBody({@required List<Widget> contenido}){
+  Widget _buildBody({required List<Widget> contenido}){
     if(leyenda != null){
       contenido.insert(0, _buildLeyenda());
     }

@@ -6,7 +6,7 @@ abstract class BoletinEvent extends Equatable {
   const BoletinEvent();
 
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
 class BoletinControllerReady extends BoletinEvent {
@@ -23,7 +23,7 @@ class BoletinControllerChanged extends BoletinEvent {
 }
 
 class BoletinUserChange extends BoletinEvent {
-  final int semestreIndex;
+  final int? semestreIndex;
 
   BoletinUserChange(this.semestreIndex);
 }

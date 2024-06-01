@@ -15,7 +15,7 @@ class HorarioPage extends StatefulWidget {
 
 class HorarioPageState extends State<StatefulWidget> {
   final ScreenshotController _screenshotController = ScreenshotController(); 
-  HorarioBloc _horarioBloc;
+  HorarioBloc? _horarioBloc;
 
   @override
   void initState() {
@@ -27,7 +27,7 @@ class HorarioPageState extends State<StatefulWidget> {
 
   @override
   void dispose() {
-    _horarioBloc.close();
+    _horarioBloc!.close();
     App.browserController.solicitudActiva = false;
     super.dispose();
   }
@@ -73,7 +73,7 @@ class HorarioPageState extends State<StatefulWidget> {
   Widget _buildHorarioState(){
     return Scaffold(
       appBar: AppBar(
-        title: Text('Horario ${_horarioBloc.semestres[_horarioBloc.selectedSemestreIndex]}'),
+        title: Text('Horario ${_horarioBloc!.semestres[_horarioBloc!.selectedSemestreIndex]}'),
         actions: _buildActions(),
       ),
       body: _buildHorario(),
@@ -81,8 +81,8 @@ class HorarioPageState extends State<StatefulWidget> {
   }
 
   List<Widget> _buildActions() {
-    List<Widget> acciones = new List<Widget>();
-    if(_horarioBloc.currentModel.filas.length > 0){
+    List<Widget> acciones = [];
+    if(_horarioBloc!.currentModel!.filas.length > 0){
       acciones.add(_buildShareAction());
     }
     acciones.add(_buildSemestresAction());
@@ -100,14 +100,14 @@ class HorarioPageState extends State<StatefulWidget> {
     return PopupMenuButton<int>(
       icon: Icon(Icons.arrow_drop_down),
       onSelected: (selectedIndex){
-        _horarioBloc.add(HorarioUserChange(selectedIndex));
+        _horarioBloc!.add(HorarioUserChange(selectedIndex));
         App.browserController.gestorFirebase.registrarUso(CasosDeUso.HorarioSeleccionarSemestre);
       },
       itemBuilder: (BuildContext context){
-        return List.generate(_horarioBloc.semestres.length, (int i){
+        return List.generate(_horarioBloc!.semestres.length, (int i){
           return PopupMenuItem<int>(
             value: i,
-            child: Text(_horarioBloc.semestres[i]),
+            child: Text(_horarioBloc!.semestres[i]),
           );
         });
       },
@@ -124,11 +124,11 @@ class HorarioPageState extends State<StatefulWidget> {
             // color: Colors.white,
             // color: App.greenColor,
             // color: App.greenColor,
-            color: _horarioBloc.currentModel.filas.length > 0 ? App.greenColor : Colors.white,
+            color: _horarioBloc!.currentModel!.filas.length > 0 ? App.greenColor : Colors.white,
             child: HorarioWidget(
-              _horarioBloc.currentModel, 
+              _horarioBloc!.currentModel, 
               _screenshotController,
-              _horarioBloc.semestres[_horarioBloc.selectedSemestreIndex]
+              _horarioBloc!.semestres[_horarioBloc!.selectedSemestreIndex]
             ),
           ),
         )
@@ -145,8 +145,8 @@ class HorarioPageState extends State<StatefulWidget> {
     App.browserController.gestorFirebase.registrarUso(CasosDeUso.HorarioCompartir);
     App.compartirCaptura(
       _screenshotController, 
-      'Horario ${_horarioBloc.semestres[_horarioBloc.selectedSemestreIndex]}', 
-      'Horario ${_horarioBloc.semestres[_horarioBloc.selectedSemestreIndex]}'
+      'Horario ${_horarioBloc!.semestres[_horarioBloc!.selectedSemestreIndex]}', 
+      'Horario ${_horarioBloc!.semestres[_horarioBloc!.selectedSemestreIndex]}'
     );
   }
 }

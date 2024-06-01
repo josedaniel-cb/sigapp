@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class SigappVersionWidget extends StatelessWidget{
   final double fontSize;
 
-  const SigappVersionWidget({@required this.fontSize});
+  const SigappVersionWidget({required this.fontSize});
 
   @override
   Widget build(BuildContext context) {

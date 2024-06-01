@@ -5,7 +5,7 @@ abstract class PlanEvent extends Equatable {
   const PlanEvent();
 
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
 class PlanControllerReady extends PlanEvent{

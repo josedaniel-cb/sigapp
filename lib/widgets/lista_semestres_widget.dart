@@ -6,15 +6,15 @@ import 'nada_que_mostrar_widget.dart';
 
 class ListaSemestresWidget extends StatelessWidget{
   final List<ElementoListaSemestresWidget> children;
-  final Widget leyenda;
-  final String nadaQueMostrarMensaje;
+  final Widget? leyenda;
+  final String? nadaQueMostrarMensaje;
   final Icon icono;
 
   final double _margen = 15;
 
   const ListaSemestresWidget({
-    @required this.children,
-    @required this.icono,
+    required this.children,
+    required this.icono,
     this.leyenda,
     this.nadaQueMostrarMensaje,
   });
@@ -69,7 +69,7 @@ class ListaSemestresWidget extends StatelessWidget{
             ),
           ),
         ),
-        onTap: children[i].onPressed,
+        onTap: children[i].onPressed as void Function()?,
       );
     });
 
@@ -108,8 +108,8 @@ class ElementoListaSemestresWidget{
   final Function onPressed;
 
   ElementoListaSemestresWidget({
-    @required this.titulo, 
-    @required this.numero, 
-    @required this.onPressed
+    required this.titulo, 
+    required this.numero, 
+    required this.onPressed
   });
 }

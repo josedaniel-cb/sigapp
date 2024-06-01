@@ -17,8 +17,8 @@ class HistorialPage extends StatefulWidget{
 }
 
 class HistorialPageState extends State<HistorialPage>{
-  HistorialBloc _bloc;
-  TipoPonderado _tipoPonderado;
+  HistorialBloc? _bloc;
+  TipoPonderado? _tipoPonderado;
   // int _groupValue;
 
   @override
@@ -33,7 +33,7 @@ class HistorialPageState extends State<HistorialPage>{
 
   @override
   void dispose() {
-    _bloc.close();
+    _bloc!.close();
     App.browserController.solicitudActiva = false;
     super.dispose();
   }
@@ -54,7 +54,7 @@ class HistorialPageState extends State<HistorialPage>{
 
   Widget _buildHistorial(){
     return ListaSemestresWidget(
-      leyenda: _bloc.modelo.ciclos.length > 0 ?_buildCabecera() : null,
+      leyenda: _bloc!.modelo!.ciclos.length > 0 ?_buildCabecera() : null,
       icono: Icon(
         Icons.assessment,
         color: Colors.green,
@@ -63,12 +63,12 @@ class HistorialPageState extends State<HistorialPage>{
       //   'Probablemente los datos del sistema se encuentran en mantenimiento.',
       nadaQueMostrarMensaje: 'La web del Siga no dispone de tus datos en este momento. '
         'Puedes comprobarlo visitando ${Urls.LOGIN}',
-      children: List.generate(_bloc.modelo.ciclos.length, (int i){
+      children: List.generate(_bloc!.modelo!.ciclos.length, (int i){
         return ElementoListaSemestresWidget(
-          numero: _bloc.modelo.ciclos[i].cursos.length,
+          numero: _bloc!.modelo!.ciclos[i].cursos.length,
           onPressed: () => _lanzarCicloPage(i),
           // titulo: _bloc.modelo.ciclos[i].etiqueta,
-          titulo: _customizarCicloEtiqueta(_bloc.modelo.ciclos[i].etiqueta),
+          titulo: _customizarCicloEtiqueta(_bloc!.modelo!.ciclos[i].etiqueta!),
         );
       }),
     );
@@ -96,7 +96,7 @@ class HistorialPageState extends State<HistorialPage>{
       child: Column(
         children: <Widget>[
           _buildMenu(),
-          HistorialPPAChart(_bloc.modelo, _tipoPonderado),
+          HistorialPPAChart(_bloc!.modelo, _tipoPonderado),
         ],
       ),
     )
@@ -104,7 +104,7 @@ class HistorialPageState extends State<HistorialPage>{
   }
 
   Widget _buildMenu(){
-    String labelPP, semestrePrimero, semestreUltimo;
+    String? labelPP, semestrePrimero, semestreUltimo;
 
     switch(_tipoPonderado){
       case TipoPonderado.PPSemestral:
@@ -121,8 +121,8 @@ class HistorialPageState extends State<HistorialPage>{
         break;
     }
 
-    semestrePrimero = _bloc.modelo.ciclosRegulares[0].etiqueta.split(':')[1].trim();
-    semestreUltimo = _bloc.modelo.ciclosRegulares[_bloc.modelo.ciclosRegulares.length - 1].etiqueta.split(':')[1].trim();
+    semestrePrimero = _bloc!.modelo!.ciclosRegulares[0].etiqueta!.split(':')[1].trim();
+    semestreUltimo = _bloc!.modelo!.ciclosRegulares[_bloc!.modelo!.ciclosRegulares.length - 1].etiqueta!.split(':')[1].trim();
 
     return Row(
       children: <Widget>[
@@ -257,7 +257,7 @@ class HistorialPageState extends State<HistorialPage>{
       context,
       MaterialPageRoute(
         builder: (context) => ListaCursosHistorialPage(
-          ciclo: _bloc.modelo.ciclos[index],
+          ciclo: _bloc!.modelo!.ciclos[index],
         )
       ),
     );

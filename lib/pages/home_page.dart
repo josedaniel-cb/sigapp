@@ -33,11 +33,11 @@ class HomePageState extends State<HomePage> {
   final double _titleItemSize = 16;
   final FontWeight _titleItemFontWeight = FontWeight.w600;
 
-  HomeBloc _homeBloc;
+  HomeBloc? _homeBloc;
 
-  List<Color> _userColors;
+  List<Color?>? _userColors;
 
-  bool _busy;
+  late bool _busy;
 
   @override
   void initState() {
@@ -52,7 +52,7 @@ class HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    _homeBloc.close();
+    _homeBloc!.close();
     App.browserController.currentPage = MyPages.Login;
     super.dispose();
   }
@@ -71,7 +71,7 @@ class HomePageState extends State<HomePage> {
           _busy = false;
           if (state is HomeReady) {
             _userColors =
-                ColoresGradiente.generarColores(_homeBloc.homeModel.iniciales);
+                ColoresGradiente.generarColores(_homeBloc!.homeModel.iniciales);
           } else if (state is HomeLogOut) {
             _logOut();
           } else if (state is HomeHorario) {
@@ -96,7 +96,7 @@ class HomePageState extends State<HomePage> {
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
           return WillPopScope(
-            onWillPop: () => null,
+            onWillPop: (() => null) as Future<bool> Function()?,
             child: _buildScaffold(),
           );
         },
@@ -148,7 +148,7 @@ class HomePageState extends State<HomePage> {
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
           stops: [0.2, 0.5, 0.7, 0.9],
-          colors: _userColors,
+          colors: _userColors as List<Color>,
         ),
       ),
       child: Stack(
@@ -339,7 +339,7 @@ class HomePageState extends State<HomePage> {
             child: CircleAvatar(
               radius: 30,
               child: Text(
-                _homeBloc.homeModel.iniciales,
+                _homeBloc!.homeModel.iniciales,
                 // 'LE',
                 style: TextStyle(
                   color: Colors.white,
@@ -358,7 +358,7 @@ class HomePageState extends State<HomePage> {
               children: <Widget>[
                 Container(
                   child: Text(
-                    _homeBloc.homeModel.apellidosNombres,
+                    _homeBloc!.homeModel.apellidosNombres,
                     // 'ANCAJIMA RUIZ, LUIS ELIAN',
                     style: TextStyle(
                       fontSize: fontSize,
@@ -370,7 +370,7 @@ class HomePageState extends State<HomePage> {
                 Container(
                   margin: EdgeInsets.only(top: 2),
                   child: Text(
-                    _homeBloc.homeModel.escuela,
+                    _homeBloc!.homeModel.escuela,
                     // 'INGENIERIA ELECTRONICA',
                     style: TextStyle(
                       fontSize: fontSize - 3,
@@ -401,7 +401,7 @@ class HomePageState extends State<HomePage> {
             child: CircleAvatar(
               radius: 30,
               child: Text(
-                _homeBloc.homeModel.iniciales,
+                _homeBloc!.homeModel.iniciales,
                 style: TextStyle(
                   color: Colors.transparent,
                   fontSize: 30,
@@ -419,7 +419,7 @@ class HomePageState extends State<HomePage> {
               children: <Widget>[
                 Container(
                   child: Text(
-                    _homeBloc.homeModel.apellidosNombres,
+                    _homeBloc!.homeModel.apellidosNombres,
                     style: TextStyle(
                       fontSize: fontSize,
                       color: Colors.transparent,
@@ -430,7 +430,7 @@ class HomePageState extends State<HomePage> {
                 Container(
                   margin: EdgeInsets.only(top: 2),
                   child: Text(
-                    _homeBloc.homeModel.escuela,
+                    _homeBloc!.homeModel.escuela,
                     style: TextStyle(
                       fontSize: fontSize - 3,
                       color: Colors.transparent,
@@ -447,11 +447,11 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _buildCategoria({
-    @required String titulo,
-    Color colorTitulo,
-    @required Color backgroundBoton,
-    @required Color colorTextoBoton,
-    @required List<BotonInfo> botones,
+    required String titulo,
+    Color? colorTitulo,
+    required Color backgroundBoton,
+    required Color colorTextoBoton,
+    required List<BotonInfo> botones,
   }) {
     return Container(
       padding: EdgeInsets.only(
@@ -496,11 +496,11 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _buildExpandedButton(
-      {@required String text,
-      @required Color textColor,
-      @required Color background,
-      @required IconData icon,
-      @required Function function}) {
+      {required String text,
+      required Color textColor,
+      required Color background,
+      required IconData icon,
+      required Function function}) {
     return Row(
       children: <Widget>[
         Expanded(
@@ -556,7 +556,7 @@ class HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              onPressed: function,
+              onPressed: function as void Function()?,
             ),
           ),
         ),
@@ -566,7 +566,7 @@ class HomePageState extends State<HomePage> {
 
   void _tapHorario() {
     if (!_busy) {
-      _homeBloc.add(HomeUserHorario());
+      _homeBloc!.add(HomeUserHorario());
       App.browserController.gestorFirebase.registrarUso(CasosDeUso.Horario);
       // App.browserController.gestorFirebase.registrarUso(GestorFirebase.HORARIO);
     }
@@ -574,14 +574,14 @@ class HomePageState extends State<HomePage> {
 
   void _tapBoletin() {
     if (!_busy) {
-      _homeBloc.add(HomeUserBoletin());
+      _homeBloc!.add(HomeUserBoletin());
       App.browserController.gestorFirebase.registrarUso(CasosDeUso.Boletin);
     }
   }
 
   void _tapPlanDeEstudios() {
     if (!_busy) {
-      _homeBloc.add(HomeUserPlan());
+      _homeBloc!.add(HomeUserPlan());
       App.browserController.gestorFirebase
           .registrarUso(CasosDeUso.PlanEstudios);
     }
@@ -589,7 +589,7 @@ class HomePageState extends State<HomePage> {
 
   void _tapHistorialAcademico() {
     if (!_busy) {
-      _homeBloc.add(HomeUserHistorial());
+      _homeBloc!.add(HomeUserHistorial());
       App.browserController.gestorFirebase
           .registrarUso(CasosDeUso.HistorialAcademico);
     }
@@ -597,7 +597,7 @@ class HomePageState extends State<HomePage> {
 
   void _tapInformeAcademico() {
     if (!_busy) {
-      _homeBloc.add(HomeUserInforme());
+      _homeBloc!.add(HomeUserInforme());
       App.browserController.gestorFirebase
           .registrarUso(CasosDeUso.InformeAcademico);
     }
@@ -605,7 +605,7 @@ class HomePageState extends State<HomePage> {
 
   void _tapProgramacionAcademica() {
     if (!_busy) {
-      _homeBloc.add(HomeUserProgramacion());
+      _homeBloc!.add(HomeUserProgramacion());
       App.browserController.gestorFirebase
           .registrarUso(CasosDeUso.ProgramacionAcademica);
     }
@@ -613,7 +613,7 @@ class HomePageState extends State<HomePage> {
 
   void _tapCerrarSesion() {
     if (!_busy) {
-      _homeBloc.add(HomeUserLogOut());
+      _homeBloc!.add(HomeUserLogOut());
       App.browserController.gestorFirebase
           .registrarUso(CasosDeUso.CerrarSesion);
     }
@@ -729,5 +729,5 @@ class BotonInfo {
   final Function onPressed;
 
   BotonInfo(
-      {@required this.name, @required this.icono, @required this.onPressed});
+      {required this.name, required this.icono, required this.onPressed});
 }

@@ -16,7 +16,7 @@ class TextPage extends StatefulWidget {
 
 class TextPageState extends State<TextPage> {
   bool _waiting = true;
-  String _contenido, _titulo;
+  String _contenido = '', _titulo = '';
 
   @override
   void initState() {

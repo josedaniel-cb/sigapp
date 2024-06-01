@@ -4,7 +4,7 @@ import 'package:SIGApp/app/app.dart';
 class SigappLogotipoWidget extends StatelessWidget{
   final double fontSize;
 
-  const SigappLogotipoWidget({@required this.fontSize});
+  const SigappLogotipoWidget({required this.fontSize});
 
   @override
   Widget build(BuildContext context) {

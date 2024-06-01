@@ -10,7 +10,7 @@ class Scripts{
   }
 
   // Login
-  static String loginSolicitarIngreso(String cu, String password){
+  static String loginSolicitarIngreso(String? cu, String? password){
     return '''
       document.getElementById('CodAlumno').value = '$cu';
       document.getElementById('ClaveWeb').value = '$password';
@@ -27,7 +27,7 @@ class Scripts{
   }
   
   // General
-  static String genericSeleccionarSemestre(int indexSemestre){
+  static String genericSeleccionarSemestre(int? indexSemestre){
     // return '''
     //   document.getElementById("semestres").options[$indexSemestre].selected = true;
     //   document.getElementsByClassName("k-icon k-i-refresh")[0].click();

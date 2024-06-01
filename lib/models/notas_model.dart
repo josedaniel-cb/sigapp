@@ -7,16 +7,16 @@ class NotasModel{
   // final int asistenciasTotalAsistencias;
   // final int asistenciasTotalFaltas;
 
-  final CursoModel curso;
-  final String estadoLabel;
-  final String notaFinalLabel;
-  final double notaSustitutorio;
-  final double notaFinal;
+  final CursoModel? curso;
+  final String? estadoLabel;
+  final String? notaFinalLabel;
+  final double? notaSustitutorio;
+  final double? notaFinal;
 
-  String error;
+  String? error;
 
   NotasModel({
-    @required this.criterios, 
+    required this.criterios, 
     // this.asistenciasTotalClases, 
     // this.asistenciasTotalAsistencias, 
     // this.asistenciasTotalFaltas,
@@ -37,17 +37,17 @@ class CriterioEvaluacionNotasModel{
   final List<ExamenNotasModel> examenes;
 
   CriterioEvaluacionNotasModel({
-    @required this.titulo, 
-    @required this.notaPromedio, 
-    @required this.porcentaje, 
-    @required this.mensaje, 
-    @required this.examenes
+    required this.titulo, 
+    required this.notaPromedio, 
+    required this.porcentaje, 
+    required this.mensaje, 
+    required this.examenes
   });
 }
 
 class ExamenNotasModel{
   final String fechaExamen;
-  final String fechaRegistro;
+  final String? fechaRegistro;
   final double nota;
 
   ExamenNotasModel(this.fechaExamen, this.fechaRegistro, this.nota);

@@ -5,7 +5,7 @@ abstract class HorarioEvent extends Equatable {
   const HorarioEvent();
 
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
 class HorarioControllerReady extends HorarioEvent{

@@ -18,7 +18,7 @@ class App {
   static String versionFlutter = '1.17.5';
 
   // Navegador
-  static BrowserController browserController;
+  static late BrowserController browserController;
 
   // Colores
   static MaterialColor getMaterialColor(int hexColor) {
@@ -58,10 +58,10 @@ class App {
 
   static Future compartirCaptura(ScreenshotController screenshotController,
       String fileName, String descripcion) async {
-    screenshotController.capture().then((Uint8List imageBytes) async {
+    screenshotController.capture().then((Uint8List? imageBytes) async {
       final tempDir = await getTemporaryDirectory();
       final file = await File('${tempDir.path}/$fileName.png').create();
-      await file.writeAsBytes(imageBytes);
+      await file.writeAsBytes(imageBytes!);
 
       await Share.file(
           'Compartir', '$fileName.png', file.readAsBytesSync(), 'image/png',
@@ -71,7 +71,7 @@ class App {
     });
   }
 
-  static Future compartirTexto(String text) {
+  static compartirTexto(String text) {
     Share.text('Compartir', text, 'text/plain');
   }
 

@@ -5,7 +5,7 @@ abstract class LoginEvent extends Equatable {
   const LoginEvent();
 
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
 /// Eventos de usuario:
@@ -35,8 +35,8 @@ class LoginControllerError extends LoginEvent{
 } // Error
 
 class LoginControllerLoggingIn extends LoginEvent{
-  final String usuario;
-  final String pass;
+  final String? usuario;
+  final String? pass;
 
   LoginControllerLoggingIn(this.usuario, this.pass); 
   // Esto Solo sucede cuando existe un inicio de sesi[o]n autom[a]tico

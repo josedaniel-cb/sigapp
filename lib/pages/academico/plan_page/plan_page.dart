@@ -13,7 +13,7 @@ class PlanPage extends StatefulWidget{
 }
 
 class PlanPageState extends State<PlanPage>{
-  PlanBloc _planBloc;
+  PlanBloc? _planBloc;
 
   @override
   void initState() {
@@ -25,7 +25,7 @@ class PlanPageState extends State<PlanPage>{
 
   @override
   void dispose() {
-    _planBloc.close();
+    _planBloc!.close();
     App.browserController.solicitudActiva = false;
     super.dispose();
   }
@@ -36,7 +36,7 @@ class PlanPageState extends State<PlanPage>{
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Plan de estudios' + (state is Ready ? ' ${_planBloc.modelo.etiqueta}' : '')),
+            title: Text('Plan de estudios' + (state is Ready ? ' ${_planBloc!.modelo!.etiqueta}' : '')),
           ),
           body: state is Ready ? _buildPlan() : SimpleLoadingBodyWidget(),
         );
@@ -50,11 +50,11 @@ class PlanPageState extends State<PlanPage>{
         Icons.book,
         color: Colors.red,
       ),
-      children: List.generate(_planBloc.modelo.ciclos.length, (int i){
+      children: List.generate(_planBloc!.modelo!.ciclos.length, (int i){
         return ElementoListaSemestresWidget(
-          numero: _planBloc.modelo.ciclos[i].cursos.length,
+          numero: _planBloc!.modelo!.ciclos[i]!.cursos!.length,
           onPressed: () => _lanzarCicloPage(i),
-          titulo: _planBloc.modelo.ciclos[i].etiqueta,
+          titulo: _planBloc!.modelo!.ciclos[i]!.etiqueta,
         );
       }),
     );
@@ -66,9 +66,9 @@ class PlanPageState extends State<PlanPage>{
       MaterialPageRoute(
         builder: (context) => ListaCursosPlanPage(
           isRoot: true,
-          title: _planBloc.modelo.ciclos[index].etiqueta,
-          cursos: _planBloc.modelo.ciclos[index].cursos,
-          plan: _planBloc.modelo,
+          title: _planBloc!.modelo!.ciclos[index]!.etiqueta,
+          cursos: _planBloc!.modelo!.ciclos[index]!.cursos,
+          plan: _planBloc!.modelo,
         )
       ),
     );

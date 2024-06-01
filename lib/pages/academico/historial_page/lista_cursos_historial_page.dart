@@ -11,14 +11,14 @@ class ListaCursosHistorialPage extends StatelessWidget{
   final CicloHistorialModel ciclo;
 
   const ListaCursosHistorialPage({
-    @required this.ciclo,
+    required this.ciclo,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(ciclo.etiqueta),        
+        title: Text(ciclo.etiqueta!),        
       ),
       body: ListaCursosWidget(
         leyenda: ciclo.matrizInformacion != null ? _buildCabecera() : null,
@@ -103,7 +103,7 @@ class ListaCursosHistorialPage extends StatelessWidget{
     ;
   }
 
-  Widget _buildInfo({@required String titulo, @required List<Dupla> datos}){
+  Widget _buildInfo({required String titulo, required List<Dupla> datos}){
     const double margen = 5;
     return
     Container(

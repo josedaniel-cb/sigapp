@@ -7,15 +7,15 @@ import 'package:SIGApp/widgets/lista_cursos_widget/lista_cursos_widget.dart';
 
 class ListaCursosPlanPage extends StatefulWidget{
   final String title;
-  final List<CursoPlanModel> cursos;
-  final PlanModel plan;
+  final List<CursoPlanModel>? cursos;
+  final PlanModel? plan;
   final bool isRoot;
 
   const ListaCursosPlanPage({
-    @required this.title, 
-    @required this.cursos, 
-    @required this.plan,
-    @required this.isRoot,
+    required this.title, 
+    required this.cursos, 
+    required this.plan,
+    required this.isRoot,
   });
 
   @override
@@ -30,11 +30,11 @@ class ListaCursosPlanPageState extends State<ListaCursosPlanPage>{
         title: Text(widget.title),        
       ),
       body: ListaCursosWidget(
-        cursos: List.generate(widget.cursos.length, (int i){
+        cursos: List.generate(widget.cursos!.length, (int i){
           return CursoWidget(
-            cursoModel: widget.cursos[i],
+            cursoModel: widget.cursos![i],
             index: i + 1,
-            botones: widget.cursos[i].requisitos.length > 0 ? 
+            botones: widget.cursos![i].requisitos!.length > 0 ? 
               _buildBotonRequisitos(i) 
               : null,
           );
@@ -45,7 +45,7 @@ class ListaCursosPlanPageState extends State<ListaCursosPlanPage>{
 
   List<Widget> _buildBotonRequisitos(int i) {
     List<Widget> botones;
-    botones = List<Widget>();
+    botones = [];
     botones.add(
       _buildBoton(
         text: 'Requisitos',
@@ -55,9 +55,9 @@ class ListaCursosPlanPageState extends State<ListaCursosPlanPage>{
     return botones;
   }
 
-  Widget _buildBoton({@required String text, @required Function onPressed}){
+  Widget _buildBoton({required String text, required Function onPressed}){
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: onPressed as void Function()?,
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(Colors.blueAccent),
         elevation: MaterialStateProperty.all<double>(5.0),
@@ -81,16 +81,16 @@ class ListaCursosPlanPageState extends State<ListaCursosPlanPage>{
         builder: (context) => ListaCursosPlanPage(
           isRoot: false,
           plan: widget.plan,
-          title: 'Requisitos ${widget.cursos[index].nombre}',
-          cursos: List.generate(widget.cursos[index].requisitos.length, (int i){
-            int indexCiclo = widget.cursos[index].requisitos[i].cicloIndex;
-            int indexCurso = widget.cursos[index].requisitos[i].cursoIndex;
+          title: 'Requisitos ${widget.cursos![index].nombre}',
+          cursos: List.generate(widget.cursos![index].requisitos!.length, (int i){
+            int indexCiclo = widget.cursos![index].requisitos![i].cicloIndex!;
+            int indexCurso = widget.cursos![index].requisitos![i].cursoIndex!;
             // if(!widget.isRoot){
-              CursoPlanModel cursoOriginal = widget.plan.ciclos[indexCiclo].cursos[indexCurso];
+              CursoPlanModel cursoOriginal = widget.plan!.ciclos[indexCiclo]!.cursos![indexCurso];
               CursoPlanModel cursoTemporal = CursoPlanModel(cursoOriginal.nombre, cursoOriginal.codigo);
               cursoTemporal.requisitos = cursoOriginal.requisitos;
               cursoTemporal.caracteristicas = cursoOriginal.caracteristicas.toSet().toList();
-              cursoTemporal.caracteristicas.add(CursoCaracteristica('Ciclo', '${widget.plan.ciclos[indexCiclo].etiqueta.split(' ')[1]}'));
+              cursoTemporal.caracteristicas.add(CursoCaracteristica('Ciclo', '${widget.plan!.ciclos[indexCiclo]!.etiqueta.split(' ')[1]}'));
               return cursoTemporal;
             // } else {
             //   return widget.plan.ciclos[indexCiclo].cursos[indexCurso];

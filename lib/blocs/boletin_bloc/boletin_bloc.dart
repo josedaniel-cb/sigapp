@@ -6,11 +6,11 @@ import 'package:SIGApp/models/notas_model.dart';
 import './bloc.dart';
 
 class BoletinBloc extends Bloc<BoletinEvent, BoletinState> {
-  BoletinModel modelo;
-  List<String> semestres;
-  int selectedSemestreIndex;
+  late BoletinModel modelo;
+  late List<String> semestres;
+  int? selectedSemestreIndex;
   // int selectedCursoNotasIndex;
-  NotasModel notasModel;
+  NotasModel? notasModel;
 
   // @override
   // BoletinState get initialState => BoletinLoading();

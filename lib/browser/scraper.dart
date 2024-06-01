@@ -73,7 +73,7 @@ class Scraper {
 
   static const String styleAttribute = 'style';
 
-  static String acondicionarHtmlData(htmlData) {
+  static String? acondicionarHtmlData(htmlData) {
     htmlData = htmlData.substring(1, htmlData.length - 1);
 
     /// Nota:
@@ -100,7 +100,7 @@ class Scraper {
 
   static List<String> browserGenerarListaSemestres(Document document) {
     List<Element> elementos = document.getElementsByTagName(classOption);
-    List<String> semestres = List<String>();
+    List<String> semestres = [];
     elementos.forEach((opcion) {
       semestres.add(opcion.innerHtml);
     });
@@ -136,7 +136,7 @@ class Scraper {
     HorarioModel modelo;
     HoraHorario inicio, fin;
     int i;
-    CursoHorario curso;
+    CursoHorario? curso;
     Color colorTexto, colorFondo;
     String nombreCurso, nombreAula;
     FilaHorario filaHorario;
@@ -155,7 +155,7 @@ class Scraper {
         // if(casilleros[i].text.isEmpty){
         if (casilleros[i].text.length != 0) {
           colorFondo = _horarioObtenerCasilleroColorFondo(
-              casilleros[i].attributes[styleAttribute]);
+              casilleros[i].attributes[styleAttribute]!);
           colorTexto = _horarioObtenerCasilleroColorTexto(colorFondo);
           nodoAula = casilleros[i].getElementsByTagName(tagParrafo)[0];
           nombreAula = nodoAula.text;
@@ -225,7 +225,7 @@ class Scraper {
     List<int> arriba, abajo, remover;
 
     /// Determinar qué fila se mudará a su fila siguiente (como [curso1] en cada casillero)
-    abajo = List<int>();
+    abajo = [];
     i = 0;
     while (i < modelo.filas.length - 1) {
       if (modelo.filas[i].inicio.horas == modelo.filas[i + 1].inicio.horas &&
@@ -237,7 +237,7 @@ class Scraper {
     }
 
     /// Determinar qué fila se mudará a su fila anterior (como [curso2] en cada casillero)
-    arriba = List<int>();
+    arriba = [];
     i = 1;
     while (i < modelo.filas.length) {
       if (modelo.filas[i].fin.horas == modelo.filas[i - 1].fin.horas &&
@@ -296,7 +296,7 @@ class Scraper {
     List<Element> filasTabla, casillerosFila;
     CursoBoletinModel nuevoCurso;
     int i;
-    String aux;
+    String? aux;
 
     modelo = BoletinModel();
     filasTabla = _obtenerTabla(document).getElementsByTagName(tagFilaTabla);
@@ -338,12 +338,12 @@ class Scraper {
 
       nuevoCurso.silaboUrl = casillerosFila[11]
           .getElementsByTagName('a')[0]
-          .attributes['onclick']
+          .attributes['onclick']!
           .substring(13, 67);
 
       aux =
           casillerosFila[11].getElementsByTagName('a')[0].attributes['onclick'];
-      aux = aux.split(',')[0];
+      aux = aux!.split(',')[0];
       // nuevoCurso.notasUrl = Urls.NOTAS + aux.substring(aux.length - 11, aux.length - 1);
 
       modelo.cursos.add(nuevoCurso);
@@ -356,15 +356,15 @@ class Scraper {
   static NotasModel notasGenerarModelo(Document document) {
     List<CriterioEvaluacionNotasModel> criterios;
     List<Element> listaCriterios, listaSpans;
-    Element notasPanel, panelNotas;
+    Element? notasPanel, panelNotas;
     // Element asistenciasPanel;
     // int aiststTotClases, aiststTotales, aiststTotFaltas;
     // List<String> asistencias;
-    CursoModel cursoModelo;
-    double notaSusti, notaFinal;
-    String estado, descripcionError, notaFinalLabel;
+    CursoModel? cursoModelo;
+    double? notaSusti, notaFinal;
+    String? estado, descripcionError, notaFinalLabel;
 
-    criterios = List<CriterioEvaluacionNotasModel>();
+    criterios = [];
 
     notasPanel = document.getElementById('notas');
     if (notasPanel != null) {
@@ -481,7 +481,7 @@ class Scraper {
 
     elemPanelBody = panelDefault.getElementsByClassName(classPanelBody)[0];
 
-    examenes = List<ExamenNotasModel>();
+    examenes = [];
     elemExamenes = elemPanelBody.getElementsByTagName(tagListItem);
     elemExamenes.forEach((Element examenElement) {
       examenes.add(_notasObtenerExamenModel(examenElement));
@@ -502,7 +502,7 @@ class Scraper {
 
   static ExamenNotasModel _notasObtenerExamenModel(Element examenElement) {
     List<Element> listaSpans = examenElement.getElementsByTagName(tagSpan);
-    String fechaRegistro;
+    String? fechaRegistro;
     List<Element> listaItalics = examenElement.getElementsByTagName(tagItalic);
     if (listaItalics.length != 0) {
       fechaRegistro =
@@ -519,7 +519,7 @@ class Scraper {
     List<Element> filas;
     int i, j;
     List<List<Element>> matriz;
-    CicloPlanModel nuevoCiclo;
+    CicloPlanModel? nuevoCiclo;
 
     // _print('planGenerarModelo($document)');
 
@@ -531,7 +531,7 @@ class Scraper {
     filas = document
         .getElementsByTagName(tagCuerpoTabla)[0]
         .getElementsByTagName(tagFilaTabla);
-    matriz = List<List<Element>>();
+    matriz = [];
     for (i = 0; i < filas.length; i++) {
       // _print('filas[$i].innerHtml: ${filas[i].innerHtml}');
       matriz.add(filas[i].getElementsByTagName(tagCasilleroTabla));
@@ -548,7 +548,7 @@ class Scraper {
         modelo.ciclos.add(nuevoCiclo);
         nuevoCiclo = CicloPlanModel(matriz[i][0].text.trim());
       } else {
-        nuevoCiclo.cursos.add(CursoPlanModel(
+        nuevoCiclo!.cursos!.add(CursoPlanModel(
             matriz[i][3].text.trim(), matriz[i][2].text)
           ..caracteristicas.add(CursoCaracteristica(
               CursoCaracteristica.requisitos, matriz[i][4].text))
@@ -565,10 +565,10 @@ class Scraper {
     }
 
     for (i = 0; i < modelo.ciclos.length; i++) {
-      for (j = 0; j < modelo.ciclos[i].cursos.length; j++) {
-        modelo.ciclos[i].cursos[j].requisitos = _boletinGenerarRequisitos(
-            modelo, modelo.ciclos[i].cursos[j].requisitosData);
-        modelo.ciclos[i].cursos[j].caracteristicas
+      for (j = 0; j < modelo.ciclos[i]!.cursos!.length; j++) {
+        modelo.ciclos[i]!.cursos![j].requisitos = _boletinGenerarRequisitos(
+            modelo, modelo.ciclos[i]!.cursos![j].requisitosData);
+        modelo.ciclos[i]!.cursos![j].caracteristicas
             .removeAt(0); // Eliminar requisitos
       }
     }
@@ -580,11 +580,11 @@ class Scraper {
       PlanModel modelo, String requisitosData) {
     List<RequisitoCursoPlanModel> requisitos;
     List<String> codigosCurso;
-    int i, j;
+    int? i, j;
     bool ban;
 
     // _print('_boletinGenerarRequisitos($modelo, $requisitosData) {...');
-    requisitos = List<RequisitoCursoPlanModel>();
+    requisitos = [];
     requisitosData = requisitosData.trim();
     if (requisitosData.length > 3) {
       // evitar "---"
@@ -593,20 +593,23 @@ class Scraper {
         // _print('codigosCurso.forEach(($codigo){...}');
         ban = true;
         i = 0;
-        while (i < modelo.ciclos.length && ban) {
+        while (i! < modelo.ciclos.length && ban) {
           j = 0;
-          while (j < modelo.ciclos[i].cursos.length &&
-              modelo.ciclos[i].cursos[j].codigo.compareTo(codigo) != 0) {
-            j++;
+          while (j! < modelo.ciclos[i!]!.cursos!.length &&
+              modelo.ciclos[i!]!.cursos![j!].codigo!.compareTo(codigo) != 0) {
+            // j++;
+            j = j! + 1;
           }
-          if (j < modelo.ciclos[i].cursos.length) {
+          if (j! < modelo.ciclos[i!]!.cursos!.length) {
             ban = false; // el curso fue encontrado
           }
-          i++;
+          // i++;
+          i = i! + 1;
         }
         if (!ban) {
           // el curso fue encontrado
-          i--;
+          // i--;
+          i = i! - 1;
           requisitos.add(RequisitoCursoPlanModel(i, j));
         }
       });
@@ -629,21 +632,20 @@ class Scraper {
     for (i = 0; i < cursosElementos.length; i++) {
       caracteristicasCurso =
           cursosElementos[i].getElementsByTagName(tagCasilleroTabla);
-      modelo.cursos.add(
-          CursoModel(caracteristicasCurso[2].text, caracteristicasCurso[0].text)
-            ..caracteristicas.add(CursoCaracteristica(
-                CursoCaracteristica.clave, caracteristicasCurso[1].text))
-            ..caracteristicas.add(CursoCaracteristica(
-                CursoCaracteristica.grupo, caracteristicasCurso[3].text))
-            ..caracteristicas.add(CursoCaracteristica(
-                CursoCaracteristica.seccion, caracteristicasCurso[4].text))
-            ..caracteristicas.add(CursoCaracteristica(
-                CursoCaracteristica.docenteTeoria,
-                caracteristicasCurso[5].text))
-            ..caracteristicas.add(CursoCaracteristica(
-                CursoCaracteristica.aula, caracteristicasCurso[6].text))
-            ..caracteristicas.add(CursoCaracteristica(
-                CursoCaracteristica.capacidad, caracteristicasCurso[7].text)));
+      modelo.cursos.add(CursoModel(
+          caracteristicasCurso[2].text, caracteristicasCurso[0].text)
+        ..caracteristicas.add(CursoCaracteristica(
+            CursoCaracteristica.clave, caracteristicasCurso[1].text))
+        ..caracteristicas.add(CursoCaracteristica(
+            CursoCaracteristica.grupo, caracteristicasCurso[3].text))
+        ..caracteristicas.add(CursoCaracteristica(
+            CursoCaracteristica.seccion, caracteristicasCurso[4].text))
+        ..caracteristicas.add(CursoCaracteristica(
+            CursoCaracteristica.docenteTeoria, caracteristicasCurso[5].text))
+        ..caracteristicas.add(CursoCaracteristica(
+            CursoCaracteristica.aula, caracteristicasCurso[6].text))
+        ..caracteristicas.add(CursoCaracteristica(
+            CursoCaracteristica.capacidad, caracteristicasCurso[7].text)));
     }
 
     return modelo;
@@ -654,20 +656,20 @@ class Scraper {
     HistorialModel modelo;
     List<String> etiquetasSemestres;
     List<Element> elemEtiqSeme, elemTablaSeme;
-    List<List<List<dynamic>>> matricesDeInformacion;
-    List<List<CursoModel>> listaSemestreCursos;
+    List<List<List<dynamic>>?> matricesDeInformacion;
+    List<List<CursoModel>?> listaSemestreCursos;
 
     // 1. Obtener etiquetas de semestres
     elemEtiqSeme = document
         .getElementsByTagName(tagFieldset)[0]
         .getElementsByClassName(classTextCenter);
-    etiquetasSemestres = List<String>();
+    etiquetasSemestres = [];
     elemEtiqSeme.forEach((Element e) {
       etiquetasSemestres.add(e.text.trim());
     });
 
-    matricesDeInformacion = List<List<List<dynamic>>>();
-    listaSemestreCursos = List<List<CursoModel>>();
+    matricesDeInformacion = [];
+    listaSemestreCursos = [];
     elemTablaSeme = document
         .getElementsByTagName(tagFieldset)[0]
         .getElementsByClassName(classKGridWidget);
@@ -683,29 +685,29 @@ class Scraper {
         // Obtener matriz cruda
         var elemTablaInformacion = elementosMatriz[0];
         var filas = elemTablaInformacion.getElementsByTagName(tagFilaTabla);
-        matrizCrudo = List<List<Element>>();
+        matrizCrudo = [];
         filas.forEach((Element fila) {
           // debugPrint(fila.innerHtml);
           matrizCrudo.add(fila.getElementsByTagName(tagCasilleroTabla));
         });
         // Dar formato a la matriz
-        matrizDeInformacion = List<List<dynamic>>();
+        matrizDeInformacion = [];
 
-        matrizDeInformacion.add(List<dynamic>());
+        matrizDeInformacion.add([]);
         matrizDeInformacion[0].add(double.parse(matrizCrudo[0][1].text));
         matrizDeInformacion[0].add(double.parse(matrizCrudo[0][3].text));
         matrizDeInformacion[0].add(double.parse(matrizCrudo[0][5].text));
         matrizDeInformacion[0].add(double.parse(matrizCrudo[0][7].text));
         matrizDeInformacion[0].add(int.parse(matrizCrudo[0][9].text));
 
-        matrizDeInformacion.add(List<dynamic>());
+        matrizDeInformacion.add([]);
         matrizDeInformacion[1].add(int.parse(matrizCrudo[1][1].text));
         matrizDeInformacion[1].add(int.parse(matrizCrudo[1][3].text));
         matrizDeInformacion[1].add(int.parse(matrizCrudo[1][5].text));
         matrizDeInformacion[1].add(int.parse(matrizCrudo[1][7].text));
         matrizDeInformacion[1].add(int.parse(matrizCrudo[1][9].text));
 
-        matrizDeInformacion.add(List<dynamic>());
+        matrizDeInformacion.add([]);
         matrizDeInformacion[2]
             .add(double.parse(matrizCrudo[2][1].text).toInt());
         matrizDeInformacion[2]
@@ -738,7 +740,7 @@ class Scraper {
             elementosCursos[0].getElementsByTagName(tagCuerpoTabla)[0];
         List<Element> cursoElements =
             tablaCursosBody.getElementsByTagName(tagFilaTabla);
-        cursos = List<CursoModel>();
+        cursos = [];
         cursoElements.forEach((Element fila) {
           var casilleros = fila.getElementsByTagName(tagCasilleroTabla);
           var curso = CursoModel(casilleros[1].text, casilleros[0].text);
@@ -794,18 +796,18 @@ class Scraper {
 
     // debugPrint(':v ->>>>>>>>>>\n${document.outerHtml}');
     alumno = document
-        .getElementById('Informe')
+        .getElementById('Informe')!
         .getElementsByTagName(tagHeading4)[0]
         .text;
     facultad = document
-        .getElementById('Informe')
+        .getElementById('Informe')!
         .getElementsByTagName(tagParrafo)[0]
         .text
         .trim();
     facultad = facultad.substring(25, facultad.length - 35);
 
     datos = document
-        .getElementById('Informe')
+        .getElementById('Informe')!
         .getElementsByTagName(tagCuerpoTabla)[0]
         .getElementsByTagName(tagFilaTabla);
     semestreIngreso = datos[0].getElementsByTagName(tagCasilleroTabla)[1].text;
@@ -822,11 +824,12 @@ class Scraper {
     creditosTabla = document
         .getElementsByTagName(tagCuerpoTabla)[1]
         .getElementsByTagName(tagFilaTabla);
-    requisitos = List<List<String>>();
+    // requisitos = List<List<String>>();
+    requisitos = [];
     creditosTabla.forEach((fila) {
       // _print('fila $fila');
       casillerosTabla = fila.getElementsByTagName(tagCasilleroTabla);
-      filaCreditosTabla = List<String>();
+      filaCreditosTabla = [];
       for (i = 1; i < casillerosTabla.length; i++) {
         // _print('casillerosTabla[$i].text = ${casillerosTabla[i].text}');
         filaCreditosTabla.add(casillerosTabla[i].text.trim());

@@ -18,7 +18,7 @@ import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -33,7 +33,7 @@ class LoginPageState extends State<LoginPage> {
   // final double _bodyHeight = 420;
   final double _margenVertical = 18;
 
-  LoginBloc _loginBloc;
+  late LoginBloc _loginBloc;
 
   @override
   void initState() {
@@ -68,7 +68,7 @@ class LoginPageState extends State<LoginPage> {
                         'Revisa tu conexión a internet y vuelve a intentarlo más tarde',
                   ));
         } else if (state is LoginReady) {
-          bool ban = App.browserController.preferencias.primerUso;
+          bool? ban = App.browserController.preferencias!.primerUso;
           if (ban == true || ban == null) {
             showDialog(
               context: context,
@@ -92,7 +92,7 @@ class LoginPageState extends State<LoginPage> {
             if (state is LoginLoading) {
               return _buildMaskedBody(_buildLoadingMessage('Cargando'));
             } else if (state is LoginLoggingIn) {
-              _usuarioController.text = _loginBloc.loginModel.user;
+              _usuarioController.text = _loginBloc.loginModel.user!;
               return _buildMaskedBody(_buildLoadingMessage('Iniciando sesión'));
             } else {
               // LoginReady
@@ -294,7 +294,7 @@ class LoginPageState extends State<LoginPage> {
               color: App.blueColor,
             )),
         validator: (valor) {
-          if (valor.isEmpty) {
+          if (valor!.isEmpty) {
             return 'Por favor ingrese su código universitario';
           } else {
             return null;
@@ -332,7 +332,7 @@ class LoginPageState extends State<LoginPage> {
               color: App.blueColor,
             )),
         validator: (valor) {
-          if (valor.isEmpty) {
+          if (valor!.isEmpty) {
             return 'Por favor ingrese su clave web';
           } else {
             return null;
@@ -360,7 +360,7 @@ class LoginPageState extends State<LoginPage> {
         children: <Widget>[
           Checkbox(
             value: _loginBloc.loginModel.keepSesion,
-            onChanged: (bool ban) {
+            onChanged: (bool? ban) {
               setState(() {
                 _loginBloc.loginModel.keepSesion = ban;
               });
@@ -406,8 +406,8 @@ class LoginPageState extends State<LoginPage> {
   }
 
   void _solicitarIngreso() {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       _loginBloc.add(LoginUserRequestLogIn());
     }
   }
