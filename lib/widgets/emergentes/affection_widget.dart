@@ -76,7 +76,7 @@ class _AffectionWidget extends State<AffectionWidget> {
             child: Text('Entiendo'),
             autofocus: true,
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.blue),
+              backgroundColor: WidgetStateProperty.all(Colors.blue),
             ),
             onPressed: () => Navigator.of(context).pop(),
           ),

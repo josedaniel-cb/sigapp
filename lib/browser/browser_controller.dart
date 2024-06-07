@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:SIGApp/app/app.dart';
 import 'package:SIGApp/browser/gestor_firebase.dart';
-import 'package:flutter/material.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -16,7 +15,6 @@ import 'package:SIGApp/blocs/login_bloc/bloc.dart';
 import 'package:SIGApp/blocs/home_bloc/bloc.dart';
 import 'package:SIGApp/blocs/plan_bloc/bloc.dart';
 import 'package:SIGApp/blocs/programacion_bloc/bloc.dart';
-import 'package:SIGApp/blocs/programacion_bloc/programacion_bloc.dart';
 import 'package:SIGApp/models/boletin_model/boletin_model.dart';
 import 'package:SIGApp/models/home_model.dart';
 import 'package:SIGApp/models/horario_model/horario_model.dart';

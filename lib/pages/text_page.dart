@@ -1,5 +1,4 @@
 import 'package:SIGApp/app/app.dart';
-import 'package:SIGApp/browser/gestor_firebase.dart';
 import 'package:SIGApp/widgets/simple_loading_body_widget.dart';
 import 'package:flutter/material.dart';
 

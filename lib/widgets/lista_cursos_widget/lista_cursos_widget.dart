@@ -17,7 +17,7 @@ class ListaCursosWidget extends StatelessWidget{
     required this.cursos,
     this.leyenda,
     this.nadaQueMostrarMensaje,
-  }) : assert(cursos != null);
+  });
 
   @override
   Widget build(BuildContext context) {

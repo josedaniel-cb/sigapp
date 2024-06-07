@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:SIGApp/models/curso_model/curso_model.dart';
 
 class NotasModel{

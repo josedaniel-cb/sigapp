@@ -4,8 +4,6 @@ import 'package:SIGApp/widgets/sigapp_info/sigapp_logotipo_widget.dart';
 import 'package:SIGApp/widgets/sigapp_info/sigapp_version_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:SIGApp/app/urls.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class AcercaDeWidget extends StatelessWidget{
   final double fontSize = 15;
@@ -168,7 +166,7 @@ class AcercaDeWidget extends StatelessWidget{
               ),
             ),
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.blue),
+              backgroundColor: WidgetStateProperty.all(Colors.blue),
             ),
             onPressed: (){
               Navigator.pop(context);

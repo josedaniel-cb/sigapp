@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:SIGApp/models/login_model.dart';
 
 abstract class LoginState extends Equatable {
   const LoginState();

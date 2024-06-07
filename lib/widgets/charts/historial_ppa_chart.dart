@@ -60,7 +60,8 @@ class HistorialPPAChart extends StatelessWidget {
               bottom: margen * 0.8),
           child: LineChart(
             _mainData(),
-            swapAnimationDuration: Duration(milliseconds: 700),
+            // swapAnimationDuration: Duration(milliseconds: 700),
+            duration: Duration(milliseconds: 700),
           ),
         ),
       ),

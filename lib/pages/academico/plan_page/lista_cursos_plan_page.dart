@@ -59,9 +59,9 @@ class ListaCursosPlanPageState extends State<ListaCursosPlanPage>{
     return ElevatedButton(
       onPressed: onPressed as void Function()?,
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.blueAccent),
-        elevation: MaterialStateProperty.all<double>(5.0),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        backgroundColor: WidgetStateProperty.all<Color>(Colors.blueAccent),
+        elevation: WidgetStateProperty.all<double>(5.0),
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(App.bordeRadio),
           ),

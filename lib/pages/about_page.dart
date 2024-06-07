@@ -1,6 +1,5 @@
 import 'package:SIGApp/app/app.dart';
 import 'package:SIGApp/app/urls.dart';
-import 'package:SIGApp/browser/gestor_firebase.dart';
 import 'package:SIGApp/pages/easter_egg_page.dart';
 import 'package:SIGApp/pages/text_page.dart';
 import 'package:SIGApp/widgets/sigapp_info/sigapp_logotipo_widget.dart';
@@ -9,9 +8,7 @@ import 'package:SIGApp/widgets/sigapp_info/sigapp_version_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/services.dart';
-import 'dart:convert' show utf8;
 
 class AboutPage extends StatefulWidget{
   @override
