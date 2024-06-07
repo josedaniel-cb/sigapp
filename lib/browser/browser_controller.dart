@@ -1,14 +1,12 @@
 import 'dart:async';
 
-// import 'package:flutter/material.dart';
 import 'package:SIGApp/app/app.dart';
 import 'package:SIGApp/browser/gestor_firebase.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:flutter/material.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:SIGApp/app/urls.dart';
-// import 'package:SIGApp/app/app.dart';
 import 'package:SIGApp/app/preferencias.dart';
 import 'package:SIGApp/blocs/boletin_bloc/bloc.dart';
 import 'package:SIGApp/blocs/historial_bloc/bloc.dart';
@@ -23,13 +21,12 @@ import 'package:SIGApp/models/boletin_model/boletin_model.dart';
 import 'package:SIGApp/models/home_model.dart';
 import 'package:SIGApp/models/horario_model/horario_model.dart';
 import 'package:SIGApp/models/login_model.dart';
-// import 'package:SIGApp/models/plan_model/plan_model.dart';
 import 'my_pages.dart';
 
 import 'scripts.dart';
 import 'scraper.dart';
 
-class BrowserController{
+class BrowserController {
   /// Blocs
   LoginBloc _loginBloc;
   HomeBloc? _homeBloc;
@@ -41,8 +38,7 @@ class BrowserController{
   InformeBloc? _informeBloc;
 
   late GestorFirebase gestorFirebase;
-
-  FlutterWebviewPlugin? _webView;
+  late WebViewController _webViewController;
   Preferencias? _preferencias;
   MyPages? currentPage;
 
@@ -52,7 +48,7 @@ class BrowserController{
   bool banAuxSeHaLlegadoACienPorciento = false;
 
   /// Constructor
-  BrowserController(this._loginBloc){
+  BrowserController(this._loginBloc) {
     // Obtener preferencias
     _preferencias = Preferencias();
     _preferencias!.obtener();
@@ -60,110 +56,136 @@ class BrowserController{
     gestorFirebase = GestorFirebase();
 
     // Inicializar navegador
-    _webView = FlutterWebviewPlugin();
-    _webView!.onUrlChanged.listen(_urlListener);
-    _webView!.onProgressChanged.listen((event){
-      // if(event != 1.0){
-      //   App.showToast('Cargando web ${(event*100.0).toStringAsFixed(0)}%', duracionSegundos: 1);
-      // } else {
-      //   App.showToast('Web cargada 100%', duracionSegundos: 1);
-      // }
-      
-      // if(banAuxSeHaLlegadoACienPorciento && event == 1){ // no estoy seguro de la segunda condici[o]n
-      if(banAuxSeHaLlegadoACienPorciento){ // no estoy seguro de la segunda condici[o]n
-        App.showToast('🌐 Web cargada', duracionSegundos: 1);
-        banAuxSeHaLlegadoACienPorciento = false;
-      } else {
-        // App.showToast('Cargando web ${(event*100.0).toStringAsFixed(0)}%', duracionSegundos: 1);
-        App.showToast('🌐 _status: ${(event*100.0).toStringAsFixed(0)}%', duracionSegundos: 1);
-        if(event == 1){
-          banAuxSeHaLlegadoACienPorciento = true;
-        }
-      }
-      _print('Cargando web ${event*100}%');
-    }); 
+    _initializeWebView();
+  }
 
-    // Arrancar navegador
+  void _initializeWebView() {
+    _webViewController = WebViewController()
+          ..setJavaScriptMode(JavaScriptMode.unrestricted)
+          // ..setBackgroundColor(const Color(0x00000000))
+          ..setNavigationDelegate(
+            NavigationDelegate(
+              onProgress: (int progress) {
+                if (banAuxSeHaLlegadoACienPorciento) {
+                  App.showToast('🌐 Web cargada', duracionSegundos: 1);
+                  banAuxSeHaLlegadoACienPorciento = false;
+                } else {
+                  App.showToast(
+                      '🌐 _status: ${(progress * 100.0).toStringAsFixed(0)}%',
+                      duracionSegundos: 1);
+                  if (progress == 100) {
+                    banAuxSeHaLlegadoACienPorciento = true;
+                  }
+                }
+                _print('Cargando web ${progress}%');
+              },
+              // onPageStarted: (String url) {
+              //   _urlListener(url);
+              // },
+              onPageFinished: (String url) {
+                _urlListener(url);
+              },
+              onWebResourceError: (WebResourceError error) {
+                _print('''
+              Page resource error:
+                code: ${error.errorCode}
+                description: ${error.description}
+                errorType: ${error.errorType}
+                isForMainFrame: ${error.isForMainFrame}
+            ''');
+              },
+              // onNavigationRequest: (NavigationRequest request) {
+              //   if (request.url.startsWith('https://www.youtube.com/')) {
+              //     _print('blocking navigation to ${request.url}');
+              //     return NavigationDecision.prevent;
+              //   }
+              //   _print('allowing navigation to ${request.url}');
+              //   return NavigationDecision.navigate;
+              // },
+            ),
+          )
+        // ..addJavaScriptChannel(
+        //   'Toaster',
+        //   onMessageReceived: (JavaScriptMessage message) {
+        //     ScaffoldMessenger.of(context).showSnackBar(
+        //       SnackBar(content: Text(message.message)),
+        //     );
+        //   },
+        // )
+        // ..loadRequest(Uri.parse('https://flutter.dev'))
+        ;
+
     currentPage = MyPages.Login;
-    _webView!.launch(Urls.SALIR, hidden: true, withJavascript: true, appCacheEnabled: true);
+    _webViewController.loadRequest(Uri.parse(Urls.SALIR));
   }
 
   ///Get
-  FlutterWebviewPlugin? get webView => _webView;
-
-  // Preferencias get preferencias => _preferencias;
+  WebViewController get webView => _webViewController;
 
   HomeBloc? get homeBloc => _homeBloc;
 
   Preferencias? get preferencias => _preferencias;
-  
+
   /// Setters
-  set loginBloc(LoginBloc bloc){
+  set loginBloc(LoginBloc bloc) {
     _loginBloc = bloc;
   }
 
-  set homeBloc(HomeBloc? bloc){
+  set homeBloc(HomeBloc? bloc) {
     _homeBloc = bloc;
     currentPage = MyPages.Home;
   }
 
-  set horarioBloc(HorarioBloc? bloc){
+  set horarioBloc(HorarioBloc? bloc) {
     _horarioBloc = bloc;
     solicitudActiva = true;
   }
 
-  set boletinBloc(BoletinBloc? bloc){
+  set boletinBloc(BoletinBloc? bloc) {
     _boletinBloc = bloc;
-    solicitudActiva = true;    
+    solicitudActiva = true;
     currentPage = MyPages.Boletin;
   }
 
-  set planBloc(PlanBloc? bloc){
+  set planBloc(PlanBloc? bloc) {
     _planBloc = bloc;
     solicitudActiva = true;
   }
 
-  set informeBloc(InformeBloc? bloc){
+  set informeBloc(InformeBloc? bloc) {
     _informeBloc = bloc;
     solicitudActiva = true;
   }
 
-  set programacionBloc(ProgramacionBloc? bloc){
+  set programacionBloc(ProgramacionBloc? bloc) {
     _programacionBloc = bloc;
     solicitudActiva = true;
   }
 
-  set historialBloc(HistorialBloc? bloc){
+  set historialBloc(HistorialBloc? bloc) {
     _historialBloc = bloc;
     solicitudActiva = true;
   }
-  
+
   /// Operaciones con el navegador
-  void cargarUrl(String url){
-    _webView!.reloadUrl(url);
+  void cargarUrl(String url) {
+    _webViewController.loadRequest(Uri.parse(url));
   }
-  
+
   Future<Document> solicitarDocumento() async {
-    String htmlData = (await _webView!.evalJavascript(Scripts.browserSolicitarDocumento()))!;
-    // debugPrint(htmlData);
+    String htmlData = await _webViewController
+        .runJavaScriptReturningResult(Scripts.browserSolicitarDocumento())
+        .then((value) => value.toString());
     htmlData = Scraper.acondicionarHtmlData(htmlData)!;
-    // debugPrint(htmlData);
     return parse(htmlData);
   }
 
   /// Acciones Login
-  void loginSolicitarIngreso(String? cu, String? password){
+  void loginSolicitarIngreso(String? cu, String? password) {
     _print('Solicitando ingreso con cu: \'$cu\' pass: \'$password\'');
-    // _webView.show();
-    // _print(Scripts.loginSolicitarIngreso(cu, password));
-    // _loginBloc.intentosDeIngreso++; // movido de if(event is LoginUserRequestLogIn)... (bloc)
     _loginBloc.intentosDeIngreso = _loginBloc.intentosDeIngreso! + 1;
-
-    // _loginBloc.add(LoginControllerLoggingIn(_preferencias.usuario)); // Espera KHEEE
-    // _loginBloc.add(LoginControllerLoggingIn(cu, password)); // movido (regresado) a urlListener (de Login)
-
-    // _print('_webView.evalJavascript(\n${Scripts.loginSolicitarIngreso(cu, password)})');
-    _webView!.evalJavascript(Scripts.loginSolicitarIngreso(cu, password));
+    _webViewController
+        .runJavaScript(Scripts.loginSolicitarIngreso(cu, password));
   }
 
   // Acciones Home
@@ -174,140 +196,154 @@ class BrowserController{
   }
 
   // Acciones Horario
-  void horarioSolicitarHorario(){
-    if(solicitudActiva){
-      Timer(Duration(milliseconds: _tiempoDeEsperaMs),() async {
+  void horarioSolicitarHorario() {
+    if (solicitudActiva) {
+      Timer(Duration(milliseconds: _tiempoDeEsperaMs), () async {
         Document document = await solicitarDocumento();
         bool aunEstaCargando = Scraper.estaCargandoTabla(document);
-        if(!aunEstaCargando){
+        if (!aunEstaCargando) {
           HorarioModel modelo = Scraper.horarioGenerarModelo(document);
-          List<String> semestres = Scraper.browserGenerarListaSemestres(document);
+          List<String> semestres =
+              Scraper.browserGenerarListaSemestres(document);
           _horarioBloc!.add(HorarioControllerReady(modelo, semestres));
         } else {
           horarioSolicitarHorario();
         }
       });
-    }    
+    }
   }
 
   Future horarioSolicitarOtro(int semestreIndex) async {
-    await _webView!.evalJavascript(Scripts.genericSeleccionarSemestre(semestreIndex));
+    await _webViewController
+        .runJavaScript(Scripts.genericSeleccionarSemestre(semestreIndex));
     _horarioSolicitarDatosOtro(semestreIndex);
   }
 
-  Future _horarioSolicitarDatosOtro(int semestreIndex) async {   
-    if(solicitudActiva){
-      Timer(Duration(milliseconds: _tiempoDeEsperaMs),() async {
+  Future _horarioSolicitarDatosOtro(int semestreIndex) async {
+    if (solicitudActiva) {
+      Timer(Duration(milliseconds: _tiempoDeEsperaMs), () async {
         Document document = await solicitarDocumento();
         bool aunEstaCargando = Scraper.estaCargandoTabla(document);
-        if(!aunEstaCargando){
+        if (!aunEstaCargando) {
           HorarioModel modelo = Scraper.horarioGenerarModelo(document);
           _horarioBloc!.add(HorarioControllerChanged(modelo));
         } else {
           _horarioSolicitarDatosOtro(semestreIndex);
         }
       });
-    }  
+    }
   }
 
   // Acciones Boletin
-  void boletinSolicitarBoletin(){
-    if(solicitudActiva){
-      Timer(Duration(milliseconds: _tiempoDeEsperaMs),() async {
+  void boletinSolicitarBoletin() {
+    if (solicitudActiva) {
+      Timer(Duration(milliseconds: _tiempoDeEsperaMs), () async {
         Document document = await solicitarDocumento();
         bool aunEstaCargando = Scraper.estaCargandoTabla(document);
-        if(!aunEstaCargando){
+        if (!aunEstaCargando) {
           BoletinModel modelo = Scraper.boletinGenerarModelo(document);
-          List<String> semestres = Scraper.browserGenerarListaSemestres(document);
+          List<String> semestres =
+              Scraper.browserGenerarListaSemestres(document);
           _boletinBloc!.add(BoletinControllerReady(modelo, semestres));
         } else {
           boletinSolicitarBoletin();
         }
       });
-    } 
+    }
   }
 
   Future boletinSolicitarOtro(int? semestreIndex) async {
-    await _webView!.evalJavascript(Scripts.genericSeleccionarSemestre(semestreIndex));
+    await _webViewController
+        .runJavaScript(Scripts.genericSeleccionarSemestre(semestreIndex));
     _boletinSolicitarDatosOtro(semestreIndex);
   }
 
   Future _boletinSolicitarDatosOtro(int? semestreIndex) async {
-    if(solicitudActiva){
-      Timer(Duration(milliseconds: _tiempoDeEsperaMs),() async {
+    if (solicitudActiva) {
+      Timer(Duration(milliseconds: _tiempoDeEsperaMs), () async {
         Document document = await solicitarDocumento();
-        if(!Scraper.estaCargandoTabla(document)){
+        if (!Scraper.estaCargandoTabla(document)) {
           BoletinModel modelo = Scraper.boletinGenerarModelo(document);
           _boletinBloc!.add(BoletinControllerChanged(modelo));
         } else {
           _boletinSolicitarDatosOtro(semestreIndex);
         }
       });
-    } 
+    }
   }
 
   Future boletinSolicitarNotas(int cursoIndex) async {
-    await _webView!.reloadUrl(Scripts.boletinClickNotas(cursoIndex));
+    await _webViewController
+        .runJavaScript(Scripts.boletinClickNotas(cursoIndex));
   }
 
   Future _boletinSolicitarDatosNotas() async {
     Document document = await solicitarDocumento();
-    _boletinBloc!.add(BoletinControllerNotasReady(Scraper.notasGenerarModelo(document)));
-    _webView!.reloadUrl(Urls.BOLETIN);
+    _boletinBloc!
+        .add(BoletinControllerNotasReady(Scraper.notasGenerarModelo(document)));
+    _webViewController.loadRequest(Uri.parse(Urls.BOLETIN));
   }
 
   // Plan de estudios
   Future planSolicitarPlanDeEstudios() async {
-    if(solicitudActiva){
+    if (solicitudActiva) {
       Document documento = await solicitarDocumento();
-      if(Scraper.cuerpoTablaCargado(documento)){      
-        _planBloc!.add(PlanControllerReady(Scraper.planGenerarModelo(documento)));
+      if (Scraper.cuerpoTablaCargado(documento)) {
+        _planBloc!
+            .add(PlanControllerReady(Scraper.planGenerarModelo(documento)));
       } else {
-        Timer(Duration(milliseconds: _tiempoDeEsperaMs), () => planSolicitarPlanDeEstudios());
+        Timer(Duration(milliseconds: _tiempoDeEsperaMs),
+            () => planSolicitarPlanDeEstudios());
       }
     }
   }
 
   // Programacion académica
   Future programacionSolicitarInformeAcademico() async {
-    if(solicitudActiva){
+    if (solicitudActiva) {
       Document documento = await solicitarDocumento();
-      if(Scraper.cuerpoTablaCargado(documento)){      
-        _programacionBloc!.add(ProgramacionControllerReady(Scraper.programacionGenerarModelo(documento)));
+      if (Scraper.cuerpoTablaCargado(documento)) {
+        _programacionBloc!.add(ProgramacionControllerReady(
+            Scraper.programacionGenerarModelo(documento)));
       } else {
-        Timer(Duration(milliseconds: _tiempoDeEsperaMs), () => programacionSolicitarInformeAcademico());
+        Timer(Duration(milliseconds: _tiempoDeEsperaMs),
+            () => programacionSolicitarInformeAcademico());
       }
     }
   }
 
   // Historal académico
   Future historialSolicitarHistorialAcademico() async {
-    if(solicitudActiva){
+    if (solicitudActiva) {
       Document documento = await solicitarDocumento();
-      if(!Scraper.estaCargandoTabla(documento)){      
-        _historialBloc!.add(HistorialControllerReady(Scraper.historialGenerarModelo(documento)));
+      if (!Scraper.estaCargandoTabla(documento)) {
+        _historialBloc!.add(HistorialControllerReady(
+            Scraper.historialGenerarModelo(documento)));
       } else {
-        Timer(Duration(milliseconds: _tiempoDeEsperaMs), () => historialSolicitarHistorialAcademico());
+        Timer(Duration(milliseconds: _tiempoDeEsperaMs),
+            () => historialSolicitarHistorialAcademico());
       }
     }
   }
 
   // Informe Académico
   Future informeSolicitarInformeAcademico() async {
-    if(solicitudActiva){
+    if (solicitudActiva) {
       Document documento = await solicitarDocumento();
-      if(!Scraper.estaCargandoTabla(documento)){
-        _informeBloc!.add(InformeControllerReady(Scraper.informeGenerarModelo(documento)));
+      if (!Scraper.estaCargandoTabla(documento)) {
+        _informeBloc!.add(
+            InformeControllerReady(Scraper.informeGenerarModelo(documento)));
       } else {
-        Timer(Duration(milliseconds: _tiempoDeEsperaMs), () => informeSolicitarInformeAcademico());
+        Timer(Duration(milliseconds: _tiempoDeEsperaMs),
+            () => informeSolicitarInformeAcademico());
       }
     }
   }
 
   /// Browsing
-  void _urlListener(String url){
+  void _urlListener(String url) {
     _print("$url");
-    switch(currentPage){
+    switch (currentPage) {
       case MyPages.Login:
         _loginUrlListener(url);
         break;
@@ -315,56 +351,56 @@ class BrowserController{
         _homeUrlListener(url);
         break;
       case MyPages.Horario:
-        // TODO: Handle this case.
         break;
       case MyPages.Boletin:
         _boletinListener(url);
         break;
       case MyPages.Plan:
-        // TODO: Handle this case.
         break;
       case MyPages.Programacion:
-        // TODO: Handle this case.
         break;
       case MyPages.Verificacion:
-        // TODO: Handle this case.
         break;
       case MyPages.Historial:
-        // TODO: Handle this case.
         break;
       case MyPages.Informe:
-        // TODO: Handle this case.
         break;
       case MyPages.Notas:
-        // TODO: Handle this case.
         break;
     }
   }
 
-  void _loginUrlListener(String url) async{
-    switch(url){
+  void _loginUrlListener(String url) async {
+    switch (url) {
       case Urls.LOGIN:
-        if(_loginBloc.intentosDeIngreso == 0){
-          if(_preferencias!.usuario != null){
-            if(_preferencias!.iniciarSesionAuto!){
-              _loginBloc.add(LoginControllerLoggingIn(_preferencias!.usuario, _preferencias!.password));
-              loginSolicitarIngreso(_preferencias!.usuario, _preferencias!.password);
-              // _loginBloc.add(LoginControllerLoggingIn(_preferencias.usuario));
-            }else{
-              _loginBloc.add(LoginControllerReady(LoginModel(_preferencias!.usuario, _preferencias!.password, _preferencias!.mantenerSesion)));
+        if (_loginBloc.intentosDeIngreso == 0) {
+          if (_preferencias!.usuario != null) {
+            if (_preferencias!.iniciarSesionAuto!) {
+              _loginBloc.add(LoginControllerLoggingIn(
+                  _preferencias!.usuario, _preferencias!.password));
+              loginSolicitarIngreso(
+                  _preferencias!.usuario, _preferencias!.password);
+            } else {
+              _loginBloc.add(LoginControllerReady(LoginModel(
+                  _preferencias!.usuario,
+                  _preferencias!.password,
+                  _preferencias!.mantenerSesion)));
             }
-          } else{
+          } else {
             _loginBloc.add(LoginControllerReady(LoginModel('', '', true)));
           }
-        } else{
+        } else {
           _loginBloc.add(LoginControllerNotLoggedIn());
         }
         break;
       case Urls.HOME:
         await gestorFirebase.registrarInicioSesion(_loginBloc.loginModel.user);
-        if(_loginBloc.intentosDeIngreso != 0){ // es decir, si no es un inicio de sesión automático
-          // _print('_preferencias.guardar(${_loginBloc.loginModel.user}, ${_loginBloc.loginModel.password}, ${_loginBloc.loginModel.keepSesion}, ${_loginBloc.loginModel.keepSesion});');
-          _preferencias!.guardarSesionInfo(_loginBloc.loginModel.user!, _loginBloc.loginModel.password!, _loginBloc.loginModel.keepSesion!, _loginBloc.loginModel.keepSesion!);
+        if (_loginBloc.intentosDeIngreso != 0) {
+          _preferencias!.guardarSesionInfo(
+              _loginBloc.loginModel.user!,
+              _loginBloc.loginModel.password!,
+              _loginBloc.loginModel.keepSesion!,
+              _loginBloc.loginModel.keepSesion!);
         }
         _loginBloc.intentosDeIngreso = 0;
         _loginBloc.add(LoginControllerLoggedIn());
@@ -375,13 +411,12 @@ class BrowserController{
     }
   }
 
-  void _homeUrlListener(String url){
-    switch(url){
+  void _homeUrlListener(String url) {
+    switch (url) {
       case Urls.INICIO_SESION:
-      case Urls.LOGIN:      
+      case Urls.LOGIN:
         _preferencias!.guardarIniciarSesionAuto(false);
         _homeBloc!.add(HomeControllerLoggedOut());
-        // currentPage = Page.Login;
         break;
       case Urls.HORARIO:
         _homeBloc!.add(HomeControllerHorario());
@@ -406,32 +441,28 @@ class BrowserController{
         break;
     }
   }
-  
-  void _boletinListener(String url){
-    if(Scraper.isNotasUrl(url)){
+
+  void _boletinListener(String url) {
+    if (Scraper.isNotasUrl(url)) {
       _boletinSolicitarDatosNotas();
-    } 
-    else if (url == Urls.BOLETIN){
-      _boletinBloc!.add(BoletinUserChange(_boletinBloc!.selectedSemestreIndex));      
-    }
-    else if (url == Urls.INICIO_SESION || url == Urls.LOGIN){
+    } else if (url == Urls.BOLETIN) {
+      _boletinBloc!.add(BoletinUserChange(_boletinBloc!.selectedSemestreIndex));
+    } else if (url == Urls.INICIO_SESION || url == Urls.LOGIN) {
       _boletinBloc!.add(BoletinControllerLoggedOut());
       _homeBloc!.add(HomeControllerLoggedOut());
-    }
-    else {
+    } else {
       _loginBloc.add(LoginControllerError(url));
     }
   }
 
-  void _print(Object mensaje){
+  void _print(Object mensaje) {
     print("🌐:\t$mensaje");
   }
 
-  void setVisible(bool visible){
-    if(visible){
-      _webView!.show();
-    } else {
-      _webView!.hide();
+  void setVisible(bool visible) {
+    if (visible) {
+      // No existe el equivalente exacto a `show` y `hide` en `webview_flutter`.
+      // Se puede simular ocultando y mostrando un widget que contiene el WebView.
     }
   }
 }
