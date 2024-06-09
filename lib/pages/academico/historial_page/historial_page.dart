@@ -1,22 +1,24 @@
-import 'package:SIGApp/app/urls.dart';
-import 'package:SIGApp/browser/gestor_firebase.dart';
+import 'package:sigapp/app/urls.dart';
+// import 'package:sigapp/browser/gestor_firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:SIGApp/app/app.dart';
-import 'package:SIGApp/blocs/historial_bloc/bloc.dart';
-import 'package:SIGApp/models/historial_model.dart';
-import 'package:SIGApp/widgets/charts/historial_ppa_chart.dart';
-import 'package:SIGApp/widgets/lista_semestres_widget.dart';
-import 'package:SIGApp/widgets/simple_loading_body_widget.dart';
+import 'package:sigapp/app/app.dart';
+import 'package:sigapp/blocs/historial_bloc/bloc.dart';
+import 'package:sigapp/models/historial_model.dart';
+import 'package:sigapp/widgets/charts/historial_ppa_chart.dart';
+import 'package:sigapp/widgets/lista_semestres_widget.dart';
+import 'package:sigapp/widgets/simple_loading_body_widget.dart';
 
 import 'lista_cursos_historial_page.dart';
 
-class HistorialPage extends StatefulWidget{
+class HistorialPage extends StatefulWidget {
+  const HistorialPage({super.key});
+
   @override
   State<HistorialPage> createState() => HistorialPageState();
 }
 
-class HistorialPageState extends State<HistorialPage>{
+class HistorialPageState extends State<HistorialPage> {
   HistorialBloc? _bloc;
   TipoPonderado? _tipoPonderado;
   // int _groupValue;
@@ -44,26 +46,27 @@ class HistorialPageState extends State<HistorialPage>{
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Historial académico'),
+            title: const Text('Historial académico'),
           ),
-          body: state is Ready ? _buildHistorial() : SimpleLoadingBodyWidget(),
+          body: state is Ready ? _buildHistorial() : const SimpleLoadingBodyWidget(),
         );
       },
     );
   }
 
-  Widget _buildHistorial(){
+  Widget _buildHistorial() {
     return ListaSemestresWidget(
-      leyenda: _bloc!.modelo!.ciclos.length > 0 ?_buildCabecera() : null,
-      icono: Icon(
+      leyenda: _bloc!.modelo!.ciclos.isNotEmpty ? _buildCabecera() : null,
+      icono: const Icon(
         Icons.assessment,
         color: Colors.green,
       ),
       // nadaQueMostrarMensaje: 'No se encontró información en la web. '
       //   'Probablemente los datos del sistema se encuentran en mantenimiento.',
-      nadaQueMostrarMensaje: 'La web del Siga no dispone de tus datos en este momento. '
-        'Puedes comprobarlo visitando ${Urls.LOGIN}',
-      children: List.generate(_bloc!.modelo!.ciclos.length, (int i){
+      nadaQueMostrarMensaje:
+          'La web del Siga no dispone de tus datos en este momento. '
+          'Puedes comprobarlo visitando ${Urls.LOGIN}',
+      children: List.generate(_bloc!.modelo!.ciclos.length, (int i) {
         return ElementoListaSemestresWidget(
           numero: _bloc!.modelo!.ciclos[i].cursos.length,
           onPressed: () => _lanzarCicloPage(i),
@@ -74,21 +77,20 @@ class HistorialPageState extends State<HistorialPage>{
     );
   }
 
-  String _customizarCicloEtiqueta(String etiqueta){
+  String _customizarCicloEtiqueta(String etiqueta) {
     // Finalidad: Pasar de "Semestre: 2019-0" a "Veranito: 2019-0"
-    if(!etiqueta.endsWith('0')){
+    if (!etiqueta.endsWith('0')) {
       return etiqueta;
     } else {
-      return 'Veranito:\t\t' + etiqueta.substring(etiqueta.length - 6, etiqueta.length);
+      return 'Veranito:\t\t${etiqueta.substring(etiqueta.length - 6, etiqueta.length)}';
     }
   }
 
-  Widget _buildCabecera(){
+  Widget _buildCabecera() {
     double margen = 13;
-    return 
-    Container(
+    return Container(
       margin: EdgeInsets.only(
-        bottom: margen*0.6,
+        bottom: margen * 0.6,
         left: margen,
         right: margen,
         top: margen,
@@ -99,14 +101,13 @@ class HistorialPageState extends State<HistorialPage>{
           HistorialPPAChart(_bloc!.modelo, _tipoPonderado),
         ],
       ),
-    )
-    ;
+    );
   }
 
-  Widget _buildMenu(){
+  Widget _buildMenu() {
     String? labelPP, semestrePrimero, semestreUltimo;
 
-    switch(_tipoPonderado){
+    switch (_tipoPonderado) {
       case TipoPonderado.PPSemestral:
         labelPP = CicloHistorialModel.PPS;
         break;
@@ -119,24 +120,29 @@ class HistorialPageState extends State<HistorialPage>{
       case TipoPonderado.PPAcumuladoAprobado:
         labelPP = CicloHistorialModel.PPA_Aprob;
         break;
+      case null:
+      // TODO: Handle this case.
     }
 
-    semestrePrimero = _bloc!.modelo!.ciclosRegulares[0].etiqueta!.split(':')[1].trim();
-    semestreUltimo = _bloc!.modelo!.ciclosRegulares[_bloc!.modelo!.ciclosRegulares.length - 1].etiqueta!.split(':')[1].trim();
+    semestrePrimero =
+        _bloc!.modelo!.ciclosRegulares[0].etiqueta!.split(':')[1].trim();
+    semestreUltimo = _bloc!.modelo!
+        .ciclosRegulares[_bloc!.modelo!.ciclosRegulares.length - 1].etiqueta!
+        .split(':')[1]
+        .trim();
 
     return Row(
       children: <Widget>[
         Expanded(
           child: Container(
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-              ),
-              color: const Color(0xff08465E)
-            ),
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15),
+                ),
+                color: Color(0xff08465E)),
             // padding: EdgeInsets.all(17),
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               bottom: 17,
               left: 17,
               right: 17,
@@ -149,12 +155,12 @@ class HistorialPageState extends State<HistorialPage>{
                   children: <Widget>[
                     Expanded(
                       child: Container(
-                        margin: EdgeInsets.only(bottom: 5),
-                        child: Text(
+                        margin: const EdgeInsets.only(bottom: 5),
+                        child: const Text(
                           'Estadísticas',
                           // 'Un vistazo a',
                           style: TextStyle(
-                            color: const Color(0xffCADEE8),
+                            color: Color(0xffCADEE8),
                             fontWeight: FontWeight.bold,
                             fontSize: 22,
                           ),
@@ -168,16 +174,16 @@ class HistorialPageState extends State<HistorialPage>{
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.only(bottom: 5),
+                  margin: const EdgeInsets.only(bottom: 5),
                   child: Text(
                     '$labelPP\nDesde $semestrePrimero hasta $semestreUltimo',
-                    style: TextStyle(
-                      color: const Color(0xffCADEE8),
+                    style: const TextStyle(
+                      color: Color(0xffCADEE8),
                       // fontWeight: FontWeight.bold,
                       fontSize: 14,
                     ),
                   ),
-                ),          
+                ),
               ],
             ),
           ),
@@ -186,21 +192,21 @@ class HistorialPageState extends State<HistorialPage>{
     );
   }
 
-  Widget _buildSeleccionPPButton(){
-    List<String> criterios = const[
+  Widget _buildSeleccionPPButton() {
+    List<String> criterios = const [
       'PPS',
       'PPS Aprob.',
       'PPA',
       'PPA Aprob.',
     ];
     return PopupMenuButton<int>(
-      icon: Icon(
+      icon: const Icon(
         Icons.arrow_drop_down,
         color: Colors.white,
       ),
       onSelected: _handleValueChange,
-      itemBuilder: (BuildContext context){
-        return List.generate(criterios.length, (int i){
+      itemBuilder: (BuildContext context) {
+        return List.generate(criterios.length, (int i) {
           return PopupMenuItem<int>(
             value: i,
             child: Text(criterios[i]),
@@ -215,14 +221,14 @@ class HistorialPageState extends State<HistorialPage>{
   //     // color: Colors.red,
   //     child: Row(
   //       mainAxisSize: MainAxisSize.min,
-  //       children: <Widget>[        
-  //         Radio(          
+  //       children: <Widget>[
+  //         Radio(
   //           value: value,
   //           groupValue: _groupValue,
   //           onChanged: _handleValueChange,
   //         ),
   //         Text(
-  //           label, 
+  //           label,
   //           // style: TextStyle(backgroundColor: Colors.white),
   //         ),
   //       ],
@@ -230,11 +236,12 @@ class HistorialPageState extends State<HistorialPage>{
   //   );
   // }
 
-  void _handleValueChange(int value){
-    App.browserController.gestorFirebase.registrarUso(CasosDeUso.HistorialCambiarGrafico);
+  void _handleValueChange(int value) {
+    // App.browserController.gestorFirebase
+    //     .registrarUso(CasosDeUso.HistorialCambiarGrafico);
     setState(() {
       // _groupValue = value;
-      switch(value){
+      switch (value) {
         case 0:
           _tipoPonderado = TipoPonderado.PPSemestral;
           break;
@@ -251,23 +258,22 @@ class HistorialPageState extends State<HistorialPage>{
     });
   }
 
-  void _lanzarCicloPage(int index){
-    App.browserController.gestorFirebase.registrarUso(CasosDeUso.HistorialSeleccionarSemestre);
+  void _lanzarCicloPage(int index) {
+    // App.browserController.gestorFirebase
+    //     .registrarUso(CasosDeUso.HistorialSeleccionarSemestre);
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ListaCursosHistorialPage(
-          ciclo: _bloc!.modelo!.ciclos[index],
-        )
-      ),
+          builder: (context) => ListaCursosHistorialPage(
+                ciclo: _bloc!.modelo!.ciclos[index],
+              )),
     );
   }
 }
 
-class LinearPPA{
+class LinearPPA {
   final int semestreIndex;
   final double ppa;
 
   LinearPPA(this.semestreIndex, this.ppa);
 }
-

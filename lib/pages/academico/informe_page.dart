@@ -1,57 +1,60 @@
 import 'dart:async';
 
-import 'package:SIGApp/app/urls.dart';
+import 'package:sigapp/app/urls.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:SIGApp/app/app.dart';
-import 'package:SIGApp/blocs/informe_bloc/bloc.dart';
-import 'package:SIGApp/models/informe_model.dart';
-import 'package:SIGApp/widgets/simple_loading_body_widget.dart';
+import 'package:sigapp/app/app.dart';
+import 'package:sigapp/blocs/informe_bloc/bloc.dart';
+import 'package:sigapp/models/informe_model.dart';
+import 'package:sigapp/widgets/simple_loading_body_widget.dart';
 
-class InformePage extends StatefulWidget{
+class InformePage extends StatefulWidget {
+  const InformePage({super.key});
+
   @override
   State<StatefulWidget> createState() => InformePageState();
 }
 
-class InformePageState extends State<InformePage>{
+class InformePageState extends State<InformePage> {
   InformeBloc? _informeBloc;
 
   static const double _fontSize = 15;
 
-  final TextStyle _azulGrandeStyle = TextStyle(
+  final TextStyle _azulGrandeStyle = const TextStyle(
     color: Color(0xFF005b96),
-    fontSize: _fontSize*1.3,
+    fontSize: _fontSize * 1.3,
     fontWeight: FontWeight.w500,
   );
-  final TextStyle _normalStyle = TextStyle(
+  final TextStyle _normalStyle = const TextStyle(
     fontSize: _fontSize,
   );
-  final TextStyle _negritaStyle = TextStyle(
+  final TextStyle _negritaStyle = const TextStyle(
     fontSize: _fontSize,
     fontWeight: FontWeight.w700,
   );
 
-
-  final TextStyle _defaultTextSpanStyle = TextStyle(
+  final TextStyle _defaultTextSpanStyle = const TextStyle(
     color: Colors.black,
     fontFamily: 'ProductSans',
-    fontSize: _fontSize*1.1,
+    fontSize: _fontSize * 1.1,
   );
-  final TextStyle _normalTextSpanStyle = TextStyle(    
-  );
-  final TextStyle _negritaTextSpanStyle = TextStyle(
+  final TextStyle _normalTextSpanStyle = const TextStyle();
+  final TextStyle _negritaTextSpanStyle = const TextStyle(
     fontWeight: FontWeight.w700,
   );
-  final TextStyle _grisTextSpanStyle = TextStyle(
+  final TextStyle _grisTextSpanStyle = const TextStyle(
     color: Colors.black54,
     fontWeight: FontWeight.w500,
-  );  
+  );
 
   final double _margen = 10;
-  
-  double? _credObligPorcentaje, _credElectPorcentaje, _restantePorcentaje, _credTotalPorcentaje;
+
+  double? _credObligPorcentaje,
+      _credElectPorcentaje,
+      _restantePorcentaje,
+      _credTotalPorcentaje;
 
   @override
   void initState() {
@@ -72,13 +75,13 @@ class InformePageState extends State<InformePage>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Informe Académico'),
+        title: const Text('Informe Académico'),
       ),
       body: BlocBuilder<InformeBloc, InformeState>(
         builder: (context, state) {
-          if(state is Loading){
-            return SimpleLoadingBodyWidget();
-          // } else if (state is Ready){
+          if (state is Loading) {
+            return const SimpleLoadingBodyWidget();
+            // } else if (state is Ready){
           } else {
             // Para DEMO
             // _informeBloc.modelo.requisitos[0][1] = '166';
@@ -91,21 +94,39 @@ class InformePageState extends State<InformePage>{
             // _informeBloc.modelo.fechaActualizacionInforme = 'Informe actualizado hasta el semestre 2019-2';
             // Fin DEMO
 
-            double nroCreditosTotales = double.parse(_informeBloc!.modelo.requisitos[2][0]);
-            _credObligPorcentaje = double.parse(_informeBloc!.modelo.requisitos[0][1]) / nroCreditosTotales * 100;            
-            _credElectPorcentaje = double.parse(_informeBloc!.modelo.requisitos[1][1]) / nroCreditosTotales * 100;            
-            _credTotalPorcentaje = double.parse(_informeBloc!.modelo.requisitos[2][1]) / nroCreditosTotales * 100;
+            double nroCreditosTotales =
+                double.parse(_informeBloc!.modelo.requisitos[2][0]);
+            _credObligPorcentaje =
+                double.parse(_informeBloc!.modelo.requisitos[0][1]) /
+                    nroCreditosTotales *
+                    100;
+            _credElectPorcentaje =
+                double.parse(_informeBloc!.modelo.requisitos[1][1]) /
+                    nroCreditosTotales *
+                    100;
+            _credTotalPorcentaje =
+                double.parse(_informeBloc!.modelo.requisitos[2][1]) /
+                    nroCreditosTotales *
+                    100;
             // _credObligPorcentaje = 170 / nroCreditosTotales * 100;
             // _credElectPorcentaje = 10 / nroCreditosTotales * 100;
-            // _credTotalPorcentaje = 180 / nroCreditosTotales * 100;            
+            // _credTotalPorcentaje = 180 / nroCreditosTotales * 100;
 
-            _restantePorcentaje = 100 - (_credObligPorcentaje! + _credElectPorcentaje!);
+            _restantePorcentaje =
+                100 - (_credObligPorcentaje! + _credElectPorcentaje!);
             // return _buildBody();
-            if(_informeBloc!.modelo.fechaActualizacionInforme.endsWith('-') || _restantePorcentaje == 100){
-              int duracionToastSeg = 2; 
-              App.showToast('La web del Siga no dispone de tus datos en este momento', duracionSegundos: duracionToastSeg);
-              Timer(Duration(milliseconds: duracionToastSeg*1000 + 500, ), (){
-                App.showToast('Puedes comprobarlo visitando ${Urls.LOGIN}', duracionSegundos: duracionToastSeg);
+            if (_informeBloc!.modelo.fechaActualizacionInforme.endsWith('-') ||
+                _restantePorcentaje == 100) {
+              int duracionToastSeg = 2;
+              App.showToast(
+                  'La web del Siga no dispone de tus datos en este momento',
+                  duracionSegundos: duracionToastSeg);
+              Timer(
+                  Duration(
+                    milliseconds: duracionToastSeg * 1000 + 500,
+                  ), () {
+                App.showToast('Puedes comprobarlo visitando ${Urls.LOGIN}',
+                    duracionSegundos: duracionToastSeg);
               });
             }
 
@@ -121,7 +142,7 @@ class InformePageState extends State<InformePage>{
   Widget _buildBody() {
     return SingleChildScrollView(
       child: Container(
-        margin: EdgeInsets.all(20),
+        margin: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -150,7 +171,7 @@ class InformePageState extends State<InformePage>{
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(bottom: 4),
+            margin: const EdgeInsets.only(bottom: 4),
             child: Text(
               codigo,
               style: _azulGrandeStyle,
@@ -158,7 +179,7 @@ class InformePageState extends State<InformePage>{
             ),
           ),
           Container(
-            margin: EdgeInsets.only(bottom: 12),
+            margin: const EdgeInsets.only(bottom: 12),
             child: Text(
               nombresApellidos,
               style: _azulGrandeStyle,
@@ -194,7 +215,7 @@ class InformePageState extends State<InformePage>{
   }
 
   Widget _buildDivisor() {
-    return Divider(
+    return const Divider(
       color: Colors.black87,
       height: 0.6,
     );
@@ -340,7 +361,8 @@ class InformePageState extends State<InformePage>{
     );
   }
 
-  Widget _buildItemRequisitos(String concepto, String n1, String n2, String n3) {
+  Widget _buildItemRequisitos(
+      String concepto, String n1, String n2, String n3) {
     return Container(
       margin: EdgeInsets.only(
         top: _margen,
@@ -355,7 +377,7 @@ class InformePageState extends State<InformePage>{
                 child: Container(
                   //color: Colors.cyanAccent,
                   child: Text(
-                    '✅\t' + concepto,
+                    '✅\t$concepto',
                     style: _negritaStyle,
                     textAlign: TextAlign.left,
                   ),
@@ -382,7 +404,7 @@ class InformePageState extends State<InformePage>{
     );
   }
 
-  Widget _buildGrafico(){
+  Widget _buildGrafico() {
     return Container(
       child: Column(
         children: <Widget>[
@@ -390,23 +412,29 @@ class InformePageState extends State<InformePage>{
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               // _buildChart(),
-              // _buildLeyenda(),              
+              // _buildLeyenda(),
               // Expanded(
               //   child: _buildLeyenda(),
               // ),
-              Flexible(child: _buildChart(), flex: 1,),
-              Flexible(child: _buildLeyenda(), flex: 1,),
+              Flexible(
+                flex: 1,
+                child: _buildChart(),
+              ),
+              Flexible(
+                flex: 1,
+                child: _buildLeyenda(),
+              ),
             ],
           ),
           Container(
             // color: Colors.green,
-            margin: EdgeInsets.only(top: 10),
-            child: Text(              
-              _informeBloc!.modelo.fechaActualizacionInforme.endsWith('-') ?
-                _informeBloc!.modelo.fechaActualizacionInforme + ' ¿?' :
-                _informeBloc!.modelo.fechaActualizacionInforme,
+            margin: const EdgeInsets.only(top: 10),
+            child: Text(
+              _informeBloc!.modelo.fechaActualizacionInforme.endsWith('-')
+                  ? '${_informeBloc!.modelo.fechaActualizacionInforme} ¿?'
+                  : _informeBloc!.modelo.fechaActualizacionInforme,
               // style: _normalStyle,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.grey,
                 fontSize: 13,
               ),
@@ -420,7 +448,7 @@ class InformePageState extends State<InformePage>{
 
   Widget _buildChart() {
     double longitud = (MediaQuery.of(context).size.width - _margen * 2) / 2;
-  
+
     return Container(
       margin: EdgeInsets.only(top: _margen),
       child: SizedBox(
@@ -442,7 +470,7 @@ class InformePageState extends State<InformePage>{
                 title: '${_credElectPorcentaje!.toStringAsFixed(1)}%',
               ),
               PieChartSectionData(
-                color: Color(0x1A000000),
+                color: const Color(0x1A000000),
                 value: _restantePorcentaje,
                 title: '${_restantePorcentaje!.toStringAsFixed(1)}%',
               ),
@@ -453,16 +481,19 @@ class InformePageState extends State<InformePage>{
     );
   }
 
-  Widget _buildLeyenda(){
+  Widget _buildLeyenda() {
     return Container(
       // color: Colors.brown,
       // margin: EdgeInsets.only(left: _margen),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          _buildLeyendaItem(Colors.blueAccent, "Obligatorios\t${_credObligPorcentaje!.toStringAsFixed(2)}%"),
-          _buildLeyendaItem(Colors.cyan, "Electivos\t${_credElectPorcentaje!.toStringAsFixed(2)}%"),
-          _buildLeyendaItem(Color(0x1A000000), "Restante\t${_restantePorcentaje!.toStringAsFixed(2)}%"),
+          _buildLeyendaItem(Colors.blueAccent,
+              "Obligatorios\t${_credObligPorcentaje!.toStringAsFixed(2)}%"),
+          _buildLeyendaItem(Colors.cyan,
+              "Electivos\t${_credElectPorcentaje!.toStringAsFixed(2)}%"),
+          _buildLeyendaItem(const Color(0x1A000000),
+              "Restante\t${_restantePorcentaje!.toStringAsFixed(2)}%"),
         ],
       ),
     );
@@ -486,14 +517,14 @@ class InformePageState extends State<InformePage>{
   //   );
   // }
 
-  Widget _buildLeyendaItem(Color color, String nombre){
+  Widget _buildLeyendaItem(Color color, String nombre) {
     return Container(
       child: Wrap(
         // crossAxisAlignment: CrossAxisAlignment.center,
         // mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(top: 4, right: 5, bottom: 2),
+            margin: const EdgeInsets.only(top: 4, right: 5, bottom: 2),
             height: 10,
             width: 10,
             color: color,
@@ -506,4 +537,3 @@ class InformePageState extends State<InformePage>{
     );
   }
 }
-

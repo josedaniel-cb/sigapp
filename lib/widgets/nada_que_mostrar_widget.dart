@@ -7,17 +7,17 @@ class NadaQueMostrarWidget extends StatelessWidget{
 
   // const NadaQueMostrarWidget({this.mensajePersonalizado});
   // const NadaQueMostrarWidget({this.mensaje = 'Puede que no tengas cursos inscritos en este semestre'});
-  const NadaQueMostrarWidget({this.mensaje = 'Nada que mostrar'});
+  const NadaQueMostrarWidget({super.key, this.mensaje = 'Nada que mostrar'});
     
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        margin: EdgeInsets.all(50),
+        margin: const EdgeInsets.all(50),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
+            const Text(
               "¡Ups!",
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -26,20 +26,20 @@ class NadaQueMostrarWidget extends StatelessWidget{
                 fontWeight: FontWeight.w600
               ),
             ),
-            SizedBox(height: 5,),
+            const SizedBox(height: 5,),
             Text(
               // mensajePersonalizado ?? _mensajeDefault,
               mensaje,
               // 'jaja',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black26,
                 fontSize: 15,
                 fontWeight: FontWeight.w600
               ),
             ),
-            SizedBox(height: 5,),
-            Text(
+            const SizedBox(height: 5,),
+            const Text(
               "🤥",
               textAlign: TextAlign.center,
               style: TextStyle(

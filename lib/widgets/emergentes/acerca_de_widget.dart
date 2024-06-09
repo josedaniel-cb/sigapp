@@ -1,12 +1,14 @@
-import 'package:SIGApp/pages/about_page.dart';
-import 'package:SIGApp/pages/easter_egg_page.dart';
-import 'package:SIGApp/widgets/sigapp_info/sigapp_logotipo_widget.dart';
-import 'package:SIGApp/widgets/sigapp_info/sigapp_version_widget.dart';
+import 'package:sigapp/pages/about_page.dart';
+import 'package:sigapp/pages/easter_egg_page.dart';
+import 'package:sigapp/widgets/sigapp_info/sigapp_logotipo_widget.dart';
+import 'package:sigapp/widgets/sigapp_info/sigapp_version_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class AcercaDeWidget extends StatelessWidget{
+class AcercaDeWidget extends StatelessWidget {
   final double fontSize = 15;
+
+  const AcercaDeWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +18,8 @@ class AcercaDeWidget extends StatelessWidget{
     );
   }
 
-  Widget _buildAlertDialogContent(BuildContext context){
-    return 
-    Container(
+  Widget _buildAlertDialogContent(BuildContext context) {
+    return SizedBox(
       // color: Colors.red,
       width: double.maxFinite,
       height: 200,
@@ -26,7 +27,7 @@ class AcercaDeWidget extends StatelessWidget{
         child: ListView(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 25),
+              margin: const EdgeInsets.fromLTRB(0, 0, 0, 25),
               child: _buildTitle(context),
             ),
             Container(
@@ -35,11 +36,10 @@ class AcercaDeWidget extends StatelessWidget{
           ],
         ),
       ),
-    )
-    ;
+    );
   }
 
-  Widget _buildTitle(BuildContext context){
+  Widget _buildTitle(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -47,15 +47,13 @@ class AcercaDeWidget extends StatelessWidget{
         //   fontSize: fontSize * 3.1,
         // ),
         GestureDetector(
-          onDoubleTap: (){
+          onDoubleTap: () {
             Navigator.pop(context);
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context){
-                  return EasterEggPage();
-                }
-              ),
+              MaterialPageRoute(builder: (context) {
+                return const EasterEggPage();
+              }),
             );
           },
           child: SigappLogotipoWidget(
@@ -63,13 +61,13 @@ class AcercaDeWidget extends StatelessWidget{
           ),
         ),
         SigappVersionWidget(
-          fontSize: fontSize*.85,
+          fontSize: fontSize * .85,
         ),
       ],
     );
   }
 
-  Widget _buildContent(){
+  Widget _buildContent() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -77,11 +75,9 @@ class AcercaDeWidget extends StatelessWidget{
           // textAlign: TextAlign.justify,
           text: TextSpan(
             children: [
-              _buildDefaultText(
-                'Desarrollada con Flutter 1.15.17.\n'
-                '¿Te gustaria que la app fuera de código abierto? '
-                'Haz click en Leer más.'
-              ),
+              _buildDefaultText('Desarrollada con Flutter 1.15.17.\n'
+                  '¿Te gustaria que la app fuera de código abierto? '
+                  'Haz click en Leer más.'),
               // _buildLinkText(
               //   'Házmelo saber',
               //   () => launch(Urls.PERFIL_FACEBOOK)
@@ -94,7 +90,7 @@ class AcercaDeWidget extends StatelessWidget{
     );
   }
 
-  TextSpan _buildLinkText(String url, Function onTap){
+  TextSpan _buildLinkText(String url, Function onTap) {
     return TextSpan(
       text: url,
       style: TextStyle(
@@ -103,12 +99,11 @@ class AcercaDeWidget extends StatelessWidget{
         fontWeight: FontWeight.bold,
         decoration: TextDecoration.underline,
       ),
-      recognizer: TapGestureRecognizer()
-        ..onTap = onTap as void Function()?,
+      recognizer: TapGestureRecognizer()..onTap = onTap as void Function()?,
     );
   }
 
-  TextSpan _buildDefaultText(String text){
+  TextSpan _buildDefaultText(String text) {
     return TextSpan(
       text: text,
       style: TextStyle(
@@ -118,71 +113,62 @@ class AcercaDeWidget extends StatelessWidget{
     );
   }
 
-  List<Widget> _buildActions(BuildContext context){
-    return
-      <Widget>[
-        // onPressed: (){
-        //   Navigator.pop(context);
-        //   Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //       builder: (context){
-        //         return EasterEggPage();
-        //       }
-        //     ),
-        //   );
-        // },
-        Container(
-          margin: EdgeInsets.only(
+  List<Widget> _buildActions(BuildContext context) {
+    return <Widget>[
+      // onPressed: (){
+      //   Navigator.pop(context);
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context){
+      //         return EasterEggPage();
+      //       }
+      //     ),
+      //   );
+      // },
+      Container(
+        margin: const EdgeInsets.only(
             // right: 8,
-            bottom: 10  
-          ),
-          child: TextButton(
-            child: Text(
-              "Entendido",
-              style: TextStyle(
-                fontSize: fontSize*1.05,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
-              ),
+            bottom: 10),
+        child: TextButton(
+          child: Text(
+            "Entendido",
+            style: TextStyle(
+              fontSize: fontSize * 1.05,
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
             ),
-            onPressed: (){
-              Navigator.pop(context);
-            },
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      Container(
+        margin: const EdgeInsets.only(right: 15, bottom: 10),
+        child: ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(Colors.blue),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) {
+                return const AboutPage();
+              }),
+            );
+          },
+          child: Text(
+            "Leer más",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: fontSize * 1.05,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-        Container(  
-          margin: EdgeInsets.only(
-            right: 15,
-            bottom: 10  
-          ),
-          child: ElevatedButton(
-            child: Text(
-              "Leer más",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: fontSize*1.05,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(Colors.blue),
-            ),
-            onPressed: (){
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context){
-                    return AboutPage();
-                  }
-                ),
-              );
-            },
-          ),
-        ),
-      ]
-    ;
+      ),
+    ];
   }
-
 }

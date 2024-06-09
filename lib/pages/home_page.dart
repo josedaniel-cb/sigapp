@@ -1,22 +1,22 @@
-import 'package:SIGApp/browser/gestor_firebase.dart';
-import 'package:SIGApp/browser/my_pages.dart';
-import 'package:SIGApp/pages/about_page.dart';
+// import 'package:sigapp/browser/gestor_firebase.dart';
+import 'package:sigapp/browser/my_pages.dart';
+import 'package:sigapp/pages/about_page.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:SIGApp/app/colores_gradiente.dart';
-import 'package:SIGApp/app/urls.dart';
-import 'package:SIGApp/app/app.dart';
-import 'package:SIGApp/blocs/boletin_bloc/bloc.dart';
-import 'package:SIGApp/blocs/historial_bloc/bloc.dart';
-import 'package:SIGApp/blocs/home_bloc/bloc.dart';
-import 'package:SIGApp/blocs/horario_bloc/bloc.dart';
-import 'package:SIGApp/blocs/informe_bloc/bloc.dart';
-import 'package:SIGApp/blocs/plan_bloc/plan_bloc.dart';
-import 'package:SIGApp/blocs/programacion_bloc/bloc.dart';
-import 'package:SIGApp/pages/academico/plan_page/plan_page.dart';
-import 'package:SIGApp/pages/academico/programacion_page.dart';
-import 'package:SIGApp/widgets/emergentes/critical_error_message.dart';
+import 'package:sigapp/app/colores_gradiente.dart';
+import 'package:sigapp/app/urls.dart';
+import 'package:sigapp/app/app.dart';
+import 'package:sigapp/blocs/boletin_bloc/bloc.dart';
+import 'package:sigapp/blocs/historial_bloc/bloc.dart';
+import 'package:sigapp/blocs/home_bloc/bloc.dart';
+import 'package:sigapp/blocs/horario_bloc/bloc.dart';
+import 'package:sigapp/blocs/informe_bloc/bloc.dart';
+import 'package:sigapp/blocs/plan_bloc/plan_bloc.dart';
+import 'package:sigapp/blocs/programacion_bloc/bloc.dart';
+import 'package:sigapp/pages/academico/plan_page/plan_page.dart';
+import 'package:sigapp/pages/academico/programacion_page.dart';
+import 'package:sigapp/widgets/emergentes/critical_error_message.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'academico/boletin_page.dart';
@@ -25,6 +25,8 @@ import 'academico/horario_page.dart';
 import 'academico/informe_page.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   State<StatefulWidget> createState() => HomePageState();
 }
@@ -35,7 +37,7 @@ class HomePageState extends State<HomePage> {
 
   HomeBloc? _homeBloc;
 
-  List<Color?>? _userColors;
+  late List<Color?> _userColors;
 
   late bool _busy;
 
@@ -96,7 +98,7 @@ class HomePageState extends State<HomePage> {
       child: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
           return WillPopScope(
-            onWillPop: (() => null) as Future<bool> Function()?,
+            onWillPop: () async => false,
             child: _buildScaffold(),
           );
         },
@@ -109,12 +111,12 @@ class HomePageState extends State<HomePage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Bienvenido',
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.info),
+            icon: const Icon(Icons.info),
             // onPressed: _showAbout,
             onPressed: _tapAbout,
           ),
@@ -130,11 +132,11 @@ class HomePageState extends State<HomePage> {
 
   PreferredSize _buildProgressIndicator() {
     return PreferredSize(
-        preferredSize: Size(double.infinity, 0.0),
+        preferredSize: const Size(double.infinity, 0.0),
         child: SizedBox(
           height: 4.0,
           child: _busy
-              ? LinearProgressIndicator(
+              ? const LinearProgressIndicator(
                   backgroundColor: Colors.white70,
                 )
               : null,
@@ -147,8 +149,11 @@ class HomePageState extends State<HomePage> {
         gradient: LinearGradient(
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
-          stops: [0.2, 0.5, 0.7, 0.9],
-          colors: _userColors as List<Color>,
+          stops: const [0.2, 0.5, 0.7, 0.9],
+          colors: _userColors
+              .where((color) => color != null)
+              .map((color) => color!)
+              .toList(),
         ),
       ),
       child: Stack(
@@ -181,14 +186,14 @@ class HomePageState extends State<HomePage> {
                 children: <Widget>[
                   _buildInvisibleUser(),
                   Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20),
                       ),
                     ),
-                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     // child: _buildMenu(),
                     child: FadeIn(
                       child: _buildMenu(),
@@ -206,7 +211,7 @@ class HomePageState extends State<HomePage> {
   Widget _buildMenu() {
     return Column(
       children: <Widget>[
-        SizedBox(height: 14),
+        const SizedBox(height: 14),
         _buildCategoria(
             titulo: 'Semestre actual',
             backgroundBoton: Colors.primaries[6],
@@ -246,7 +251,7 @@ class HomePageState extends State<HomePage> {
         _buildCategoria(
             titulo: 'Resultados académicos',
             // backgroundBoton: Colors.green,
-            backgroundBoton: Color(0xFF18cc04),
+            backgroundBoton: const Color(0xFF18cc04),
             colorTextoBoton: Colors.white,
             botones: <BotonInfo>[
               BotonInfo(
@@ -268,16 +273,16 @@ class HomePageState extends State<HomePage> {
             titulo: 'Enlaces de interés',
             // colorTitulo: Colors.grey,,
             // colorTextoBoton: Colors.grey,
-            colorTitulo: Color(0xFF474647),
-            backgroundBoton: Color(0xFFEAEAEA),
-            colorTextoBoton: Color(0xFF474647),
+            colorTitulo: const Color(0xFF474647),
+            backgroundBoton: const Color(0xFFEAEAEA),
+            colorTextoBoton: const Color(0xFF474647),
             botones: <BotonInfo>[
               BotonInfo(
                 icono: Icons.attach_money,
                 name: 'Consulta de pagos',
                 onPressed: () {
-                  App.browserController.gestorFirebase
-                      .registrarUso(CasosDeUso.ConsultaDePagos);
+                  // App.browserController.gestorFirebase
+                  //     .registrarUso(CasosDeUso.ConsultaDePagos);
                   _launchURL(Urls.REPORTE_PAGOS);
                 },
               ),
@@ -285,8 +290,8 @@ class HomePageState extends State<HomePage> {
                 icono: Icons.laptop,
                 name: 'Plataforma virtual',
                 onPressed: () {
-                  App.browserController.gestorFirebase
-                      .registrarUso(CasosDeUso.PlataformaVirtual);
+                  // App.browserController.gestorFirebase
+                  //     .registrarUso(CasosDeUso.PlataformaVirtual);
                   _launchURL(Urls.PLATAFORMA_VIRTUAL);
                 },
               ),
@@ -294,8 +299,8 @@ class HomePageState extends State<HomePage> {
                 icono: Icons.home,
                 name: 'SIGA',
                 onPressed: () {
-                  App.browserController.gestorFirebase
-                      .registrarUso(CasosDeUso.Siga);
+                  // App.browserController.gestorFirebase
+                  //     .registrarUso(CasosDeUso.Siga);
                   _launchURL(Urls.INICIO_SESION);
                 },
               ),
@@ -327,32 +332,33 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _buildUser() {
-    final double fontSize = 15;
-    final double margen = 20;
+    const double fontSize = 15;
+    const double margen = 20;
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.all(margen),
+            margin: const EdgeInsets.all(margen),
             child: CircleAvatar(
               radius: 30,
+              backgroundColor: Colors.black54,
               child: Text(
                 _homeBloc!.homeModel.iniciales,
                 // 'LE',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 30,
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              backgroundColor: Colors.black54,
             ),
           ),
           Expanded(
               child: Container(
-            margin: EdgeInsets.only(top: margen, bottom: margen, right: margen),
+            margin: const EdgeInsets.only(
+                top: margen, bottom: margen, right: margen),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -360,7 +366,7 @@ class HomePageState extends State<HomePage> {
                   child: Text(
                     _homeBloc!.homeModel.apellidosNombres,
                     // 'ANCAJIMA RUIZ, LUIS ELIAN',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: fontSize,
                       color: Colors.white,
                       fontWeight: FontWeight.w700,
@@ -368,11 +374,11 @@ class HomePageState extends State<HomePage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 2),
+                  margin: const EdgeInsets.only(top: 2),
                   child: Text(
                     _homeBloc!.homeModel.escuela,
                     // 'INGENIERIA ELECTRONICA',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: fontSize - 3,
                       // color: Colors.white,
                       color: Color(0xFFE7E7E7),
@@ -389,38 +395,39 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget _buildInvisibleUser() {
-    final double fontSize = 15;
-    final double margen = 20;
+    const double fontSize = 15;
+    const double margen = 20;
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.all(margen),
+            margin: const EdgeInsets.all(margen),
             child: CircleAvatar(
               radius: 30,
+              backgroundColor: Colors.transparent,
               child: Text(
                 _homeBloc!.homeModel.iniciales,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.transparent,
                   fontSize: 30,
                   fontWeight: FontWeight.w400,
                 ),
               ),
-              backgroundColor: Colors.transparent,
             ),
           ),
           Expanded(
               child: Container(
-            margin: EdgeInsets.only(top: margen, bottom: margen, right: margen),
+            margin: const EdgeInsets.only(
+                top: margen, bottom: margen, right: margen),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
                   child: Text(
                     _homeBloc!.homeModel.apellidosNombres,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: fontSize,
                       color: Colors.transparent,
                       fontWeight: FontWeight.w700,
@@ -428,10 +435,10 @@ class HomePageState extends State<HomePage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 2),
+                  margin: const EdgeInsets.only(top: 2),
                   child: Text(
                     _homeBloc!.homeModel.escuela,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: fontSize - 3,
                       color: Colors.transparent,
                       fontWeight: FontWeight.w500,
@@ -454,7 +461,7 @@ class HomePageState extends State<HomePage> {
     required List<BotonInfo> botones,
   }) {
     return Container(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: 20,
         right: 20,
         // top: 20,
@@ -469,7 +476,7 @@ class HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(bottom: 5),
+            margin: const EdgeInsets.only(bottom: 5),
             child: Text(
               titulo,
               style: TextStyle(
@@ -505,16 +512,18 @@ class HomePageState extends State<HomePage> {
       children: <Widget>[
         Expanded(
           child: Container(
-            margin: EdgeInsets.only(top: 2),
+            margin: const EdgeInsets.only(top: 2),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: background,
-                padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 7, horizontal: 10),
                 elevation: 4,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
+              onPressed: function as void Function()?,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -525,7 +534,7 @@ class HomePageState extends State<HomePage> {
                       children: <Widget>[
                         Expanded(
                           child: Container(
-                            margin: EdgeInsets.only(right: 8),
+                            margin: const EdgeInsets.only(right: 8),
                             child: Icon(
                               icon,
                               color: textColor,
@@ -556,7 +565,6 @@ class HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              onPressed: function as void Function()?,
             ),
           ),
         ),
@@ -567,55 +575,54 @@ class HomePageState extends State<HomePage> {
   void _tapHorario() {
     if (!_busy) {
       _homeBloc!.add(HomeUserHorario());
-      App.browserController.gestorFirebase.registrarUso(CasosDeUso.Horario);
-      // App.browserController.gestorFirebase.registrarUso(GestorFirebase.HORARIO);
+      // App.browserController.gestorFirebase.registrarUso(CasosDeUso.Horario);
     }
   }
 
   void _tapBoletin() {
     if (!_busy) {
       _homeBloc!.add(HomeUserBoletin());
-      App.browserController.gestorFirebase.registrarUso(CasosDeUso.Boletin);
+      // App.browserController.gestorFirebase.registrarUso(CasosDeUso.Boletin);
     }
   }
 
   void _tapPlanDeEstudios() {
     if (!_busy) {
       _homeBloc!.add(HomeUserPlan());
-      App.browserController.gestorFirebase
-          .registrarUso(CasosDeUso.PlanEstudios);
+      // App.browserController.gestorFirebase
+      //     .registrarUso(CasosDeUso.PlanEstudios);
     }
   }
 
   void _tapHistorialAcademico() {
     if (!_busy) {
       _homeBloc!.add(HomeUserHistorial());
-      App.browserController.gestorFirebase
-          .registrarUso(CasosDeUso.HistorialAcademico);
+      // App.browserController.gestorFirebase
+      //     .registrarUso(CasosDeUso.HistorialAcademico);
     }
   }
 
   void _tapInformeAcademico() {
     if (!_busy) {
       _homeBloc!.add(HomeUserInforme());
-      App.browserController.gestorFirebase
-          .registrarUso(CasosDeUso.InformeAcademico);
+      // App.browserController.gestorFirebase
+      //     .registrarUso(CasosDeUso.InformeAcademico);
     }
   }
 
   void _tapProgramacionAcademica() {
     if (!_busy) {
       _homeBloc!.add(HomeUserProgramacion());
-      App.browserController.gestorFirebase
-          .registrarUso(CasosDeUso.ProgramacionAcademica);
+      // App.browserController.gestorFirebase
+      //     .registrarUso(CasosDeUso.ProgramacionAcademica);
     }
   }
 
   void _tapCerrarSesion() {
     if (!_busy) {
       _homeBloc!.add(HomeUserLogOut());
-      App.browserController.gestorFirebase
-          .registrarUso(CasosDeUso.CerrarSesion);
+      // App.browserController.gestorFirebase
+      //     .registrarUso(CasosDeUso.CerrarSesion);
     }
   }
 
@@ -629,7 +636,7 @@ class HomePageState extends State<HomePage> {
       MaterialPageRoute(builder: (context) {
         return BlocProvider(
           create: (BuildContext context) => HorarioBloc(),
-          child: HorarioPage(),
+          child: const HorarioPage(),
         );
       }),
     );
@@ -641,7 +648,7 @@ class HomePageState extends State<HomePage> {
       MaterialPageRoute(builder: (context) {
         return BlocProvider(
           create: (BuildContext context) => BoletinBloc(),
-          child: BoletinPage(),
+          child: const BoletinPage(),
         );
       }),
     );
@@ -653,7 +660,7 @@ class HomePageState extends State<HomePage> {
       MaterialPageRoute(builder: (context) {
         return BlocProvider(
           create: (BuildContext context) => PlanBloc(),
-          child: PlanPage(),
+          child: const PlanPage(),
         );
       }),
     );
@@ -665,7 +672,7 @@ class HomePageState extends State<HomePage> {
       MaterialPageRoute(builder: (context) {
         return BlocProvider(
           create: (BuildContext context) => ProgramacionBloc(),
-          child: ProgramacionPage(),
+          child: const ProgramacionPage(),
         );
       }),
     );
@@ -677,7 +684,7 @@ class HomePageState extends State<HomePage> {
       MaterialPageRoute(builder: (context) {
         return BlocProvider(
           create: (BuildContext context) => HistorialBloc(),
-          child: HistorialPage(),
+          child: const HistorialPage(),
         );
       }),
     );
@@ -689,7 +696,7 @@ class HomePageState extends State<HomePage> {
       MaterialPageRoute(builder: (context) {
         return BlocProvider(
           create: (BuildContext context) => InformeBloc(),
-          child: InformePage(),
+          child: const InformePage(),
         );
       }),
     );
@@ -713,11 +720,11 @@ class HomePageState extends State<HomePage> {
   // }
 
   void _tapAbout() {
-    App.browserController.gestorFirebase.registrarUso(CasosDeUso.About);
+    // App.browserController.gestorFirebase.registrarUso(CasosDeUso.About);
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {
-        return AboutPage();
+        return const AboutPage();
       }),
     );
   }
@@ -728,6 +735,5 @@ class BotonInfo {
   final String name;
   final Function onPressed;
 
-  BotonInfo(
-      {required this.name, required this.icono, required this.onPressed});
+  BotonInfo({required this.name, required this.icono, required this.onPressed});
 }

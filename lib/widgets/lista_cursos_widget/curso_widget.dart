@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:SIGApp/app/app.dart';
-// import 'package:SIGApp/app/app.dart';
-import 'package:SIGApp/models/curso_model/curso_model.dart';
-// import 'package:SIGApp/widgets/basic/round_container.dart';
+import 'package:sigapp/app/app.dart';
+// import 'package:sigapp/app/app.dart';
+import 'package:sigapp/models/curso_model/curso_model.dart';
+// import 'package:sigapp/widgets/basic/round_container.dart';
 
-class CursoWidget extends StatelessWidget{
+class CursoWidget extends StatelessWidget {
   final CursoModel cursoModel;
   final List<Widget>? botones;
   final int? index;
   final bool enumerado;
-  
+
   static const double _tamFuente = 15;
 
-  CursoWidget({
-    required this.cursoModel, 
+  const CursoWidget({super.key, 
+    required this.cursoModel,
     this.botones,
     this.index,
     this.enumerado = true,
   });
-
 
   @override
   Widget build(BuildContext context) {
@@ -26,29 +25,26 @@ class CursoWidget extends StatelessWidget{
       // _buildTitulo(),
       _buildCaracteristicas(),
     ];
-    if(botones != null){
+    if (botones != null) {
       contenido.add(_buildBotones());
     }
     return _buildCurso(contenido: contenido);
   }
 
-  Widget _buildCurso({required List<Widget> contenido}){
+  Widget _buildCurso({required List<Widget> contenido}) {
     return Container(
       child: Card(
         elevation: 0,
-        clipBehavior: Clip.antiAlias,        
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(App.bordeRadio)
-          )
-        ),
+        clipBehavior: Clip.antiAlias,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(App.bordeRadio))),
         child: ExpansionTile(
           initiallyExpanded: false,
           // leading: enumerado && index != null ? _buildTituloNumero() : null,
           title: _buildTitulo(),
-          children: <Widget>[            
+          children: <Widget>[
             Container(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 bottom: 18,
                 left: 18,
                 right: 18,
@@ -58,32 +54,30 @@ class CursoWidget extends StatelessWidget{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: contenido,
               ),
-            ),            
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTitulo(){
+  Widget _buildTitulo() {
     List<Widget> title = [_buildTituloNombre()];
-    if(enumerado && index != null){
+    if (enumerado && index != null) {
       // title.add(_buildTituloNumero());
       title.insert(0, _buildTituloNumero());
     }
-    return 
-    Container(
+    return Container(
       // color: Colors.red,
-      padding: EdgeInsets.only(top: 10),
+      padding: const EdgeInsets.only(top: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: title,
       ),
-    )
-    ;
+    );
   }
 
-  Widget _buildTituloNombre(){
+  Widget _buildTituloNombre() {
     const TextStyle cursoStyle = TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w700,
@@ -96,15 +90,20 @@ class CursoWidget extends StatelessWidget{
     );
 
     List<Widget> contenido = [
-      Text(cursoModel.nombre, style: cursoStyle,),
-      SizedBox(height: 10,),
+      Text(
+        cursoModel.nombre,
+        style: cursoStyle,
+      ),
+      const SizedBox(
+        height: 10,
+      ),
     ];
 
-    if(cursoModel.codigo != null){
+    if (cursoModel.codigo != null) {
       contenido.insert(
-        1, 
+        1,
         Text(
-          cursoModel.codigo!, 
+          cursoModel.codigo!,
           style: codigoStyle,
         ),
       );
@@ -117,22 +116,22 @@ class CursoWidget extends StatelessWidget{
     );
   }
 
-  Widget _buildTituloNumero(){
+  Widget _buildTituloNumero() {
     return Container(
-      margin: EdgeInsets.only(right: 12, top: 2),
+      margin: const EdgeInsets.only(right: 12, top: 2),
       // color: Colors.red,
       child: SizedBox(
         height: 18,
-        width: 18,            
+        width: 18,
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.black26,
             shape: BoxShape.circle,
           ),
           alignment: Alignment.center,
           child: Text(
             '$index',
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w800,
               fontSize: 12,
@@ -143,25 +142,27 @@ class CursoWidget extends StatelessWidget{
     );
   }
 
-  Widget _buildCaracteristicas(){      
-    final TextStyle _estiloItemTitle = TextStyle(
+  Widget _buildCaracteristicas() {
+    const TextStyle estiloItemTitle = TextStyle(
       fontSize: _tamFuente,
       fontWeight: FontWeight.w700,
     );
-    final TextStyle _estiloItemContent = TextStyle(
+    const TextStyle estiloItemContent = TextStyle(
       fontSize: _tamFuente,
     );
     return Column(
-      children: List.generate(cursoModel.caracteristicas.length, (int i){
+      children: List.generate(cursoModel.caracteristicas.length, (int i) {
         return Column(
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('${cursoModel.caracteristicas[i].nombre}', style: _estiloItemTitle),
-                Text('${cursoModel.caracteristicas[i].contenido}', style: _estiloItemContent, textAlign: TextAlign.end,),
-              ]
-            ),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text(cursoModel.caracteristicas[i].nombre,
+                  style: estiloItemTitle),
+              Text(
+                cursoModel.caracteristicas[i].contenido,
+                style: estiloItemContent,
+                textAlign: TextAlign.end,
+              ),
+            ]),
             _buildDivisor(),
           ],
         );
@@ -170,20 +171,20 @@ class CursoWidget extends StatelessWidget{
   }
 
   Widget _buildDivisor() {
-    return Divider(
+    return const Divider(
       color: Colors.black12,
       height: 3,
       thickness: 1,
     );
   }
-  
-  Widget _buildBotones(){
+
+  Widget _buildBotones() {
     return Container(
       // color: Colors.grey,
-      padding: EdgeInsets.only(
-        top: 10, 
-        // right: 15, 
-        // left: 15, 
+      padding: const EdgeInsets.only(
+        top: 10,
+        // right: 15,
+        // left: 15,
         // bottom: 15
       ),
       child: Row(
@@ -191,10 +192,10 @@ class CursoWidget extends StatelessWidget{
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: List.generate(botones!.length, (int i){
+              children: List.generate(botones!.length, (int i) {
                 // return botones[i];
                 return Container(
-                  margin: EdgeInsets.only(left: 17),
+                  margin: const EdgeInsets.only(left: 17),
                   child: botones![i],
                 );
               }),

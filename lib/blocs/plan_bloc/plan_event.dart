@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:SIGApp/models/plan_model/plan_model.dart';
+import 'package:sigapp/models/plan_model/plan_model.dart';
 
 abstract class PlanEvent extends Equatable {
   const PlanEvent();
@@ -8,8 +8,8 @@ abstract class PlanEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class PlanControllerReady extends PlanEvent{
+class PlanControllerReady extends PlanEvent {
   final PlanModel modelo;
 
-  PlanControllerReady(this.modelo);
+  const PlanControllerReady(this.modelo);
 }

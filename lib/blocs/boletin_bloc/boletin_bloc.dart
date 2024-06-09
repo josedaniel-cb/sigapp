@@ -1,8 +1,7 @@
-import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:SIGApp/app/app.dart';
-import 'package:SIGApp/models/boletin_model/boletin_model.dart';
-import 'package:SIGApp/models/notas_model.dart';
+import 'package:sigapp/app/app.dart';
+import 'package:sigapp/models/boletin_model/boletin_model.dart';
+import 'package:sigapp/models/notas_model.dart';
 import './bloc.dart';
 
 class BoletinBloc extends Bloc<BoletinEvent, BoletinState> {
@@ -14,26 +13,25 @@ class BoletinBloc extends Bloc<BoletinEvent, BoletinState> {
 
   // @override
   // BoletinState get initialState => BoletinLoading();
-  BoletinBloc() : super(BoletinLoading());
+  BoletinBloc() : super(BoletinLoading()) {
+    on<BoletinEvent>(_onEvent);
+  }
 
-  @override
-  Stream<BoletinState> mapEventToState(
-    BoletinEvent event,
-  ) async* {
+  void _onEvent(BoletinEvent event, Emitter<BoletinState> emit) async {
     if (event is BoletinControllerReady) {
       modelo = event.modelo;
       semestres = event.semestres;
       selectedSemestreIndex = 0;
-      yield BoletinReady();
+      emit(BoletinReady());
     } else if (event is BoletinUserChange) {
       selectedSemestreIndex = event.semestreIndex;
-      yield BoletinLoading();
+      emit(BoletinLoading());
       App.browserController.boletinSolicitarOtro(event.semestreIndex);
     } else if (event is BoletinControllerChanged) {
       modelo = event.modelo;
-      yield BoletinReady();
+      emit(BoletinReady());
     } else if (event is BoletinControllerLoggedOut) {
-      yield BoletinLoggedOut();
+      emit(BoletinLoggedOut());
     }
 
     // Notas
@@ -41,10 +39,10 @@ class BoletinBloc extends Bloc<BoletinEvent, BoletinState> {
       // selectedCursoNotasIndex = event.indexCurso;
       // App.browserController.cargarUrl(currentModel.cursos[selectedCursoNotasIndex].notasUrl);
       App.browserController.boletinSolicitarNotas(event.indexCurso);
-      yield BoletinLoadingNotas();
+      emit(BoletinLoadingNotas());
     } else if (event is BoletinControllerNotasReady) {
       notasModel = event.modelo;
-      yield BoletinNotasReady(event.modelo);
+      emit(BoletinNotasReady(event.modelo));
     }
   }
 }

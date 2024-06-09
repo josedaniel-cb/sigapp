@@ -10,10 +10,10 @@ class ListaCursosWidget extends StatelessWidget{
   final String? nadaQueMostrarMensaje;
 
   // final Color _background = Colors.black12;    
-  final Color _background = Color(0xFFd1d1d1);    
+  final Color _background = const Color(0xFFd1d1d1);    
   final double _margen = 10;
 
-  ListaCursosWidget({
+  const ListaCursosWidget({super.key, 
     required this.cursos,
     this.leyenda,
     this.nadaQueMostrarMensaje,
@@ -21,7 +21,7 @@ class ListaCursosWidget extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    if(cursos.length != 0){
+    if(cursos.isNotEmpty){
       return _buildBody(
         contenido: List.generate(cursos.length, (int i){
           return Container(
@@ -36,7 +36,7 @@ class ListaCursosWidget extends StatelessWidget{
           mensaje: nadaQueMostrarMensaje,
         );
       } else {
-        return NadaQueMostrarWidget();
+        return const NadaQueMostrarWidget();
       }
     }
   }

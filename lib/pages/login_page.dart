@@ -1,25 +1,25 @@
-import 'package:SIGApp/pages/text_page.dart';
-import 'package:SIGApp/widgets/emergentes/affection_widget.dart';
-import 'package:SIGApp/widgets/emergentes/terminos_widget.dart';
-import 'package:SIGApp/widgets/sigapp_info/sigapp_logotipo_widget.dart';
+import 'package:sigapp/pages/text_page.dart';
+import 'package:sigapp/widgets/emergentes/affection_widget.dart';
+import 'package:sigapp/widgets/emergentes/terminos_widget.dart';
+import 'package:sigapp/widgets/sigapp_info/sigapp_logotipo_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
-import 'package:SIGApp/app/urls.dart';
-import 'package:SIGApp/app/app.dart';
-import 'package:SIGApp/blocs/home_bloc/bloc.dart';
-import 'package:SIGApp/blocs/login_bloc/bloc.dart';
-import 'package:SIGApp/widgets/emergentes/critical_error_message.dart';
+import 'package:sigapp/app/urls.dart';
+import 'package:sigapp/app/app.dart';
+import 'package:sigapp/blocs/home_bloc/bloc.dart';
+import 'package:sigapp/blocs/login_bloc/bloc.dart';
+import 'package:sigapp/widgets/emergentes/critical_error_message.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({
-    Key? key,
-  }) : super(key: key);
+  const LoginPage({
+    super.key,
+  });
 
   @override
   LoginPageState createState() => LoginPageState();
@@ -39,6 +39,7 @@ class LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _loginBloc = BlocProvider.of<LoginBloc>(context);
+    // App.browserController = BrowserController(_loginBloc);
   }
 
   /// LISTA DE ESTADOS:
@@ -73,14 +74,14 @@ class LoginPageState extends State<LoginPage> {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return TerminosWidget();
+                return const TerminosWidget();
               },
             );
           }
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return AffectionWidget();
+              return const AffectionWidget();
             },
           );
         }
@@ -127,10 +128,10 @@ class LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildLoadingMessage(String mensaje) {
-    final double lateralMargins = 20;
+    const double lateralMargins = 20;
     return Container(
-      padding: EdgeInsets.all(lateralMargins),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.all(lateralMargins),
+      decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(lateralMargins)),
       ),
@@ -138,7 +139,7 @@ class LoginPageState extends State<LoginPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          SizedBox(
+          const SizedBox(
             width: 30.0,
             height: 30.0,
             child: CircularProgressIndicator(
@@ -147,7 +148,7 @@ class LoginPageState extends State<LoginPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: lateralMargins),
+            margin: const EdgeInsets.only(left: lateralMargins),
             child: Text(mensaje),
           ),
         ],
@@ -165,11 +166,11 @@ class LoginPageState extends State<LoginPage> {
               children: <Widget>[
                 Expanded(
                   child: Container(
-                    margin: EdgeInsets.only(right: 2, top: 2),
+                    margin: const EdgeInsets.only(right: 2, top: 2),
                     child: Text(
                       'v${App.version}',
                       textAlign: TextAlign.end,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 10,
                       ),
@@ -181,8 +182,8 @@ class LoginPageState extends State<LoginPage> {
             Expanded(
               child: Center(
                 child: Container(
-                  margin: EdgeInsets.all(30),
-                  decoration: BoxDecoration(
+                  margin: const EdgeInsets.all(30),
+                  decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(25)),
                   ),
@@ -200,10 +201,10 @@ class LoginPageState extends State<LoginPage> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(right: 4, bottom: 2, left: 4),
+              margin: const EdgeInsets.only(right: 4, bottom: 2, left: 4),
               child: Row(
                 children: <Widget>[
-                  Expanded(
+                  const Expanded(
                     child: Text(
                       '#UniversidadNacionalDePiura',
                       style: TextStyle(
@@ -215,7 +216,7 @@ class LoginPageState extends State<LoginPage> {
                   RichText(
                     text: TextSpan(
                       text: 'Ver nota de autor',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white70,
                         fontFamily: 'ProductSans',
                         fontSize: 13,
@@ -226,7 +227,7 @@ class LoginPageState extends State<LoginPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => TextPage(
+                              builder: (context) => const TextPage(
                                 cualMensaje: MensajesTextPage.NotaDeAutor,
                               ),
                             ),
@@ -273,7 +274,7 @@ class LoginPageState extends State<LoginPage> {
         Container(
           // color: Colors.red,
           margin: EdgeInsets.symmetric(vertical: _margenVertical),
-          child: SigappLogotipoWidget(
+          child: const SigappLogotipoWidget(
             fontSize: 50,
           ),
         ),
@@ -366,7 +367,7 @@ class LoginPageState extends State<LoginPage> {
               });
             },
           ),
-          Text(
+          const Text(
             "Mantener sesión iniciada",
           )
         ],
@@ -388,9 +389,9 @@ class LoginPageState extends State<LoginPage> {
                 borderRadius: BorderRadius.circular(30.0),
               ),
             ),
-            child: Text('Ingresar',
-                style: TextStyle(fontSize: 20.0, color: Colors.white)),
             onPressed: _solicitarIngreso,
+            child: const Text('Ingresar',
+                style: TextStyle(fontSize: 20.0, color: Colors.white)),
           ),
         ));
   }
@@ -398,7 +399,7 @@ class LoginPageState extends State<LoginPage> {
   Widget _buildHelpButton() {
     return Container(
       child: TextButton(
-        child: Text('¿Ha olvidado su contraseña?',
+        child: const Text('¿Ha olvidado su contraseña?',
             style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300)),
         onPressed: () => _launchURL(Urls.RESET_PASSWORD),
       ),
@@ -418,7 +419,7 @@ class LoginPageState extends State<LoginPage> {
       MaterialPageRoute(builder: (context) {
         return BlocProvider(
           create: (BuildContext context) => HomeBloc(),
-          child: HomePage(),
+          child: const HomePage(),
         );
       }),
     );

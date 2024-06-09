@@ -1,22 +1,19 @@
-import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:SIGApp/models/programacion_model.dart';
+import 'package:sigapp/models/programacion_model.dart';
 import './bloc.dart';
 
 class ProgramacionBloc extends Bloc<ProgramacionEvent, ProgramacionState> {
   late ProgramacionModel modelo;
 
-  // @override
-  // ProgramacionState get initialState => Loading();
-  ProgramacionBloc() : super(Loading());
+  ProgramacionBloc() : super(Loading()) {
+    on<ProgramacionEvent>(_onProgramacionEventReceived);
+  }
 
-  @override
-  Stream<ProgramacionState> mapEventToState(
-    ProgramacionEvent event,
-  ) async* {
+  void _onProgramacionEventReceived(
+      ProgramacionEvent event, Emitter<ProgramacionState> emit) async {
     if (event is ProgramacionControllerReady) {
       modelo = event.modelo;
-      yield Ready();
+      emit(Ready());
     }
   }
 }

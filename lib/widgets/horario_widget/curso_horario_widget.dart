@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
-import 'package:SIGApp/models/horario_model/casillero_horario.dart';
-import 'package:SIGApp/models/horario_model/curso_horario.dart';
+import 'package:sigapp/models/horario_model/casillero_horario.dart';
+import 'package:sigapp/models/horario_model/curso_horario.dart';
 
 import 'horario_widget.dart';
 
-class CursoHorarioWidget extends StatelessWidget{
+class CursoHorarioWidget extends StatelessWidget {
   final CasilleroHorario casilleroHorario;
 
-  CursoHorarioWidget(this.casilleroHorario);
+  const CursoHorarioWidget(this.casilleroHorario, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,53 +15,53 @@ class CursoHorarioWidget extends StatelessWidget{
     return casilleroHorario.curso2 == null ? _buildSingle() : _buildDouble();
   }
 
-  Widget _buildSingle(){
+  Widget _buildSingle() {
     return _buildCurso(
       curso: casilleroHorario.curso1,
       borderRadius: BorderRadius.circular(8),
       height: HorarioWidgetConsts.cursoHeight,
       width: HorarioWidgetConsts.cursoWidth,
-      margin: EdgeInsets.all(HorarioWidgetConsts.margen),
+      margin: const EdgeInsets.all(HorarioWidgetConsts.margen),
       maxLinesCurso: 3,
-      maxLinesAula: 1,  
+      maxLinesAula: 1,
     );
   }
 
-  Widget _buildDouble(){
+  Widget _buildDouble() {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         _buildCurso(
           curso: casilleroHorario.curso1,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(8),
             topRight: Radius.circular(8),
           ),
           height: HorarioWidgetConsts.cursoHeight / 2,
           width: HorarioWidgetConsts.cursoWidth,
-          margin: EdgeInsets.only(
+          margin: const EdgeInsets.only(
             top: HorarioWidgetConsts.margen,
             left: HorarioWidgetConsts.margen,
             right: HorarioWidgetConsts.margen,
-          ),  
+          ),
           maxLinesCurso: 1,
-          maxLinesAula: 1,          
+          maxLinesAula: 1,
         ),
         _buildCurso(
           curso: casilleroHorario.curso2,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(8),
             bottomRight: Radius.circular(8),
           ),
           height: HorarioWidgetConsts.cursoHeight / 2,
           width: HorarioWidgetConsts.cursoWidth,
-          margin: EdgeInsets.only(
+          margin: const EdgeInsets.only(
             bottom: HorarioWidgetConsts.margen,
             left: HorarioWidgetConsts.margen,
             right: HorarioWidgetConsts.margen,
-          ),  
+          ),
           maxLinesCurso: 1,
-          maxLinesAula: 1,        
+          maxLinesAula: 1,
         )
       ],
     );
@@ -75,16 +75,16 @@ class CursoHorarioWidget extends StatelessWidget{
     required CursoHorario? curso,
     required int maxLinesCurso,
     required int maxLinesAula,
-  }){
+  }) {
     double fs = 14;
     return Container(
-      padding: EdgeInsets.all(5),
-      alignment: Alignment(0, 0),
+      padding: const EdgeInsets.all(5),
+      alignment: const Alignment(0, 0),
       width: width,
       height: height,
       margin: margin,
       decoration: BoxDecoration(
-        color: curso != null ? curso.colorFondo : Color.fromRGBO(0, 0, 0, .1),
+        color: curso != null ? curso.colorFondo : const Color.fromRGBO(0, 0, 0, .1),
         borderRadius: borderRadius,
       ),
       child: Column(
@@ -97,7 +97,9 @@ class CursoHorarioWidget extends StatelessWidget{
             maxLines: maxLinesCurso,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: curso != null ? curso.colorTexto : Color.fromRGBO(0, 0, 0, .1),
+              color: curso != null
+                  ? curso.colorTexto
+                  : const Color.fromRGBO(0, 0, 0, .1),
               fontWeight: FontWeight.w600,
               fontSize: fs,
             ),
@@ -108,7 +110,9 @@ class CursoHorarioWidget extends StatelessWidget{
             maxLines: maxLinesAula,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: curso != null ? curso.colorTexto : Color.fromRGBO(0, 0, 0, .1),
+              color: curso != null
+                  ? curso.colorTexto
+                  : const Color.fromRGBO(0, 0, 0, .1),
               fontWeight: FontWeight.w600,
               fontSize: fs,
             ),
@@ -118,7 +122,7 @@ class CursoHorarioWidget extends StatelessWidget{
     );
   }
 
-  void _print(Object mensaje){
+  void _print(Object mensaje) {
     print('CasilleroWidget: $mensaje');
   }
 }

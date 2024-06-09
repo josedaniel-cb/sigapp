@@ -1,40 +1,38 @@
-import 'package:SIGApp/models/curso_model/curso_model.dart';
+import 'package:sigapp/models/curso_model/curso_model.dart';
 
-class PlanModel{
+class PlanModel {
   String etiqueta;
   late List<CicloPlanModel?> ciclos;
 
-  PlanModel(this.etiqueta){
+  PlanModel(this.etiqueta) {
     ciclos = [];
   }
 }
 
-class CicloPlanModel{
+class CicloPlanModel {
   String etiqueta;
   List<CursoPlanModel>? cursos;
 
-  CicloPlanModel(this.etiqueta){
+  CicloPlanModel(this.etiqueta) {
     cursos = [];
   }
 }
 
-class CursoPlanModel extends CursoModel{
+class CursoPlanModel extends CursoModel {
   List<RequisitoCursoPlanModel>? requisitos;
 
-  CursoPlanModel(String curso, String? codigo) : super(curso, codigo){
+  CursoPlanModel(super.curso, super.codigo) {
     requisitos = [];
   }
 
   String get requisitosData => caracteristicas[0].contenido;
   String get tipo => caracteristicas[1].contenido;
   String get creditos => caracteristicas[2].contenido;
-  
 }
 
-class RequisitoCursoPlanModel{
+class RequisitoCursoPlanModel {
   final int? cicloIndex;
   final int? cursoIndex;
 
   RequisitoCursoPlanModel(this.cicloIndex, this.cursoIndex);
 }
-

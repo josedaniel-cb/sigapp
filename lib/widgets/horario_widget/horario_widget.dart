@@ -1,48 +1,52 @@
-import 'package:SIGApp/widgets/sigapp_info/sigapp_logotipo_widget.dart';
+import 'package:sigapp/widgets/sigapp_info/sigapp_logotipo_widget.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:SIGApp/app/app.dart';
-import 'package:SIGApp/models/horario_model/horario_model.dart';
+import 'package:sigapp/app/app.dart';
+import 'package:sigapp/models/horario_model/horario_model.dart';
 
 import '../nada_que_mostrar_widget.dart';
 import 'curso_horario_widget.dart';
 
-class HorarioWidget extends StatelessWidget{
+class HorarioWidget extends StatelessWidget {
   final HorarioModel? horarioModel;
   final String semestre;
   final ScreenshotController _screenshotController;
 
-  HorarioWidget(this.horarioModel, this._screenshotController, this.semestre);
+  const HorarioWidget(this.horarioModel, this._screenshotController, this.semestre, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return horarioModel!.filas.length > 0 
-      ? 
-      FadeInRight( child: _buildHorario()) 
-      : 
-      NadaQueMostrarWidget();
+    return horarioModel!.filas.isNotEmpty
+        ? FadeInRight(child: _buildHorario())
+        : const NadaQueMostrarWidget();
   }
 
-  Widget _buildHorario(){
+  Widget _buildHorario() {
     double altura, ancho, alturaAdicionalTexto;
-  
+
     alturaAdicionalTexto = 33;
-    altura = 
-      (HorarioWidgetConsts.cursoHeight + HorarioWidgetConsts.margen*2)*(horarioModel!.filas.length) + //longitud altura de casilleros normales
-      (HorarioWidgetConsts.tituloHeight + HorarioWidgetConsts.margen*2) + //longitud altura de casilleros titulo
-      alturaAdicionalTexto + // altura de titulo
-      HorarioWidgetConsts.margen*2; //margen vertical
-    ancho = 
-      (HorarioWidgetConsts.cursoWidth + HorarioWidgetConsts.margen*2)*(horarioModel!.filas[0].cursos.length) + //longitud ancho de cursos
-      (HorarioWidgetConsts.horasWidth + HorarioWidgetConsts.margen*2) + //longitud ancho de casilleros hora
-      HorarioWidgetConsts.margen*2; //margen horizontal
-  
+    altura =
+        (HorarioWidgetConsts.cursoHeight + HorarioWidgetConsts.margen * 2) *
+                (horarioModel!
+                    .filas.length) + //longitud altura de casilleros normales
+            (HorarioWidgetConsts.tituloHeight +
+                HorarioWidgetConsts.margen *
+                    2) + //longitud altura de casilleros titulo
+            alturaAdicionalTexto + // altura de titulo
+            HorarioWidgetConsts.margen * 2; //margen vertical
+    ancho = (HorarioWidgetConsts.cursoWidth + HorarioWidgetConsts.margen * 2) *
+            (horarioModel!.filas[0].cursos.length) + //longitud ancho de cursos
+        (HorarioWidgetConsts.horasWidth +
+            HorarioWidgetConsts.margen *
+                2) + //longitud ancho de casilleros hora
+        HorarioWidgetConsts.margen * 2; //margen horizontal
+
     return InteractiveViewer(
-      boundaryMargin: EdgeInsets.all(20.0),
+      boundaryMargin: const EdgeInsets.all(20.0),
       minScale: 0.1,
       maxScale: 1.6,
-      child: Container(
+      child: SizedBox(
         height: altura,
         width: ancho,
         child: Screenshot(
@@ -51,24 +55,34 @@ class HorarioWidget extends StatelessWidget{
             color: Colors.white,
             height: altura,
             width: ancho,
-            padding: EdgeInsets.all(HorarioWidgetConsts.margen),
+            padding: const EdgeInsets.all(HorarioWidgetConsts.margen),
             child: Column(
               children: <Widget>[
                 _buildTitulosSuperiores(),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List.generate(horarioModel!.filas.length, (int i) {
-                    return Row(
-                      children: List.generate(horarioModel!.filas[i].cursos.length, (int j) {
-                        return CursoHorarioWidget(horarioModel!.filas[i].cursos[j]);
-                      })..insert(0, _buildCasilleroTitulo(
-                        text: "${horarioModel!.filas[i].inicio.toString()}\n▫\n${horarioModel!.filas[i].fin.toString()}",
-                        height: HorarioWidgetConsts.cursoHeight,
-                        width: HorarioWidgetConsts.horasWidth,
-                        color: Colors.grey,
-                      ),),
-                    );
-                  },),
+                  children: List.generate(
+                    horarioModel!.filas.length,
+                    (int i) {
+                      return Row(
+                        children: List.generate(
+                            horarioModel!.filas[i].cursos.length, (int j) {
+                          return CursoHorarioWidget(
+                              horarioModel!.filas[i].cursos[j]);
+                        })
+                          ..insert(
+                            0,
+                            _buildCasilleroTitulo(
+                              text:
+                                  "${horarioModel!.filas[i].inicio.toString()}\n▫\n${horarioModel!.filas[i].fin.toString()}",
+                              height: HorarioWidgetConsts.cursoHeight,
+                              width: HorarioWidgetConsts.horasWidth,
+                              color: Colors.grey,
+                            ),
+                          ),
+                      );
+                    },
+                  ),
                 ),
                 _buildInfo(alturaAdicionalTexto),
               ],
@@ -79,8 +93,8 @@ class HorarioWidget extends StatelessWidget{
     );
   }
 
-  Widget _buildTitulosSuperiores(){
-    Color azulito = Color.fromRGBO(37, 142, 232, 1);
+  Widget _buildTitulosSuperiores() {
+    Color azulito = const Color.fromRGBO(37, 142, 232, 1);
 
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -127,13 +141,14 @@ class HorarioWidget extends StatelessWidget{
     );
   }
 
-  Widget _buildCasilleroTitulo({required String text, double? height, double? width, Color? color}){
+  Widget _buildCasilleroTitulo(
+      {required String text, double? height, double? width, Color? color}) {
     return Container(
-      padding: EdgeInsets.all(5),
-      alignment: Alignment(0, 0),
+      padding: const EdgeInsets.all(5),
+      alignment: const Alignment(0, 0),
       width: width,
       height: height,
-      margin: EdgeInsets.all(HorarioWidgetConsts.margen),
+      margin: const EdgeInsets.all(HorarioWidgetConsts.margen),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(8),
@@ -142,7 +157,7 @@ class HorarioWidget extends StatelessWidget{
         text,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.w600,
           fontSize: 14,
@@ -151,10 +166,11 @@ class HorarioWidget extends StatelessWidget{
     );
   }
 
-  Widget _buildInfo(double alturaAsignada){
-    String alumnnoNombrApell = App.browserController.homeBloc!.homeModel.apellidosNombres;
-    double textSize = alturaAsignada - HorarioWidgetConsts.margen*4;
-    final TextStyle _semestreStyle = TextStyle(
+  Widget _buildInfo(double alturaAsignada) {
+    String alumnnoNombrApell =
+        App.browserController.homeBloc!.homeModel.apellidosNombres;
+    double textSize = alturaAsignada - HorarioWidgetConsts.margen * 4;
+    final TextStyle semestreStyle = TextStyle(
       fontSize: textSize,
       color: Colors.black,
       fontWeight: FontWeight.bold,
@@ -166,12 +182,12 @@ class HorarioWidget extends StatelessWidget{
     // );
 
     return Container(
-      height: alturaAsignada - HorarioWidgetConsts.margen*3,
-      margin: EdgeInsets.only(
+      height: alturaAsignada - HorarioWidgetConsts.margen * 3,
+      margin: const EdgeInsets.only(
         top: HorarioWidgetConsts.margen,
-        bottom: HorarioWidgetConsts.margen*2,
-        left: HorarioWidgetConsts.margen*2,
-        right: HorarioWidgetConsts.margen*2,
+        bottom: HorarioWidgetConsts.margen * 2,
+        left: HorarioWidgetConsts.margen * 2,
+        right: HorarioWidgetConsts.margen * 2,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -186,11 +202,11 @@ class HorarioWidget extends StatelessWidget{
               ),
             ),
           ),
-          Container(            
+          SizedBox(
             height: alturaAsignada,
             child: Text(
               "$alumnnoNombrApell | $semestre",
-              style: _semestreStyle,  
+              style: semestreStyle,
             ),
           ),
         ],
@@ -198,21 +214,19 @@ class HorarioWidget extends StatelessWidget{
     );
   }
 
-  void _print(Object mensaje){
+  void _print(Object mensaje) {
     print("HorarioWidget: $mensaje");
   }
 }
 
-
-
-class HorarioWidgetConsts{
+class HorarioWidgetConsts {
   static const double cursoHeight = 100;
   static const double cursoWidth = 120;
   static const double cursoTitleHeight = 30;
   // static const double cursoHourWidth = 60;
   static const double margen = 4;
 
-  static const double tituloHeight = cursoHeight*0.3;
+  static const double tituloHeight = cursoHeight * 0.3;
 
-  static const double horasWidth = cursoWidth*0.7;
+  static const double horasWidth = cursoWidth * 0.7;
 }

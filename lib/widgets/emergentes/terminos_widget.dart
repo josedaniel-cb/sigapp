@@ -1,10 +1,12 @@
-import 'dart:io';
-import 'package:SIGApp/app/app.dart';
-import 'package:SIGApp/pages/text_page.dart';
+import 'package:flutter/services.dart';
+import 'package:sigapp/app/app.dart';
+import 'package:sigapp/pages/text_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 
 class TerminosWidget extends StatefulWidget {
+  const TerminosWidget({super.key});
+
   @override
   State<StatefulWidget> createState() => _TerminosWidget();
 }
@@ -15,11 +17,9 @@ class _TerminosWidget extends State<TerminosWidget> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: (() => null) as Future<bool> Function()?,
+      onWillPop: () async => false,
       child: AlertDialog(
-        // title: Text("T"),
         content: Container(
-          // color: Colors.blueGrey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +37,7 @@ class _TerminosWidget extends State<TerminosWidget> {
                   Expanded(
                     child: RichText(
                       text: TextSpan(children: [
-                        TextSpan(
+                        const TextSpan(
                             text: 'Acepto los ',
                             style: TextStyle(
                               color: Colors.black,
@@ -46,11 +46,11 @@ class _TerminosWidget extends State<TerminosWidget> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => TextPage(),
+                              builder: (context) => const TextPage(),
                             ),
                           );
                         }),
-                        TextSpan(
+                        const TextSpan(
                             text: '.',
                             style: TextStyle(
                               color: Colors.black,
@@ -65,12 +65,12 @@ class _TerminosWidget extends State<TerminosWidget> {
         ),
         actions: <Widget>[
           Container(
-            margin: EdgeInsets.only(right: 15),
+            margin: const EdgeInsets.only(right: 15),
             child: TextButton(
-              child: Text(
+              onPressed: continuarPressed,
+              child: const Text(
                 "Continuar",
               ),
-              onPressed: continuarPressed,
             ),
           ),
         ],
@@ -83,17 +83,15 @@ class _TerminosWidget extends State<TerminosWidget> {
       App.browserController.preferencias!.guardarPrimerUso(false);
       Navigator.pop(context);
     } else {
-      exit(0);
+      SystemNavigator.pop();
     }
   }
 
   TextSpan _buildLinkText(String url, Function onTap) {
     return TextSpan(
       text: url,
-      style: TextStyle(
+      style: const TextStyle(
         color: Colors.blue,
-        // fontSize: fontSize,
-        // fontWeight: FontWeight.bold,
         decoration: TextDecoration.underline,
       ),
       recognizer: TapGestureRecognizer()..onTap = onTap as void Function()?,

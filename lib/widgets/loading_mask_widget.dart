@@ -5,7 +5,7 @@ class LoadingMaskWidget extends StatelessWidget{
   final double alto;
   final double ancho;
 
-  LoadingMaskWidget({
+  const LoadingMaskWidget({super.key, 
     required this.mensaje, 
     required this.alto, 
     required this.ancho
@@ -26,10 +26,10 @@ class LoadingMaskWidget extends StatelessWidget{
   }
 
   Widget _buildLoadingMessage(String mensaje){
-    final double lateralMargins = 20;
+    const double lateralMargins = 20;
     return Container(  
-      padding: EdgeInsets.all(lateralMargins),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.all(lateralMargins),
+      decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(
           Radius.circular(lateralMargins)
@@ -39,7 +39,7 @@ class LoadingMaskWidget extends StatelessWidget{
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          SizedBox(
+          const SizedBox(
             width: 30.0,
             height: 30.0,
             child: CircularProgressIndicator(
@@ -48,7 +48,7 @@ class LoadingMaskWidget extends StatelessWidget{
             ),
           ),
           Container(
-            margin: EdgeInsets.only(left: lateralMargins),
+            margin: const EdgeInsets.only(left: lateralMargins),
             child: Text(
               mensaje,
             ),

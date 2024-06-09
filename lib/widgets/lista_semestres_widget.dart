@@ -1,6 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:SIGApp/app/app.dart';
+import 'package:sigapp/app/app.dart';
 
 import 'nada_que_mostrar_widget.dart';
 
@@ -12,7 +12,7 @@ class ListaSemestresWidget extends StatelessWidget{
 
   final double _margen = 15;
 
-  const ListaSemestresWidget({
+  const ListaSemestresWidget({super.key, 
     required this.children,
     required this.icono,
     this.leyenda,
@@ -21,7 +21,7 @@ class ListaSemestresWidget extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    if(children.length != 0){
+    if(children.isNotEmpty){
       return ElasticInUp(
         child: _buildBody(),
       );
@@ -31,7 +31,7 @@ class ListaSemestresWidget extends StatelessWidget{
           mensaje: nadaQueMostrarMensaje,
         );
       } else {
-        return NadaQueMostrarWidget();
+        return const NadaQueMostrarWidget();
       }
     }
   }
@@ -44,7 +44,7 @@ class ListaSemestresWidget extends StatelessWidget{
         leading: icono,
         title: Text(
           children[i].titulo,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w600,
             color: Colors.black54,
@@ -61,7 +61,7 @@ class ListaSemestresWidget extends StatelessWidget{
             alignment: Alignment.center,
             child: Text(
               '${children[i].numero}',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w800,
                 fontSize: 12,
@@ -89,7 +89,7 @@ class ListaSemestresWidget extends StatelessWidget{
         children: <Widget>[
           Expanded(
             child: Container(
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 // top: _margen,
               ),
               child: leyenda,

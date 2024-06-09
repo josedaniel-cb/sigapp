@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart' show Color, debugPrint;
 import 'package:html/dom.dart';
-import 'package:SIGApp/app/urls.dart';
-// import 'package:SIGApp/app/urls.dart';
-import 'package:SIGApp/models/boletin_model/boletin_model.dart';
-import 'package:SIGApp/models/boletin_model/curso_boletin_model.dart';
-import 'package:SIGApp/models/notas_model.dart';
-import 'package:SIGApp/models/curso_model/curso_caracteristica.dart';
-import 'package:SIGApp/models/curso_model/curso_model.dart';
-import 'package:SIGApp/models/historial_model.dart';
-import 'package:SIGApp/models/home_model.dart';
-import 'package:SIGApp/models/horario_model/casillero_horario.dart';
-import 'package:SIGApp/models/horario_model/curso_horario.dart';
-import 'package:SIGApp/models/horario_model/fila_horario.dart';
-import 'package:SIGApp/models/horario_model/hora_horario.dart';
-import 'package:SIGApp/models/horario_model/horario_model.dart';
-import 'package:SIGApp/models/informe_model.dart';
-import 'package:SIGApp/models/plan_model/plan_model.dart';
-import 'package:SIGApp/models/programacion_model.dart';
+import 'package:sigapp/app/urls.dart';
+// import 'package:sigapp/app/urls.dart';
+import 'package:sigapp/models/boletin_model/boletin_model.dart';
+import 'package:sigapp/models/boletin_model/curso_boletin_model.dart';
+import 'package:sigapp/models/notas_model.dart';
+import 'package:sigapp/models/curso_model/curso_caracteristica.dart';
+import 'package:sigapp/models/curso_model/curso_model.dart';
+import 'package:sigapp/models/historial_model.dart';
+import 'package:sigapp/models/home_model.dart';
+import 'package:sigapp/models/horario_model/casillero_horario.dart';
+import 'package:sigapp/models/horario_model/curso_horario.dart';
+import 'package:sigapp/models/horario_model/fila_horario.dart';
+import 'package:sigapp/models/horario_model/hora_horario.dart';
+import 'package:sigapp/models/horario_model/horario_model.dart';
+import 'package:sigapp/models/informe_model.dart';
+import 'package:sigapp/models/plan_model/plan_model.dart';
+import 'package:sigapp/models/programacion_model.dart';
 
 class Scraper {
   static const String tagTabla = 'table';
@@ -81,29 +81,28 @@ class Scraper {
     htmlData = htmlData.replaceAll(RegExp(r'\\u003C'), '<');
     htmlData = htmlData.replaceAll(RegExp(r'\\n'), '\n');
     htmlData = htmlData.replaceAll(RegExp(r'\\t'), '\t');
-    htmlData = htmlData.replaceAll(RegExp(r'\\"'), '\"');
+    htmlData = htmlData.replaceAll(RegExp(r'\\"'), '"');
     return htmlData;
   }
 
   // Generico
   static bool estaCargandoTabla(Document document) {
-    return document.getElementsByClassName(classLoadingMask).length > 0;
+    return document.getElementsByClassName(classLoadingMask).isNotEmpty;
   }
 
   static bool cuerpoTablaCargado(Document document) {
     return document
-            .getElementsByTagName(tagCuerpoTabla)[0]
-            .getElementsByTagName(tagFilaTabla)
-            .length >
-        0;
+        .getElementsByTagName(tagCuerpoTabla)[0]
+        .getElementsByTagName(tagFilaTabla)
+        .isNotEmpty;
   }
 
   static List<String> browserGenerarListaSemestres(Document document) {
     List<Element> elementos = document.getElementsByTagName(classOption);
     List<String> semestres = [];
-    elementos.forEach((opcion) {
+    for (var opcion in elementos) {
       semestres.add(opcion.innerHtml);
-    });
+    }
     return semestres;
   }
 
@@ -144,7 +143,7 @@ class Scraper {
     tabla = _obtenerTabla(document);
     filas = tabla.getElementsByTagName(tagFilaTabla);
     modelo = HorarioModel();
-    filas.forEach((fila) {
+    for (var fila in filas) {
       casilleros = fila.getElementsByTagName(tagCasilleroTabla);
       inicio = _horarioGenerarHoraHorario(casilleros[0].text);
       fin = _horarioGenerarHoraHorario(casilleros[1].text);
@@ -153,7 +152,7 @@ class Scraper {
         // _print("se evaluar[a casilleros[i].text \'${casilleros[i].text}\'");
         // _print("se evaluar[a casilleros[i].text.length \'${casilleros[i].text.length}\'");
         // if(casilleros[i].text.isEmpty){
-        if (casilleros[i].text.length != 0) {
+        if (casilleros[i].text.isNotEmpty) {
           colorFondo = _horarioObtenerCasilleroColorFondo(
               casilleros[i].attributes[styleAttribute]!);
           colorTexto = _horarioObtenerCasilleroColorTexto(colorFondo);
@@ -168,7 +167,7 @@ class Scraper {
         filaHorario.cursos.add(CasilleroHorario(curso));
       }
       modelo.filas.add(filaHorario);
-    });
+    }
     // return modelo;
     return _horarioNormalizarModelo(modelo);
   }
@@ -194,12 +193,12 @@ class Scraper {
     List<String> rgb;
     // _print("_horarioObtenerCasilleroColorFondo" + colorData);
     rgb = colorData.substring(22, colorData.length - 16).split(', ');
-    if (rgb.length > 0) {
+    if (rgb.isNotEmpty) {
       // Se espera length == 3
       color = Color.fromRGBO(
           int.parse(rgb[0]), int.parse(rgb[1]), int.parse(rgb[2]), 1.0);
     } else {
-      color = Color.fromRGBO(0, 0, 0, .1);
+      color = const Color.fromRGBO(0, 0, 0, .1);
     }
     // _print('retornando color: \'$color\'');
     return color;
@@ -212,10 +211,11 @@ class Scraper {
     double luminance =
         (0.299 * color.red + 0.587 * color.green + 0.114 * color.blue) / 255;
 
-    if (luminance > 0.5)
+    if (luminance > 0.5) {
       d = 0; // bright colors - black font
-    else
+    } else {
       d = 255; // dark colors - white font
+    }
 
     return Color.fromARGB(color.alpha, d, d, d);
   }
@@ -370,9 +370,9 @@ class Scraper {
     if (notasPanel != null) {
       // Criterios
       listaCriterios = notasPanel.getElementsByClassName(classPanelDefault);
-      listaCriterios.forEach((Element panelDefault) {
+      for (var panelDefault in listaCriterios) {
         criterios.add(_notasObtenerCriterioModel(panelDefault));
-      });
+      }
 
       // Curso info
       cursoModelo = CursoModel(
@@ -417,16 +417,16 @@ class Scraper {
         notaFinal = double.parse(listaSpans[3].innerHtml.trim());
       }
 
-      listaSpans.forEach((Element spanE) {
+      for (var spanE in listaSpans) {
         spanE.remove();
-      });
+      }
       notaFinalLabel = panelNotas.text.trim();
       if (notaFinalLabel.endsWith(':')) {
         notaFinalLabel = notaFinalLabel.substring(0, notaFinalLabel.length - 1);
       }
     } else {
       List<Element> error404 = document.getElementsByTagName(tagHeading2);
-      if (error404.length > 0) {
+      if (error404.isNotEmpty) {
         if (error404[0]
                 .innerHtml
                 .compareTo('404: archivo o directorio no encontrado.') ==
@@ -483,9 +483,9 @@ class Scraper {
 
     examenes = [];
     elemExamenes = elemPanelBody.getElementsByTagName(tagListItem);
-    elemExamenes.forEach((Element examenElement) {
+    for (var examenElement in elemExamenes) {
       examenes.add(_notasObtenerExamenModel(examenElement));
-    });
+    }
 
     // _print(elemPanelBody.innerHtml);
     elemPanelBody.getElementsByTagName(tagUnorderedList)[0].remove();
@@ -504,7 +504,7 @@ class Scraper {
     List<Element> listaSpans = examenElement.getElementsByTagName(tagSpan);
     String? fechaRegistro;
     List<Element> listaItalics = examenElement.getElementsByTagName(tagItalic);
-    if (listaItalics.length != 0) {
+    if (listaItalics.isNotEmpty) {
       fechaRegistro =
           examenElement.getElementsByTagName(tagItalic)[0].text.split(' ')[1];
     }
@@ -537,7 +537,7 @@ class Scraper {
       matriz.add(filas[i].getElementsByTagName(tagCasilleroTabla));
     }
 
-    if (matriz.length > 0) {
+    if (matriz.isNotEmpty) {
       // Crear el primer ciclo, si la tabla no esta vacía
       nuevoCiclo = CicloPlanModel(matriz[0][0].text.trim());
     }
@@ -589,30 +589,30 @@ class Scraper {
     if (requisitosData.length > 3) {
       // evitar "---"
       codigosCurso = requisitosData.split(' - '); // ejemplo: "IO4447 - SI4488"
-      codigosCurso.forEach((codigo) {
+      for (var codigo in codigosCurso) {
         // _print('codigosCurso.forEach(($codigo){...}');
         ban = true;
         i = 0;
         while (i! < modelo.ciclos.length && ban) {
           j = 0;
-          while (j! < modelo.ciclos[i!]!.cursos!.length &&
-              modelo.ciclos[i!]!.cursos![j!].codigo!.compareTo(codigo) != 0) {
+          while (j! < modelo.ciclos[i]!.cursos!.length &&
+              modelo.ciclos[i]!.cursos![j].codigo!.compareTo(codigo) != 0) {
             // j++;
-            j = j! + 1;
+            j = j + 1;
           }
-          if (j! < modelo.ciclos[i!]!.cursos!.length) {
+          if (j < modelo.ciclos[i]!.cursos!.length) {
             ban = false; // el curso fue encontrado
           }
           // i++;
-          i = i! + 1;
+          i = i + 1;
         }
         if (!ban) {
           // el curso fue encontrado
           // i--;
-          i = i! - 1;
+          i = i - 1;
           requisitos.add(RequisitoCursoPlanModel(i, j));
         }
-      });
+      }
     }
 
     return requisitos;
@@ -664,32 +664,32 @@ class Scraper {
         .getElementsByTagName(tagFieldset)[0]
         .getElementsByClassName(classTextCenter);
     etiquetasSemestres = [];
-    elemEtiqSeme.forEach((Element e) {
+    for (var e in elemEtiqSeme) {
       etiquetasSemestres.add(e.text.trim());
-    });
+    }
 
     matricesDeInformacion = [];
     listaSemestreCursos = [];
     elemTablaSeme = document
         .getElementsByTagName(tagFieldset)[0]
         .getElementsByClassName(classKGridWidget);
-    elemTablaSeme.forEach((Element tablaMaestra) {
+    for (var tablaMaestra in elemTablaSeme) {
       List<List<Element>> matrizCrudo;
       List<List<dynamic>> matrizDeInformacion;
 
       // 2. Obtener matriz de informacion
       var elementosMatriz =
           tablaMaestra.getElementsByClassName(classKGridToolbar);
-      if (elementosMatriz.length != 0) {
+      if (elementosMatriz.isNotEmpty) {
         // ... si existe
         // Obtener matriz cruda
         var elemTablaInformacion = elementosMatriz[0];
         var filas = elemTablaInformacion.getElementsByTagName(tagFilaTabla);
         matrizCrudo = [];
-        filas.forEach((Element fila) {
+        for (var fila in filas) {
           // debugPrint(fila.innerHtml);
           matrizCrudo.add(fila.getElementsByTagName(tagCasilleroTabla));
-        });
+        }
         // Dar formato a la matriz
         matrizDeInformacion = [];
 
@@ -732,7 +732,7 @@ class Scraper {
       // 2. Obtener cursos
       var elementosCursos =
           tablaMaestra.getElementsByClassName(classKGridContent);
-      if (elementosCursos.length != 0) {
+      if (elementosCursos.isNotEmpty) {
         List<CursoModel> cursos;
         // CursoModel curso;
 
@@ -741,7 +741,7 @@ class Scraper {
         List<Element> cursoElements =
             tablaCursosBody.getElementsByTagName(tagFilaTabla);
         cursos = [];
-        cursoElements.forEach((Element fila) {
+        for (var fila in cursoElements) {
           var casilleros = fila.getElementsByTagName(tagCasilleroTabla);
           var curso = CursoModel(casilleros[1].text, casilleros[0].text);
           curso.caracteristicas.add(CursoCaracteristica(
@@ -751,23 +751,23 @@ class Scraper {
           curso.caracteristicas.add(CursoCaracteristica(
               CursoCaracteristica.nota, casilleros[4].text));
           cursos.add(curso);
-        });
+        }
 
         listaSemestreCursos.add(cursos);
       } else {
         listaSemestreCursos.add(null);
       }
-    });
+    }
 
     // Generar modelo
     modelo = HistorialModel();
-    var ciclo;
+    CicloHistorialModel ciclo;
     for (int i = 0; i < etiquetasSemestres.length; i++) {
       ciclo = CicloHistorialModel(
         etiqueta: etiquetasSemestres[i],
         matrizInformacion: matricesDeInformacion[i],
       );
-      ciclo.cursos = listaSemestreCursos[i];
+      ciclo.cursos = listaSemestreCursos[i]!;
       if (ciclo.matrizInformacion != null) {
         modelo.ciclosRegulares.add(ciclo);
       }
@@ -826,7 +826,7 @@ class Scraper {
         .getElementsByTagName(tagFilaTabla);
     // requisitos = List<List<String>>();
     requisitos = [];
-    creditosTabla.forEach((fila) {
+    for (var fila in creditosTabla) {
       // _print('fila $fila');
       casillerosTabla = fila.getElementsByTagName(tagCasilleroTabla);
       filaCreditosTabla = [];
@@ -835,7 +835,7 @@ class Scraper {
         filaCreditosTabla.add(casillerosTabla[i].text.trim());
       }
       requisitos.add(filaCreditosTabla);
-    });
+    }
 
     fechaActualizacionInforme = document
         .getElementsByTagName(tagFieldset)[0]

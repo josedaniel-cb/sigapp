@@ -1,24 +1,24 @@
 import 'dart:async';
 
-import 'package:SIGApp/app/app.dart';
-import 'package:SIGApp/browser/gestor_firebase.dart';
+import 'package:sigapp/app/app.dart';
+// import 'package:sigapp/browser/gestor_firebase.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:SIGApp/app/urls.dart';
-import 'package:SIGApp/app/preferencias.dart';
-import 'package:SIGApp/blocs/boletin_bloc/bloc.dart';
-import 'package:SIGApp/blocs/historial_bloc/bloc.dart';
-import 'package:SIGApp/blocs/horario_bloc/bloc.dart';
-import 'package:SIGApp/blocs/informe_bloc/bloc.dart';
-import 'package:SIGApp/blocs/login_bloc/bloc.dart';
-import 'package:SIGApp/blocs/home_bloc/bloc.dart';
-import 'package:SIGApp/blocs/plan_bloc/bloc.dart';
-import 'package:SIGApp/blocs/programacion_bloc/bloc.dart';
-import 'package:SIGApp/models/boletin_model/boletin_model.dart';
-import 'package:SIGApp/models/home_model.dart';
-import 'package:SIGApp/models/horario_model/horario_model.dart';
-import 'package:SIGApp/models/login_model.dart';
+import 'package:sigapp/app/urls.dart';
+import 'package:sigapp/app/preferencias.dart';
+import 'package:sigapp/blocs/boletin_bloc/bloc.dart';
+import 'package:sigapp/blocs/historial_bloc/bloc.dart';
+import 'package:sigapp/blocs/horario_bloc/bloc.dart';
+import 'package:sigapp/blocs/informe_bloc/bloc.dart';
+import 'package:sigapp/blocs/login_bloc/bloc.dart';
+import 'package:sigapp/blocs/home_bloc/bloc.dart';
+import 'package:sigapp/blocs/plan_bloc/bloc.dart';
+import 'package:sigapp/blocs/programacion_bloc/bloc.dart';
+import 'package:sigapp/models/boletin_model/boletin_model.dart';
+import 'package:sigapp/models/home_model.dart';
+import 'package:sigapp/models/horario_model/horario_model.dart';
+import 'package:sigapp/models/login_model.dart';
 import 'my_pages.dart';
 
 import 'scripts.dart';
@@ -35,7 +35,7 @@ class BrowserController {
   HistorialBloc? _historialBloc;
   InformeBloc? _informeBloc;
 
-  late GestorFirebase gestorFirebase;
+  // late GestorFirebase gestorFirebase;
   late WebViewController _webViewController;
   Preferencias? _preferencias;
   MyPages? currentPage;
@@ -51,7 +51,7 @@ class BrowserController {
     _preferencias = Preferencias();
     _preferencias!.obtener();
 
-    gestorFirebase = GestorFirebase();
+    // gestorFirebase = GestorFirebase();
 
     // Inicializar navegador
     _initializeWebView();
@@ -75,7 +75,7 @@ class BrowserController {
                     banAuxSeHaLlegadoACienPorciento = true;
                   }
                 }
-                _print('Cargando web ${progress}%');
+                _print('Cargando web $progress%');
               },
               // onPageStarted: (String url) {
               //   _urlListener(url);
@@ -340,7 +340,7 @@ class BrowserController {
 
   /// Browsing
   void _urlListener(String url) {
-    _print("$url");
+    _print(url);
     switch (currentPage) {
       case MyPages.Login:
         _loginUrlListener(url);
@@ -365,6 +365,8 @@ class BrowserController {
         break;
       case MyPages.Notas:
         break;
+      case null:
+      // TODO: Handle this case.
     }
   }
 
@@ -392,7 +394,7 @@ class BrowserController {
         }
         break;
       case Urls.HOME:
-        await gestorFirebase.registrarInicioSesion(_loginBloc.loginModel.user);
+        // await gestorFirebase.registrarInicioSesion(_loginBloc.loginModel.user);
         if (_loginBloc.intentosDeIngreso != 0) {
           _preferencias!.guardarSesionInfo(
               _loginBloc.loginModel.user!,

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:SIGApp/app/app.dart';
+import 'package:sigapp/app/app.dart';
 
-class RoundContainer extends StatelessWidget{
+class RoundContainer extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
   final Color color;
 
-  RoundContainer({
-    required this.child, 
+  const RoundContainer({super.key, 
+    required this.child,
     this.padding = const EdgeInsets.all(0),
     this.margin = const EdgeInsets.all(0),
     this.color = Colors.white,
@@ -17,16 +17,13 @@ class RoundContainer extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(App.bordeRadio)
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(App.bordeRadio)),
       ),
       padding: padding,
       margin: margin,
       child: child,
     );
   }
-
 }

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class EasterEggPage extends StatelessWidget{
   final double fontSize = 10;
 
+  const EasterEggPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,13 +38,13 @@ class EasterEggPage extends StatelessWidget{
           Expanded(
             child: Center(
               child: Container(
-                margin: EdgeInsets.all(20),
+                margin: const EdgeInsets.all(20),
                 child: Image.asset('assets/images/custom_epii_logo.png'),
               ),
             ),
           ),
           Container(
-            margin: EdgeInsets.fromLTRB(10, 0, 10, 10),
+            margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
             child: Text(
               'Logo E.P.I. Informática\nby josedaniel-cb\n(no oficial)',
               style: TextStyle(

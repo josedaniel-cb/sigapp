@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:SIGApp/models/horario_model/horario_model.dart';
+import 'package:sigapp/models/horario_model/horario_model.dart';
 
 abstract class HorarioEvent extends Equatable {
   const HorarioEvent();
@@ -8,21 +8,21 @@ abstract class HorarioEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class HorarioControllerReady extends HorarioEvent{
+class HorarioControllerReady extends HorarioEvent {
   final HorarioModel modelo;
   final List<String> semestres;
 
-  HorarioControllerReady(this.modelo, this.semestres);
+  const HorarioControllerReady(this.modelo, this.semestres);
 }
 
-class HorarioControllerChanged extends HorarioEvent{
+class HorarioControllerChanged extends HorarioEvent {
   final HorarioModel modelo;
 
-  HorarioControllerChanged(this.modelo);
+  const HorarioControllerChanged(this.modelo);
 }
 
-class HorarioUserChange extends HorarioEvent{
+class HorarioUserChange extends HorarioEvent {
   final int semestreIndex;
 
-  HorarioUserChange(this.semestreIndex);
+  const HorarioUserChange(this.semestreIndex);
 }

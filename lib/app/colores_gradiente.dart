@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ColoresGradiente{
+class ColoresGradiente {
   static List<Color?> blueDefault = [
     Colors.blue[300],
     Colors.blue[500],
@@ -92,7 +92,7 @@ class ColoresGradiente{
     Colors.green[900],
   ];
 
-  static List<Color?>? generarColores(String iniciales){
+  static List<Color?> generarColores(String iniciales) {
     int i1, i2, suma;
     List<Color?>? colores;
 
@@ -128,10 +128,10 @@ class ColoresGradiente{
       colores = orange;
     } else if (suma >= 176) {
       colores = amber;
+    } else {
+      throw Exception('Error al generar colores');
     }
-    
+
     return colores;
   }
-
-  
 }

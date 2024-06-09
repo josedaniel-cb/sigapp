@@ -1,14 +1,14 @@
 import 'dart:io';
 
-import 'package:SIGApp/app/urls.dart';
-import 'package:SIGApp/browser/gestor_firebase.dart';
+import 'package:sigapp/app/urls.dart';
+// import 'package:sigapp/browser/gestor_firebase.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:SIGApp/browser/browser_controller.dart';
+import 'package:sigapp/browser/browser_controller.dart';
 import 'package:flutter/services.dart' show Uint8List, rootBundle;
 
 class App {
@@ -44,7 +44,7 @@ class App {
 
   static MaterialColor get greenColor => getMaterialColor(_hexGreenColor);
 
-  static Color get darkGreenColor => Color(0xFF14b8a1);
+  static Color get darkGreenColor => const Color(0xFF14b8a1);
 
   // Otros
   static const double bordeRadio = 10;
@@ -82,7 +82,7 @@ class App {
   }
 
   static void compartirApp() {
-    App.browserController.gestorFirebase.registrarUso(CasosDeUso.CompartirApp);
+    // App.browserController.gestorFirebase.registrarUso(CasosDeUso.CompartirApp);
     rootBundle.load('assets/images/compartir_imagen.png').then((data) {
       App.compartirImagen(
           data.buffer.asUint8List(),

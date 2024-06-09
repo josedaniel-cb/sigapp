@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:SIGApp/models/programacion_model.dart';
+import 'package:sigapp/models/programacion_model.dart';
 
 abstract class ProgramacionEvent extends Equatable {
   const ProgramacionEvent();
@@ -8,8 +8,8 @@ abstract class ProgramacionEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class ProgramacionControllerReady extends ProgramacionEvent{
+class ProgramacionControllerReady extends ProgramacionEvent {
   final ProgramacionModel modelo;
 
-  ProgramacionControllerReady(this.modelo);
+  const ProgramacionControllerReady(this.modelo);
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:SIGApp/app/app.dart';
+import 'package:sigapp/app/app.dart';
 
-class SigappLogotipoWidget extends StatelessWidget{
+class SigappLogotipoWidget extends StatelessWidget {
   final double fontSize;
 
-  const SigappLogotipoWidget({required this.fontSize});
+  const SigappLogotipoWidget({super.key, required this.fontSize});
 
   @override
   Widget build(BuildContext context) {
@@ -27,18 +27,15 @@ class SigappLogotipoWidget extends StatelessWidget{
       ),
     ];
 
-    if(App.beta){
-      children.add(
-        TextSpan(
-          text: " Beta",
-          style: TextStyle(
+    if (App.beta) {
+      children.add(TextSpan(
+        text: " Beta",
+        style: TextStyle(
             color: Colors.red,
-            fontSize: fontSize*0.3,
+            fontSize: fontSize * 0.3,
             fontFamily: "Sigapp",
-            fontWeight: FontWeight.w500
-          ),
-        )
-      );
+            fontWeight: FontWeight.w500),
+      ));
     }
 
     return RichText(
@@ -47,5 +44,4 @@ class SigappLogotipoWidget extends StatelessWidget{
       ),
     );
   }
-  
 }

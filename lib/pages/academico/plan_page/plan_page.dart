@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:SIGApp/app/app.dart';
-import 'package:SIGApp/blocs/plan_bloc/bloc.dart';
-import 'package:SIGApp/widgets/lista_semestres_widget.dart';
-import 'package:SIGApp/widgets/simple_loading_body_widget.dart';
+import 'package:sigapp/app/app.dart';
+import 'package:sigapp/blocs/plan_bloc/bloc.dart';
+import 'package:sigapp/widgets/lista_semestres_widget.dart';
+import 'package:sigapp/widgets/simple_loading_body_widget.dart';
 
 import 'lista_cursos_plan_page.dart';
 
-class PlanPage extends StatefulWidget{
+class PlanPage extends StatefulWidget {
+  const PlanPage({super.key});
+
   @override
   State<StatefulWidget> createState() => PlanPageState();
 }
 
-class PlanPageState extends State<PlanPage>{
+class PlanPageState extends State<PlanPage> {
   PlanBloc? _planBloc;
 
   @override
@@ -36,21 +38,21 @@ class PlanPageState extends State<PlanPage>{
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Plan de estudios' + (state is Ready ? ' ${_planBloc!.modelo!.etiqueta}' : '')),
+            title: Text('Plan de estudios${state is Ready ? ' ${_planBloc!.modelo!.etiqueta}' : ''}'),
           ),
-          body: state is Ready ? _buildPlan() : SimpleLoadingBodyWidget(),
+          body: state is Ready ? _buildPlan() : const SimpleLoadingBodyWidget(),
         );
       },
     );
   }
 
-  Widget _buildPlan(){
+  Widget _buildPlan() {
     return ListaSemestresWidget(
-      icono: Icon(
+      icono: const Icon(
         Icons.book,
         color: Colors.red,
       ),
-      children: List.generate(_planBloc!.modelo!.ciclos.length, (int i){
+      children: List.generate(_planBloc!.modelo!.ciclos.length, (int i) {
         return ElementoListaSemestresWidget(
           numero: _planBloc!.modelo!.ciclos[i]!.cursos!.length,
           onPressed: () => _lanzarCicloPage(i),
@@ -60,18 +62,16 @@ class PlanPageState extends State<PlanPage>{
     );
   }
 
-  void _lanzarCicloPage(int index){
+  void _lanzarCicloPage(int index) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ListaCursosPlanPage(
-          isRoot: true,
-          title: _planBloc!.modelo!.ciclos[index]!.etiqueta,
-          cursos: _planBloc!.modelo!.ciclos[index]!.cursos,
-          plan: _planBloc!.modelo,
-        )
-      ),
+          builder: (context) => ListaCursosPlanPage(
+                isRoot: true,
+                title: _planBloc!.modelo!.ciclos[index]!.etiqueta,
+                cursos: _planBloc!.modelo!.ciclos[index]!.cursos,
+                plan: _planBloc!.modelo,
+              )),
     );
   }
-
 }

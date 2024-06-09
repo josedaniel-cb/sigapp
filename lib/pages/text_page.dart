@@ -1,13 +1,14 @@
-import 'package:SIGApp/app/app.dart';
-import 'package:SIGApp/widgets/simple_loading_body_widget.dart';
+// import 'package:sigapp/app/app.dart';
+import 'package:sigapp/widgets/simple_loading_body_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 enum MensajesTextPage { TerminosYCondiciones, NotaDeAutor }
 
 class TextPage extends StatefulWidget {
   final MensajesTextPage cualMensaje;
 
-  TextPage({this.cualMensaje = MensajesTextPage.TerminosYCondiciones});
+  const TextPage({super.key, this.cualMensaje = MensajesTextPage.TerminosYCondiciones});
 
   @override
   State<StatefulWidget> createState() => TextPageState();
@@ -35,12 +36,25 @@ class TextPageState extends State<TextPage> {
   Future<void> _solicitarTerminos() async {
     switch (widget.cualMensaje) {
       case MensajesTextPage.TerminosYCondiciones:
-        _contenido = await App.browserController.gestorFirebase
-            .obtenerTerminosYCondiciones();
+        // _contenido = await App.browserController.gestorFirebase
+        //     .obtenerTerminosYCondiciones();
+
+        _contenido = await Future(() {
+          // Fetch data from (GET Method HTTP)
+          // https://raw.githubusercontent.com/josedaniel-cb/sigapp-privacy-policy/main/terminos_y_condiciones.txt
+          return http
+              .get(Uri.parse(
+                  'https://raw.githubusercontent.com/josedaniel-cb/sigapp-privacy-policy/main/terminos_y_condiciones.txt'))
+              .then((response) {
+            return response.body;
+          });
+        });
         break;
       case MensajesTextPage.NotaDeAutor:
-        _contenido =
-            await App.browserController.gestorFirebase.obtenerNotaDelAutor();
+        // _contenido =
+        //     await App.browserController.gestorFirebase.obtenerNotaDelAutor();
+        _contenido = await Future.delayed(
+            const Duration(seconds: 1), () => 'No disponible');
         break;
     }
     setState(() => _waiting = false);
@@ -52,17 +66,17 @@ class TextPageState extends State<TextPage> {
       appBar: AppBar(
         title: Text(_titulo),
       ),
-      body: _waiting ? SimpleLoadingBodyWidget() : _buildTerminos(),
+      body: _waiting ? const SimpleLoadingBodyWidget() : _buildTerminos(),
     );
   }
 
   Widget _buildTerminos() {
     return SingleChildScrollView(
       child: Container(
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         child: Text(
           _contenido,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black45,
             fontSize: 10,
           ),

@@ -21,7 +21,7 @@ class HoraHorario{
   String _completarCero(int n){
     String s = n.toString();
     if(s.length < 2){
-      s = '0' + s;
+      s = '0$s';
     }
     return s;
   }

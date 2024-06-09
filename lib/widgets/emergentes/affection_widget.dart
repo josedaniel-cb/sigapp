@@ -1,10 +1,12 @@
-import 'package:SIGApp/app/app.dart';
-import 'package:SIGApp/app/urls.dart';
+import 'package:sigapp/app/app.dart';
+import 'package:sigapp/app/urls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AffectionWidget extends StatefulWidget {
+  const AffectionWidget({super.key});
+
   @override
   State<StatefulWidget> createState() => _AffectionWidget();
 }
@@ -37,7 +39,7 @@ class _AffectionWidget extends State<AffectionWidget> {
                               color: App.darkGreenColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 18)),
-                      TextSpan(
+                      const TextSpan(
                           text: '\nSi no funciona como esperas lo más probable '
                               'es que el error provenga del sistema a la universidad '
                               '(lo cual es ajeno a la app). Recuerda que SIGApp '
@@ -46,14 +48,14 @@ class _AffectionWidget extends State<AffectionWidget> {
                           style: TextStyle(color: Colors.black)),
                       _buildLinkText('https://academico.unp.edu.pe/',
                           () => _launchURL(Urls.INICIO_SESION)),
-                      TextSpan(
+                      const TextSpan(
                           text:
                               '.\n\nSIGApp no es una app oficial, simplemente '
                               'fue desarrollada por un unepino aficionado de '
                               'Informática que quiso mejorar '
                               'el SIGA de la UNP por su cuenta. ',
                           style: TextStyle(color: Colors.black)),
-                      TextSpan(
+                      const TextSpan(
                           text: 'Por favor no la '
                               'califiques mal en la Play Store. En su lugar, '
                               'espera a que la universidad resuelva el '
@@ -71,14 +73,14 @@ class _AffectionWidget extends State<AffectionWidget> {
       ),
       actions: <Widget>[
         Container(
-          margin: EdgeInsets.only(right: 15, bottom: 6),
+          margin: const EdgeInsets.only(right: 15, bottom: 6),
           child: ElevatedButton(
-            child: Text('Entiendo'),
             autofocus: true,
             style: ButtonStyle(
               backgroundColor: WidgetStateProperty.all(Colors.blue),
             ),
             onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Entiendo'),
           ),
         ),
       ],
@@ -88,7 +90,7 @@ class _AffectionWidget extends State<AffectionWidget> {
   TextSpan _buildLinkText(String url, Function onTap) {
     return TextSpan(
       text: url,
-      style: TextStyle(
+      style: const TextStyle(
         color: Colors.blue,
         // fontSize: fontSize,
         // fontWeight: FontWeight.bold,

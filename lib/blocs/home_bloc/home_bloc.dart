@@ -1,67 +1,58 @@
-import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:SIGApp/app/urls.dart';
-import 'package:SIGApp/app/app.dart';
-import 'package:SIGApp/models/home_model.dart';
+import 'package:sigapp/app/urls.dart';
+import 'package:sigapp/app/app.dart';
+import 'package:sigapp/models/home_model.dart';
 import './bloc.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   late HomeModel homeModel;
 
-  // HomeBloc(){
-  //   homeModel = HomeModel('', '', '');
-  // }
-
-  // @override
-  // HomeState get initialState => HomeLoading();
   HomeBloc() : super(HomeLoading()) {
     homeModel = HomeModel('', '', '');
+    on<HomeEvent>(_onEventReceived);
   }
 
-  @override
-  Stream<HomeState> mapEventToState(
-    HomeEvent event,
-  ) async* {
+  void _onEventReceived(HomeEvent event, Emitter<HomeState> emit) async {
     if (event is HomeControllerReady) {
       homeModel = event.homeModel;
-      yield HomeReady();
+      emit(HomeReady());
     } else if (event is HomeUserLogOut) {
-      yield HomeLoading();
+      emit(HomeLoading());
       App.browserController.cargarUrl(Urls.SALIR);
     } else if (event is HomeControllerLoggedOut) {
-      yield HomeLogOut();
+      emit(HomeLogOut());
     } else if (event is HomeUserHorario) {
-      yield HomeLoading();
+      emit(HomeLoading());
       App.browserController.cargarUrl(Urls.HORARIO);
     } else if (event is HomeControllerHorario) {
-      yield HomeHorario();
+      emit(HomeHorario());
     } else if (event is HomeUserBoletin) {
-      yield HomeLoading();
+      emit(HomeLoading());
       App.browserController.cargarUrl(Urls.BOLETIN);
     } else if (event is HomeControllerBoletin) {
-      yield HomeBoletin();
+      emit(HomeBoletin());
     } else if (event is HomeUserPlan) {
-      yield HomeLoading();
+      emit(HomeLoading());
       App.browserController.cargarUrl(Urls.PLAN_DE_ESTUDIOS);
     } else if (event is HomeControllerPlan) {
-      yield HomePlan();
+      emit(HomePlan());
     } else if (event is HomeUserProgramacion) {
-      yield HomeLoading();
+      emit(HomeLoading());
       App.browserController.cargarUrl(Urls.PROGRAMACION_ACADEMICA);
     } else if (event is HomeControllerProgramacion) {
-      yield HomeProgramacion();
+      emit(HomeProgramacion());
     } else if (event is HomeUserHistorial) {
-      yield HomeLoading();
+      emit(HomeLoading());
       App.browserController.cargarUrl(Urls.HISTORIAL_ACADEMICO);
     } else if (event is HomeControllerHistorial) {
-      yield HomeHistorial();
+      emit(HomeHistorial());
     } else if (event is HomeUserInforme) {
-      yield HomeLoading();
+      emit(HomeLoading());
       App.browserController.cargarUrl(Urls.INFORME_ACADEMICO);
     } else if (event is HomeControllerInforme) {
-      yield HomeInforme();
+      emit(HomeInforme());
     } else if (event is HomeControllerError) {
-      yield HomeCriticalError(event.mensaje);
+      emit(HomeCriticalError(event.mensaje));
     }
   }
 }

@@ -1,8 +1,7 @@
-import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:SIGApp/app/app.dart';
-import 'package:SIGApp/models/login_model.dart';
-// import 'package:SIGApp/others/Constants/app_const.dart';
+import 'package:sigapp/app/app.dart';
+import 'package:sigapp/models/login_model.dart';
+// import 'package:sigapp/others/Constants/app_const.dart';
 import './bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
@@ -12,14 +11,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginLoading()) {
     intentosDeIngreso = 0;
     loginModel = LoginModel('', '', true);
+    on<LoginEvent>(_onLoginRequested);
   }
-  // @override
-  // LoginState get initialState => LoginLoading();
 
-  @override
-  Stream<LoginState> mapEventToState(
-    LoginEvent event,
-  ) async* {
+  void _onLoginRequested(LoginEvent event, Emitter<LoginState> emit) async {
     // Eventos
     // - UserRequestLogIn
     // - ControllerReady
@@ -38,23 +33,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     ///Nota: Es necesario actualizar [loginModel] desde la LoginPage para poder realizar operaciones
     if (event is LoginUserRequestLogIn) {
-      yield LoginLoading();
+      emit(LoginLoading());
       // intentosDeIngreso++;
       App.browserController
           .loginSolicitarIngreso(loginModel.user, loginModel.password);
     } else if (event is LoginControllerReady) {
       loginModel = event.loginModel;
-      yield LoginReady();
+      emit(LoginReady());
     } else if (event is LoginControllerError) {
-      yield LoginCriticalError(event.url);
+      emit(LoginCriticalError(event.url));
     } else if (event is LoginControllerLoggingIn) {
       loginModel.user = event.usuario;
       loginModel.password = event.pass;
-      yield LoginLoggingIn();
+      emit(LoginLoggingIn());
     } else if (event is LoginControllerLoggedIn) {
-      yield LoginLoggedIn();
+      emit(LoginLoggedIn());
     } else if (event is LoginControllerNotLoggedIn) {
-      yield LoginNotLoggedIn();
+      emit(LoginNotLoggedIn());
     }
   }
 }

@@ -1,6 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:SIGApp/models/historial_model.dart';
+import 'package:sigapp/models/historial_model.dart';
 
 class HistorialPPAChart extends StatelessWidget {
   final HistorialModel? model;
@@ -22,7 +22,7 @@ class HistorialPPAChart extends StatelessWidget {
     const Color(0xffFF00AE),
   ];
 
-  HistorialPPAChart(this.model, this.criterio);
+  HistorialPPAChart(this.model, this.criterio, {super.key});
 
   // @override
   // Widget build(BuildContext context) {
@@ -42,15 +42,15 @@ class HistorialPPAChart extends StatelessWidget {
     return AspectRatio(
       aspectRatio: 1.3,
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             // borderRadius: const BorderRadius.all(
             //   Radius.circular(15),
             // ),
-            borderRadius: const BorderRadius.only(
+            borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(15),
               bottomRight: Radius.circular(15),
             ),
-            color: const Color(0xff08465E)),
+            color: Color(0xff08465E)),
         // color: Colors.lightBlueAccent,
         child: Padding(
           padding: EdgeInsets.only(
@@ -61,7 +61,7 @@ class HistorialPPAChart extends StatelessWidget {
           child: LineChart(
             _mainData(),
             // swapAnimationDuration: Duration(milliseconds: 700),
-            duration: Duration(milliseconds: 700),
+            duration: const Duration(milliseconds: 700),
           ),
         ),
       ),
@@ -74,14 +74,14 @@ class HistorialPPAChart extends StatelessWidget {
         show: true,
         drawVerticalLine: true,
         getDrawingHorizontalLine: (value) {
-          return FlLine(
+          return const FlLine(
             // color: Color(0xFF92C4DE),
             color: Color(0xFF729AB0),
             strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
-          return FlLine(
+          return const FlLine(
             color: Color(0xff3C5D75),
             strokeWidth: 1,
           );
@@ -124,11 +124,11 @@ class HistorialPPAChart extends StatelessWidget {
             // getTitles: (values) => xAxisGetLabels(values),
             // margin: 10,
             getTitlesWidget: (value, meta) => Container(
-              margin: EdgeInsets.only(top: 10),
+              margin: const EdgeInsets.only(top: 10),
               child: Text(
                 xAxisGetLabels(value),
-                style: TextStyle(
-                  color: const Color(0xffCADEE8),
+                style: const TextStyle(
+                  color: Color(0xffCADEE8),
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
                 ),
@@ -152,15 +152,15 @@ class HistorialPPAChart extends StatelessWidget {
             showTitles: true,
             reservedSize: 28,
             getTitlesWidget: (value, meta) => Container(
-              margin: EdgeInsets.only(left: 10),
+              margin: const EdgeInsets.only(left: 10),
               child: Text(
                 yAxisGetLabels(value),
-                style: TextStyle(
-                  color: const Color(0xffCADEE8),
+                style: const TextStyle(
+                  color: Color(0xffCADEE8),
                   fontWeight: FontWeight.bold,
                   fontSize: 12,
                 ),
-              ),  
+              ),
             ),
           ),
         ),
@@ -182,7 +182,7 @@ class HistorialPPAChart extends StatelessWidget {
           // colors: gradientColors,
           gradient: LinearGradient(
             colors: gradientColors,
-            stops: [0.0, 1.0],
+            stops: const [0.0, 1.0],
           ),
           barWidth: 5,
           isStrokeCapRound: true,
@@ -201,8 +201,10 @@ class HistorialPPAChart extends StatelessWidget {
             // colors:
             //     gradientColors.map((color) => color.withOpacity(0.3)).toList(),
             gradient: LinearGradient(
-              colors: gradientColors.map((color) => color.withOpacity(0.3)).toList(),
-              stops: [0.0, 1.0],
+              colors: gradientColors
+                  .map((color) => color.withOpacity(0.3))
+                  .toList(),
+              stops: const [0.0, 1.0],
             ),
           ),
         ),
@@ -334,6 +336,8 @@ class HistorialPPAChart extends StatelessWidget {
           case TipoPonderado.PPAcumuladoAprobado:
             pp = model!.ciclos[i].ppaAprob;
             break;
+          case null:
+            // TODO: Handle this case.
         }
         puntos.add(FlSpot(contador, pp));
         contador++;

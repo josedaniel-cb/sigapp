@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:SIGApp/models/home_model.dart';
+import 'package:sigapp/models/home_model.dart';
 
 abstract class HomeEvent extends Equatable {
   const HomeEvent();
@@ -9,43 +9,43 @@ abstract class HomeEvent extends Equatable {
 }
 
 // By user
-class HomeUserLogOut extends HomeEvent{}
+class HomeUserLogOut extends HomeEvent {}
 
-class HomeUserHorario extends HomeEvent{}
+class HomeUserHorario extends HomeEvent {}
 
-class HomeUserBoletin extends HomeEvent{}
+class HomeUserBoletin extends HomeEvent {}
 
-class HomeUserPlan extends HomeEvent{}
+class HomeUserPlan extends HomeEvent {}
 
-class HomeUserHistorial extends HomeEvent{}
+class HomeUserHistorial extends HomeEvent {}
 
-class HomeUserInforme extends HomeEvent{}
+class HomeUserInforme extends HomeEvent {}
 
-class HomeUserProgramacion extends HomeEvent{}
+class HomeUserProgramacion extends HomeEvent {}
 
 // By Controller
-class HomeControllerReady extends HomeEvent{
+class HomeControllerReady extends HomeEvent {
   final HomeModel homeModel;
 
-  HomeControllerReady(this.homeModel);
+  const HomeControllerReady(this.homeModel);
 }
 
-class HomeControllerLoggedOut extends HomeEvent{}
+class HomeControllerLoggedOut extends HomeEvent {}
 
-class HomeControllerHorario extends HomeEvent{}
+class HomeControllerHorario extends HomeEvent {}
 
-class HomeControllerBoletin extends HomeEvent{}
+class HomeControllerBoletin extends HomeEvent {}
 
-class HomeControllerPlan extends HomeEvent{}
+class HomeControllerPlan extends HomeEvent {}
 
-class HomeControllerInforme extends HomeEvent{}
+class HomeControllerInforme extends HomeEvent {}
 
-class HomeControllerHistorial extends HomeEvent{}
+class HomeControllerHistorial extends HomeEvent {}
 
-class HomeControllerProgramacion extends HomeEvent{}
+class HomeControllerProgramacion extends HomeEvent {}
 
-class HomeControllerError extends HomeEvent{
+class HomeControllerError extends HomeEvent {
   final String mensaje;
 
-  HomeControllerError(this.mensaje);
+  const HomeControllerError(this.mensaje);
 }

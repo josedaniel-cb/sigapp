@@ -1,22 +1,19 @@
-import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:SIGApp/models/historial_model.dart';
+import 'package:sigapp/models/historial_model.dart';
 import './bloc.dart';
 
 class HistorialBloc extends Bloc<HistorialEvent, HistorialState> {
   HistorialModel? modelo;
 
-  // @override
-  // HistorialState get initialState => Loading();
-  HistorialBloc() : super(Loading());
+  HistorialBloc() : super(Loading()) {
+    on<HistorialEvent>(_onHistorialEventReceived);
+  }
 
-  @override
-  Stream<HistorialState> mapEventToState(
-    HistorialEvent event,
-  ) async* {
+  void _onHistorialEventReceived(
+      HistorialEvent event, Emitter<HistorialState> emit) async {
     if (event is HistorialControllerReady) {
       modelo = event.modelo;
-      yield Ready();
+      emit(Ready());
     }
   }
 }

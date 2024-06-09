@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:SIGApp/models/informe_model.dart';
+import 'package:sigapp/models/informe_model.dart';
 
 abstract class InformeEvent extends Equatable {
   const InformeEvent();
@@ -11,6 +11,5 @@ abstract class InformeEvent extends Equatable {
 class InformeControllerReady extends InformeEvent {
   final InformeModel modelo;
 
-  InformeControllerReady(this.modelo);
+  const InformeControllerReady(this.modelo);
 }
-

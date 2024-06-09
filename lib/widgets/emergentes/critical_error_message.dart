@@ -1,21 +1,21 @@
 import 'dart:io';
 
-import 'package:SIGApp/app/app.dart';
+import 'package:sigapp/app/app.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class CriticalErrorMessage extends StatelessWidget{
+class CriticalErrorMessage extends StatelessWidget {
   final String url;
   final String mensaje;
 
-  const CriticalErrorMessage(this. url, {this.mensaje = 'Url no controlada'});
+  const CriticalErrorMessage(this.url, {super.key, this.mensaje = 'Url no controlada'});
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: (() => null) as Future<bool> Function()?,
+      onWillPop: () async => false,
       child: AlertDialog(
-        title: Text("Ocurrió un problema"),
+        title: const Text("Ocurrió un problema"),
         content: Container(
           // color: Colors.blueGrey,
           child: Column(
@@ -26,34 +26,34 @@ class CriticalErrorMessage extends StatelessWidget{
                 '$mensaje: ',
               ),
               SelectableText(
-                url,  
-                style: TextStyle(
+                url,
+                style: const TextStyle(
                   color: Colors.blue,
                 ),
-                toolbarOptions: ToolbarOptions(
+                toolbarOptions: const ToolbarOptions(
                   copy: true,
-                ),                  
+                ),
               ),
             ],
           ),
         ),
         actions: <Widget>[
           Container(
-            margin: EdgeInsets.only(right: 15),
+            margin: const EdgeInsets.only(right: 15),
             child: TextButton(
-              child: Text(
+              onPressed: darUnVistazo,
+              child: const Text(
                 "Dar un vistazo",
               ),
-              onPressed: darUnVistazo,
             ),
           ),
           Container(
-            margin: EdgeInsets.only(right: 15),
+            margin: const EdgeInsets.only(right: 15),
             child: TextButton(
-              child: Text(
+              onPressed: _entendido,
+              child: const Text(
                 "Entendido :/",
               ),
-              onPressed: _entendido,
             ),
           ),
         ],
@@ -61,12 +61,12 @@ class CriticalErrorMessage extends StatelessWidget{
     );
   }
 
-  void darUnVistazo(){
+  void darUnVistazo() {
     // _launchURL(url);
     App.browserController.setVisible(true);
   }
 
-  void _entendido(){
+  void _entendido() {
     exit(0);
   }
 
@@ -77,5 +77,4 @@ class CriticalErrorMessage extends StatelessWidget{
       throw 'Could not launch $url';
     }
   }
-
 }

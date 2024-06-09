@@ -28,6 +28,6 @@ class HomeLogOut extends HomeState {}
 class HomeCriticalError extends HomeState {
   final String mensaje;
 
-  HomeCriticalError(this.mensaje);
+  const HomeCriticalError(this.mensaje);
 }
 

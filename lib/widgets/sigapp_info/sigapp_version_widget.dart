@@ -1,10 +1,10 @@
-import 'package:SIGApp/app/app.dart';
+import 'package:sigapp/app/app.dart';
 import 'package:flutter/material.dart';
 
-class SigappVersionWidget extends StatelessWidget{
+class SigappVersionWidget extends StatelessWidget {
   final double fontSize;
 
-  const SigappVersionWidget({required this.fontSize});
+  const SigappVersionWidget({super.key, required this.fontSize});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class SigappVersionWidget extends StatelessWidget{
               textAlign: TextAlign.start,
               style: TextStyle(
                 color: Colors.grey,
-                fontSize: fontSize*.85,
+                fontSize: fontSize * .85,
               ),
             ),
           ),
@@ -25,5 +25,4 @@ class SigappVersionWidget extends StatelessWidget{
       ],
     );
   }
-
 }

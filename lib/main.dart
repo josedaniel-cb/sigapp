@@ -11,10 +11,12 @@ import 'pages/login_page.dart';
 void main() {
   // BlocSupervisor.delegate = SigappBlocDelegate();
   Bloc.observer = SigappBlocObserver();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,7 +35,7 @@ class MyApp extends StatelessWidget {
           App.browserController = BrowserController(loginBloc);
           return loginBloc;
         },
-        child: LoginPage(),
+        child: const LoginPage(),
       ),
     );
     // return BotToastInit(

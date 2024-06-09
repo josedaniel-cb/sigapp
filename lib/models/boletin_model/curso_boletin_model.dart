@@ -1,10 +1,10 @@
-import 'package:SIGApp/models/curso_model/curso_model.dart';
+import 'package:sigapp/models/curso_model/curso_model.dart';
 
-class CursoBoletinModel extends CursoModel{
+class CursoBoletinModel extends CursoModel {
   late String silaboUrl;
   // String notasUrl;
 
-  CursoBoletinModel(String curso, String codigo) : super(curso, codigo);
+  CursoBoletinModel(super.curso, String super.codigo);
 
   String get creditos => caracteristicas[0].contenido;
   String get clave => caracteristicas[1].contenido;
