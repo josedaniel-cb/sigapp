@@ -76,7 +76,7 @@ class CursoHorarioWidget extends StatelessWidget {
     required int maxLinesCurso,
     required int maxLinesAula,
   }) {
-    double fs = 14;
+    double fs = 12;
     return Container(
       padding: const EdgeInsets.all(5),
       alignment: const Alignment(0, 0),
@@ -84,7 +84,9 @@ class CursoHorarioWidget extends StatelessWidget {
       height: height,
       margin: margin,
       decoration: BoxDecoration(
-        color: curso != null ? curso.colorFondo : const Color.fromRGBO(0, 0, 0, .1),
+        color: curso != null
+            ? curso.colorFondo
+            : const Color.fromRGBO(0, 0, 0, .1),
         borderRadius: borderRadius,
       ),
       child: Column(

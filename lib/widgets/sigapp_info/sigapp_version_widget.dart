@@ -13,7 +13,8 @@ class SigappVersionWidget extends StatelessWidget {
         Expanded(
           child: Container(
             child: Text(
-              "Version ${App.version}\nMade by josedaniel-cb",
+              // "Version ${App.version}\nMade by josedaniel-cb",
+              "Version ${App.version}",
               textAlign: TextAlign.start,
               style: TextStyle(
                 color: Colors.grey,

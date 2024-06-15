@@ -13,7 +13,12 @@ class HorarioWidget extends StatelessWidget {
   final String semestre;
   final ScreenshotController _screenshotController;
 
-  const HorarioWidget(this.horarioModel, this._screenshotController, this.semestre, {super.key});
+  const HorarioWidget(
+    this.horarioModel,
+    this._screenshotController,
+    this.semestre, {
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,50 +47,58 @@ class HorarioWidget extends StatelessWidget {
                 2) + //longitud ancho de casilleros hora
         HorarioWidgetConsts.margen * 2; //margen horizontal
 
-    return InteractiveViewer(
-      boundaryMargin: const EdgeInsets.all(20.0),
-      minScale: 0.1,
-      maxScale: 1.6,
-      child: SizedBox(
-        height: altura,
-        width: ancho,
-        child: Screenshot(
-          controller: _screenshotController,
-          child: Container(
-            color: Colors.white,
-            height: altura,
-            width: ancho,
-            padding: const EdgeInsets.all(HorarioWidgetConsts.margen),
-            child: Column(
-              children: <Widget>[
-                _buildTitulosSuperiores(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List.generate(
-                    horarioModel!.filas.length,
-                    (int i) {
-                      return Row(
-                        children: List.generate(
-                            horarioModel!.filas[i].cursos.length, (int j) {
-                          return CursoHorarioWidget(
-                              horarioModel!.filas[i].cursos[j]);
-                        })
-                          ..insert(
-                            0,
-                            _buildCasilleroTitulo(
-                              text:
-                                  "${horarioModel!.filas[i].inicio.toString()}\n▫\n${horarioModel!.filas[i].fin.toString()}",
-                              height: HorarioWidgetConsts.cursoHeight,
-                              width: HorarioWidgetConsts.horasWidth,
-                              color: Colors.grey,
+    return Container(
+      // height: altura,
+      // width: ancho,
+      // height: 100,
+      // width: 200,
+      // color: Colors.amber,
+      child: InteractiveViewer(
+        // boundaryMargin: const EdgeInsets.all(20.0),
+        minScale: 0.5,
+        maxScale: 2.0,
+        constrained: false,
+        child: SizedBox(
+          // height: altura,
+          // width: ancho,
+          child: Screenshot(
+            controller: _screenshotController,
+            child: Container(
+              color: Colors.white,
+              height: altura,
+              width: ancho,
+              padding: const EdgeInsets.all(HorarioWidgetConsts.margen),
+              child: Column(
+                children: <Widget>[
+                  _buildTitulosSuperiores(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: List.generate(
+                      horarioModel!.filas.length,
+                      (int i) {
+                        return Row(
+                          children: List.generate(
+                              horarioModel!.filas[i].cursos.length, (int j) {
+                            return CursoHorarioWidget(
+                                horarioModel!.filas[i].cursos[j]);
+                          })
+                            ..insert(
+                              0,
+                              _buildCasilleroTitulo(
+                                text:
+                                    "${horarioModel!.filas[i].inicio.toString()}\n▫\n${horarioModel!.filas[i].fin.toString()}",
+                                height: HorarioWidgetConsts.cursoHeight,
+                                width: HorarioWidgetConsts.horasWidth,
+                                color: Colors.grey,
+                              ),
                             ),
-                          ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
-                _buildInfo(alturaAdicionalTexto),
-              ],
+                  _buildInfo(alturaAdicionalTexto),
+                ],
+              ),
             ),
           ),
         ),

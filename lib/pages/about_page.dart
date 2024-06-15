@@ -107,122 +107,122 @@ class AboutPageState extends State<AboutPage> {
                 margin: const EdgeInsets.only(bottom: 10),
                 child: SigappVersionWidget(fontSize: fontSize),
               ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Row(
-                      children: <Widget>[
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              _buildDefaultText('Desarrollada con ',
-                                  color: Colors.black),
-                            ],
-                          ),
-                        ),
-                        const FlutterLogo(
-                          size: 12,
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              _buildDefaultText(
-                                  ' Flutter ${App.versionFlutter}',
-                                  color: Colors.black),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              RichText(
-                // textAlign: TextAlign.justify,
-                text: TextSpan(
-                  children: [
-                    // _buildDefaultText(
-                    //   'Se recomienda Android 5 Lollipop en adelante.'
-                    //   '\n\n',
-                    //   color: Colors.black,
-                    // ),
-                    _buildDefaultText(
-                      '\n\t\t\t\tDe la UNP para la UNP\n',
-                      color: const Color(0xFFc2453c),
-                      size: 14,
-                    ),
-                    _buildDefaultText(
-                      '\t\t\t\t\t\t\t\t#UniversidadNacionalDePiura\t\t☄️' //☄️🌠
-                      '\n\n',
-                      color: const Color(0xFFc2453c),
-                      size: 14.5,
-                      bold: true,
-                    ),
-                    _buildDefaultText(
-                        '¿Desearías que fuera de código abierto? '
-                        '¿Te gustaría apoyar el proyecto? '
-                        '¿Quieres reportar algún problema o tienes alguna sugerencia? '
-                        'Escríbeme a mi ',
-                        color: Colors.black),
-                    _buildLinkText('email', () {
-                      // ClipboardManager.copyToClipBoard(Urls.EMAIL).then((result) {
-                      //   App.showToast('Copiado en portapapeles');
-                      // });
-                      Clipboard.setData(const ClipboardData(text: Urls.EMAIL))
-                          .then((value) {
-                        App.showToast('Copiado en portapapeles');
-                      });
-                    }),
-                    _buildDefaultText(' o a ', color: Colors.black),
-                    _buildLinkText(
-                        'facebook', () => launch(Urls.PERFIL_FACEBOOK)),
-                    // _buildLinkText(
-                    //   'Escríbeme aquí',
-                    //   () => launch(Urls.PERFIL_FACEBOOK)
-                    // ),
-                    _buildDefaultText('.\n', color: Colors.black),
+              // Row(
+              //   children: <Widget>[
+              //     Expanded(
+              //       child: Row(
+              //         children: <Widget>[
+              //           RichText(
+              //             text: TextSpan(
+              //               children: [
+              //                 _buildDefaultText('Desarrollada con ',
+              //                     color: Colors.black),
+              //               ],
+              //             ),
+              //           ),
+              //           const FlutterLogo(
+              //             size: 12,
+              //           ),
+              //           RichText(
+              //             text: TextSpan(
+              //               children: [
+              //                 _buildDefaultText(
+              //                     ' Flutter ${App.versionFlutter}',
+              //                     color: Colors.black),
+              //               ],
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // RichText(
+              //   // textAlign: TextAlign.justify,
+              //   text: TextSpan(
+              //     children: [
+              //       // _buildDefaultText(
+              //       //   'Se recomienda Android 5 Lollipop en adelante.'
+              //       //   '\n\n',
+              //       //   color: Colors.black,
+              //       // ),
+              //       _buildDefaultText(
+              //         '\n\t\t\t\tDe la UNP para la UNP\n',
+              //         color: const Color(0xFFc2453c),
+              //         size: 14,
+              //       ),
+              //       _buildDefaultText(
+              //         '\t\t\t\t\t\t\t\t#UniversidadNacionalDePiura\t\t☄️' //☄️🌠
+              //         '\n\n',
+              //         color: const Color(0xFFc2453c),
+              //         size: 14.5,
+              //         bold: true,
+              //       ),
+              //       _buildDefaultText(
+              //           '¿Desearías que fuera de código abierto? '
+              //           '¿Te gustaría apoyar el proyecto? '
+              //           '¿Quieres reportar algún problema o tienes alguna sugerencia? '
+              //           'Escríbeme a mi ',
+              //           color: Colors.black),
+              //       _buildLinkText('email', () {
+              //         // ClipboardManager.copyToClipBoard(Urls.EMAIL).then((result) {
+              //         //   App.showToast('Copiado en portapapeles');
+              //         // });
+              //         Clipboard.setData(const ClipboardData(text: Urls.EMAIL))
+              //             .then((value) {
+              //           App.showToast('Copiado en portapapeles');
+              //         });
+              //       }),
+              //       _buildDefaultText(' o a ', color: Colors.black),
+              //       _buildLinkText(
+              //           'facebook', () => launch(Urls.PERFIL_FACEBOOK)),
+              //       // _buildLinkText(
+              //       //   'Escríbeme aquí',
+              //       //   () => launch(Urls.PERFIL_FACEBOOK)
+              //       // ),
+              //       _buildDefaultText('.\n', color: Colors.black),
 
-                    // // Enlace de descarga
-                    // _buildDefaultText(
-                    //   '\nActualmente esta app no está disponible en Play Store. Enlace de descarga: '
-                    //   , color: Colors.black
-                    // ),
-                    // _buildLinkText(
-                    //   'MEGA',
-                    //   () => launch(Urls.DESCARGAR)
-                    // ),
-                    // _buildDefaultText('\n', color: Colors.black),
-                  ],
-                ),
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  SizedBox(
-                    // margin: EdgeInsets.all(10),
-                    height: 18,
-                    child: Image.asset('assets/images/by-nc.png'),
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        _buildDefaultText('\t\tVer ', color: Colors.black),
-                        _buildLinkText('Términos y Condiciones de uso', () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const TextPage(),
-                            ),
-                          );
-                        }),
-                        _buildDefaultText('.',
-                            color: Colors.black), // dont touch
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              _buildNotaDeAutor(),
+              //       // // Enlace de descarga
+              //       // _buildDefaultText(
+              //       //   '\nActualmente esta app no está disponible en Play Store. Enlace de descarga: '
+              //       //   , color: Colors.black
+              //       // ),
+              //       // _buildLinkText(
+              //       //   'MEGA',
+              //       //   () => launch(Urls.DESCARGAR)
+              //       // ),
+              //       // _buildDefaultText('\n', color: Colors.black),
+              //     ],
+              //   ),
+              // ),
+              // Row(
+              //   mainAxisSize: MainAxisSize.max,
+              //   children: <Widget>[
+              //     SizedBox(
+              //       // margin: EdgeInsets.all(10),
+              //       height: 18,
+              //       child: Image.asset('assets/images/by-nc.png'),
+              //     ),
+              //     RichText(
+              //       text: TextSpan(
+              //         children: [
+              //           _buildDefaultText('\t\tVer ', color: Colors.black),
+              //           _buildLinkText('Términos y Condiciones de uso', () {
+              //             Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
+              //                 builder: (context) => const TextPage(),
+              //               ),
+              //             );
+              //           }),
+              //           _buildDefaultText('.',
+              //               color: Colors.black), // dont touch
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // _buildNotaDeAutor(),
             ],
           ),
         ),
