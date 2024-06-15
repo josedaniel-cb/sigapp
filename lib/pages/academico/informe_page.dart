@@ -456,8 +456,8 @@ class InformePageState extends State<InformePage> {
         height: longitud,
         child: PieChart(
           PieChartData(
-            sectionsSpace: 0,
-            centerSpaceRadius: longitud / 2,
+            // sectionsSpace: 0,
+            // centerSpaceRadius: longitud / 2,
             sections: [
               PieChartSectionData(
                 color: Colors.blueAccent,

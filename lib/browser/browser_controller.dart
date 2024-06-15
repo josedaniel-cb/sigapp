@@ -68,8 +68,7 @@ class BrowserController {
                   App.showToast('🌐 Web cargada', duracionSegundos: 1);
                   banAuxSeHaLlegadoACienPorciento = false;
                 } else {
-                  App.showToast(
-                      '🌐 _status: ${(progress * 100.0).toStringAsFixed(0)}%',
+                  App.showToast('🌐 _status: ${(progress).toStringAsFixed(0)}%',
                       duracionSegundos: 1);
                   if (progress == 100) {
                     banAuxSeHaLlegadoACienPorciento = true;

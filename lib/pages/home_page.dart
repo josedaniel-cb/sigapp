@@ -241,12 +241,12 @@ class HomePageState extends State<HomePage> {
                 name: 'Plan de estudios',
                 onPressed: _tapPlanDeEstudios,
               ),
-              BotonInfo(
-                // icono: Icons.book,
-                icono: Icons.format_list_bulleted,
-                name: 'Programación académica',
-                onPressed: _tapProgramacionAcademica,
-              ),
+              // BotonInfo(
+              //   // icono: Icons.book,
+              //   icono: Icons.format_list_bulleted,
+              //   name: 'Programación académica',
+              //   onPressed: _tapProgramacionAcademica,
+              // ),
             ]),
         _buildCategoria(
             titulo: 'Resultados académicos',
