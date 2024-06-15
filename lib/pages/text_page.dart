@@ -3,12 +3,13 @@ import 'package:sigapp/widgets/simple_loading_body_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-enum MensajesTextPage { TerminosYCondiciones, NotaDeAutor }
+enum MensajesTextPage { TerminosYCondiciones, PrivacyPolicy }
 
 class TextPage extends StatefulWidget {
   final MensajesTextPage cualMensaje;
 
-  const TextPage({super.key, this.cualMensaje = MensajesTextPage.TerminosYCondiciones});
+  const TextPage(
+      {super.key, this.cualMensaje = MensajesTextPage.TerminosYCondiciones});
 
   @override
   State<StatefulWidget> createState() => TextPageState();
@@ -26,8 +27,8 @@ class TextPageState extends State<TextPage> {
       case MensajesTextPage.TerminosYCondiciones:
         _titulo = 'Términos y Condiciones de Uso';
         break;
-      case MensajesTextPage.NotaDeAutor:
-        _titulo = 'Nota del Autor';
+      case MensajesTextPage.PrivacyPolicy:
+        _titulo = 'Política de Privacidad';
         break;
     }
     _solicitarTerminos();
@@ -36,25 +37,24 @@ class TextPageState extends State<TextPage> {
   Future<void> _solicitarTerminos() async {
     switch (widget.cualMensaje) {
       case MensajesTextPage.TerminosYCondiciones:
-        // _contenido = await App.browserController.gestorFirebase
-        //     .obtenerTerminosYCondiciones();
-
-        _contenido = await Future(() {
-          // Fetch data from (GET Method HTTP)
-          // https://raw.githubusercontent.com/josedaniel-cb/sigapp-privacy-policy/main/terminos_y_condiciones.txt
-          return http
-              .get(Uri.parse(
-                  'https://raw.githubusercontent.com/josedaniel-cb/sigapp-privacy-policy/main/terminos_y_condiciones.txt'))
-              .then((response) {
-            return response.body;
-          });
+        _contenido = await http
+            .get(Uri.parse(
+                'https://raw.githubusercontent.com/josedaniel-cb/sigapp-privacy-policy/main/terminos_y_condiciones.txt'))
+            .then((response) {
+          return response.body;
+        }).catchError((error) {
+          return 'No disponible';
         });
         break;
-      case MensajesTextPage.NotaDeAutor:
-        // _contenido =
-        //     await App.browserController.gestorFirebase.obtenerNotaDelAutor();
-        _contenido = await Future.delayed(
-            const Duration(seconds: 1), () => 'No disponible');
+      case MensajesTextPage.PrivacyPolicy:
+        _contenido = await http
+            .get(Uri.parse(
+                'https://raw.githubusercontent.com/josedaniel-cb/sigapp-privacy-policy/main/privacy_policy.txt'))
+            .then((response) {
+          return response.body;
+        }).catchError((error) {
+          return 'No disponible';
+        });
         break;
     }
     setState(() => _waiting = false);

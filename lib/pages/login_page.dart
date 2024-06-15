@@ -204,18 +204,9 @@ class LoginPageState extends State<LoginPage> {
               margin: const EdgeInsets.only(right: 4, bottom: 2, left: 4),
               child: Row(
                 children: <Widget>[
-                  const Expanded(
-                    child: Text(
-                      '#UniversidadNacionalDePiura',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 11,
-                      ),
-                    ),
-                  ),
                   RichText(
                     text: TextSpan(
-                      text: 'Ver nota de autor',
+                      text: 'Política de Privacidad',
                       style: const TextStyle(
                         color: Colors.white70,
                         fontFamily: 'ProductSans',
@@ -228,7 +219,33 @@ class LoginPageState extends State<LoginPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => const TextPage(
-                                cualMensaje: MensajesTextPage.NotaDeAutor,
+                                cualMensaje: MensajesTextPage.PrivacyPolicy,
+                              ),
+                            ),
+                          );
+                        },
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: 'Términos y Condiciones',
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontFamily: 'ProductSans',
+                        fontSize: 13,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        // ..onTap = () => launch(Urls.DESCARGAR_MEGA),
+                        ..onTap = () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const TextPage(
+                                cualMensaje:
+                                    MensajesTextPage.TerminosYCondiciones,
                               ),
                             ),
                           );
