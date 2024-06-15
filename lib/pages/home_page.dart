@@ -703,10 +703,10 @@ class HomePageState extends State<HomePage> {
   }
 
   void _launchURL(String url) async {
-    if (!_busy && await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
+    if (!_busy) {
+      if (!await launchUrl(Uri.parse(url))) {
+        throw Exception('Could not launch $url');
+      }
     }
   }
 

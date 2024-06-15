@@ -8,7 +8,8 @@ class CriticalErrorMessage extends StatelessWidget {
   final String url;
   final String mensaje;
 
-  const CriticalErrorMessage(this.url, {super.key, this.mensaje = 'Url no controlada'});
+  const CriticalErrorMessage(this.url,
+      {super.key, this.mensaje = 'Url no controlada'});
 
   @override
   Widget build(BuildContext context) {
@@ -71,10 +72,8 @@ class CriticalErrorMessage extends StatelessWidget {
   }
 
   void _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
+    if (!await launchUrl(Uri.parse(url))) {
+      throw Exception('Could not launch $url');
     }
   }
 }

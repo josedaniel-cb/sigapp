@@ -219,11 +219,8 @@ class BoletinPageState extends State<BoletinPage> {
   }
 
   void _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      _print('Lanzando $url');
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
+    if (!await launchUrl(Uri.parse(url))) {
+      throw Exception('Could not launch $url');
     }
   }
 
