@@ -23,6 +23,14 @@ if (flutterVersionName == null) {
     flutterVersionName = "1.0"
 }
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+} else {
+    throw new GradleException("key.properties not found")
+}
+
 android {
     namespace = "com.josedanielcb.sigapp"
     compileSdk = flutter.compileSdkVersion
@@ -42,6 +50,23 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
+    }
+
+    def storeFileProp = keystoreProperties['storeFile']
+    if (!storeFileProp) {
+        throw new IllegalArgumentException("storeFile property is not set in keystoreProperties")
+    }
+    def storeFile = file(storeFileProp)
+    if (!storeFile.exists()) {
+        throw new FileNotFoundException("Keystore file not found at path: " + storeFile)
+    }
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile
+            storePassword keystoreProperties['storePassword']
+        }
     }
 
     buildTypes {
