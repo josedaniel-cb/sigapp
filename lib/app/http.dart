@@ -66,20 +66,3 @@ class _CookieInterceptor extends Interceptor {
     return handler.next(response);
   }
 }
-
-// // Uso del DioClientBuilder para crear un cliente Dio
-// void main() async {
-//   final dioClient = DioClientBuilder()
-//       .setBaseUrl('https://example.com')
-//       .setConnectTimeout(5000)
-//       .setReceiveTimeout(3000)
-//       .addHeader('Content-Type', 'application/json')
-//       .build();
-
-//   // Ejemplo de uso con solicitudes GET y POST
-//   final responseGet = await dioClient.get('/path');
-//   print(responseGet.data);
-
-//   final responsePost = await dioClient.post('/path', data: {'key': 'value'});
-//   print(responsePost.data);
-// }

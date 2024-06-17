@@ -13,7 +13,8 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:shared_preferences/shared_preferences.dart' as _i3;
 import 'package:sigapp/app/http.dart' as _i4;
-import 'package:sigapp/app/register_module.dart' as _i6;
+import 'package:sigapp/app/register_module.dart' as _i7;
+import 'package:sigapp/auth/auth_service.dart' as _i6;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -35,8 +36,9 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i4.DioClientBuilder(gh<_i3.SharedPreferences>()));
     gh.singleton<_i5.Dio>(
         () => registerModule.http(gh<_i4.DioClientBuilder>()));
+    gh.lazySingleton<_i6.AuthService>(() => _i6.AuthService(gh<_i5.Dio>()));
     return this;
   }
 }
 
-class _$RegisterModule extends _i6.RegisterModule {}
+class _$RegisterModule extends _i7.RegisterModule {}
