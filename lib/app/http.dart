@@ -1,11 +1,14 @@
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+@singleton
 class DioClientBuilder {
   final Dio _dio = Dio();
+  final SharedPreferences _prefs;
 
-  DioClientBuilder() {
-    _dio.interceptors.add(_CookieInterceptor());
+  DioClientBuilder(this._prefs) {
+    _dio.interceptors.add(_CookieInterceptor(_prefs));
   }
 
   DioClientBuilder setBaseUrl(String baseUrl) {
@@ -34,11 +37,14 @@ class DioClientBuilder {
 }
 
 class _CookieInterceptor extends Interceptor {
+  final SharedPreferences _prefs;
+
+  _CookieInterceptor(this._prefs);
+
   @override
   Future onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    final prefs = await SharedPreferences.getInstance();
-    final cookies = prefs.getStringList('cookies_${options.uri.host}') ?? [];
+    final cookies = _prefs.getStringList('cookies_${options.uri.host}') ?? [];
     if (cookies.isNotEmpty) {
       options.headers['Cookie'] = cookies.join('; ');
     }
@@ -48,14 +54,13 @@ class _CookieInterceptor extends Interceptor {
   @override
   Future onResponse(
       Response response, ResponseInterceptorHandler handler) async {
-    final prefs = await SharedPreferences.getInstance();
     final setCookieHeader = response.headers['set-cookie'];
     if (setCookieHeader != null && setCookieHeader.isNotEmpty) {
       final cookies = setCookieHeader.map((cookie) {
         final parts = cookie.split(';').first.split('=');
         return '${parts[0]}=${parts[1]}';
       }).toList();
-      await prefs.setStringList(
+      await _prefs.setStringList(
           'cookies_${response.requestOptions.uri.host}', cookies);
     }
     return handler.next(response);

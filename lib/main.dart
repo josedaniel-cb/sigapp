@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sigapp/app/get_it.dart';
 
-void main() {
+void main() async {
+  await configureDependencies();
   runApp(const MyApp());
 }
 
