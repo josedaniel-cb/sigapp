@@ -1,0 +1,31 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sigapp/auth/auth_service.dart';
+import 'package:sigapp/student/get_academic_report.dart';
+
+part 'login_cubit.freezed.dart';
+
+@freezed
+abstract class LoginState with _$LoginState {
+  const factory LoginState.initial() = InitialState;
+  const factory LoginState.loading() = LoadingState;
+  const factory LoginState.success(GetAcademicReportInform report) =
+      SuccessState;
+  const factory LoginState.error(String message) = ErrorState;
+}
+
+class LoginCubit extends Cubit<LoginState> {
+  final AuthService _authService;
+
+  LoginCubit(this._authService) : super(LoginState.initial());
+
+  Future<void> login(String username, String password) async {
+    emit(LoginState.loading());
+    try {
+      final report = await _authService.login(username, password);
+      emit(LoginState.success(report));
+    } catch (e) {
+      emit(LoginState.error(e.toString()));
+    }
+  }
+}
