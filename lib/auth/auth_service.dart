@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigapp/student/get_academic_report.dart';
 import 'package:sigapp/student/student_service.dart';
 
@@ -7,8 +8,9 @@ import 'package:sigapp/student/student_service.dart';
 class AuthService {
   final Dio _dio;
   final StudentService _studentService;
+  final SharedPreferences _prefs;
 
-  AuthService(this._dio, this._studentService);
+  AuthService(this._dio, this._studentService, this._prefs);
 
   Future<GetAcademicReportInform> login(
       String username, String password) async {
@@ -45,25 +47,31 @@ class AuthService {
         'g-recaptcha-response': '',
       },
       options: Options(
-        headers: {
-          // 'accept':
-          //     'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-          // 'accept-language': 'en-US,en;q=0.9,es-PE;q=0.8,es-ES;q=0.7,es;q=0.6',
-          // 'cache-control': 'max-age=0',
-          'content-type': 'application/x-www-form-urlencoded',
-          'origin': 'https://academico.unp.edu.pe',
-          'referer': 'https://academico.unp.edu.pe/',
-          // 'sec-ch-ua':
-          //     '"Not/A)Brand";v="8", "Chromium";v="126", "Microsoft Edge";v="126"',
-          // 'sec-ch-ua-mobile': '?0',
-          // 'sec-ch-ua-platform': '"Windows"',
-          // 'sec-fetch-dest': 'document',
-          // 'sec-fetch-mode': 'navigate',
-          // 'sec-fetch-site': 'same-origin',
-          // 'sec-fetch-user': '?1',
-          // 'upgrade-insecure-requests': '1',
-        },
-      ),
+          headers: {
+            // 'accept':
+            //     'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+            // 'accept-language': 'en-US,en;q=0.9,es-PE;q=0.8,es-ES;q=0.7,es;q=0.6',
+            // 'cache-control': 'max-age=0',
+            'content-type': 'application/x-www-form-urlencoded',
+            'origin': 'https://academico.unp.edu.pe',
+            'referer': 'https://academico.unp.edu.pe/',
+            // 'sec-ch-ua':
+            //     '"Not/A)Brand";v="8", "Chromium";v="126", "Microsoft Edge";v="126"',
+            // 'sec-ch-ua-mobile': '?0',
+            // 'sec-ch-ua-platform': '"Windows"',
+            // 'sec-fetch-dest': 'document',
+            // 'sec-fetch-mode': 'navigate',
+            // 'sec-fetch-site': 'same-origin',
+            // 'sec-fetch-user': '?1',
+            // 'upgrade-insecure-requests': '1',
+          },
+          followRedirects: false,
+          validateStatus: (status) {
+            // if (status == 302) {
+            //   saveToken(_dio.options.headers['Cookie']);
+            // }
+            return status! < 400;
+          }),
     );
 
     // Verify
@@ -73,5 +81,9 @@ class AuthService {
 
     // Now get user info
     return _studentService.getAcademicService();
+  }
+
+  saveToken(String token) {
+    _prefs.setString('token', token);
   }
 }

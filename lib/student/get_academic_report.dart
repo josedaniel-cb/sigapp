@@ -28,20 +28,20 @@ part 'get_academic_report.g.dart';
 @freezed
 class GetAcademicReportInform with _$GetAcademicReportInform {
   const factory GetAcademicReportInform({
-    required String facultad,
-    required String nomAlumno,
-    required String promocion,
-    required String semestreIngreso,
-    required String semestrePlan,
-    required String ultSemestre,
-    required double pPA,
-    required double pPAAprob,
-    required double uPPS,
-    required int totalCredAprob,
-    required int credObligPlan,
-    required int credElectPlan,
-    required int credObligAprob,
-    required int credElectAprob,
+    required String Facultad,
+    required String NomAlumno,
+    required String Promocion,
+    required String SemestreIngreso,
+    required String SemestrePlan,
+    required String UltSemestre,
+    required double PPA,
+    required double PPAAprob,
+    required double UPPS,
+    required int TotalCredAprob,
+    required int CredObligPlan,
+    required int CredElectPlan,
+    required int CredObligAprob,
+    required int CredElectAprob,
   }) = _GetAcademicReportInform;
 
   factory GetAcademicReportInform.fromJson(Map<String, Object?> json) =>

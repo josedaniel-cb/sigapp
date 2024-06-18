@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigapp/app/http.dart';
+import 'package:sigapp/app/router.dart';
 
 @module
 abstract class RegisterModule {
@@ -19,4 +21,7 @@ abstract class RegisterModule {
         .build();
     return dioClient;
   }
+
+  @singleton
+  GoRouter router(SharedPreferences prefs) => RouterBuilder.build(prefs);
 }

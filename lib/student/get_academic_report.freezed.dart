@@ -21,20 +21,20 @@ GetAcademicReportInform _$GetAcademicReportInformFromJson(
 
 /// @nodoc
 mixin _$GetAcademicReportInform {
-  String get facultad => throw _privateConstructorUsedError;
-  String get nomAlumno => throw _privateConstructorUsedError;
-  String get promocion => throw _privateConstructorUsedError;
-  String get semestreIngreso => throw _privateConstructorUsedError;
-  String get semestrePlan => throw _privateConstructorUsedError;
-  String get ultSemestre => throw _privateConstructorUsedError;
-  double get pPA => throw _privateConstructorUsedError;
-  double get pPAAprob => throw _privateConstructorUsedError;
-  double get uPPS => throw _privateConstructorUsedError;
-  int get totalCredAprob => throw _privateConstructorUsedError;
-  int get credObligPlan => throw _privateConstructorUsedError;
-  int get credElectPlan => throw _privateConstructorUsedError;
-  int get credObligAprob => throw _privateConstructorUsedError;
-  int get credElectAprob => throw _privateConstructorUsedError;
+  String get Facultad => throw _privateConstructorUsedError;
+  String get NomAlumno => throw _privateConstructorUsedError;
+  String get Promocion => throw _privateConstructorUsedError;
+  String get SemestreIngreso => throw _privateConstructorUsedError;
+  String get SemestrePlan => throw _privateConstructorUsedError;
+  String get UltSemestre => throw _privateConstructorUsedError;
+  double get PPA => throw _privateConstructorUsedError;
+  double get PPAAprob => throw _privateConstructorUsedError;
+  double get UPPS => throw _privateConstructorUsedError;
+  int get TotalCredAprob => throw _privateConstructorUsedError;
+  int get CredObligPlan => throw _privateConstructorUsedError;
+  int get CredElectPlan => throw _privateConstructorUsedError;
+  int get CredObligAprob => throw _privateConstructorUsedError;
+  int get CredElectAprob => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -49,20 +49,20 @@ abstract class $GetAcademicReportInformCopyWith<$Res> {
       _$GetAcademicReportInformCopyWithImpl<$Res, GetAcademicReportInform>;
   @useResult
   $Res call(
-      {String facultad,
-      String nomAlumno,
-      String promocion,
-      String semestreIngreso,
-      String semestrePlan,
-      String ultSemestre,
-      double pPA,
-      double pPAAprob,
-      double uPPS,
-      int totalCredAprob,
-      int credObligPlan,
-      int credElectPlan,
-      int credObligAprob,
-      int credElectAprob});
+      {String Facultad,
+      String NomAlumno,
+      String Promocion,
+      String SemestreIngreso,
+      String SemestrePlan,
+      String UltSemestre,
+      double PPA,
+      double PPAAprob,
+      double UPPS,
+      int TotalCredAprob,
+      int CredObligPlan,
+      int CredElectPlan,
+      int CredObligAprob,
+      int CredElectAprob});
 }
 
 /// @nodoc
@@ -79,77 +79,77 @@ class _$GetAcademicReportInformCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? facultad = null,
-    Object? nomAlumno = null,
-    Object? promocion = null,
-    Object? semestreIngreso = null,
-    Object? semestrePlan = null,
-    Object? ultSemestre = null,
-    Object? pPA = null,
-    Object? pPAAprob = null,
-    Object? uPPS = null,
-    Object? totalCredAprob = null,
-    Object? credObligPlan = null,
-    Object? credElectPlan = null,
-    Object? credObligAprob = null,
-    Object? credElectAprob = null,
+    Object? Facultad = null,
+    Object? NomAlumno = null,
+    Object? Promocion = null,
+    Object? SemestreIngreso = null,
+    Object? SemestrePlan = null,
+    Object? UltSemestre = null,
+    Object? PPA = null,
+    Object? PPAAprob = null,
+    Object? UPPS = null,
+    Object? TotalCredAprob = null,
+    Object? CredObligPlan = null,
+    Object? CredElectPlan = null,
+    Object? CredObligAprob = null,
+    Object? CredElectAprob = null,
   }) {
     return _then(_value.copyWith(
-      facultad: null == facultad
-          ? _value.facultad
-          : facultad // ignore: cast_nullable_to_non_nullable
+      Facultad: null == Facultad
+          ? _value.Facultad
+          : Facultad // ignore: cast_nullable_to_non_nullable
               as String,
-      nomAlumno: null == nomAlumno
-          ? _value.nomAlumno
-          : nomAlumno // ignore: cast_nullable_to_non_nullable
+      NomAlumno: null == NomAlumno
+          ? _value.NomAlumno
+          : NomAlumno // ignore: cast_nullable_to_non_nullable
               as String,
-      promocion: null == promocion
-          ? _value.promocion
-          : promocion // ignore: cast_nullable_to_non_nullable
+      Promocion: null == Promocion
+          ? _value.Promocion
+          : Promocion // ignore: cast_nullable_to_non_nullable
               as String,
-      semestreIngreso: null == semestreIngreso
-          ? _value.semestreIngreso
-          : semestreIngreso // ignore: cast_nullable_to_non_nullable
+      SemestreIngreso: null == SemestreIngreso
+          ? _value.SemestreIngreso
+          : SemestreIngreso // ignore: cast_nullable_to_non_nullable
               as String,
-      semestrePlan: null == semestrePlan
-          ? _value.semestrePlan
-          : semestrePlan // ignore: cast_nullable_to_non_nullable
+      SemestrePlan: null == SemestrePlan
+          ? _value.SemestrePlan
+          : SemestrePlan // ignore: cast_nullable_to_non_nullable
               as String,
-      ultSemestre: null == ultSemestre
-          ? _value.ultSemestre
-          : ultSemestre // ignore: cast_nullable_to_non_nullable
+      UltSemestre: null == UltSemestre
+          ? _value.UltSemestre
+          : UltSemestre // ignore: cast_nullable_to_non_nullable
               as String,
-      pPA: null == pPA
-          ? _value.pPA
-          : pPA // ignore: cast_nullable_to_non_nullable
+      PPA: null == PPA
+          ? _value.PPA
+          : PPA // ignore: cast_nullable_to_non_nullable
               as double,
-      pPAAprob: null == pPAAprob
-          ? _value.pPAAprob
-          : pPAAprob // ignore: cast_nullable_to_non_nullable
+      PPAAprob: null == PPAAprob
+          ? _value.PPAAprob
+          : PPAAprob // ignore: cast_nullable_to_non_nullable
               as double,
-      uPPS: null == uPPS
-          ? _value.uPPS
-          : uPPS // ignore: cast_nullable_to_non_nullable
+      UPPS: null == UPPS
+          ? _value.UPPS
+          : UPPS // ignore: cast_nullable_to_non_nullable
               as double,
-      totalCredAprob: null == totalCredAprob
-          ? _value.totalCredAprob
-          : totalCredAprob // ignore: cast_nullable_to_non_nullable
+      TotalCredAprob: null == TotalCredAprob
+          ? _value.TotalCredAprob
+          : TotalCredAprob // ignore: cast_nullable_to_non_nullable
               as int,
-      credObligPlan: null == credObligPlan
-          ? _value.credObligPlan
-          : credObligPlan // ignore: cast_nullable_to_non_nullable
+      CredObligPlan: null == CredObligPlan
+          ? _value.CredObligPlan
+          : CredObligPlan // ignore: cast_nullable_to_non_nullable
               as int,
-      credElectPlan: null == credElectPlan
-          ? _value.credElectPlan
-          : credElectPlan // ignore: cast_nullable_to_non_nullable
+      CredElectPlan: null == CredElectPlan
+          ? _value.CredElectPlan
+          : CredElectPlan // ignore: cast_nullable_to_non_nullable
               as int,
-      credObligAprob: null == credObligAprob
-          ? _value.credObligAprob
-          : credObligAprob // ignore: cast_nullable_to_non_nullable
+      CredObligAprob: null == CredObligAprob
+          ? _value.CredObligAprob
+          : CredObligAprob // ignore: cast_nullable_to_non_nullable
               as int,
-      credElectAprob: null == credElectAprob
-          ? _value.credElectAprob
-          : credElectAprob // ignore: cast_nullable_to_non_nullable
+      CredElectAprob: null == CredElectAprob
+          ? _value.CredElectAprob
+          : CredElectAprob // ignore: cast_nullable_to_non_nullable
               as int,
     ) as $Val);
   }
@@ -165,20 +165,20 @@ abstract class _$$GetAcademicReportInformImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String facultad,
-      String nomAlumno,
-      String promocion,
-      String semestreIngreso,
-      String semestrePlan,
-      String ultSemestre,
-      double pPA,
-      double pPAAprob,
-      double uPPS,
-      int totalCredAprob,
-      int credObligPlan,
-      int credElectPlan,
-      int credObligAprob,
-      int credElectAprob});
+      {String Facultad,
+      String NomAlumno,
+      String Promocion,
+      String SemestreIngreso,
+      String SemestrePlan,
+      String UltSemestre,
+      double PPA,
+      double PPAAprob,
+      double UPPS,
+      int TotalCredAprob,
+      int CredObligPlan,
+      int CredElectPlan,
+      int CredObligAprob,
+      int CredElectAprob});
 }
 
 /// @nodoc
@@ -194,77 +194,77 @@ class __$$GetAcademicReportInformImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? facultad = null,
-    Object? nomAlumno = null,
-    Object? promocion = null,
-    Object? semestreIngreso = null,
-    Object? semestrePlan = null,
-    Object? ultSemestre = null,
-    Object? pPA = null,
-    Object? pPAAprob = null,
-    Object? uPPS = null,
-    Object? totalCredAprob = null,
-    Object? credObligPlan = null,
-    Object? credElectPlan = null,
-    Object? credObligAprob = null,
-    Object? credElectAprob = null,
+    Object? Facultad = null,
+    Object? NomAlumno = null,
+    Object? Promocion = null,
+    Object? SemestreIngreso = null,
+    Object? SemestrePlan = null,
+    Object? UltSemestre = null,
+    Object? PPA = null,
+    Object? PPAAprob = null,
+    Object? UPPS = null,
+    Object? TotalCredAprob = null,
+    Object? CredObligPlan = null,
+    Object? CredElectPlan = null,
+    Object? CredObligAprob = null,
+    Object? CredElectAprob = null,
   }) {
     return _then(_$GetAcademicReportInformImpl(
-      facultad: null == facultad
-          ? _value.facultad
-          : facultad // ignore: cast_nullable_to_non_nullable
+      Facultad: null == Facultad
+          ? _value.Facultad
+          : Facultad // ignore: cast_nullable_to_non_nullable
               as String,
-      nomAlumno: null == nomAlumno
-          ? _value.nomAlumno
-          : nomAlumno // ignore: cast_nullable_to_non_nullable
+      NomAlumno: null == NomAlumno
+          ? _value.NomAlumno
+          : NomAlumno // ignore: cast_nullable_to_non_nullable
               as String,
-      promocion: null == promocion
-          ? _value.promocion
-          : promocion // ignore: cast_nullable_to_non_nullable
+      Promocion: null == Promocion
+          ? _value.Promocion
+          : Promocion // ignore: cast_nullable_to_non_nullable
               as String,
-      semestreIngreso: null == semestreIngreso
-          ? _value.semestreIngreso
-          : semestreIngreso // ignore: cast_nullable_to_non_nullable
+      SemestreIngreso: null == SemestreIngreso
+          ? _value.SemestreIngreso
+          : SemestreIngreso // ignore: cast_nullable_to_non_nullable
               as String,
-      semestrePlan: null == semestrePlan
-          ? _value.semestrePlan
-          : semestrePlan // ignore: cast_nullable_to_non_nullable
+      SemestrePlan: null == SemestrePlan
+          ? _value.SemestrePlan
+          : SemestrePlan // ignore: cast_nullable_to_non_nullable
               as String,
-      ultSemestre: null == ultSemestre
-          ? _value.ultSemestre
-          : ultSemestre // ignore: cast_nullable_to_non_nullable
+      UltSemestre: null == UltSemestre
+          ? _value.UltSemestre
+          : UltSemestre // ignore: cast_nullable_to_non_nullable
               as String,
-      pPA: null == pPA
-          ? _value.pPA
-          : pPA // ignore: cast_nullable_to_non_nullable
+      PPA: null == PPA
+          ? _value.PPA
+          : PPA // ignore: cast_nullable_to_non_nullable
               as double,
-      pPAAprob: null == pPAAprob
-          ? _value.pPAAprob
-          : pPAAprob // ignore: cast_nullable_to_non_nullable
+      PPAAprob: null == PPAAprob
+          ? _value.PPAAprob
+          : PPAAprob // ignore: cast_nullable_to_non_nullable
               as double,
-      uPPS: null == uPPS
-          ? _value.uPPS
-          : uPPS // ignore: cast_nullable_to_non_nullable
+      UPPS: null == UPPS
+          ? _value.UPPS
+          : UPPS // ignore: cast_nullable_to_non_nullable
               as double,
-      totalCredAprob: null == totalCredAprob
-          ? _value.totalCredAprob
-          : totalCredAprob // ignore: cast_nullable_to_non_nullable
+      TotalCredAprob: null == TotalCredAprob
+          ? _value.TotalCredAprob
+          : TotalCredAprob // ignore: cast_nullable_to_non_nullable
               as int,
-      credObligPlan: null == credObligPlan
-          ? _value.credObligPlan
-          : credObligPlan // ignore: cast_nullable_to_non_nullable
+      CredObligPlan: null == CredObligPlan
+          ? _value.CredObligPlan
+          : CredObligPlan // ignore: cast_nullable_to_non_nullable
               as int,
-      credElectPlan: null == credElectPlan
-          ? _value.credElectPlan
-          : credElectPlan // ignore: cast_nullable_to_non_nullable
+      CredElectPlan: null == CredElectPlan
+          ? _value.CredElectPlan
+          : CredElectPlan // ignore: cast_nullable_to_non_nullable
               as int,
-      credObligAprob: null == credObligAprob
-          ? _value.credObligAprob
-          : credObligAprob // ignore: cast_nullable_to_non_nullable
+      CredObligAprob: null == CredObligAprob
+          ? _value.CredObligAprob
+          : CredObligAprob // ignore: cast_nullable_to_non_nullable
               as int,
-      credElectAprob: null == credElectAprob
-          ? _value.credElectAprob
-          : credElectAprob // ignore: cast_nullable_to_non_nullable
+      CredElectAprob: null == CredElectAprob
+          ? _value.CredElectAprob
+          : CredElectAprob // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -276,56 +276,56 @@ class _$GetAcademicReportInformImpl
     with DiagnosticableTreeMixin
     implements _GetAcademicReportInform {
   const _$GetAcademicReportInformImpl(
-      {required this.facultad,
-      required this.nomAlumno,
-      required this.promocion,
-      required this.semestreIngreso,
-      required this.semestrePlan,
-      required this.ultSemestre,
-      required this.pPA,
-      required this.pPAAprob,
-      required this.uPPS,
-      required this.totalCredAprob,
-      required this.credObligPlan,
-      required this.credElectPlan,
-      required this.credObligAprob,
-      required this.credElectAprob});
+      {required this.Facultad,
+      required this.NomAlumno,
+      required this.Promocion,
+      required this.SemestreIngreso,
+      required this.SemestrePlan,
+      required this.UltSemestre,
+      required this.PPA,
+      required this.PPAAprob,
+      required this.UPPS,
+      required this.TotalCredAprob,
+      required this.CredObligPlan,
+      required this.CredElectPlan,
+      required this.CredObligAprob,
+      required this.CredElectAprob});
 
   factory _$GetAcademicReportInformImpl.fromJson(Map<String, dynamic> json) =>
       _$$GetAcademicReportInformImplFromJson(json);
 
   @override
-  final String facultad;
+  final String Facultad;
   @override
-  final String nomAlumno;
+  final String NomAlumno;
   @override
-  final String promocion;
+  final String Promocion;
   @override
-  final String semestreIngreso;
+  final String SemestreIngreso;
   @override
-  final String semestrePlan;
+  final String SemestrePlan;
   @override
-  final String ultSemestre;
+  final String UltSemestre;
   @override
-  final double pPA;
+  final double PPA;
   @override
-  final double pPAAprob;
+  final double PPAAprob;
   @override
-  final double uPPS;
+  final double UPPS;
   @override
-  final int totalCredAprob;
+  final int TotalCredAprob;
   @override
-  final int credObligPlan;
+  final int CredObligPlan;
   @override
-  final int credElectPlan;
+  final int CredElectPlan;
   @override
-  final int credObligAprob;
+  final int CredObligAprob;
   @override
-  final int credElectAprob;
+  final int CredElectAprob;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'GetAcademicReportInform(facultad: $facultad, nomAlumno: $nomAlumno, promocion: $promocion, semestreIngreso: $semestreIngreso, semestrePlan: $semestrePlan, ultSemestre: $ultSemestre, pPA: $pPA, pPAAprob: $pPAAprob, uPPS: $uPPS, totalCredAprob: $totalCredAprob, credObligPlan: $credObligPlan, credElectPlan: $credElectPlan, credObligAprob: $credObligAprob, credElectAprob: $credElectAprob)';
+    return 'GetAcademicReportInform(Facultad: $Facultad, NomAlumno: $NomAlumno, Promocion: $Promocion, SemestreIngreso: $SemestreIngreso, SemestrePlan: $SemestrePlan, UltSemestre: $UltSemestre, PPA: $PPA, PPAAprob: $PPAAprob, UPPS: $UPPS, TotalCredAprob: $TotalCredAprob, CredObligPlan: $CredObligPlan, CredElectPlan: $CredElectPlan, CredObligAprob: $CredObligAprob, CredElectAprob: $CredElectAprob)';
   }
 
   @override
@@ -333,20 +333,20 @@ class _$GetAcademicReportInformImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'GetAcademicReportInform'))
-      ..add(DiagnosticsProperty('facultad', facultad))
-      ..add(DiagnosticsProperty('nomAlumno', nomAlumno))
-      ..add(DiagnosticsProperty('promocion', promocion))
-      ..add(DiagnosticsProperty('semestreIngreso', semestreIngreso))
-      ..add(DiagnosticsProperty('semestrePlan', semestrePlan))
-      ..add(DiagnosticsProperty('ultSemestre', ultSemestre))
-      ..add(DiagnosticsProperty('pPA', pPA))
-      ..add(DiagnosticsProperty('pPAAprob', pPAAprob))
-      ..add(DiagnosticsProperty('uPPS', uPPS))
-      ..add(DiagnosticsProperty('totalCredAprob', totalCredAprob))
-      ..add(DiagnosticsProperty('credObligPlan', credObligPlan))
-      ..add(DiagnosticsProperty('credElectPlan', credElectPlan))
-      ..add(DiagnosticsProperty('credObligAprob', credObligAprob))
-      ..add(DiagnosticsProperty('credElectAprob', credElectAprob));
+      ..add(DiagnosticsProperty('Facultad', Facultad))
+      ..add(DiagnosticsProperty('NomAlumno', NomAlumno))
+      ..add(DiagnosticsProperty('Promocion', Promocion))
+      ..add(DiagnosticsProperty('SemestreIngreso', SemestreIngreso))
+      ..add(DiagnosticsProperty('SemestrePlan', SemestrePlan))
+      ..add(DiagnosticsProperty('UltSemestre', UltSemestre))
+      ..add(DiagnosticsProperty('PPA', PPA))
+      ..add(DiagnosticsProperty('PPAAprob', PPAAprob))
+      ..add(DiagnosticsProperty('UPPS', UPPS))
+      ..add(DiagnosticsProperty('TotalCredAprob', TotalCredAprob))
+      ..add(DiagnosticsProperty('CredObligPlan', CredObligPlan))
+      ..add(DiagnosticsProperty('CredElectPlan', CredElectPlan))
+      ..add(DiagnosticsProperty('CredObligAprob', CredObligAprob))
+      ..add(DiagnosticsProperty('CredElectAprob', CredElectAprob));
   }
 
   @override
@@ -354,52 +354,52 @@ class _$GetAcademicReportInformImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GetAcademicReportInformImpl &&
-            (identical(other.facultad, facultad) ||
-                other.facultad == facultad) &&
-            (identical(other.nomAlumno, nomAlumno) ||
-                other.nomAlumno == nomAlumno) &&
-            (identical(other.promocion, promocion) ||
-                other.promocion == promocion) &&
-            (identical(other.semestreIngreso, semestreIngreso) ||
-                other.semestreIngreso == semestreIngreso) &&
-            (identical(other.semestrePlan, semestrePlan) ||
-                other.semestrePlan == semestrePlan) &&
-            (identical(other.ultSemestre, ultSemestre) ||
-                other.ultSemestre == ultSemestre) &&
-            (identical(other.pPA, pPA) || other.pPA == pPA) &&
-            (identical(other.pPAAprob, pPAAprob) ||
-                other.pPAAprob == pPAAprob) &&
-            (identical(other.uPPS, uPPS) || other.uPPS == uPPS) &&
-            (identical(other.totalCredAprob, totalCredAprob) ||
-                other.totalCredAprob == totalCredAprob) &&
-            (identical(other.credObligPlan, credObligPlan) ||
-                other.credObligPlan == credObligPlan) &&
-            (identical(other.credElectPlan, credElectPlan) ||
-                other.credElectPlan == credElectPlan) &&
-            (identical(other.credObligAprob, credObligAprob) ||
-                other.credObligAprob == credObligAprob) &&
-            (identical(other.credElectAprob, credElectAprob) ||
-                other.credElectAprob == credElectAprob));
+            (identical(other.Facultad, Facultad) ||
+                other.Facultad == Facultad) &&
+            (identical(other.NomAlumno, NomAlumno) ||
+                other.NomAlumno == NomAlumno) &&
+            (identical(other.Promocion, Promocion) ||
+                other.Promocion == Promocion) &&
+            (identical(other.SemestreIngreso, SemestreIngreso) ||
+                other.SemestreIngreso == SemestreIngreso) &&
+            (identical(other.SemestrePlan, SemestrePlan) ||
+                other.SemestrePlan == SemestrePlan) &&
+            (identical(other.UltSemestre, UltSemestre) ||
+                other.UltSemestre == UltSemestre) &&
+            (identical(other.PPA, PPA) || other.PPA == PPA) &&
+            (identical(other.PPAAprob, PPAAprob) ||
+                other.PPAAprob == PPAAprob) &&
+            (identical(other.UPPS, UPPS) || other.UPPS == UPPS) &&
+            (identical(other.TotalCredAprob, TotalCredAprob) ||
+                other.TotalCredAprob == TotalCredAprob) &&
+            (identical(other.CredObligPlan, CredObligPlan) ||
+                other.CredObligPlan == CredObligPlan) &&
+            (identical(other.CredElectPlan, CredElectPlan) ||
+                other.CredElectPlan == CredElectPlan) &&
+            (identical(other.CredObligAprob, CredObligAprob) ||
+                other.CredObligAprob == CredObligAprob) &&
+            (identical(other.CredElectAprob, CredElectAprob) ||
+                other.CredElectAprob == CredElectAprob));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      facultad,
-      nomAlumno,
-      promocion,
-      semestreIngreso,
-      semestrePlan,
-      ultSemestre,
-      pPA,
-      pPAAprob,
-      uPPS,
-      totalCredAprob,
-      credObligPlan,
-      credElectPlan,
-      credObligAprob,
-      credElectAprob);
+      Facultad,
+      NomAlumno,
+      Promocion,
+      SemestreIngreso,
+      SemestrePlan,
+      UltSemestre,
+      PPA,
+      PPAAprob,
+      UPPS,
+      TotalCredAprob,
+      CredObligPlan,
+      CredElectPlan,
+      CredObligAprob,
+      CredElectAprob);
 
   @JsonKey(ignore: true)
   @override
@@ -418,52 +418,52 @@ class _$GetAcademicReportInformImpl
 
 abstract class _GetAcademicReportInform implements GetAcademicReportInform {
   const factory _GetAcademicReportInform(
-      {required final String facultad,
-      required final String nomAlumno,
-      required final String promocion,
-      required final String semestreIngreso,
-      required final String semestrePlan,
-      required final String ultSemestre,
-      required final double pPA,
-      required final double pPAAprob,
-      required final double uPPS,
-      required final int totalCredAprob,
-      required final int credObligPlan,
-      required final int credElectPlan,
-      required final int credObligAprob,
-      required final int credElectAprob}) = _$GetAcademicReportInformImpl;
+      {required final String Facultad,
+      required final String NomAlumno,
+      required final String Promocion,
+      required final String SemestreIngreso,
+      required final String SemestrePlan,
+      required final String UltSemestre,
+      required final double PPA,
+      required final double PPAAprob,
+      required final double UPPS,
+      required final int TotalCredAprob,
+      required final int CredObligPlan,
+      required final int CredElectPlan,
+      required final int CredObligAprob,
+      required final int CredElectAprob}) = _$GetAcademicReportInformImpl;
 
   factory _GetAcademicReportInform.fromJson(Map<String, dynamic> json) =
       _$GetAcademicReportInformImpl.fromJson;
 
   @override
-  String get facultad;
+  String get Facultad;
   @override
-  String get nomAlumno;
+  String get NomAlumno;
   @override
-  String get promocion;
+  String get Promocion;
   @override
-  String get semestreIngreso;
+  String get SemestreIngreso;
   @override
-  String get semestrePlan;
+  String get SemestrePlan;
   @override
-  String get ultSemestre;
+  String get UltSemestre;
   @override
-  double get pPA;
+  double get PPA;
   @override
-  double get pPAAprob;
+  double get PPAAprob;
   @override
-  double get uPPS;
+  double get UPPS;
   @override
-  int get totalCredAprob;
+  int get TotalCredAprob;
   @override
-  int get credObligPlan;
+  int get CredObligPlan;
   @override
-  int get credElectPlan;
+  int get CredElectPlan;
   @override
-  int get credObligAprob;
+  int get CredObligAprob;
   @override
-  int get credElectAprob;
+  int get CredElectAprob;
   @override
   @JsonKey(ignore: true)
   _$$GetAcademicReportInformImplCopyWith<_$GetAcademicReportInformImpl>

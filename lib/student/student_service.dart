@@ -39,7 +39,7 @@ class StudentService {
         },
       ),
     );
-    final result = GetAcademicReportInform.fromJson(response.data);
+    final result = GetAcademicReportInform.fromJson(response.data['results']);
     return result;
   }
 }
