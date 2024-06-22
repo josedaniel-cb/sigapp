@@ -33,7 +33,7 @@ class GetAcademicReportInform with _$GetAcademicReportInform {
     required String Promocion,
     required String SemestreIngreso,
     required String SemestrePlan,
-    required String UltSemestre,
+    required String? UltSemestre,
     required double PPA,
     required double PPAAprob,
     required double UPPS,

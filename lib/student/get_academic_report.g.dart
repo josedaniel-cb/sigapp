@@ -14,7 +14,7 @@ _$GetAcademicReportInformImpl _$$GetAcademicReportInformImplFromJson(
       Promocion: json['Promocion'] as String,
       SemestreIngreso: json['SemestreIngreso'] as String,
       SemestrePlan: json['SemestrePlan'] as String,
-      UltSemestre: json['UltSemestre'] as String,
+      UltSemestre: json['UltSemestre'] as String?,
       PPA: (json['PPA'] as num).toDouble(),
       PPAAprob: (json['PPAAprob'] as num).toDouble(),
       UPPS: (json['UPPS'] as num).toDouble(),

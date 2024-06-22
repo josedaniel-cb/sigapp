@@ -1,22 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigapp/app/get_it.dart';
 import 'package:sigapp/auth/ui/login_cubit.dart';
 import 'package:sigapp/auth/ui/login_page.dart';
+import 'package:sigapp/home/home_cubit.dart';
 import 'package:sigapp/home/home_page.dart';
+
+@injectable
+class RouterRefreshListenable extends ChangeNotifier {
+  void refresh() {
+    notifyListeners();
+  }
+}
 
 class RouterBuilder {
   static GoRouter build(
     SharedPreferences prefs,
+    RouterRefreshListenable refreshListenable,
   ) {
     final router = GoRouter(
+      refreshListenable: refreshListenable,
       initialLocation: '/',
       routes: [
         GoRoute(
           path: '/',
-          builder: (context, state) => HomePage(),
+          builder: (context, state) => BlocProvider(
+            create: (context) => getIt<HomeCubit>(),
+            child: const HomePage(),
+          ),
         ),
         GoRoute(
           path: '/login',
@@ -27,7 +41,11 @@ class RouterBuilder {
         ),
       ],
       redirect: (context, state) {
-        if (prefs.getString('token') == null) {
+        final cookies =
+            prefs.getStringList('cookies_${'academico.unp.edu.pe'}');
+        final hasToken =
+            cookies?.any((cookie) => cookie.contains('.ASPXAUTH=')) ?? false;
+        if (!hasToken) {
           return '/login';
         }
         return null;

@@ -9,6 +9,8 @@ class LoginPage extends StatelessWidget {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  LoginPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +54,7 @@ class LoginPage extends StatelessWidget {
         },
         listener: (context, state) {
           if (state is SuccessState) {
-            getIt<AuthService>().saveToken('aux');
+            // getIt<AuthService>().saveToken('aux');
             getIt<GoRouter>().push('/');
           }
         },

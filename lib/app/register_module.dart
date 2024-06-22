@@ -23,5 +23,7 @@ abstract class RegisterModule {
   }
 
   @singleton
-  GoRouter router(SharedPreferences prefs) => RouterBuilder.build(prefs);
+  GoRouter router(
+          SharedPreferences prefs, RouterRefreshListenable refreshListenable) =>
+      RouterBuilder.build(prefs, refreshListenable);
 }

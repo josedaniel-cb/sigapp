@@ -10,8 +10,7 @@ part 'login_cubit.freezed.dart';
 abstract class LoginState with _$LoginState {
   const factory LoginState.initial() = InitialState;
   const factory LoginState.loading() = LoadingState;
-  const factory LoginState.success(GetAcademicReportInform report) =
-      SuccessState;
+  const factory LoginState.success() = SuccessState;
   const factory LoginState.error(String message) = ErrorState;
 }
 
@@ -24,8 +23,12 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> login(String username, String password) async {
     emit(const LoginState.loading());
     try {
-      final report = await _authService.login(username, password);
-      emit(LoginState.success(report));
+      final successAuth = await _authService.login(username, password);
+      if (!successAuth) {
+        emit(const LoginState.error('Credenciales inválidos'));
+        return;
+      }
+      emit(const LoginState.success());
     } catch (e, s) {
       print(e);
       print(s);

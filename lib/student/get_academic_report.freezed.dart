@@ -26,7 +26,7 @@ mixin _$GetAcademicReportInform {
   String get Promocion => throw _privateConstructorUsedError;
   String get SemestreIngreso => throw _privateConstructorUsedError;
   String get SemestrePlan => throw _privateConstructorUsedError;
-  String get UltSemestre => throw _privateConstructorUsedError;
+  String? get UltSemestre => throw _privateConstructorUsedError;
   double get PPA => throw _privateConstructorUsedError;
   double get PPAAprob => throw _privateConstructorUsedError;
   double get UPPS => throw _privateConstructorUsedError;
@@ -54,7 +54,7 @@ abstract class $GetAcademicReportInformCopyWith<$Res> {
       String Promocion,
       String SemestreIngreso,
       String SemestrePlan,
-      String UltSemestre,
+      String? UltSemestre,
       double PPA,
       double PPAAprob,
       double UPPS,
@@ -84,7 +84,7 @@ class _$GetAcademicReportInformCopyWithImpl<$Res,
     Object? Promocion = null,
     Object? SemestreIngreso = null,
     Object? SemestrePlan = null,
-    Object? UltSemestre = null,
+    Object? UltSemestre = freezed,
     Object? PPA = null,
     Object? PPAAprob = null,
     Object? UPPS = null,
@@ -115,10 +115,10 @@ class _$GetAcademicReportInformCopyWithImpl<$Res,
           ? _value.SemestrePlan
           : SemestrePlan // ignore: cast_nullable_to_non_nullable
               as String,
-      UltSemestre: null == UltSemestre
+      UltSemestre: freezed == UltSemestre
           ? _value.UltSemestre
           : UltSemestre // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       PPA: null == PPA
           ? _value.PPA
           : PPA // ignore: cast_nullable_to_non_nullable
@@ -170,7 +170,7 @@ abstract class _$$GetAcademicReportInformImplCopyWith<$Res>
       String Promocion,
       String SemestreIngreso,
       String SemestrePlan,
-      String UltSemestre,
+      String? UltSemestre,
       double PPA,
       double PPAAprob,
       double UPPS,
@@ -199,7 +199,7 @@ class __$$GetAcademicReportInformImplCopyWithImpl<$Res>
     Object? Promocion = null,
     Object? SemestreIngreso = null,
     Object? SemestrePlan = null,
-    Object? UltSemestre = null,
+    Object? UltSemestre = freezed,
     Object? PPA = null,
     Object? PPAAprob = null,
     Object? UPPS = null,
@@ -230,10 +230,10 @@ class __$$GetAcademicReportInformImplCopyWithImpl<$Res>
           ? _value.SemestrePlan
           : SemestrePlan // ignore: cast_nullable_to_non_nullable
               as String,
-      UltSemestre: null == UltSemestre
+      UltSemestre: freezed == UltSemestre
           ? _value.UltSemestre
           : UltSemestre // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       PPA: null == PPA
           ? _value.PPA
           : PPA // ignore: cast_nullable_to_non_nullable
@@ -305,7 +305,7 @@ class _$GetAcademicReportInformImpl
   @override
   final String SemestrePlan;
   @override
-  final String UltSemestre;
+  final String? UltSemestre;
   @override
   final double PPA;
   @override
@@ -423,7 +423,7 @@ abstract class _GetAcademicReportInform implements GetAcademicReportInform {
       required final String Promocion,
       required final String SemestreIngreso,
       required final String SemestrePlan,
-      required final String UltSemestre,
+      required final String? UltSemestre,
       required final double PPA,
       required final double PPAAprob,
       required final double UPPS,
@@ -447,7 +447,7 @@ abstract class _GetAcademicReportInform implements GetAcademicReportInform {
   @override
   String get SemestrePlan;
   @override
-  String get UltSemestre;
+  String? get UltSemestre;
   @override
   double get PPA;
   @override

@@ -1,19 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sigapp/student/get_academic_report.dart';
-import 'package:sigapp/student/student_service.dart';
+import 'package:sigapp/app/get_it.dart';
+import 'package:sigapp/app/router.dart';
 
 @lazySingleton
 class AuthService {
   final Dio _dio;
-  final StudentService _studentService;
   final SharedPreferences _prefs;
 
-  AuthService(this._dio, this._studentService, this._prefs);
+  AuthService(this._dio, this._prefs);
 
-  Future<GetAcademicReportInform> login(
-      String username, String password) async {
+  Future<bool> login(String username, String password) async {
     // First
 
     // curl 'https://academico.unp.edu.pe/' \
@@ -53,8 +51,8 @@ class AuthService {
             // 'accept-language': 'en-US,en;q=0.9,es-PE;q=0.8,es-ES;q=0.7,es;q=0.6',
             // 'cache-control': 'max-age=0',
             'content-type': 'application/x-www-form-urlencoded',
-            'origin': 'https://academico.unp.edu.pe',
-            'referer': 'https://academico.unp.edu.pe/',
+            // 'origin': 'https://academico.unp.edu.pe',
+            // 'referer': 'https://academico.unp.edu.pe/',
             // 'sec-ch-ua':
             //     '"Not/A)Brand";v="8", "Chromium";v="126", "Microsoft Edge";v="126"',
             // 'sec-ch-ua-mobile': '?0',
@@ -67,23 +65,38 @@ class AuthService {
           },
           followRedirects: false,
           validateStatus: (status) {
-            // if (status == 302) {
-            //   saveToken(_dio.options.headers['Cookie']);
-            // }
-            return status! < 400;
+            return true;
           }),
     );
 
-    // Verify
-    if (loginResponse.statusCode != 302) {
-      throw Exception('Login failed');
+    // Success
+    if (loginResponse.statusCode == 302) {
+      return true;
     }
 
-    // Now get user info
-    return _studentService.getAcademicService();
+    // Failure
+    if (loginResponse.statusCode == 200) {
+      return false;
+    }
+
+    // Error
+    throw Exception('Status code ${loginResponse.statusCode}');
   }
 
-  saveToken(String token) {
-    _prefs.setString('token', token);
+  void logout() {
+    final key = 'cookies_${'academico.unp.edu.pe'}';
+    final cookies = _prefs
+        .getStringList(key)
+        // ?.where((cookie) => !cookie.startsWith('.ASPXAUTH='))
+        ?.where((cookie) => !cookie.contains('.ASPXAUTH=')
+            // || !cookie.contains('ASP.NET_SessionId=')
+            )
+        .toList();
+    if (cookies == null) {
+      _prefs.remove(key);
+    } else {
+      _prefs.setStringList(key, cookies);
+    }
+    getIt<RouterRefreshListenable>().refresh();
   }
 }
