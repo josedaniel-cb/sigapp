@@ -6,7 +6,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
 
-  runApp(MaterialApp.router(
-    routerConfig: getIt<GoRouter>(),
-  ));
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      routerConfig: getIt<GoRouter>(),
+    );
+  }
 }

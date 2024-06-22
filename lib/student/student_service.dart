@@ -1,12 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:sigapp/app/siga_http.dart';
 import 'package:sigapp/student/get_academic_report.dart';
 
 @lazySingleton
 class StudentService {
-  final Dio _dio;
+  final SigaHttpController _sigaHttpController;
 
-  StudentService(this._dio);
+  StudentService(this._sigaHttpController);
 
   Future<GetAcademicReportInform> getAcademicService() async {
     // curl 'https://academico.unp.edu.pe/Academico/ListarParametrosInforme' \
@@ -30,7 +31,7 @@ class StudentService {
     // expected response
     // {"results":{"Facultad":"INGENIERIA INDUSTRIAL","NomAlumno":"0512017039 - CALLE BRICEÑO, JOSE DANIEL","Promocion":"2017","SemestreIngreso":"20171 ","SemestrePlan":"20181 ","UltSemestre":"20212 ","PPA":14.47,"PPAAprob":14.47,"UPPS":15.48,"TotalCredAprob":243,"CredObligPlan":220,"CredElectPlan":15,"CredObligAprob":220,"CredElectAprob":16}}
 
-    final response = await _dio.post(
+    final response = await _sigaHttpController.http.post(
       '/Academico/ListarParametrosInforme',
       options: Options(
         headers: {

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigapp/app/get_it.dart';
+import 'package:sigapp/app/siga_http.dart';
 import 'package:sigapp/auth/ui/login_cubit.dart';
 import 'package:sigapp/auth/ui/login_page.dart';
 import 'package:sigapp/home/home_cubit.dart';
@@ -18,7 +18,8 @@ class RouterRefreshListenable extends ChangeNotifier {
 
 class RouterBuilder {
   static GoRouter build(
-    SharedPreferences prefs,
+    // SharedPreferences prefs,
+    SigaHttpController sigaHttpController,
     RouterRefreshListenable refreshListenable,
   ) {
     final router = GoRouter(
@@ -41,11 +42,7 @@ class RouterBuilder {
         ),
       ],
       redirect: (context, state) {
-        final cookies =
-            prefs.getStringList('cookies_${'academico.unp.edu.pe'}');
-        final hasToken =
-            cookies?.any((cookie) => cookie.contains('.ASPXAUTH=')) ?? false;
-        if (!hasToken) {
+        if (!sigaHttpController.isAuthenticated) {
           return '/login';
         }
         return null;

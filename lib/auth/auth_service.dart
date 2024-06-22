@@ -1,15 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sigapp/app/get_it.dart';
-import 'package:sigapp/app/router.dart';
+import 'package:sigapp/app/siga_http.dart';
 
 @lazySingleton
 class AuthService {
-  final Dio _dio;
-  final SharedPreferences _prefs;
+  final SigaHttpController _sigaHttpController;
 
-  AuthService(this._dio, this._prefs);
+  AuthService(this._sigaHttpController);
 
   Future<bool> login(String username, String password) async {
     // First
@@ -36,7 +33,7 @@ class AuthService {
     // (expected response is a 302 redirect to https://academico.unp.edu.pe/Home/Index)
 
     // Now, replicate using Dio
-    final loginResponse = await _dio.post(
+    final loginResponse = await _sigaHttpController.http.post(
       '/',
       data: {
         'Instancia': '01',
@@ -45,28 +42,29 @@ class AuthService {
         'g-recaptcha-response': '',
       },
       options: Options(
-          headers: {
-            // 'accept':
-            //     'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-            // 'accept-language': 'en-US,en;q=0.9,es-PE;q=0.8,es-ES;q=0.7,es;q=0.6',
-            // 'cache-control': 'max-age=0',
-            'content-type': 'application/x-www-form-urlencoded',
-            // 'origin': 'https://academico.unp.edu.pe',
-            // 'referer': 'https://academico.unp.edu.pe/',
-            // 'sec-ch-ua':
-            //     '"Not/A)Brand";v="8", "Chromium";v="126", "Microsoft Edge";v="126"',
-            // 'sec-ch-ua-mobile': '?0',
-            // 'sec-ch-ua-platform': '"Windows"',
-            // 'sec-fetch-dest': 'document',
-            // 'sec-fetch-mode': 'navigate',
-            // 'sec-fetch-site': 'same-origin',
-            // 'sec-fetch-user': '?1',
-            // 'upgrade-insecure-requests': '1',
-          },
-          followRedirects: false,
-          validateStatus: (status) {
-            return true;
-          }),
+        headers: {
+          // 'accept':
+          //     'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+          // 'accept-language': 'en-US,en;q=0.9,es-PE;q=0.8,es-ES;q=0.7,es;q=0.6',
+          // 'cache-control': 'max-age=0',
+          'content-type': 'application/x-www-form-urlencoded',
+          // 'origin': 'https://academico.unp.edu.pe',
+          // 'referer': 'https://academico.unp.edu.pe/',
+          // 'sec-ch-ua':
+          //     '"Not/A)Brand";v="8", "Chromium";v="126", "Microsoft Edge";v="126"',
+          // 'sec-ch-ua-mobile': '?0',
+          // 'sec-ch-ua-platform': '"Windows"',
+          // 'sec-fetch-dest': 'document',
+          // 'sec-fetch-mode': 'navigate',
+          // 'sec-fetch-site': 'same-origin',
+          // 'sec-fetch-user': '?1',
+          // 'upgrade-insecure-requests': '1',
+        },
+        followRedirects: false,
+        validateStatus: (status) {
+          return true;
+        },
+      ),
     );
 
     // Success
@@ -84,19 +82,20 @@ class AuthService {
   }
 
   void logout() {
-    final key = 'cookies_${'academico.unp.edu.pe'}';
-    final cookies = _prefs
-        .getStringList(key)
-        // ?.where((cookie) => !cookie.startsWith('.ASPXAUTH='))
-        ?.where((cookie) => !cookie.contains('.ASPXAUTH=')
-            // || !cookie.contains('ASP.NET_SessionId=')
-            )
-        .toList();
-    if (cookies == null) {
-      _prefs.remove(key);
-    } else {
-      _prefs.setStringList(key, cookies);
-    }
-    getIt<RouterRefreshListenable>().refresh();
+    // final key = 'cookies_${'academico.unp.edu.pe'}';
+    // final cookies = _prefs
+    //     .getStringList(key)
+    //     // ?.where((cookie) => !cookie.startsWith('.ASPXAUTH='))
+    //     ?.where((cookie) => !cookie.contains('.ASPXAUTH=')
+    //         // || !cookie.contains('ASP.NET_SessionId=')
+    //         )
+    //     .toList();
+    // if (cookies == null) {
+    //   _prefs.remove(key);
+    // } else {
+    //   _prefs.setStringList(key, cookies);
+    // }
+    // getIt<RouterRefreshListenable>().refresh();
+    _sigaHttpController.logout();
   }
 }
