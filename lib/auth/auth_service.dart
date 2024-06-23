@@ -4,9 +4,9 @@ import 'package:sigapp/app/siga_http.dart';
 
 @lazySingleton
 class AuthService {
-  final SigaHttpController _sigaHttpController;
+  final SigaClient _sigaClient;
 
-  AuthService(this._sigaHttpController);
+  AuthService(this._sigaClient);
 
   Future<bool> login(String username, String password) async {
     // First
@@ -33,7 +33,7 @@ class AuthService {
     // (expected response is a 302 redirect to https://academico.unp.edu.pe/Home/Index)
 
     // Now, replicate using Dio
-    final loginResponse = await _sigaHttpController.http.post(
+    final loginResponse = await _sigaClient.http.post(
       '/',
       data: {
         'Instancia': '01',
@@ -96,6 +96,6 @@ class AuthService {
     //   _prefs.setStringList(key, cookies);
     // }
     // getIt<RouterRefreshListenable>().refresh();
-    _sigaHttpController.logout();
+    _sigaClient.logout();
   }
 }

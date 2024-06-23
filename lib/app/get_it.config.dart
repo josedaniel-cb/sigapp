@@ -41,19 +41,19 @@ extension GetItInjectableX on _i1.GetIt {
     );
     gh.singleton<_i5.HttpClientBuilder>(
         () => _i5.HttpClientBuilder(gh<_i4.SharedPreferences>()));
-    gh.singleton<_i6.SigaHttpController>(() => _i6.SigaHttpController(
+    gh.singleton<_i6.SigaClient>(() => _i6.SigaClient(
           gh<_i5.HttpClientBuilder>(),
           gh<_i4.SharedPreferences>(),
           gh<_i3.RouterRefreshListenable>(),
         ));
     gh.singleton<_i7.GoRouter>(() => registerModule.router(
-          gh<_i6.SigaHttpController>(),
+          gh<_i6.SigaClient>(),
           gh<_i3.RouterRefreshListenable>(),
         ));
     gh.lazySingleton<_i8.AuthService>(
-        () => _i8.AuthService(gh<_i6.SigaHttpController>()));
+        () => _i8.AuthService(gh<_i6.SigaClient>()));
     gh.lazySingleton<_i9.StudentService>(
-        () => _i9.StudentService(gh<_i6.SigaHttpController>()));
+        () => _i9.StudentService(gh<_i6.SigaClient>()));
     gh.factory<_i10.LoginCubit>(() => _i10.LoginCubit(gh<_i8.AuthService>()));
     gh.factory<_i11.HomeCubit>(() => _i11.HomeCubit(
           gh<_i9.StudentService>(),

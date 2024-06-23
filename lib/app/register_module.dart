@@ -12,8 +12,8 @@ abstract class RegisterModule {
 
   @singleton
   GoRouter router(
-    SigaHttpController sigaHttpController,
+    SigaClient sigaClient,
     RouterRefreshListenable refreshListenable,
   ) =>
-      RouterBuilder.build(sigaHttpController, refreshListenable);
+      RouterBuilder.build(sigaClient, refreshListenable);
 }

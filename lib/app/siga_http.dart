@@ -6,20 +6,19 @@ import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigapp/app/http.dart';
 import 'package:sigapp/app/router.dart';
-import 'package:sigapp/auth/auth_service.dart';
 
 const sigaHost = 'academico.unp.edu.pe';
 const sigaApiUrl = 'https://$sigaHost';
 const sigaAuthCookieKey = '.ASPXAUTH';
 
 @singleton
-class SigaHttpController {
+class SigaClient {
   late final Dio _http;
   final SharedPreferences _prefs;
   // final AuthService _authService;
   final RouterRefreshListenable _routerRefreshListenable;
 
-  SigaHttpController(
+  SigaClient(
     HttpClientBuilder builder,
     this._prefs,
     // this._authService,

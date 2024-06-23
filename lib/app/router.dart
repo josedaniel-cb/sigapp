@@ -19,7 +19,7 @@ class RouterRefreshListenable extends ChangeNotifier {
 class RouterBuilder {
   static GoRouter build(
     // SharedPreferences prefs,
-    SigaHttpController sigaHttpController,
+    SigaClient sigaClient,
     RouterRefreshListenable refreshListenable,
   ) {
     final router = GoRouter(
@@ -42,7 +42,7 @@ class RouterBuilder {
         ),
       ],
       redirect: (context, state) {
-        if (!sigaHttpController.isAuthenticated) {
+        if (!sigaClient.isAuthenticated) {
           return '/login';
         }
         return null;
