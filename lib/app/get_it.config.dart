@@ -16,10 +16,10 @@ import 'package:sigapp/app/http.dart' as _i5;
 import 'package:sigapp/app/register_module.dart' as _i12;
 import 'package:sigapp/app/router.dart' as _i3;
 import 'package:sigapp/app/siga_http.dart' as _i6;
-import 'package:sigapp/auth/auth_service.dart' as _i8;
+import 'package:sigapp/auth/auth_service.dart' as _i9;
 import 'package:sigapp/auth/ui/login_cubit.dart' as _i10;
 import 'package:sigapp/home/home_cubit.dart' as _i11;
-import 'package:sigapp/student/student_service.dart' as _i9;
+import 'package:sigapp/student/student_service.dart' as _i8;
 
 extension GetItInjectableX on _i1.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -39,25 +39,29 @@ extension GetItInjectableX on _i1.GetIt {
       () => registerModule.prefs,
       preResolve: true,
     );
+    gh.singleton<_i5.CookieManager>(
+        () => _i5.CookieManager(gh<_i4.SharedPreferences>()));
     gh.singleton<_i5.HttpClientBuilder>(
-        () => _i5.HttpClientBuilder(gh<_i4.SharedPreferences>()));
+        () => _i5.HttpClientBuilder(gh<_i5.CookieManager>()));
     gh.singleton<_i6.SigaClient>(() => _i6.SigaClient(
           gh<_i5.HttpClientBuilder>(),
-          gh<_i4.SharedPreferences>(),
+          gh<_i5.CookieManager>(),
           gh<_i3.RouterRefreshListenable>(),
         ));
     gh.singleton<_i7.GoRouter>(() => registerModule.router(
           gh<_i6.SigaClient>(),
           gh<_i3.RouterRefreshListenable>(),
         ));
-    gh.lazySingleton<_i8.AuthService>(
-        () => _i8.AuthService(gh<_i6.SigaClient>()));
-    gh.lazySingleton<_i9.StudentService>(
-        () => _i9.StudentService(gh<_i6.SigaClient>()));
-    gh.factory<_i10.LoginCubit>(() => _i10.LoginCubit(gh<_i8.AuthService>()));
+    gh.lazySingleton<_i8.StudentService>(
+        () => _i8.StudentService(gh<_i6.SigaClient>()));
+    gh.lazySingleton<_i9.AuthService>(() => _i9.AuthService(
+          gh<_i6.SigaClient>(),
+          gh<_i4.SharedPreferences>(),
+        ));
+    gh.factory<_i10.LoginCubit>(() => _i10.LoginCubit(gh<_i9.AuthService>()));
     gh.factory<_i11.HomeCubit>(() => _i11.HomeCubit(
-          gh<_i9.StudentService>(),
-          gh<_i8.AuthService>(),
+          gh<_i8.StudentService>(),
+          gh<_i9.AuthService>(),
         ));
     return this;
   }

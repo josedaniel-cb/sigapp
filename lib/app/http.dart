@@ -8,10 +8,41 @@ import 'package:shared_preferences/shared_preferences.dart';
 @singleton
 class HttpClientBuilder {
   final Dio _dio = Dio();
-  final SharedPreferences _prefs;
+  final CookieManager _cookieManager;
 
-  HttpClientBuilder(this._prefs) {
-    _dio.interceptors.add(_PrintInterceptor(_prefs));
+  HttpClientBuilder(this._cookieManager) {
+    _setup();
+  }
+
+  void _setup() {
+    _dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) async {
+        _printRequest(options);
+        final cookies = _cookieManager.getCookies(options.uri.host);
+        if (cookies.isNotEmpty) {
+          options.headers['cookie'] = cookies.join('; ');
+        }
+        return handler.next(options);
+      },
+      onResponse: (response, handler) async {
+        _printResponse(response);
+        final setCookieHeader = response.headers['set-cookie'];
+        if (setCookieHeader != null && setCookieHeader.isNotEmpty) {
+          _cookieManager.saveCookies(
+            response.requestOptions.uri.host,
+            setCookieHeader,
+          );
+        }
+        return handler.next(response);
+      },
+      onError: (err, handler) async {
+        final response = err.response;
+        if (response != null) {
+          _printResponse(response);
+        }
+        return handler.next(err);
+      },
+    ));
   }
 
   HttpClientBuilder setBaseUrl(String baseUrl) {
@@ -67,18 +98,10 @@ class HttpClientBuilder {
   Dio build() {
     return _dio;
   }
-}
 
-class _PrintInterceptor extends Interceptor {
-  final SharedPreferences _prefs;
-
-  _PrintInterceptor(this._prefs);
-
-  @override
-  Future onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
+  void _printRequest(RequestOptions options) {
     if (kDebugMode) {
-      print('👻 Request: ${options.method} ${options.path}');
+      print('👻 Request: ${options.method} ${options.uri}');
       print('Headers: ${json.encode(options.headers)}');
       try {
         print('Data: ${json.encode(options.data)}');
@@ -86,58 +109,12 @@ class _PrintInterceptor extends Interceptor {
         print('Data: ${options.data}');
       }
     }
-    return handler.next(options);
   }
 
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
-    final response = err.response;
-    if (response != null) {
-      _responsePrint(response);
-    }
-    super.onError(err, handler);
-  }
-
-  @override
-  Future onResponse(
-      Response response, ResponseInterceptorHandler handler) async {
-    _responsePrint(response);
-
-    var cookies =
-        _prefs.getStringList('cookies_${response.requestOptions.uri.host}') ??
-            [];
-
-    final setCookieHeader = response.headers['set-cookie'];
-    if (setCookieHeader != null && setCookieHeader.isNotEmpty) {
-      cookies.addAll(setCookieHeader);
-
-      // Check for expired cookies and remove them
-      cookies.removeWhere((cookie) {
-        final parts = cookie.split('=');
-        if (parts[0].toLowerCase() == 'expires') {
-          final expiresDate = DateTime.tryParse(parts[1]);
-          if (expiresDate == null) {
-            throw Exception("Couldn't parse ${parts[1]} as a date.");
-          }
-          if (expiresDate.isBefore(DateTime.now())) {
-            return true;
-          }
-        }
-        return false;
-      });
-
-      await _prefs.setStringList(
-          'cookies_${response.requestOptions.uri.host}', cookies);
-    }
-
-    return handler.next(response);
-  }
-
-  void _responsePrint(Response<dynamic> response) {
-    // Detailed print for debug reasons (path, method, status code, headers, body)
+  void _printResponse(Response<dynamic> response) {
     if (kDebugMode) {
       print(
-          '👻 Response: ${response.requestOptions.method} ${response.requestOptions.path} ${response.statusCode}');
+          '👻 Response: ${response.requestOptions.method} ${response.requestOptions.uri} ${response.statusCode}');
       print('Headers: ${json.encode(response.headers.map)}');
       try {
         print('Data: ${json.encode(response.data)}');
@@ -145,5 +122,61 @@ class _PrintInterceptor extends Interceptor {
         print('Data: ${response.data}');
       }
     }
+  }
+}
+
+@singleton
+class CookieManager {
+  final SharedPreferences _prefs;
+
+  CookieManager(this._prefs);
+
+  Future<void> saveCookies(String host, List<String> newCookies) async {
+    final key = 'cookies_$host';
+    var existingCookies = _prefs.getStringList(key) ?? [];
+    existingCookies.addAll(newCookies);
+
+    // Remove duplicates
+    final uniqueCookies = existingCookies.toSet().toList();
+
+    // Save the updated list back to SharedPreferences
+    await _prefs.setStringList(key, uniqueCookies);
+  }
+
+  List<String> getCookies(String host) {
+    final key = 'cookies_$host';
+    return _prefs.getStringList(key) ?? [];
+  }
+
+  void clearCookies(String host) {
+    final key = 'cookies_$host';
+    _prefs.remove(key);
+  }
+
+  bool hasCookie(String host, String cookieKey) {
+    final key = 'cookies_$host';
+    final cookies = _prefs.getStringList(key) ?? [];
+    return cookies.any((cookie) => cookie.contains(cookieKey));
+  }
+
+  Future<void> removeExpiredCookies(String host) async {
+    final key = 'cookies_$host';
+    var cookies = _prefs.getStringList(key) ?? [];
+
+    cookies.removeWhere((cookie) {
+      final parts = cookie.split(';').map((e) => e.trim()).toList();
+      for (var part in parts) {
+        if (part.toLowerCase().startsWith('expires=')) {
+          final expiresValue = part.substring('expires='.length);
+          final expiresDate = DateTime.tryParse(expiresValue);
+          if (expiresDate != null && expiresDate.isBefore(DateTime.now())) {
+            return true;
+          }
+        }
+      }
+      return false;
+    });
+
+    await _prefs.setStringList(key, cookies);
   }
 }

@@ -1,12 +1,16 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigapp/app/siga_http.dart';
 
 @lazySingleton
 class AuthService {
   final SigaClient _sigaClient;
+  final SharedPreferences _prefs;
 
-  AuthService(this._sigaClient);
+  AuthService(this._sigaClient, this._prefs);
 
   Future<bool> login(String username, String password) async {
     // First
@@ -69,6 +73,7 @@ class AuthService {
 
     // Success
     if (loginResponse.statusCode == 302) {
+      _saveCredentials(username, password);
       return true;
     }
 
@@ -82,20 +87,53 @@ class AuthService {
   }
 
   void logout() {
-    // final key = 'cookies_${'academico.unp.edu.pe'}';
-    // final cookies = _prefs
-    //     .getStringList(key)
-    //     // ?.where((cookie) => !cookie.startsWith('.ASPXAUTH='))
-    //     ?.where((cookie) => !cookie.contains('.ASPXAUTH=')
-    //         // || !cookie.contains('ASP.NET_SessionId=')
-    //         )
-    //     .toList();
-    // if (cookies == null) {
-    //   _prefs.remove(key);
-    // } else {
-    //   _prefs.setStringList(key, cookies);
-    // }
-    // getIt<RouterRefreshListenable>().refresh();
     _sigaClient.logout();
+  }
+
+  String? getUsername() {
+    return _prefs.getString('username');
+  }
+
+  String? getPassword() {
+    return _prefs.getString('password');
+  }
+
+  void _saveCredentials(String username, String password) {
+    _prefs.setString('username', username);
+    _prefs.setString('password', password);
+
+    // Set a timer to POST /keep-session every minute until the user logs out
+    Timer.periodic(const Duration(minutes: 1), (timer) async {
+      if (!_sigaClient.isAuthenticated) {
+        timer.cancel();
+      }
+
+      Response<dynamic> response = await _keepSession();
+      if (response.statusCode != 200) {
+        timer.cancel();
+      }
+    });
+  }
+
+  Future<Response<dynamic>> _keepSession() async {
+    // curl 'https://academico.unp.edu.pe/Home/KeepSession' \
+    //   -X 'POST' \
+    //   -H 'accept: application/json, text/javascript, */*; q=0.01' \
+    //   -H 'accept-language: en-US,en;q=0.9,es-PE;q=0.8,es-ES;q=0.7,es;q=0.6' \
+    //   -H 'content-length: 0' \
+    //   -H 'cookie: ASP.NET_SessionId=stactn4sojhvn4kxi4hyzgvv; .ASPXAUTH=887F6F1D4D9E4EA7B6D76273C2AFC9212D87F79799A3037E0D48D5358128A18340543D9D5CF4C0BFE0E5F0429EB7843E3332F6E5D5C90265AF6038F57F80D14213C7AAD547664A7312D33B366595E86842F38E565666705850D084DBCB4AEF0DA9A4773E7659BD6B138C99C29FE488F5A273370E053D950512BFF4E8C06DB7865227C6AD5DA6B2740399A130AA58FE1F5DC49420A1EA4335F81DDA3A83485950D536263D342FB338CEB4F92E9118FE25FF4F7ABDA99F9EBFF63FF0A3957CCD47A8C9FB24116DA389B33A0071FB3974AD' \
+    //   -H 'origin: https://academico.unp.edu.pe' \
+    //   -H 'priority: u=1, i' \
+    //   -H 'referer: https://academico.unp.edu.pe/Home/Index' \
+    //   -H 'sec-ch-ua: "Not)A;Brand";v="99", "Microsoft Edge";v="127", "Chromium";v="127"' \
+    //   -H 'sec-ch-ua-mobile: ?0' \
+    //   -H 'sec-ch-ua-platform: "Windows"' \
+    //   -H 'sec-fetch-dest: empty' \
+    //   -H 'sec-fetch-mode: cors' \
+    //   -H 'sec-fetch-site: same-origin' \
+    //   -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0' \
+    //   -H 'x-requested-with: XMLHttpRequest'
+    final response = await _sigaClient.http.post('/Home/KeepSession');
+    return response;
   }
 }

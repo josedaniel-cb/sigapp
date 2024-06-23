@@ -14,11 +14,37 @@ abstract class LoginState with _$LoginState {
   const factory LoginState.error(String message) = ErrorState;
 }
 
+// @freezed
+// class LoginState2 with _$LoginState2 {
+//   const factory LoginState2({
+//     required String username,
+//     required String password,
+//   }) = _LoginState2;
+// }
+
+// @freezed
+// abstract class LoginStateStatus with _$LoginStateStatus {
+//   const factory LoginStateStatus.initial() = InitialState;
+//   const factory LoginStateStatus.loading() = LoadingState;
+//   const factory LoginStateStatus.success() = SuccessState;
+//   const factory LoginStateStatus.error(String message) = ErrorState;
+// }
+
 @injectable
 class LoginCubit extends Cubit<LoginState> {
   final AuthService _authService;
 
-  LoginCubit(this._authService) : super(LoginState.initial());
+  LoginCubit(this._authService) : super(const LoginState.loading());
+
+  void setup() {
+    final storedUsername = _authService.getUsername();
+    final storedPassword = _authService.getPassword();
+    if (storedUsername != null && storedPassword != null) {
+      login(storedUsername, storedPassword);
+    } else {
+      emit(const LoginState.initial());
+    }
+  }
 
   Future<void> login(String username, String password) async {
     emit(const LoginState.loading());
