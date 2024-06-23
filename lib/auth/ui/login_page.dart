@@ -5,59 +5,79 @@ import 'package:sigapp/app/get_it.dart';
 // import 'package:sigapp/auth/auth_service.dart';
 import 'login_cubit.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<LoginCubit>().setup();
     });
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
       ),
       body: BlocConsumer<LoginCubit, LoginState>(
         builder: (context, state) {
+          final status = state.status;
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: <Widget>[
                 TextField(
                   controller: _usernameController,
-                  decoration: InputDecoration(labelText: 'Username'),
+                  decoration: const InputDecoration(labelText: 'Username'),
                 ),
                 TextField(
                   controller: _passwordController,
-                  decoration: InputDecoration(labelText: 'Password'),
+                  decoration: const InputDecoration(labelText: 'Password'),
                   obscureText: true,
                 ),
                 ElevatedButton(
-                  child: state is LoadingState
-                      ? CircularProgressIndicator()
-                      : Text('Login'),
-                  onPressed: state is LoadingState
+                  onPressed: status is LoginLoading
                       ? null
                       : () => context.read<LoginCubit>().login(
                             _usernameController.text,
                             _passwordController.text,
                           ),
+                  child: status is LoginLoading
+                      ? const CircularProgressIndicator()
+                      : const Text('Login'),
                 ),
-                if (state is ErrorState)
+                if (status is LoginError)
                   Text(
-                    state.message,
-                    style: TextStyle(color: Colors.red),
+                    status.message,
+                    style: const TextStyle(color: Colors.red),
                   ),
               ],
             ),
           );
         },
         listener: (context, state) {
-          if (state is SuccessState) {
+          if (state.username.isNotEmpty &&
+              _usernameController.text != state.username) {
+            _usernameController.text = state.username;
+          }
+          if (state.password.isNotEmpty &&
+              _passwordController.text != state.password) {
+            _passwordController.text = state.password;
+          }
+
+          final status = state.status;
+          if (status is LoginSuccess) {
             // getIt<AuthService>().saveToken('aux');
-            getIt<GoRouter>().push('/');
+            getIt<GoRouter>().pushReplacement('/');
           }
         },
       ),

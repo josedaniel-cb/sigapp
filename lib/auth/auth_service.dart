@@ -3,14 +3,25 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sigapp/app/router.dart';
 import 'package:sigapp/app/siga_http.dart';
 
-@lazySingleton
+@singleton
 class AuthService {
   final SigaClient _sigaClient;
   final SharedPreferences _prefs;
+  final RouterRefreshListenable _routerRefreshListenable;
 
-  AuthService(this._sigaClient, this._prefs);
+  AuthService(this._sigaClient, this._prefs, this._routerRefreshListenable) {
+    // Keep session alive
+    Timer.periodic(const Duration(seconds: 45), (timer) async {
+      await _keepSession();
+    });
+  }
+
+  get isAuthenticated {
+    return _prefs.containsKey('username') && _prefs.containsKey('password');
+  }
 
   Future<bool> login(String username, String password) async {
     // First
@@ -87,7 +98,10 @@ class AuthService {
   }
 
   void logout() {
-    _sigaClient.logout();
+    // _prefs.remove('username');
+    _prefs.remove('password');
+    // _sigaClient.logout();
+    _routerRefreshListenable.refresh();
   }
 
   String? getUsername() {
@@ -103,16 +117,6 @@ class AuthService {
     _prefs.setString('password', password);
 
     // Set a timer to POST /keep-session every minute until the user logs out
-    Timer.periodic(const Duration(minutes: 1), (timer) async {
-      if (!_sigaClient.isAuthenticated) {
-        timer.cancel();
-      }
-
-      Response<dynamic> response = await _keepSession();
-      if (response.statusCode != 200) {
-        timer.cancel();
-      }
-    });
   }
 
   Future<Response<dynamic>> _keepSession() async {
@@ -133,7 +137,10 @@ class AuthService {
     //   -H 'sec-fetch-site: same-origin' \
     //   -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0' \
     //   -H 'x-requested-with: XMLHttpRequest'
-    final response = await _sigaClient.http.post('/Home/KeepSession');
+    final response = await _sigaClient.http.post('/Home/KeepSession',
+        options: Options(
+          validateStatus: (status) => true,
+        ));
     return response;
   }
 }

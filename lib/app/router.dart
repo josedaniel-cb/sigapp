@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/app/get_it.dart';
 import 'package:sigapp/app/siga_http.dart';
+import 'package:sigapp/auth/auth_service.dart';
 import 'package:sigapp/auth/ui/login_cubit.dart';
 import 'package:sigapp/auth/ui/login_page.dart';
 import 'package:sigapp/home/home_cubit.dart';
@@ -18,8 +19,8 @@ class RouterRefreshListenable extends ChangeNotifier {
 
 class RouterBuilder {
   static GoRouter build(
-    // SharedPreferences prefs,
     SigaClient sigaClient,
+    AuthService authService,
     RouterRefreshListenable refreshListenable,
   ) {
     final router = GoRouter(
@@ -42,7 +43,7 @@ class RouterBuilder {
         ),
       ],
       redirect: (context, state) {
-        if (!sigaClient.isAuthenticated) {
+        if (!authService.isAuthenticated || !sigaClient.hasAuthToken) {
           return '/login';
         }
         return null;

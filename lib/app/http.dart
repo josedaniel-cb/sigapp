@@ -144,6 +144,8 @@ class CookieManager {
   }
 
   List<String> getCookies(String host) {
+    removeExpiredCookies(host);
+
     final key = 'cookies_$host';
     return _prefs.getStringList(key) ?? [];
   }
@@ -154,8 +156,7 @@ class CookieManager {
   }
 
   bool hasCookie(String host, String cookieKey) {
-    final key = 'cookies_$host';
-    final cookies = _prefs.getStringList(key) ?? [];
+    final cookies = getCookies(host);
     return cookies.any((cookie) => cookie.contains(cookieKey));
   }
 

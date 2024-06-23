@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/app/http.dart';
 import 'package:sigapp/app/router.dart';
@@ -33,6 +30,10 @@ class SigaClient {
 
   Dio get http => _http;
 
+  get hasAuthToken {
+    return _cookieManager.hasCookie(sigaHost, sigaAuthCookieKey);
+  }
+
   void _onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     return handler.next(options);
@@ -40,8 +41,8 @@ class SigaClient {
 
   void _onResponse(
       Response response, ResponseInterceptorHandler handler) async {
-    if (!isAuthenticated) {
-      _routerRefreshListenable.refresh();
+    if (!hasAuthToken) {
+      _handleExpiredAuthCookie();
     }
 
     return handler.next(response);
@@ -49,31 +50,17 @@ class SigaClient {
 
   void _onError(DioException err, ErrorInterceptorHandler handler) {
     final response = err.response;
-    if (response != null) {
-      if (response.statusCode == 302 &&
-          response.headers['location'] != null &&
-          response.headers['location']!
-              .contains(sigaLogoutRedirectionLocation)) {
-        if (kDebugMode) {
-          print('Tried to access because');
-          print(_cookieManager.getCookies(response.requestOptions.uri.host));
-          print(
-              'ha ha redirection is for removing this: ${jsonEncode(response.requestOptions.headers['Cookie'])}');
-        }
-        // _authService.logout();
-        logout();
-      }
+    if (response != null &&
+        response.statusCode == 302 &&
+        response.headers['location'] != null &&
+        response.headers['location']!.contains(sigaLogoutRedirectionLocation)) {
+      _cookieManager.clearCookies(sigaHost);
+      _handleExpiredAuthCookie();
     }
     return handler.next(err);
   }
 
-  void logout() {
-    // _prefs.remove('cookies_$sigaHost');
-    _cookieManager.clearCookies(sigaHost);
+  void _handleExpiredAuthCookie() {
     _routerRefreshListenable.refresh();
-  }
-
-  get isAuthenticated {
-    return _cookieManager.hasCookie(sigaHost, sigaAuthCookieKey);
   }
 }

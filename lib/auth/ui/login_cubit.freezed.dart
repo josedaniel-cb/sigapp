@@ -16,6 +16,184 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$LoginState {
+  String get username => throw _privateConstructorUsedError;
+  String get password => throw _privateConstructorUsedError;
+  LoginStatus get status => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $LoginStateCopyWith<LoginState> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $LoginStateCopyWith<$Res> {
+  factory $LoginStateCopyWith(
+          LoginState value, $Res Function(LoginState) then) =
+      _$LoginStateCopyWithImpl<$Res, LoginState>;
+  @useResult
+  $Res call({String username, String password, LoginStatus status});
+
+  $LoginStatusCopyWith<$Res> get status;
+}
+
+/// @nodoc
+class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
+    implements $LoginStateCopyWith<$Res> {
+  _$LoginStateCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? username = null,
+    Object? password = null,
+    Object? status = null,
+  }) {
+    return _then(_value.copyWith(
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as LoginStatus,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $LoginStatusCopyWith<$Res> get status {
+    return $LoginStatusCopyWith<$Res>(_value.status, (value) {
+      return _then(_value.copyWith(status: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$LoginStateImplCopyWith<$Res>
+    implements $LoginStateCopyWith<$Res> {
+  factory _$$LoginStateImplCopyWith(
+          _$LoginStateImpl value, $Res Function(_$LoginStateImpl) then) =
+      __$$LoginStateImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String username, String password, LoginStatus status});
+
+  @override
+  $LoginStatusCopyWith<$Res> get status;
+}
+
+/// @nodoc
+class __$$LoginStateImplCopyWithImpl<$Res>
+    extends _$LoginStateCopyWithImpl<$Res, _$LoginStateImpl>
+    implements _$$LoginStateImplCopyWith<$Res> {
+  __$$LoginStateImplCopyWithImpl(
+      _$LoginStateImpl _value, $Res Function(_$LoginStateImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? username = null,
+    Object? password = null,
+    Object? status = null,
+  }) {
+    return _then(_$LoginStateImpl(
+      username: null == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
+              as String,
+      password: null == password
+          ? _value.password
+          : password // ignore: cast_nullable_to_non_nullable
+              as String,
+      status: null == status
+          ? _value.status
+          : status // ignore: cast_nullable_to_non_nullable
+              as LoginStatus,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$LoginStateImpl with DiagnosticableTreeMixin implements _LoginState {
+  const _$LoginStateImpl(
+      {required this.username, required this.password, required this.status});
+
+  @override
+  final String username;
+  @override
+  final String password;
+  @override
+  final LoginStatus status;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'LoginState(username: $username, password: $password, status: $status)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'LoginState'))
+      ..add(DiagnosticsProperty('username', username))
+      ..add(DiagnosticsProperty('password', password))
+      ..add(DiagnosticsProperty('status', status));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$LoginStateImpl &&
+            (identical(other.username, username) ||
+                other.username == username) &&
+            (identical(other.password, password) ||
+                other.password == password) &&
+            (identical(other.status, status) || other.status == status));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, username, password, status);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LoginStateImplCopyWith<_$LoginStateImpl> get copyWith =>
+      __$$LoginStateImplCopyWithImpl<_$LoginStateImpl>(this, _$identity);
+}
+
+abstract class _LoginState implements LoginState {
+  const factory _LoginState(
+      {required final String username,
+      required final String password,
+      required final LoginStatus status}) = _$LoginStateImpl;
+
+  @override
+  String get username;
+  @override
+  String get password;
+  @override
+  LoginStatus get status;
+  @override
+  @JsonKey(ignore: true)
+  _$$LoginStateImplCopyWith<_$LoginStateImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$LoginStatus {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
@@ -43,42 +221,42 @@ mixin _$LoginState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(InitialState value) initial,
-    required TResult Function(LoadingState value) loading,
-    required TResult Function(SuccessState value) success,
-    required TResult Function(ErrorState value) error,
+    required TResult Function(LoginInitial value) initial,
+    required TResult Function(LoginLoading value) loading,
+    required TResult Function(LoginSuccess value) success,
+    required TResult Function(LoginError value) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InitialState value)? initial,
-    TResult? Function(LoadingState value)? loading,
-    TResult? Function(SuccessState value)? success,
-    TResult? Function(ErrorState value)? error,
+    TResult? Function(LoginInitial value)? initial,
+    TResult? Function(LoginLoading value)? loading,
+    TResult? Function(LoginSuccess value)? success,
+    TResult? Function(LoginError value)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(InitialState value)? initial,
-    TResult Function(LoadingState value)? loading,
-    TResult Function(SuccessState value)? success,
-    TResult Function(ErrorState value)? error,
+    TResult Function(LoginInitial value)? initial,
+    TResult Function(LoginLoading value)? loading,
+    TResult Function(LoginSuccess value)? success,
+    TResult Function(LoginError value)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $LoginStateCopyWith<$Res> {
-  factory $LoginStateCopyWith(
-          LoginState value, $Res Function(LoginState) then) =
-      _$LoginStateCopyWithImpl<$Res, LoginState>;
+abstract class $LoginStatusCopyWith<$Res> {
+  factory $LoginStatusCopyWith(
+          LoginStatus value, $Res Function(LoginStatus) then) =
+      _$LoginStatusCopyWithImpl<$Res, LoginStatus>;
 }
 
 /// @nodoc
-class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
-    implements $LoginStateCopyWith<$Res> {
-  _$LoginStateCopyWithImpl(this._value, this._then);
+class _$LoginStatusCopyWithImpl<$Res, $Val extends LoginStatus>
+    implements $LoginStatusCopyWith<$Res> {
+  _$LoginStatusCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -87,35 +265,41 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
 }
 
 /// @nodoc
-abstract class _$$InitialStateImplCopyWith<$Res> {
-  factory _$$InitialStateImplCopyWith(
-          _$InitialStateImpl value, $Res Function(_$InitialStateImpl) then) =
-      __$$InitialStateImplCopyWithImpl<$Res>;
+abstract class _$$LoginInitialImplCopyWith<$Res> {
+  factory _$$LoginInitialImplCopyWith(
+          _$LoginInitialImpl value, $Res Function(_$LoginInitialImpl) then) =
+      __$$LoginInitialImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$InitialStateImplCopyWithImpl<$Res>
-    extends _$LoginStateCopyWithImpl<$Res, _$InitialStateImpl>
-    implements _$$InitialStateImplCopyWith<$Res> {
-  __$$InitialStateImplCopyWithImpl(
-      _$InitialStateImpl _value, $Res Function(_$InitialStateImpl) _then)
+class __$$LoginInitialImplCopyWithImpl<$Res>
+    extends _$LoginStatusCopyWithImpl<$Res, _$LoginInitialImpl>
+    implements _$$LoginInitialImplCopyWith<$Res> {
+  __$$LoginInitialImplCopyWithImpl(
+      _$LoginInitialImpl _value, $Res Function(_$LoginInitialImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$InitialStateImpl implements InitialState {
-  const _$InitialStateImpl();
+class _$LoginInitialImpl with DiagnosticableTreeMixin implements LoginInitial {
+  const _$LoginInitialImpl();
 
   @override
-  String toString() {
-    return 'LoginState.initial()';
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'LoginStatus.initial()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'LoginStatus.initial'));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitialStateImpl);
+        (other.runtimeType == runtimeType && other is _$LoginInitialImpl);
   }
 
   @override
@@ -161,10 +345,10 @@ class _$InitialStateImpl implements InitialState {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(InitialState value) initial,
-    required TResult Function(LoadingState value) loading,
-    required TResult Function(SuccessState value) success,
-    required TResult Function(ErrorState value) error,
+    required TResult Function(LoginInitial value) initial,
+    required TResult Function(LoginLoading value) loading,
+    required TResult Function(LoginSuccess value) success,
+    required TResult Function(LoginError value) error,
   }) {
     return initial(this);
   }
@@ -172,10 +356,10 @@ class _$InitialStateImpl implements InitialState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InitialState value)? initial,
-    TResult? Function(LoadingState value)? loading,
-    TResult? Function(SuccessState value)? success,
-    TResult? Function(ErrorState value)? error,
+    TResult? Function(LoginInitial value)? initial,
+    TResult? Function(LoginLoading value)? loading,
+    TResult? Function(LoginSuccess value)? success,
+    TResult? Function(LoginError value)? error,
   }) {
     return initial?.call(this);
   }
@@ -183,10 +367,10 @@ class _$InitialStateImpl implements InitialState {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(InitialState value)? initial,
-    TResult Function(LoadingState value)? loading,
-    TResult Function(SuccessState value)? success,
-    TResult Function(ErrorState value)? error,
+    TResult Function(LoginInitial value)? initial,
+    TResult Function(LoginLoading value)? loading,
+    TResult Function(LoginSuccess value)? success,
+    TResult Function(LoginError value)? error,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -196,40 +380,46 @@ class _$InitialStateImpl implements InitialState {
   }
 }
 
-abstract class InitialState implements LoginState {
-  const factory InitialState() = _$InitialStateImpl;
+abstract class LoginInitial implements LoginStatus {
+  const factory LoginInitial() = _$LoginInitialImpl;
 }
 
 /// @nodoc
-abstract class _$$LoadingStateImplCopyWith<$Res> {
-  factory _$$LoadingStateImplCopyWith(
-          _$LoadingStateImpl value, $Res Function(_$LoadingStateImpl) then) =
-      __$$LoadingStateImplCopyWithImpl<$Res>;
+abstract class _$$LoginLoadingImplCopyWith<$Res> {
+  factory _$$LoginLoadingImplCopyWith(
+          _$LoginLoadingImpl value, $Res Function(_$LoginLoadingImpl) then) =
+      __$$LoginLoadingImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$LoadingStateImplCopyWithImpl<$Res>
-    extends _$LoginStateCopyWithImpl<$Res, _$LoadingStateImpl>
-    implements _$$LoadingStateImplCopyWith<$Res> {
-  __$$LoadingStateImplCopyWithImpl(
-      _$LoadingStateImpl _value, $Res Function(_$LoadingStateImpl) _then)
+class __$$LoginLoadingImplCopyWithImpl<$Res>
+    extends _$LoginStatusCopyWithImpl<$Res, _$LoginLoadingImpl>
+    implements _$$LoginLoadingImplCopyWith<$Res> {
+  __$$LoginLoadingImplCopyWithImpl(
+      _$LoginLoadingImpl _value, $Res Function(_$LoginLoadingImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$LoadingStateImpl implements LoadingState {
-  const _$LoadingStateImpl();
+class _$LoginLoadingImpl with DiagnosticableTreeMixin implements LoginLoading {
+  const _$LoginLoadingImpl();
 
   @override
-  String toString() {
-    return 'LoginState.loading()';
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'LoginStatus.loading()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'LoginStatus.loading'));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadingStateImpl);
+        (other.runtimeType == runtimeType && other is _$LoginLoadingImpl);
   }
 
   @override
@@ -275,10 +465,10 @@ class _$LoadingStateImpl implements LoadingState {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(InitialState value) initial,
-    required TResult Function(LoadingState value) loading,
-    required TResult Function(SuccessState value) success,
-    required TResult Function(ErrorState value) error,
+    required TResult Function(LoginInitial value) initial,
+    required TResult Function(LoginLoading value) loading,
+    required TResult Function(LoginSuccess value) success,
+    required TResult Function(LoginError value) error,
   }) {
     return loading(this);
   }
@@ -286,10 +476,10 @@ class _$LoadingStateImpl implements LoadingState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InitialState value)? initial,
-    TResult? Function(LoadingState value)? loading,
-    TResult? Function(SuccessState value)? success,
-    TResult? Function(ErrorState value)? error,
+    TResult? Function(LoginInitial value)? initial,
+    TResult? Function(LoginLoading value)? loading,
+    TResult? Function(LoginSuccess value)? success,
+    TResult? Function(LoginError value)? error,
   }) {
     return loading?.call(this);
   }
@@ -297,10 +487,10 @@ class _$LoadingStateImpl implements LoadingState {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(InitialState value)? initial,
-    TResult Function(LoadingState value)? loading,
-    TResult Function(SuccessState value)? success,
-    TResult Function(ErrorState value)? error,
+    TResult Function(LoginInitial value)? initial,
+    TResult Function(LoginLoading value)? loading,
+    TResult Function(LoginSuccess value)? success,
+    TResult Function(LoginError value)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -310,40 +500,46 @@ class _$LoadingStateImpl implements LoadingState {
   }
 }
 
-abstract class LoadingState implements LoginState {
-  const factory LoadingState() = _$LoadingStateImpl;
+abstract class LoginLoading implements LoginStatus {
+  const factory LoginLoading() = _$LoginLoadingImpl;
 }
 
 /// @nodoc
-abstract class _$$SuccessStateImplCopyWith<$Res> {
-  factory _$$SuccessStateImplCopyWith(
-          _$SuccessStateImpl value, $Res Function(_$SuccessStateImpl) then) =
-      __$$SuccessStateImplCopyWithImpl<$Res>;
+abstract class _$$LoginSuccessImplCopyWith<$Res> {
+  factory _$$LoginSuccessImplCopyWith(
+          _$LoginSuccessImpl value, $Res Function(_$LoginSuccessImpl) then) =
+      __$$LoginSuccessImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$SuccessStateImplCopyWithImpl<$Res>
-    extends _$LoginStateCopyWithImpl<$Res, _$SuccessStateImpl>
-    implements _$$SuccessStateImplCopyWith<$Res> {
-  __$$SuccessStateImplCopyWithImpl(
-      _$SuccessStateImpl _value, $Res Function(_$SuccessStateImpl) _then)
+class __$$LoginSuccessImplCopyWithImpl<$Res>
+    extends _$LoginStatusCopyWithImpl<$Res, _$LoginSuccessImpl>
+    implements _$$LoginSuccessImplCopyWith<$Res> {
+  __$$LoginSuccessImplCopyWithImpl(
+      _$LoginSuccessImpl _value, $Res Function(_$LoginSuccessImpl) _then)
       : super(_value, _then);
 }
 
 /// @nodoc
 
-class _$SuccessStateImpl implements SuccessState {
-  const _$SuccessStateImpl();
+class _$LoginSuccessImpl with DiagnosticableTreeMixin implements LoginSuccess {
+  const _$LoginSuccessImpl();
 
   @override
-  String toString() {
-    return 'LoginState.success()';
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'LoginStatus.success()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'LoginStatus.success'));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$SuccessStateImpl);
+        (other.runtimeType == runtimeType && other is _$LoginSuccessImpl);
   }
 
   @override
@@ -389,10 +585,10 @@ class _$SuccessStateImpl implements SuccessState {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(InitialState value) initial,
-    required TResult Function(LoadingState value) loading,
-    required TResult Function(SuccessState value) success,
-    required TResult Function(ErrorState value) error,
+    required TResult Function(LoginInitial value) initial,
+    required TResult Function(LoginLoading value) loading,
+    required TResult Function(LoginSuccess value) success,
+    required TResult Function(LoginError value) error,
   }) {
     return success(this);
   }
@@ -400,10 +596,10 @@ class _$SuccessStateImpl implements SuccessState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InitialState value)? initial,
-    TResult? Function(LoadingState value)? loading,
-    TResult? Function(SuccessState value)? success,
-    TResult? Function(ErrorState value)? error,
+    TResult? Function(LoginInitial value)? initial,
+    TResult? Function(LoginLoading value)? loading,
+    TResult? Function(LoginSuccess value)? success,
+    TResult? Function(LoginError value)? error,
   }) {
     return success?.call(this);
   }
@@ -411,10 +607,10 @@ class _$SuccessStateImpl implements SuccessState {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(InitialState value)? initial,
-    TResult Function(LoadingState value)? loading,
-    TResult Function(SuccessState value)? success,
-    TResult Function(ErrorState value)? error,
+    TResult Function(LoginInitial value)? initial,
+    TResult Function(LoginLoading value)? loading,
+    TResult Function(LoginSuccess value)? success,
+    TResult Function(LoginError value)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -424,25 +620,25 @@ class _$SuccessStateImpl implements SuccessState {
   }
 }
 
-abstract class SuccessState implements LoginState {
-  const factory SuccessState() = _$SuccessStateImpl;
+abstract class LoginSuccess implements LoginStatus {
+  const factory LoginSuccess() = _$LoginSuccessImpl;
 }
 
 /// @nodoc
-abstract class _$$ErrorStateImplCopyWith<$Res> {
-  factory _$$ErrorStateImplCopyWith(
-          _$ErrorStateImpl value, $Res Function(_$ErrorStateImpl) then) =
-      __$$ErrorStateImplCopyWithImpl<$Res>;
+abstract class _$$LoginErrorImplCopyWith<$Res> {
+  factory _$$LoginErrorImplCopyWith(
+          _$LoginErrorImpl value, $Res Function(_$LoginErrorImpl) then) =
+      __$$LoginErrorImplCopyWithImpl<$Res>;
   @useResult
   $Res call({String message});
 }
 
 /// @nodoc
-class __$$ErrorStateImplCopyWithImpl<$Res>
-    extends _$LoginStateCopyWithImpl<$Res, _$ErrorStateImpl>
-    implements _$$ErrorStateImplCopyWith<$Res> {
-  __$$ErrorStateImplCopyWithImpl(
-      _$ErrorStateImpl _value, $Res Function(_$ErrorStateImpl) _then)
+class __$$LoginErrorImplCopyWithImpl<$Res>
+    extends _$LoginStatusCopyWithImpl<$Res, _$LoginErrorImpl>
+    implements _$$LoginErrorImplCopyWith<$Res> {
+  __$$LoginErrorImplCopyWithImpl(
+      _$LoginErrorImpl _value, $Res Function(_$LoginErrorImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -450,7 +646,7 @@ class __$$ErrorStateImplCopyWithImpl<$Res>
   $Res call({
     Object? message = null,
   }) {
-    return _then(_$ErrorStateImpl(
+    return _then(_$LoginErrorImpl(
       null == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -461,22 +657,30 @@ class __$$ErrorStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ErrorStateImpl implements ErrorState {
-  const _$ErrorStateImpl(this.message);
+class _$LoginErrorImpl with DiagnosticableTreeMixin implements LoginError {
+  const _$LoginErrorImpl(this.message);
 
   @override
   final String message;
 
   @override
-  String toString() {
-    return 'LoginState.error(message: $message)';
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'LoginStatus.error(message: $message)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'LoginStatus.error'))
+      ..add(DiagnosticsProperty('message', message));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ErrorStateImpl &&
+            other is _$LoginErrorImpl &&
             (identical(other.message, message) || other.message == message));
   }
 
@@ -486,8 +690,8 @@ class _$ErrorStateImpl implements ErrorState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$ErrorStateImplCopyWith<_$ErrorStateImpl> get copyWith =>
-      __$$ErrorStateImplCopyWithImpl<_$ErrorStateImpl>(this, _$identity);
+  _$$LoginErrorImplCopyWith<_$LoginErrorImpl> get copyWith =>
+      __$$LoginErrorImplCopyWithImpl<_$LoginErrorImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -529,10 +733,10 @@ class _$ErrorStateImpl implements ErrorState {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(InitialState value) initial,
-    required TResult Function(LoadingState value) loading,
-    required TResult Function(SuccessState value) success,
-    required TResult Function(ErrorState value) error,
+    required TResult Function(LoginInitial value) initial,
+    required TResult Function(LoginLoading value) loading,
+    required TResult Function(LoginSuccess value) success,
+    required TResult Function(LoginError value) error,
   }) {
     return error(this);
   }
@@ -540,10 +744,10 @@ class _$ErrorStateImpl implements ErrorState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(InitialState value)? initial,
-    TResult? Function(LoadingState value)? loading,
-    TResult? Function(SuccessState value)? success,
-    TResult? Function(ErrorState value)? error,
+    TResult? Function(LoginInitial value)? initial,
+    TResult? Function(LoginLoading value)? loading,
+    TResult? Function(LoginSuccess value)? success,
+    TResult? Function(LoginError value)? error,
   }) {
     return error?.call(this);
   }
@@ -551,10 +755,10 @@ class _$ErrorStateImpl implements ErrorState {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(InitialState value)? initial,
-    TResult Function(LoadingState value)? loading,
-    TResult Function(SuccessState value)? success,
-    TResult Function(ErrorState value)? error,
+    TResult Function(LoginInitial value)? initial,
+    TResult Function(LoginLoading value)? loading,
+    TResult Function(LoginSuccess value)? success,
+    TResult Function(LoginError value)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -564,11 +768,11 @@ class _$ErrorStateImpl implements ErrorState {
   }
 }
 
-abstract class ErrorState implements LoginState {
-  const factory ErrorState(final String message) = _$ErrorStateImpl;
+abstract class LoginError implements LoginStatus {
+  const factory LoginError(final String message) = _$LoginErrorImpl;
 
   String get message;
   @JsonKey(ignore: true)
-  _$$ErrorStateImplCopyWith<_$ErrorStateImpl> get copyWith =>
+  _$$LoginErrorImplCopyWith<_$LoginErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
