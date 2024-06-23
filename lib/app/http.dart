@@ -17,11 +17,11 @@ class HttpClientBuilder {
   void _setup() {
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        _printRequest(options);
         final cookies = _cookieManager.getCookies(options.uri.host);
         if (cookies.isNotEmpty) {
           options.headers['cookie'] = cookies.join('; ');
         }
+        _printRequest(options);
         return handler.next(options);
       },
       onResponse: (response, handler) async {
@@ -136,8 +136,19 @@ class CookieManager {
     var existingCookies = _prefs.getStringList(key) ?? [];
     existingCookies.addAll(newCookies);
 
+    // Sort reverse to remove duplicates from the end
+    existingCookies.sort((a, b) => b.compareTo(a));
+
     // Remove duplicates
-    final uniqueCookies = existingCookies.toSet().toList();
+    final uniqueCookies = <String>[];
+    for (var cookie in existingCookies) {
+      final exists = uniqueCookies.any(
+        (uniqueCookie) => uniqueCookie.contains(cookie.split('=')[0]),
+      );
+      if (!exists) {
+        uniqueCookies.add(cookie);
+      }
+    }
 
     // Save the updated list back to SharedPreferences
     await _prefs.setStringList(key, uniqueCookies);

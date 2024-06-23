@@ -12,10 +12,19 @@ class AuthService {
   final SharedPreferences _prefs;
   final RouterRefreshListenable _routerRefreshListenable;
 
-  AuthService(this._sigaClient, this._prefs, this._routerRefreshListenable) {
-    // Keep session alive
+  AuthService(this._sigaClient, this._prefs, this._routerRefreshListenable);
+
+  Future<void> init() async {
+    if (isAuthenticated) {
+      // Get auth cookie silently
+      await _login(getUsername()!, getPassword()!);
+    }
+
     Timer.periodic(const Duration(seconds: 45), (timer) async {
-      await _keepSession();
+      final response = await _keepSession();
+      if (response.statusCode != 200 && isAuthenticated) {
+        _login(getUsername()!, getPassword()!);
+      }
     });
   }
 
@@ -24,8 +33,24 @@ class AuthService {
   }
 
   Future<bool> login(String username, String password) async {
-    // First
+    final response = await _login(username, password);
 
+    // Success
+    if (response.statusCode == 302) {
+      _saveCredentials(username, password);
+      return true;
+    }
+
+    // Failure
+    if (response.statusCode == 200) {
+      return false;
+    }
+
+    // Error
+    throw Exception('Status code ${response.statusCode}');
+  }
+
+  Future<Response<dynamic>> _login(String username, String password) async {
     // curl 'https://academico.unp.edu.pe/' \
     //   -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
     //   -H 'accept-language: en-US,en;q=0.9,es-PE;q=0.8,es-ES;q=0.7,es;q=0.6' \
@@ -48,7 +73,7 @@ class AuthService {
     // (expected response is a 302 redirect to https://academico.unp.edu.pe/Home/Index)
 
     // Now, replicate using Dio
-    final loginResponse = await _sigaClient.http.post(
+    final response = await _sigaClient.http.post(
       '/',
       data: {
         'Instancia': '01',
@@ -81,20 +106,7 @@ class AuthService {
         },
       ),
     );
-
-    // Success
-    if (loginResponse.statusCode == 302) {
-      _saveCredentials(username, password);
-      return true;
-    }
-
-    // Failure
-    if (loginResponse.statusCode == 200) {
-      return false;
-    }
-
-    // Error
-    throw Exception('Status code ${loginResponse.statusCode}');
+    return response;
   }
 
   void logout() {
