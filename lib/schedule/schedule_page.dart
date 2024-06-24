@@ -58,7 +58,16 @@ class SchedulePageState extends State<SchedulePage> {
   Widget _buildSuccessState(BuildContext context, SuccessState state) {
     List<WeeklyScheduleEvent> events =
         _convertToWeeklyScheduleEvents(state.schedule);
-    return WeeklySchedule(events: events);
+    // return WeeklySchedule(events: events);
+    // Set a fixed h and w for the WeeklySchedule because it internally uses a CustomScrollView
+    // The h and w must be the available space, use MediaQuery
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      child: WeeklySchedule(
+        events: events,
+      ),
+    );
   }
 
   List<WeeklyScheduleEvent> _convertToWeeklyScheduleEvents(
@@ -142,16 +151,6 @@ class SchedulePageState extends State<SchedulePage> {
     return events;
   }
 
-  DateTime _convertToDateTime(String timestamp) {
-    final regex = RegExp(r'\/Date\((\d+)\)\/');
-    final match = regex.firstMatch(timestamp);
-    if (match != null) {
-      final milliseconds = int.parse(match.group(1)!);
-      return DateTime.fromMillisecondsSinceEpoch(milliseconds);
-    }
-    throw FormatException("Invalid timestamp format");
-  }
-
   DateTime _getDateTimeForDay(DateTime time, int weekday) {
     DateTime now = DateTime.now();
     int currentWeekday = now.weekday;
@@ -164,5 +163,15 @@ class SchedulePageState extends State<SchedulePage> {
       time.hour,
       time.minute,
     );
+  }
+
+  DateTime _convertToDateTime(String timestamp) {
+    final regex = RegExp(r'\/Date\((\d+)\)\/');
+    final match = regex.firstMatch(timestamp);
+    if (match != null) {
+      final milliseconds = int.parse(match.group(1)!);
+      return DateTime.fromMillisecondsSinceEpoch(milliseconds);
+    }
+    throw FormatException("Invalid timestamp format");
   }
 }

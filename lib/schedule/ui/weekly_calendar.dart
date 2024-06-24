@@ -14,11 +14,16 @@ class WeeklyScheduleEvent {
   });
 }
 
-class WeeklySchedule extends StatelessWidget {
+class WeeklySchedule extends StatefulWidget {
   final List<WeeklyScheduleEvent> events;
 
   const WeeklySchedule({super.key, required this.events});
 
+  @override
+  State<WeeklySchedule> createState() => _WeeklyScheduleState();
+}
+
+class _WeeklyScheduleState extends State<WeeklySchedule> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -26,7 +31,7 @@ class WeeklySchedule extends StatelessWidget {
         // Header for days of the week
         Row(
           children: [
-            _buildHourLabel(''),
+            _buildHourLabel('Hora'),
             _buildDayHeader('Mon'),
             _buildDayHeader('Tue'),
             _buildDayHeader('Wed'),
@@ -38,22 +43,37 @@ class WeeklySchedule extends StatelessWidget {
         ),
         // Combined hourly labels and events grid
         Expanded(
-          child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 8,
-              crossAxisSpacing: 2,
-              mainAxisSpacing: 2,
+          child: SingleChildScrollView(
+            child: Stack(
+              children: [
+                Column(
+                  children: List.generate(24, (hour) {
+                    return Row(
+                      children: [
+                        _buildHourLabel('$hour:00'),
+                        Expanded(
+                          child: Row(
+                            children: List.generate(7, (day) {
+                              return Expanded(
+                                child: Container(
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey),
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
+                ),
+                ...widget.events
+                    .map((event) => _buildEvent(event, context))
+                    .toList(),
+              ],
             ),
-            itemBuilder: (context, index) {
-              int dayIndex = (index % 8) - 1;
-              int hourIndex = index ~/ 8;
-              if (dayIndex == -1) {
-                return _buildHourLabel('$hourIndex:00');
-              } else {
-                return _buildEventCell(dayIndex, hourIndex);
-              }
-            },
-            itemCount: 24 * 8,
           ),
         ),
       ],
@@ -71,32 +91,25 @@ class WeeklySchedule extends StatelessWidget {
 
   Widget _buildHourLabel(String hour) {
     return Container(
+      width: 50,
       height: 60,
       padding: EdgeInsets.all(8),
       child: Center(child: Text(hour)),
     );
   }
 
-  Widget _buildEventCell(int dayIndex, int hourIndex) {
-    // Find events for this cell
-    List<WeeklyScheduleEvent> cellEvents = events.where((event) {
-      return event.start.weekday == dayIndex + 1 &&
-          event.start.hour <= hourIndex &&
-          event.end.hour > hourIndex;
-    }).toList();
+  Widget _buildEvent(WeeklyScheduleEvent event, BuildContext context) {
+    double top = event.start.hour * 60.0 + event.start.minute;
+    double height = (event.end.difference(event.start).inMinutes).toDouble();
+    int dayIndex = event.start.weekday - 1;
 
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-      ),
-      child: Stack(
-        children: cellEvents.map((event) => _buildEvent(event)).toList(),
-      ),
-    );
-  }
+    double gridWidth = (MediaQuery.of(context).size.width - 50) / 7;
 
-  Widget _buildEvent(WeeklyScheduleEvent event) {
-    return Positioned.fill(
+    return Positioned(
+      top: top,
+      left: 50 + dayIndex * gridWidth,
+      width: gridWidth - 4,
+      height: height,
       child: Container(
         margin: EdgeInsets.all(2),
         color: event.color,
