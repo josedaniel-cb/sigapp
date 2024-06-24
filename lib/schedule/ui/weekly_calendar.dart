@@ -26,6 +26,7 @@ class WeeklySchedule extends StatelessWidget {
         // Header for days of the week
         Row(
           children: [
+            _buildHourLabel(''),
             _buildDayHeader('Mon'),
             _buildDayHeader('Tue'),
             _buildDayHeader('Wed'),
@@ -35,31 +36,24 @@ class WeeklySchedule extends StatelessWidget {
             _buildDayHeader('Sun'),
           ],
         ),
-        // Hourly grid
+        // Combined hourly labels and events grid
         Expanded(
-          child: Row(
-            children: [
-              // Hourly labels
-              Column(
-                children: List.generate(24, (index) => _buildHourLabel(index)),
-              ),
-              // Events grid
-              Expanded(
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 7,
-                    crossAxisSpacing: 2,
-                    mainAxisSpacing: 2,
-                  ),
-                  itemBuilder: (context, index) {
-                    int dayIndex = index % 7;
-                    int hourIndex = index ~/ 7;
-                    return _buildEventCell(dayIndex, hourIndex);
-                  },
-                  itemCount: 24 * 7,
-                ),
-              ),
-            ],
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 8,
+              crossAxisSpacing: 2,
+              mainAxisSpacing: 2,
+            ),
+            itemBuilder: (context, index) {
+              int dayIndex = (index % 8) - 1;
+              int hourIndex = index ~/ 8;
+              if (dayIndex == -1) {
+                return _buildHourLabel('$hourIndex:00');
+              } else {
+                return _buildEventCell(dayIndex, hourIndex);
+              }
+            },
+            itemCount: 24 * 8,
           ),
         ),
       ],
@@ -75,11 +69,11 @@ class WeeklySchedule extends StatelessWidget {
     );
   }
 
-  Widget _buildHourLabel(int hour) {
+  Widget _buildHourLabel(String hour) {
     return Container(
       height: 60,
       padding: EdgeInsets.all(8),
-      child: Center(child: Text('$hour:00')),
+      child: Center(child: Text(hour)),
     );
   }
 

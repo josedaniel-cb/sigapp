@@ -4,6 +4,7 @@ import 'package:sigapp/schedule/schedule_cubit.dart';
 import 'package:sigapp/schedule/ui/weekly_calendar.dart';
 import 'package:sigapp/shared/error_state.dart';
 import 'package:sigapp/shared/loading_state.dart';
+import 'package:sigapp/student/models/get_class_schedule.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
@@ -54,31 +55,114 @@ class SchedulePageState extends State<SchedulePage> {
     );
   }
 
-  Widget _buildSuccessState(
-    BuildContext context,
-    SuccessState state,
-  ) {
-    return WeeklySchedule(
-      events: [
-        WeeklyScheduleEvent(
-          title: 'Plan Execution',
-          start: DateTime(2024, 6, 24, 9),
-          end: DateTime(2024, 6, 24, 10),
-          color: Colors.purple,
-        ),
-        WeeklyScheduleEvent(
-          title: 'General Meeting',
-          start: DateTime(2024, 6, 24, 12),
-          end: DateTime(2024, 6, 24, 13),
-          color: Colors.blue,
-        ),
-        WeeklyScheduleEvent(
-          title: 'Development',
-          start: DateTime(2024, 6, 24, 10),
-          end: DateTime(2024, 6, 24, 11),
-          color: Colors.green,
-        ),
-      ],
+  Widget _buildSuccessState(BuildContext context, SuccessState state) {
+    List<WeeklyScheduleEvent> events =
+        _convertToWeeklyScheduleEvents(state.schedule);
+    return WeeklySchedule(events: events);
+  }
+
+  List<WeeklyScheduleEvent> _convertToWeeklyScheduleEvents(
+      List<GetClassScheduleModel> schedule) {
+    Map<String, Color> courseColors = {};
+    List<WeeklyScheduleEvent> events = [];
+    List<Color> availableColors = [
+      Colors.purple,
+      Colors.green,
+      Colors.orange,
+      Colors.blue,
+      Colors.yellow,
+      Colors.red,
+      Colors.cyan,
+      Colors.teal,
+      Colors.indigo,
+      Colors.pink,
+    ];
+
+    Color getCourseColor(String course) {
+      if (!courseColors.containsKey(course)) {
+        courseColors[course] =
+            availableColors[courseColors.length % availableColors.length];
+      }
+      return courseColors[course]!;
+    }
+
+    for (var item in schedule) {
+      DateTime startTime = _convertToDateTime(item.HoraInicio);
+      DateTime endTime = _convertToDateTime(item.HoraFinal);
+
+      if (item.Lunes.isNotEmpty) {
+        events.add(WeeklyScheduleEvent(
+          title: item.Lunes,
+          start: _getDateTimeForDay(startTime, DateTime.monday),
+          end: _getDateTimeForDay(endTime, DateTime.monday),
+          color: getCourseColor(item.Lunes),
+        ));
+      }
+      if (item.Martes.isNotEmpty) {
+        events.add(WeeklyScheduleEvent(
+          title: item.Martes,
+          start: _getDateTimeForDay(startTime, DateTime.tuesday),
+          end: _getDateTimeForDay(endTime, DateTime.tuesday),
+          color: getCourseColor(item.Martes),
+        ));
+      }
+      if (item.Miercoles.isNotEmpty) {
+        events.add(WeeklyScheduleEvent(
+          title: item.Miercoles,
+          start: _getDateTimeForDay(startTime, DateTime.wednesday),
+          end: _getDateTimeForDay(endTime, DateTime.wednesday),
+          color: getCourseColor(item.Miercoles),
+        ));
+      }
+      if (item.Jueves.isNotEmpty) {
+        events.add(WeeklyScheduleEvent(
+          title: item.Jueves,
+          start: _getDateTimeForDay(startTime, DateTime.thursday),
+          end: _getDateTimeForDay(endTime, DateTime.thursday),
+          color: getCourseColor(item.Jueves),
+        ));
+      }
+      if (item.Viernes.isNotEmpty) {
+        events.add(WeeklyScheduleEvent(
+          title: item.Viernes,
+          start: _getDateTimeForDay(startTime, DateTime.friday),
+          end: _getDateTimeForDay(endTime, DateTime.friday),
+          color: getCourseColor(item.Viernes),
+        ));
+      }
+      if (item.Sabado.isNotEmpty) {
+        events.add(WeeklyScheduleEvent(
+          title: item.Sabado,
+          start: _getDateTimeForDay(startTime, DateTime.saturday),
+          end: _getDateTimeForDay(endTime, DateTime.saturday),
+          color: getCourseColor(item.Sabado),
+        ));
+      }
+    }
+    return events;
+  }
+
+  DateTime _convertToDateTime(String timestamp) {
+    final regex = RegExp(r'\/Date\((\d+)\)\/');
+    final match = regex.firstMatch(timestamp);
+    if (match != null) {
+      final milliseconds = int.parse(match.group(1)!);
+      return DateTime.fromMillisecondsSinceEpoch(milliseconds);
+    }
+    throw FormatException("Invalid timestamp format");
+  }
+
+  DateTime _getDateTimeForDay(DateTime time, int weekday) {
+    DateTime now = DateTime.now();
+    int currentWeekday = now.weekday;
+    int daysToAdd = (weekday - currentWeekday) % 7;
+    if (daysToAdd < 0) daysToAdd += 7;
+    return DateTime(
+      now.year,
+      now.month,
+      now.day + daysToAdd,
+      time.hour,
+      time.minute,
     );
   }
 }
