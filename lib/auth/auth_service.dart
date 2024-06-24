@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigapp/app/router.dart';
-import 'package:sigapp/app/siga_http.dart';
+import 'package:sigapp/app/siga_client.dart';
 
 @singleton
 class AuthService {
