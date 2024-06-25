@@ -7,12 +7,12 @@ import 'package:sigapp/app/router.dart';
 import 'package:sigapp/app/siga_client.dart';
 
 @singleton
-class AuthService {
+class AuthRepository {
   final SigaClient _sigaClient;
   final SharedPreferences _prefs;
   final RouterRefreshListenable _routerRefreshListenable;
 
-  AuthService(this._sigaClient, this._prefs, this._routerRefreshListenable);
+  AuthRepository(this._sigaClient, this._prefs, this._routerRefreshListenable);
 
   Future<void> init() async {
     if (isAuthenticated) {

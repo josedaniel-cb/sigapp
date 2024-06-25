@@ -5,12 +5,18 @@ import 'package:sigapp/student/models/get_academic_report.dart';
 import 'package:sigapp/student/models/get_class_schedule.dart';
 
 @lazySingleton
-class StudentService {
+class StudentRepository {
   final SigaClient _sigaClient;
 
-  StudentService(this._sigaClient);
+  GetAcademicReportModel? _academicReportModel;
+
+  StudentRepository(this._sigaClient);
 
   Future<GetAcademicReportModel> getAcademicReport() async {
+    if (_academicReportModel != null) {
+      return _academicReportModel!;
+    }
+
     // curl 'https://academico.unp.edu.pe/Academico/ListarParametrosInforme' \
     //   -X 'POST' \
     //   -H 'accept: */*' \
@@ -41,8 +47,10 @@ class StudentService {
         },
       ),
     );
-    final result = GetAcademicReportModel.fromJson(response.data['results']);
-    return result;
+    _academicReportModel =
+        GetAcademicReportModel.fromJson(response.data['results']);
+
+    return _academicReportModel!;
   }
 
   Future<List<GetClassScheduleModel>> getClassSchedule(String semester) async {

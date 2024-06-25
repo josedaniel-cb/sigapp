@@ -75,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
 
           final status = state.status;
           if (status is LoginSuccess) {
-            // getIt<AuthService>().saveToken('aux');
+            // getIt<AuthRepository>().saveToken('aux');
             getIt<GoRouter>().pushReplacement('/');
           }
         },
