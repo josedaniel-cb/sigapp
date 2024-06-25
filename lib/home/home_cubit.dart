@@ -14,7 +14,7 @@ abstract class HomeState with _$HomeState {
   // const factory HomeState.initial() = InitialState;
   const factory HomeState.loading() = LoadingState;
   const factory HomeState.success(
-    GetAcademicReportInform academicReport,
+    GetAcademicReportModel academicReport,
   ) = SuccessState;
   const factory HomeState.error(String message) = ErrorState;
   // const factory HomeState.signedOut() = SignedOutState;
@@ -33,7 +33,7 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> setup() async {
     emit(const HomeState.loading());
     try {
-      final result = await _studentService.getAcademicService();
+      final result = await _studentService.getAcademicReport();
       emit(HomeState.success(result));
     } catch (e, s) {
       print(e);

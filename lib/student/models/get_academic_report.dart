@@ -26,8 +26,8 @@ part 'get_academic_report.g.dart';
 /// }
 /// ```
 @freezed
-class GetAcademicReportInform with _$GetAcademicReportInform {
-  const factory GetAcademicReportInform({
+class GetAcademicReportModel with _$GetAcademicReportModel {
+  const factory GetAcademicReportModel({
     required String Facultad,
     required String NomAlumno,
     required String Promocion,
@@ -42,8 +42,8 @@ class GetAcademicReportInform with _$GetAcademicReportInform {
     required int CredElectPlan,
     required int CredObligAprob,
     required int CredElectAprob,
-  }) = _GetAcademicReportInform;
+  }) = _GetAcademicReportModel;
 
-  factory GetAcademicReportInform.fromJson(Map<String, Object?> json) =>
-      _$GetAcademicReportInformFromJson(json);
+  factory GetAcademicReportModel.fromJson(Map<String, Object?> json) =>
+      _$GetAcademicReportModelFromJson(json);
 }

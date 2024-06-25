@@ -6,9 +6,9 @@ part of 'get_academic_report.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GetAcademicReportInformImpl _$$GetAcademicReportInformImplFromJson(
+_$GetAcademicReportModelImpl _$$GetAcademicReportModelImplFromJson(
         Map<String, dynamic> json) =>
-    _$GetAcademicReportInformImpl(
+    _$GetAcademicReportModelImpl(
       Facultad: json['Facultad'] as String,
       NomAlumno: json['NomAlumno'] as String,
       Promocion: json['Promocion'] as String,
@@ -25,8 +25,8 @@ _$GetAcademicReportInformImpl _$$GetAcademicReportInformImplFromJson(
       CredElectAprob: (json['CredElectAprob'] as num).toInt(),
     );
 
-Map<String, dynamic> _$$GetAcademicReportInformImplToJson(
-        _$GetAcademicReportInformImpl instance) =>
+Map<String, dynamic> _$$GetAcademicReportModelImplToJson(
+        _$GetAcademicReportModelImpl instance) =>
     <String, dynamic>{
       'Facultad': instance.Facultad,
       'NomAlumno': instance.NomAlumno,

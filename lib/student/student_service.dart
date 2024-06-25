@@ -10,7 +10,7 @@ class StudentService {
 
   StudentService(this._sigaClient);
 
-  Future<GetAcademicReportInform> getAcademicService() async {
+  Future<GetAcademicReportModel> getAcademicReport() async {
     // curl 'https://academico.unp.edu.pe/Academico/ListarParametrosInforme' \
     //   -X 'POST' \
     //   -H 'accept: */*' \
@@ -41,7 +41,7 @@ class StudentService {
         },
       ),
     );
-    final result = GetAcademicReportInform.fromJson(response.data['results']);
+    final result = GetAcademicReportModel.fromJson(response.data['results']);
     return result;
   }
 

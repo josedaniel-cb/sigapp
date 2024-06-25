@@ -14,13 +14,13 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-GetAcademicReportInform _$GetAcademicReportInformFromJson(
+GetAcademicReportModel _$GetAcademicReportModelFromJson(
     Map<String, dynamic> json) {
-  return _GetAcademicReportInform.fromJson(json);
+  return _GetAcademicReportModel.fromJson(json);
 }
 
 /// @nodoc
-mixin _$GetAcademicReportInform {
+mixin _$GetAcademicReportModel {
   String get Facultad => throw _privateConstructorUsedError;
   String get NomAlumno => throw _privateConstructorUsedError;
   String get Promocion => throw _privateConstructorUsedError;
@@ -38,15 +38,15 @@ mixin _$GetAcademicReportInform {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $GetAcademicReportInformCopyWith<GetAcademicReportInform> get copyWith =>
+  $GetAcademicReportModelCopyWith<GetAcademicReportModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $GetAcademicReportInformCopyWith<$Res> {
-  factory $GetAcademicReportInformCopyWith(GetAcademicReportInform value,
-          $Res Function(GetAcademicReportInform) then) =
-      _$GetAcademicReportInformCopyWithImpl<$Res, GetAcademicReportInform>;
+abstract class $GetAcademicReportModelCopyWith<$Res> {
+  factory $GetAcademicReportModelCopyWith(GetAcademicReportModel value,
+          $Res Function(GetAcademicReportModel) then) =
+      _$GetAcademicReportModelCopyWithImpl<$Res, GetAcademicReportModel>;
   @useResult
   $Res call(
       {String Facultad,
@@ -66,10 +66,10 @@ abstract class $GetAcademicReportInformCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$GetAcademicReportInformCopyWithImpl<$Res,
-        $Val extends GetAcademicReportInform>
-    implements $GetAcademicReportInformCopyWith<$Res> {
-  _$GetAcademicReportInformCopyWithImpl(this._value, this._then);
+class _$GetAcademicReportModelCopyWithImpl<$Res,
+        $Val extends GetAcademicReportModel>
+    implements $GetAcademicReportModelCopyWith<$Res> {
+  _$GetAcademicReportModelCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -156,12 +156,12 @@ class _$GetAcademicReportInformCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$GetAcademicReportInformImplCopyWith<$Res>
-    implements $GetAcademicReportInformCopyWith<$Res> {
-  factory _$$GetAcademicReportInformImplCopyWith(
-          _$GetAcademicReportInformImpl value,
-          $Res Function(_$GetAcademicReportInformImpl) then) =
-      __$$GetAcademicReportInformImplCopyWithImpl<$Res>;
+abstract class _$$GetAcademicReportModelImplCopyWith<$Res>
+    implements $GetAcademicReportModelCopyWith<$Res> {
+  factory _$$GetAcademicReportModelImplCopyWith(
+          _$GetAcademicReportModelImpl value,
+          $Res Function(_$GetAcademicReportModelImpl) then) =
+      __$$GetAcademicReportModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -182,13 +182,13 @@ abstract class _$$GetAcademicReportInformImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$GetAcademicReportInformImplCopyWithImpl<$Res>
-    extends _$GetAcademicReportInformCopyWithImpl<$Res,
-        _$GetAcademicReportInformImpl>
-    implements _$$GetAcademicReportInformImplCopyWith<$Res> {
-  __$$GetAcademicReportInformImplCopyWithImpl(
-      _$GetAcademicReportInformImpl _value,
-      $Res Function(_$GetAcademicReportInformImpl) _then)
+class __$$GetAcademicReportModelImplCopyWithImpl<$Res>
+    extends _$GetAcademicReportModelCopyWithImpl<$Res,
+        _$GetAcademicReportModelImpl>
+    implements _$$GetAcademicReportModelImplCopyWith<$Res> {
+  __$$GetAcademicReportModelImplCopyWithImpl(
+      _$GetAcademicReportModelImpl _value,
+      $Res Function(_$GetAcademicReportModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -209,7 +209,7 @@ class __$$GetAcademicReportInformImplCopyWithImpl<$Res>
     Object? CredObligAprob = null,
     Object? CredElectAprob = null,
   }) {
-    return _then(_$GetAcademicReportInformImpl(
+    return _then(_$GetAcademicReportModelImpl(
       Facultad: null == Facultad
           ? _value.Facultad
           : Facultad // ignore: cast_nullable_to_non_nullable
@@ -272,10 +272,10 @@ class __$$GetAcademicReportInformImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$GetAcademicReportInformImpl
+class _$GetAcademicReportModelImpl
     with DiagnosticableTreeMixin
-    implements _GetAcademicReportInform {
-  const _$GetAcademicReportInformImpl(
+    implements _GetAcademicReportModel {
+  const _$GetAcademicReportModelImpl(
       {required this.Facultad,
       required this.NomAlumno,
       required this.Promocion,
@@ -291,8 +291,8 @@ class _$GetAcademicReportInformImpl
       required this.CredObligAprob,
       required this.CredElectAprob});
 
-  factory _$GetAcademicReportInformImpl.fromJson(Map<String, dynamic> json) =>
-      _$$GetAcademicReportInformImplFromJson(json);
+  factory _$GetAcademicReportModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GetAcademicReportModelImplFromJson(json);
 
   @override
   final String Facultad;
@@ -325,14 +325,14 @@ class _$GetAcademicReportInformImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'GetAcademicReportInform(Facultad: $Facultad, NomAlumno: $NomAlumno, Promocion: $Promocion, SemestreIngreso: $SemestreIngreso, SemestrePlan: $SemestrePlan, UltSemestre: $UltSemestre, PPA: $PPA, PPAAprob: $PPAAprob, UPPS: $UPPS, TotalCredAprob: $TotalCredAprob, CredObligPlan: $CredObligPlan, CredElectPlan: $CredElectPlan, CredObligAprob: $CredObligAprob, CredElectAprob: $CredElectAprob)';
+    return 'GetAcademicReportModel(Facultad: $Facultad, NomAlumno: $NomAlumno, Promocion: $Promocion, SemestreIngreso: $SemestreIngreso, SemestrePlan: $SemestrePlan, UltSemestre: $UltSemestre, PPA: $PPA, PPAAprob: $PPAAprob, UPPS: $UPPS, TotalCredAprob: $TotalCredAprob, CredObligPlan: $CredObligPlan, CredElectPlan: $CredElectPlan, CredObligAprob: $CredObligAprob, CredElectAprob: $CredElectAprob)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'GetAcademicReportInform'))
+      ..add(DiagnosticsProperty('type', 'GetAcademicReportModel'))
       ..add(DiagnosticsProperty('Facultad', Facultad))
       ..add(DiagnosticsProperty('NomAlumno', NomAlumno))
       ..add(DiagnosticsProperty('Promocion', Promocion))
@@ -353,7 +353,7 @@ class _$GetAcademicReportInformImpl
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GetAcademicReportInformImpl &&
+            other is _$GetAcademicReportModelImpl &&
             (identical(other.Facultad, Facultad) ||
                 other.Facultad == Facultad) &&
             (identical(other.NomAlumno, NomAlumno) ||
@@ -404,20 +404,20 @@ class _$GetAcademicReportInformImpl
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$GetAcademicReportInformImplCopyWith<_$GetAcademicReportInformImpl>
-      get copyWith => __$$GetAcademicReportInformImplCopyWithImpl<
-          _$GetAcademicReportInformImpl>(this, _$identity);
+  _$$GetAcademicReportModelImplCopyWith<_$GetAcademicReportModelImpl>
+      get copyWith => __$$GetAcademicReportModelImplCopyWithImpl<
+          _$GetAcademicReportModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$GetAcademicReportInformImplToJson(
+    return _$$GetAcademicReportModelImplToJson(
       this,
     );
   }
 }
 
-abstract class _GetAcademicReportInform implements GetAcademicReportInform {
-  const factory _GetAcademicReportInform(
+abstract class _GetAcademicReportModel implements GetAcademicReportModel {
+  const factory _GetAcademicReportModel(
       {required final String Facultad,
       required final String NomAlumno,
       required final String Promocion,
@@ -431,10 +431,10 @@ abstract class _GetAcademicReportInform implements GetAcademicReportInform {
       required final int CredObligPlan,
       required final int CredElectPlan,
       required final int CredObligAprob,
-      required final int CredElectAprob}) = _$GetAcademicReportInformImpl;
+      required final int CredElectAprob}) = _$GetAcademicReportModelImpl;
 
-  factory _GetAcademicReportInform.fromJson(Map<String, dynamic> json) =
-      _$GetAcademicReportInformImpl.fromJson;
+  factory _GetAcademicReportModel.fromJson(Map<String, dynamic> json) =
+      _$GetAcademicReportModelImpl.fromJson;
 
   @override
   String get Facultad;
@@ -466,6 +466,6 @@ abstract class _GetAcademicReportInform implements GetAcademicReportInform {
   int get CredElectAprob;
   @override
   @JsonKey(ignore: true)
-  _$$GetAcademicReportInformImplCopyWith<_$GetAcademicReportInformImpl>
+  _$$GetAcademicReportModelImplCopyWith<_$GetAcademicReportModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

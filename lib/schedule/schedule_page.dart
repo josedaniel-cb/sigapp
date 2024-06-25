@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigapp/schedule/schedule_cubit.dart';
-import 'package:sigapp/schedule/ui/weekly_calendar.dart';
+import 'package:sigapp/schedule/ui/weekly_schedule.dart';
 import 'package:sigapp/shared/error_state.dart';
 import 'package:sigapp/shared/loading_state.dart';
 import 'package:sigapp/student/models/get_class_schedule.dart';
