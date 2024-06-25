@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/auth/auth_repository.dart';
+import 'package:sigapp/auth/auth_service.dart';
 import 'package:sigapp/student/models/get_academic_report.dart';
-import 'package:sigapp/student/student_repository.dart';
+import 'package:sigapp/student/student_service.dart';
 
 part 'home_cubit.freezed.dart';
 
@@ -22,18 +22,18 @@ abstract class HomeState with _$HomeState {
 
 @injectable
 class HomeCubit extends Cubit<HomeState> {
-  final StudentRepository _studentRepository;
-  final AuthRepository _authRepository;
+  final StudentService _studentService;
+  final AuthService _authService;
 
   HomeCubit(
-    this._studentRepository,
-    this._authRepository,
+    this._studentService,
+    this._authService,
   ) : super(const HomeState.loading());
 
   Future<void> setup() async {
     emit(const HomeState.loading());
     try {
-      final result = await _studentRepository.getAcademicReport();
+      final result = await _studentService.getAcademicReport();
       emit(HomeState.success(result));
     } catch (e, s) {
       print(e);
@@ -44,7 +44,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   logout(BuildContext context) {
     try {
-      _authRepository.logout();
+      _authService.logout();
       GoRouter.of(context).go('/login');
     } catch (e, s) {
       print(e);

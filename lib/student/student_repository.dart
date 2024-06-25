@@ -8,15 +8,9 @@ import 'package:sigapp/student/models/get_class_schedule.dart';
 class StudentRepository {
   final SigaClient _sigaClient;
 
-  GetAcademicReportModel? _academicReportModel;
-
   StudentRepository(this._sigaClient);
 
   Future<GetAcademicReportModel> getAcademicReport() async {
-    if (_academicReportModel != null) {
-      return _academicReportModel!;
-    }
-
     // curl 'https://academico.unp.edu.pe/Academico/ListarParametrosInforme' \
     //   -X 'POST' \
     //   -H 'accept: */*' \
@@ -47,10 +41,9 @@ class StudentRepository {
         },
       ),
     );
-    _academicReportModel =
-        GetAcademicReportModel.fromJson(response.data['results']);
+    final result = GetAcademicReportModel.fromJson(response.data['results']);
 
-    return _academicReportModel!;
+    return result;
   }
 
   Future<List<GetClassScheduleModel>> getClassSchedule(String semester) async {

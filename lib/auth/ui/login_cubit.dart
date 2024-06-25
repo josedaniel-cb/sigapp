@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/auth/auth_repository.dart';
+import 'package:sigapp/auth/auth_service.dart';
 // import 'package:sigapp/student/get_academic_report.dart';
 
 part 'login_cubit.freezed.dart';
@@ -34,9 +34,9 @@ abstract class LoginStatus with _$LoginStatus {
 
 @injectable
 class LoginCubit extends Cubit<LoginState> {
-  final AuthRepository _authRepository;
+  final AuthService _authService;
 
-  LoginCubit(this._authRepository)
+  LoginCubit(this._authService)
       : super(const LoginState(
           username: '',
           password: '',
@@ -44,12 +44,12 @@ class LoginCubit extends Cubit<LoginState> {
         ));
 
   void setup() {
-    final storedUsername = _authRepository.getUsername();
+    final storedUsername = _authService.getUsername();
     if (storedUsername != null) {
       emit(state.copyWith(username: storedUsername));
     }
 
-    final storedPassword = _authRepository.getPassword();
+    final storedPassword = _authService.getPassword();
     if (storedUsername != null && storedPassword != null) {
       emit(state.copyWith(
         username: storedUsername,
@@ -68,7 +68,7 @@ class LoginCubit extends Cubit<LoginState> {
       status: const LoginStatus.loading(),
     ));
     try {
-      final successAuth = await _authRepository.login(username, password);
+      final successAuth = await _authService.login(username, password);
       if (!successAuth) {
         emit(state.copyWith(
           status: const LoginStatus.error('Credenciales inválidos'),

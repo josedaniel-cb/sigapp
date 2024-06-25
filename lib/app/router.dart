@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/app/get_it.dart';
 import 'package:sigapp/app/siga_client.dart';
-import 'package:sigapp/auth/auth_repository.dart';
+import 'package:sigapp/auth/auth_service.dart';
 import 'package:sigapp/auth/ui/login_cubit.dart';
 import 'package:sigapp/auth/ui/login_page.dart';
 import 'package:sigapp/home/home_cubit.dart';
@@ -22,7 +22,7 @@ class RouterRefreshListenable extends ChangeNotifier {
 class RouterBuilder {
   static GoRouter build(
     SigaClient sigaClient,
-    AuthRepository authRepository,
+    AuthService authRepository,
     RouterRefreshListenable refreshListenable,
   ) {
     final router = GoRouter(

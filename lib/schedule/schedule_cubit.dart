@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/student/models/get_class_schedule.dart';
-import 'package:sigapp/student/student_repository.dart';
+import 'package:sigapp/student/student_service.dart';
 
 part 'schedule_cubit.freezed.dart';
 
@@ -18,16 +18,16 @@ abstract class ScheduleState with _$ScheduleState {
 
 @injectable
 class ScheduleCubit extends Cubit<ScheduleState> {
-  final StudentRepository _studentRepository;
+  final StudentService _studentService;
 
   ScheduleCubit(
-    this._studentRepository,
+    this._studentService,
   ) : super(const ScheduleState.loading());
 
   Future<void> setup() async {
     emit(const ScheduleState.loading());
     try {
-      final result = await _studentRepository.getClassSchedule('20171');
+      final result = await _studentService.getClassSchedule('20171');
       emit(ScheduleState.success(result));
     } catch (e, s) {
       if (kDebugMode) {

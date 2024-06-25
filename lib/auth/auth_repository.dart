@@ -2,55 +2,15 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sigapp/app/router.dart';
 import 'package:sigapp/app/siga_client.dart';
 
 @singleton
 class AuthRepository {
   final SigaClient _sigaClient;
-  final SharedPreferences _prefs;
-  final RouterRefreshListenable _routerRefreshListenable;
 
-  AuthRepository(this._sigaClient, this._prefs, this._routerRefreshListenable);
+  AuthRepository(this._sigaClient);
 
-  Future<void> init() async {
-    if (isAuthenticated) {
-      // Get auth cookie silently
-      await _login(getUsername()!, getPassword()!);
-    }
-
-    Timer.periodic(const Duration(seconds: 45), (timer) async {
-      final response = await _keepSession();
-      if (response.statusCode != 200 && isAuthenticated) {
-        _login(getUsername()!, getPassword()!);
-      }
-    });
-  }
-
-  get isAuthenticated {
-    return _prefs.containsKey('username') && _prefs.containsKey('password');
-  }
-
-  Future<bool> login(String username, String password) async {
-    final response = await _login(username, password);
-
-    // Success
-    if (response.statusCode == 302) {
-      _saveCredentials(username, password);
-      return true;
-    }
-
-    // Failure
-    if (response.statusCode == 200) {
-      return false;
-    }
-
-    // Error
-    throw Exception('Status code ${response.statusCode}');
-  }
-
-  Future<Response<dynamic>> _login(String username, String password) async {
+  Future<Response<dynamic>> login(String username, String password) async {
     // curl 'https://academico.unp.edu.pe/' \
     //   -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
     //   -H 'accept-language: en-US,en;q=0.9,es-PE;q=0.8,es-ES;q=0.7,es;q=0.6' \
@@ -109,29 +69,7 @@ class AuthRepository {
     return response;
   }
 
-  void logout() {
-    // _prefs.remove('username');
-    _prefs.remove('password');
-    // _sigaClient.logout();
-    _routerRefreshListenable.refresh();
-  }
-
-  String? getUsername() {
-    return _prefs.getString('username');
-  }
-
-  String? getPassword() {
-    return _prefs.getString('password');
-  }
-
-  void _saveCredentials(String username, String password) {
-    _prefs.setString('username', username);
-    _prefs.setString('password', password);
-
-    // Set a timer to POST /keep-session every minute until the user logs out
-  }
-
-  Future<Response<dynamic>> _keepSession() async {
+  Future<Response<dynamic>> keepSession() async {
     // curl 'https://academico.unp.edu.pe/Home/KeepSession' \
     //   -X 'POST' \
     //   -H 'accept: application/json, text/javascript, */*; q=0.01' \
