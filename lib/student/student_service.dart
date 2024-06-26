@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:sigapp/student/entities/student_semester_schedule.dart';
 import 'package:sigapp/student/entities/weekly_schedule_event.dart';
 import 'package:sigapp/student/models/get_academic_report.dart';
 import 'package:sigapp/student/models/get_class_schedule.dart';
@@ -27,6 +28,70 @@ class StudentService {
     final rawResult = await _studentRepository.getClassSchedule(semester);
     final result = _processClassSchedule(rawResult);
     return result;
+  }
+
+  Future<StudentSemesterSchedule> getDefaultClassSchedule() async {
+    // Helper methods (assuming these need to be implemented or are provided)
+    // String getLastPossibleSemester() {
+    //   final DateTime now = DateTime.now();
+    //   final int year = now.year;
+    //   return '${year}2';
+    // }
+
+    // String getPreviousSemester(String semester) {
+    //   // Implementation to calculate the previous semester based on the given semester
+    //   // This is a simplified example and may need to be adjusted based on the actual semester naming convention
+    //   int year = int.parse(semester.substring(0, 4));
+    //   String period = semester.substring(4);
+    //   if (period == '2') {
+    //     return '${year}1';
+    //   } else {
+    //     year -= 1;
+    //     return '${year}2';
+    //   }
+    // }
+
+    final academicReport = await getAcademicReport();
+    final lastSemester = academicReport.UltSemestre;
+    final firstSemester = academicReport.SemestreIngreso;
+
+    String? semester;
+    List<WeeklyScheduleEvent>? schedule;
+
+    if (lastSemester != null) {
+      semester = lastSemester;
+      schedule = await getClassSchedule(semester);
+    } else {
+      semester = firstSemester;
+      schedule = await getClassSchedule(semester);
+    }
+
+    // if (schedule == null || schedule.isEmpty) {
+    //   // Assume getCurrentSemester() and getPreviousSemester(semester) are available
+    //   var currentSemester = getLastPossibleSemester();
+    //   var attempts = 0;
+    //   const maxAttempts = 10;
+    //   while (schedule == null || schedule.isEmpty) {
+    //     if (attempts >= maxAttempts || currentSemester == firstSemester) {
+    //       semester = firstSemester;
+    //       schedule = await getClassSchedule(semester);
+    //       break;
+    //     }
+    //     currentSemester = getPreviousSemester(currentSemester);
+
+    //     // Perform attempt
+    //     semester = currentSemester;
+    //     schedule = await getClassSchedule(semester);
+
+    //     attempts++;
+    //   }
+    // }
+
+    return StudentSemesterSchedule(
+      // semester: semester!,
+      semester: semester,
+      weeklyEvents: schedule,
+    );
   }
 
   List<WeeklyScheduleEvent> _processClassSchedule(

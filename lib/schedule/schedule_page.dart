@@ -5,7 +5,6 @@ import 'package:sigapp/schedule/ui/weekly_schedule.dart';
 import 'package:sigapp/shared/error_state.dart';
 import 'package:sigapp/shared/loading_state.dart';
 import 'package:sigapp/student/entities/weekly_schedule_event.dart';
-import 'package:sigapp/student/models/get_class_schedule.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
@@ -32,7 +31,7 @@ class SchedulePageState extends State<SchedulePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Horario'),
       ),
       body: BlocConsumer<ScheduleCubit, ScheduleState>(
         builder: (context, state) {

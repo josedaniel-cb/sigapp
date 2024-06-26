@@ -211,8 +211,8 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
             ),
           ),
           Container(
-            child: Text(hour),
             alignment: Alignment.topCenter,
+            child: Text(hour),
           ),
         ],
       ),
