@@ -18,7 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$StudentSemesterSchedule {
   String get semester =>
       throw _privateConstructorUsedError; // YYYYX where X is 1 or 2
-  List<GetClassScheduleModel> get rawSchedule =>
+// required List<GetClassScheduleModel> rawSchedule,
+  List<WeeklyScheduleEvent> get weeklyEvents =>
       throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -32,7 +33,7 @@ abstract class $StudentSemesterScheduleCopyWith<$Res> {
           $Res Function(StudentSemesterSchedule) then) =
       _$StudentSemesterScheduleCopyWithImpl<$Res, StudentSemesterSchedule>;
   @useResult
-  $Res call({String semester, List<GetClassScheduleModel> rawSchedule});
+  $Res call({String semester, List<WeeklyScheduleEvent> weeklyEvents});
 }
 
 /// @nodoc
@@ -50,17 +51,17 @@ class _$StudentSemesterScheduleCopyWithImpl<$Res,
   @override
   $Res call({
     Object? semester = null,
-    Object? rawSchedule = null,
+    Object? weeklyEvents = null,
   }) {
     return _then(_value.copyWith(
       semester: null == semester
           ? _value.semester
           : semester // ignore: cast_nullable_to_non_nullable
               as String,
-      rawSchedule: null == rawSchedule
-          ? _value.rawSchedule
-          : rawSchedule // ignore: cast_nullable_to_non_nullable
-              as List<GetClassScheduleModel>,
+      weeklyEvents: null == weeklyEvents
+          ? _value.weeklyEvents
+          : weeklyEvents // ignore: cast_nullable_to_non_nullable
+              as List<WeeklyScheduleEvent>,
     ) as $Val);
   }
 }
@@ -74,7 +75,7 @@ abstract class _$$StudentSemesterScheduleImplCopyWith<$Res>
       __$$StudentSemesterScheduleImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String semester, List<GetClassScheduleModel> rawSchedule});
+  $Res call({String semester, List<WeeklyScheduleEvent> weeklyEvents});
 }
 
 /// @nodoc
@@ -91,17 +92,17 @@ class __$$StudentSemesterScheduleImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? semester = null,
-    Object? rawSchedule = null,
+    Object? weeklyEvents = null,
   }) {
     return _then(_$StudentSemesterScheduleImpl(
       semester: null == semester
           ? _value.semester
           : semester // ignore: cast_nullable_to_non_nullable
               as String,
-      rawSchedule: null == rawSchedule
-          ? _value._rawSchedule
-          : rawSchedule // ignore: cast_nullable_to_non_nullable
-              as List<GetClassScheduleModel>,
+      weeklyEvents: null == weeklyEvents
+          ? _value._weeklyEvents
+          : weeklyEvents // ignore: cast_nullable_to_non_nullable
+              as List<WeeklyScheduleEvent>,
     ));
   }
 }
@@ -111,24 +112,26 @@ class __$$StudentSemesterScheduleImplCopyWithImpl<$Res>
 class _$StudentSemesterScheduleImpl implements _StudentSemesterSchedule {
   _$StudentSemesterScheduleImpl(
       {required this.semester,
-      required final List<GetClassScheduleModel> rawSchedule})
-      : _rawSchedule = rawSchedule;
+      required final List<WeeklyScheduleEvent> weeklyEvents})
+      : _weeklyEvents = weeklyEvents;
 
   @override
   final String semester;
 // YYYYX where X is 1 or 2
-  final List<GetClassScheduleModel> _rawSchedule;
+// required List<GetClassScheduleModel> rawSchedule,
+  final List<WeeklyScheduleEvent> _weeklyEvents;
 // YYYYX where X is 1 or 2
+// required List<GetClassScheduleModel> rawSchedule,
   @override
-  List<GetClassScheduleModel> get rawSchedule {
-    if (_rawSchedule is EqualUnmodifiableListView) return _rawSchedule;
+  List<WeeklyScheduleEvent> get weeklyEvents {
+    if (_weeklyEvents is EqualUnmodifiableListView) return _weeklyEvents;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_rawSchedule);
+    return EqualUnmodifiableListView(_weeklyEvents);
   }
 
   @override
   String toString() {
-    return 'StudentSemesterSchedule(semester: $semester, rawSchedule: $rawSchedule)';
+    return 'StudentSemesterSchedule(semester: $semester, weeklyEvents: $weeklyEvents)';
   }
 
   @override
@@ -139,12 +142,12 @@ class _$StudentSemesterScheduleImpl implements _StudentSemesterSchedule {
             (identical(other.semester, semester) ||
                 other.semester == semester) &&
             const DeepCollectionEquality()
-                .equals(other._rawSchedule, _rawSchedule));
+                .equals(other._weeklyEvents, _weeklyEvents));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, semester, const DeepCollectionEquality().hash(_rawSchedule));
+  int get hashCode => Object.hash(runtimeType, semester,
+      const DeepCollectionEquality().hash(_weeklyEvents));
 
   @JsonKey(ignore: true)
   @override
@@ -157,13 +160,14 @@ class _$StudentSemesterScheduleImpl implements _StudentSemesterSchedule {
 abstract class _StudentSemesterSchedule implements StudentSemesterSchedule {
   factory _StudentSemesterSchedule(
           {required final String semester,
-          required final List<GetClassScheduleModel> rawSchedule}) =
+          required final List<WeeklyScheduleEvent> weeklyEvents}) =
       _$StudentSemesterScheduleImpl;
 
   @override
   String get semester;
   @override // YYYYX where X is 1 or 2
-  List<GetClassScheduleModel> get rawSchedule;
+// required List<GetClassScheduleModel> rawSchedule,
+  List<WeeklyScheduleEvent> get weeklyEvents;
   @override
   @JsonKey(ignore: true)
   _$$StudentSemesterScheduleImplCopyWith<_$StudentSemesterScheduleImpl>

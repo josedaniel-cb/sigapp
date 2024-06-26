@@ -1,18 +1,5 @@
 import 'package:flutter/material.dart';
-
-class WeeklyScheduleEvent {
-  final String title;
-  final DateTime start;
-  final DateTime end;
-  final Color color;
-
-  WeeklyScheduleEvent({
-    required this.title,
-    required this.start,
-    required this.end,
-    required this.color,
-  });
-}
+import 'package:sigapp/student/entities/weekly_schedule_event.dart';
 
 class WeeklySchedule extends StatefulWidget {
   final List<WeeklyScheduleEvent> events;
@@ -164,6 +151,9 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
     double gridWidth =
         (MediaQuery.of(context).size.width - 50) / daysWithEvents.length;
 
+    // Explanation: duration of the event in half-hour increments
+    int maxLines = (event.end.difference(event.start).inMinutes / 30).ceil();
+
     return Positioned(
       top: top,
       left: 50 + dayIndex * gridWidth,
@@ -173,7 +163,7 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
         margin: EdgeInsets.symmetric(horizontal: 2, vertical: 1),
         decoration: BoxDecoration(
           color: event.color,
-          borderRadius: BorderRadius.circular(4), // Menos redondeado
+          borderRadius: BorderRadius.circular(4),
         ),
         child: Padding(
           padding: const EdgeInsets.all(4.0),
@@ -183,8 +173,7 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
               Text(
                 event.title,
                 style: TextStyle(color: Colors.white, fontSize: 12),
-                maxLines:
-                    height > 30 ? 2 : 1, // Ajuste según el tamaño del evento
+                maxLines: maxLines, // Modificado para ajustar según la duración
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
               ),

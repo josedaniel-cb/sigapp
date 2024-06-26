@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/student/entities/student_semester_schedule.dart';
-import 'package:sigapp/student/models/get_academic_report.dart';
+import 'package:sigapp/student/entities/weekly_schedule_event.dart';
 import 'package:sigapp/student/models/get_class_schedule.dart';
 import 'package:sigapp/student/student_service.dart';
 
@@ -33,42 +33,39 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       final lastSemester = academicReport.UltSemestre;
       final firstSemester = academicReport.SemestreIngreso;
 
-      // String semesterToFetch = lastSemester ?? '';
       String? semester;
-      List<GetClassScheduleModel>? rawSchedule;
+      List<WeeklyScheduleEvent>? schedule;
 
       if (lastSemester != null) {
         semester = lastSemester;
-        rawSchedule = await _studentService.getClassSchedule(semester);
+        schedule = await _studentService.getClassSchedule(semester);
       }
 
-      if (rawSchedule == null || rawSchedule.isEmpty) {
+      if (schedule == null || schedule.isEmpty) {
         // Assume getCurrentSemester() and getPreviousSemester(semester) are available
         var currentSemester = getLastPossibleSemester();
         var attempts = 0;
         const maxAttempts = 10;
-        while (rawSchedule == null || rawSchedule.isEmpty) {
+        while (schedule == null || schedule.isEmpty) {
           if (attempts >= maxAttempts || currentSemester == firstSemester) {
             semester = firstSemester;
-            rawSchedule = await _studentService.getClassSchedule(semester);
+            schedule = await _studentService.getClassSchedule(semester);
             break;
           }
           currentSemester = getPreviousSemester(currentSemester);
 
           // Perform attempt
           semester = currentSemester;
-          rawSchedule = await _studentService.getClassSchedule(semester);
+          schedule = await _studentService.getClassSchedule(semester);
 
           attempts++;
         }
       }
 
-      // print(rawSchedule);
-
       emit(ScheduleState.success(
         StudentSemesterSchedule(
           semester: semester!,
-          rawSchedule: rawSchedule,
+          weeklyEvents: schedule,
         ),
       ));
     } catch (e, s) {

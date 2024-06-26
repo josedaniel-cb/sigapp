@@ -57,6 +57,7 @@ class SigaClient {
       _cookieManager.clearCookies(sigaHost);
       _handleExpiredAuthCookie();
     }
+    // this is not helping us because we need to retry to use the correct cookies
     return handler.next(err);
   }
 
