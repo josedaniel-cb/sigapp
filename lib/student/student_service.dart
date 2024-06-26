@@ -148,51 +148,63 @@ class StudentService {
       DateTime endTime = convertToDateTime(item.HoraFinal);
 
       if (item.Lunes.isNotEmpty) {
+        final parts = item.Lunes.split(' ? ');
         events.add(WeeklyScheduleEvent(
-          title: item.Lunes,
+          title: parts[0],
           start: getDateTimeForDay(startTime, DateTime.monday),
           end: getDateTimeForDay(endTime, DateTime.monday),
           color: getCourseColor(item.Lunes),
+          place: parts[1],
         ));
       }
       if (item.Martes.isNotEmpty) {
+        final parts = item.Martes.split(' ? ');
         events.add(WeeklyScheduleEvent(
-          title: item.Martes,
+          title: parts[0],
           start: getDateTimeForDay(startTime, DateTime.tuesday),
           end: getDateTimeForDay(endTime, DateTime.tuesday),
           color: getCourseColor(item.Martes),
+          place: parts[1],
         ));
       }
       if (item.Miercoles.isNotEmpty) {
+        final parts = item.Miercoles.split(' ? ');
         events.add(WeeklyScheduleEvent(
-          title: item.Miercoles,
+          title: parts[0],
           start: getDateTimeForDay(startTime, DateTime.wednesday),
           end: getDateTimeForDay(endTime, DateTime.wednesday),
           color: getCourseColor(item.Miercoles),
+          place: parts[1],
         ));
       }
       if (item.Jueves.isNotEmpty) {
+        final parts = item.Jueves.split(' ? ');
         events.add(WeeklyScheduleEvent(
-          title: item.Jueves,
+          title: parts[0],
           start: getDateTimeForDay(startTime, DateTime.thursday),
           end: getDateTimeForDay(endTime, DateTime.thursday),
           color: getCourseColor(item.Jueves),
+          place: parts[1],
         ));
       }
       if (item.Viernes.isNotEmpty) {
+        final parts = item.Viernes.split(' ? ');
         events.add(WeeklyScheduleEvent(
-          title: item.Viernes,
+          title: parts[0],
           start: getDateTimeForDay(startTime, DateTime.friday),
           end: getDateTimeForDay(endTime, DateTime.friday),
           color: getCourseColor(item.Viernes),
+          place: parts[1],
         ));
       }
       if (item.Sabado.isNotEmpty) {
+        final parts = item.Sabado.split(' ? ');
         events.add(WeeklyScheduleEvent(
-          title: item.Sabado,
+          title: parts[0],
           start: getDateTimeForDay(startTime, DateTime.saturday),
           end: getDateTimeForDay(endTime, DateTime.saturday),
           color: getCourseColor(item.Sabado),
+          place: parts[1],
         ));
       }
     }

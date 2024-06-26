@@ -14,6 +14,10 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
   late int startHour;
   late int endHour;
 
+  static const littleRay = 10.0;
+  static const hourWidth = 50.0;
+  static const hourHeight = 75.0;
+
   @override
   void initState() {
     super.initState();
@@ -44,7 +48,7 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
           children: [
             Container(
               // color: Colors.red,
-              width: 50,
+              width: hourWidth,
               padding: const EdgeInsets.all(8),
               // child: const Center(
               //   child: Text('Hora'),
@@ -72,7 +76,7 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
                                 (dayIndex) {
                               return Expanded(
                                 child: Container(
-                                  height: 60,
+                                  height: hourHeight,
                                   decoration: BoxDecoration(
                                     border: Border(
                                       left: dayIndex == 0
@@ -106,15 +110,16 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
                       Row(
                         children: [
                           const SizedBox(
-                            width: 50,
-                            height: 10,
+                            width: hourWidth,
+                            height: littleRay,
                           ),
                           for (var dayIndex in List.generate(
                               daysWithEvents.length, (index) => index))
                             Container(
-                              width: (MediaQuery.of(context).size.width - 50) /
+                              width: (MediaQuery.of(context).size.width -
+                                      hourWidth) /
                                   daysWithEvents.length,
-                              height: 10,
+                              height: littleRay,
                               decoration: BoxDecoration(
                                 border: Border(
                                   left: dayIndex == 0
@@ -196,8 +201,8 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
 
   Widget _buildHourLabel(String hour) {
     return Container(
-      width: 50,
-      height: 60,
+      width: hourWidth,
+      height: hourHeight,
       // color: Colors.green,
       child: Stack(
         children: [
@@ -205,7 +210,7 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
             right: 0,
             bottom: 0,
             child: Container(
-              width: 10, // Width of the right side border
+              width: littleRay, // Width of the right side border
               height: 1, // Height to simulate the bottom border
               color: Colors.grey.withOpacity(0.5),
             ),
@@ -221,43 +226,84 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
 
   Widget _buildEvent(WeeklyScheduleEvent event, BuildContext context,
       List<int> daysWithEvents) {
-    double top = (event.start.hour - startHour) * 60.0 + event.start.minute;
-    double height = (event.end.difference(event.start).inMinutes).toDouble();
+    double top =
+        (event.start.hour - startHour) * hourHeight + event.start.minute;
+    double height = (event.end.hour - event.start.hour) * hourHeight +
+        (event.end.minute - event.start.minute);
     int dayIndex = daysWithEvents.indexOf(event.start.weekday);
 
     double gridWidth =
-        (MediaQuery.of(context).size.width - 50) / daysWithEvents.length;
+        (MediaQuery.of(context).size.width - hourWidth) / daysWithEvents.length;
+    const fontSize1 = 12.0;
+    const lineHeight1 = 1.1;
+    const fontSize2 = 10.0; // Unified font size for both place and duration
+    const lineHeight2 = 1.2; // Unified line height for both place and duration
+    const paddingFactor = 4.0;
+    const secondTextThreshold = 30.0;
 
-    // Explanation: duration of the event in half-hour increments
-    int maxLines = (event.end.difference(event.start).inMinutes / 30).ceil();
+    // Adjusting the available height calculation to account for the place and duration information
+    double availableHeight =
+        height - paddingFactor; // Subtracting vertical padding
+    if (height > secondTextThreshold) {
+      double secondTextHeight = fontSize2 * lineHeight2 + paddingFactor / 2;
+      availableHeight -=
+          secondTextHeight; // Adjust for one line of text, since both will share style
+      if (event.place != null) {
+        availableHeight -=
+            secondTextHeight; // Adjust for the second line if place is available
+      }
+    }
+
+    // Recalculate maxLines for the first text considering the additional information
+    int maxLines = (availableHeight / (fontSize1 * lineHeight1)).floor();
 
     return Positioned(
       top: top,
-      left: 50 + dayIndex * gridWidth,
-      width: gridWidth - 4,
+      left: hourWidth + dayIndex * gridWidth,
+      width: gridWidth - paddingFactor,
       height: height,
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 2, vertical: 1),
+        margin: const EdgeInsets.symmetric(
+          horizontal: paddingFactor / 2,
+          vertical: paddingFactor / 4,
+        ),
         decoration: BoxDecoration(
           color: event.color,
-          borderRadius: BorderRadius.circular(4),
+          borderRadius: BorderRadius.circular(paddingFactor),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(4.0),
+          padding: const EdgeInsets.all(paddingFactor),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 event.title,
-                style: TextStyle(color: Colors.white, fontSize: 12),
-                maxLines: maxLines, // Modificado para ajustar según la duración
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: fontSize1,
+                  height: lineHeight1,
+                ),
+                maxLines: maxLines,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
               ),
-              if (height > 30)
+              if (event.place != null) // Place is displayed before duration
+                Text(
+                  event.place!,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: fontSize2,
+                      height: lineHeight2),
+                  textAlign: TextAlign.center,
+                ),
+              if (height > secondTextThreshold)
                 Text(
                   _formatEventDuration(event),
-                  style: TextStyle(color: Colors.white, fontSize: 10),
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: fontSize2,
+                      height: lineHeight2),
                   textAlign: TextAlign.center,
                 ),
             ],
