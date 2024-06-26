@@ -42,7 +42,14 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
         // Header for days of the week
         Row(
           children: [
-            _buildHourLabel('Hora'),
+            Container(
+              // color: Colors.red,
+              width: 50,
+              padding: const EdgeInsets.all(8),
+              // child: const Center(
+              //   child: Text('Hora'),
+              // ),
+            ),
             for (var day in daysWithEvents) _buildDayHeader(day),
           ],
         ),
@@ -52,9 +59,12 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
             child: Stack(
               children: [
                 Column(
-                  children: List.generate(endHour - startHour, (hour) {
+                  // children: List.generate(endHour - startHour, (hour) {
+                  children: List.generate(endHour - startHour - 1, (hour) {
                     return Row(
                       children: [
+                        // +1 because the alignment
+                        // _buildHourLabel(_formatHour(startHour + hour])),
                         _buildHourLabel(_formatHour(startHour + hour)),
                         Expanded(
                           child: Row(
@@ -64,8 +74,23 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
                                 child: Container(
                                   height: 60,
                                   decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: Colors.grey.withOpacity(0.5),
+                                    border: Border(
+                                      left: dayIndex == 0
+                                          ? BorderSide(
+                                              color:
+                                                  Colors.grey.withOpacity(0.5),
+                                            )
+                                          : BorderSide.none,
+                                      right: dayIndex !=
+                                              daysWithEvents.length - 1
+                                          ? BorderSide(
+                                              color:
+                                                  Colors.grey.withOpacity(0.5),
+                                            )
+                                          : BorderSide.none,
+                                      bottom: BorderSide(
+                                        color: Colors.grey.withOpacity(0.5),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -75,7 +100,39 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
                         ),
                       ],
                     );
-                  }),
+                  })
+                    ..add(
+                      // an aux row just to print right borders of 10 height
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 50,
+                            height: 10,
+                          ),
+                          for (var dayIndex in List.generate(
+                              daysWithEvents.length, (index) => index))
+                            Container(
+                              width: (MediaQuery.of(context).size.width - 50) /
+                                  daysWithEvents.length,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  left: dayIndex == 0
+                                      ? BorderSide(
+                                          color: Colors.grey.withOpacity(0.5),
+                                        )
+                                      : BorderSide.none,
+                                  right: dayIndex != daysWithEvents.length - 1
+                                      ? BorderSide(
+                                          color: Colors.grey.withOpacity(0.5),
+                                        )
+                                      : BorderSide.none,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
                 ),
                 ...widget.events
                     .where((event) =>
@@ -102,33 +159,37 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
     String dayLabel;
     switch (day) {
       case 1:
-        dayLabel = 'Mon';
+        dayLabel = 'Lun';
         break;
       case 2:
-        dayLabel = 'Tue';
+        dayLabel = 'Mar';
         break;
       case 3:
-        dayLabel = 'Wed';
+        dayLabel = 'Mie';
         break;
       case 4:
-        dayLabel = 'Thu';
+        dayLabel = 'Jue';
         break;
       case 5:
-        dayLabel = 'Fri';
+        dayLabel = 'Vie';
         break;
       case 6:
-        dayLabel = 'Sat';
+        dayLabel = 'Sab';
         break;
       case 7:
-        dayLabel = 'Sun';
+        dayLabel = 'Dom';
         break;
       default:
         dayLabel = '';
     }
+    return _buildHeader(dayLabel);
+  }
+
+  Widget _buildHeader(String text) {
     return Expanded(
       child: Container(
-        padding: EdgeInsets.all(8),
-        child: Center(child: Text(dayLabel)),
+        padding: const EdgeInsets.all(8),
+        child: Center(child: Text(text)),
       ),
     );
   }
@@ -137,8 +198,24 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
     return Container(
       width: 50,
       height: 60,
-      padding: EdgeInsets.all(8),
-      child: Center(child: Text(hour)),
+      // color: Colors.green,
+      child: Stack(
+        children: [
+          Positioned(
+            right: 0,
+            bottom: 0,
+            child: Container(
+              width: 10, // Width of the right side border
+              height: 1, // Height to simulate the bottom border
+              color: Colors.grey.withOpacity(0.5),
+            ),
+          ),
+          Container(
+            child: Text(hour),
+            alignment: Alignment.topCenter,
+          ),
+        ],
+      ),
     );
   }
 

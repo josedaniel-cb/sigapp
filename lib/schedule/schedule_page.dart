@@ -57,7 +57,7 @@ class SchedulePageState extends State<SchedulePage> {
   }
 
   Widget _buildSuccessState(BuildContext context, SuccessState state) {
-    List<WeeklyScheduleEvent> events = state.schedule.schedule;
+    List<WeeklyScheduleEvent> events = state.schedule.weeklyEvents;
     // return WeeklySchedule(events: events);
     // Set a fixed h and w for the WeeklySchedule because it internally uses a CustomScrollView
     // The h and w must be the available space, use MediaQuery
