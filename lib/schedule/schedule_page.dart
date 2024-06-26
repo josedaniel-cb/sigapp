@@ -65,6 +65,8 @@ class SchedulePageState extends State<SchedulePage> {
       width: MediaQuery.of(context).size.width,
       child: WeeklySchedule(
         events: events,
+        bottomText:
+            'Semestre ${state.schedule.semester.substring(0, 4)}-${state.schedule.semester.substring(4)} | Sigapp',
       ),
     );
   }

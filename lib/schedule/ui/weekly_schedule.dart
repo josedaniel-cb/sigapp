@@ -3,8 +3,13 @@ import 'package:sigapp/student/entities/weekly_schedule_event.dart';
 
 class WeeklySchedule extends StatefulWidget {
   final List<WeeklyScheduleEvent> events;
+  final String? bottomText;
 
-  const WeeklySchedule({super.key, required this.events});
+  const WeeklySchedule({
+    super.key,
+    required this.events,
+    this.bottomText,
+  });
 
   @override
   State<WeeklySchedule> createState() => _WeeklyScheduleState();
@@ -105,7 +110,7 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
                       ],
                     );
                   })
-                    ..add(
+                    ..addAll([
                       // an aux row just to print right borders of 10 height
                       Row(
                         children: [
@@ -137,7 +142,17 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
                             ),
                         ],
                       ),
-                    ),
+                      if (widget.bottomText != null)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                child: Text(widget.bottomText!)),
+                          ],
+                        ),
+                    ]),
                 ),
                 ...widget.events
                     .where((event) =>
@@ -226,6 +241,19 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
 
   Widget _buildEvent(WeeklyScheduleEvent event, BuildContext context,
       List<int> daysWithEvents) {
+    double calculateLuminance(Color color) {
+      final double r = color.red / 255;
+      final double g = color.green / 255;
+      final double b = color.blue / 255;
+      return 0.299 * r + 0.287 * g + 0.114 * b;
+    }
+
+    Color chooseTextColor(Color backgroundColor) {
+      return calculateLuminance(backgroundColor) > 0.5
+          ? Colors.black
+          : Colors.white;
+    }
+
     double top =
         (event.start.hour - startHour) * hourHeight + event.start.minute;
     double height = (event.end.hour - event.start.hour) * hourHeight +
@@ -248,14 +276,14 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
       double secondTextHeight = fontSize2 * lineHeight2 + paddingFactor / 2;
       availableHeight -=
           secondTextHeight; // Adjust for one line of text, since both will share style
-      if (event.place != null) {
-        availableHeight -=
-            secondTextHeight; // Adjust for the second line if place is available
-      }
+      availableHeight -=
+          secondTextHeight; // Adjust for the second line if place is available
     }
 
     // Recalculate maxLines for the first text considering the additional information
     int maxLines = (availableHeight / (fontSize1 * lineHeight1)).floor();
+
+    final textColor = chooseTextColor(event.color);
 
     return Positioned(
       top: top,
@@ -279,8 +307,8 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
             children: [
               Text(
                 event.title,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: textColor,
                   fontSize: fontSize1,
                   height: lineHeight1,
                 ),
@@ -288,20 +316,17 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
               ),
-              if (event.place != null) // Place is displayed before duration
-                Text(
-                  event.place!,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: fontSize2,
-                      height: lineHeight2),
-                  textAlign: TextAlign.center,
-                ),
+              Text(
+                event.place,
+                style: TextStyle(
+                    color: textColor, fontSize: fontSize2, height: lineHeight2),
+                textAlign: TextAlign.center,
+              ),
               if (height > secondTextThreshold)
                 Text(
                   _formatEventDuration(event),
-                  style: const TextStyle(
-                      color: Colors.white,
+                  style: TextStyle(
+                      color: textColor,
                       fontSize: fontSize2,
                       height: lineHeight2),
                   textAlign: TextAlign.center,
