@@ -19,21 +19,21 @@ mixin _$ScheduleState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<GetClassScheduleModel> schedule) success,
+    required TResult Function(StudentSemesterSchedule schedule) success,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<GetClassScheduleModel> schedule)? success,
+    TResult? Function(StudentSemesterSchedule schedule)? success,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<GetClassScheduleModel> schedule)? success,
+    TResult Function(StudentSemesterSchedule schedule)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -125,7 +125,7 @@ class _$LoadingStateImpl with DiagnosticableTreeMixin implements LoadingState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<GetClassScheduleModel> schedule) success,
+    required TResult Function(StudentSemesterSchedule schedule) success,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -135,7 +135,7 @@ class _$LoadingStateImpl with DiagnosticableTreeMixin implements LoadingState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<GetClassScheduleModel> schedule)? success,
+    TResult? Function(StudentSemesterSchedule schedule)? success,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -145,7 +145,7 @@ class _$LoadingStateImpl with DiagnosticableTreeMixin implements LoadingState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<GetClassScheduleModel> schedule)? success,
+    TResult Function(StudentSemesterSchedule schedule)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -200,7 +200,9 @@ abstract class _$$SuccessStateImplCopyWith<$Res> {
           _$SuccessStateImpl value, $Res Function(_$SuccessStateImpl) then) =
       __$$SuccessStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<GetClassScheduleModel> schedule});
+  $Res call({StudentSemesterSchedule schedule});
+
+  $StudentSemesterScheduleCopyWith<$Res> get schedule;
 }
 
 /// @nodoc
@@ -218,26 +220,28 @@ class __$$SuccessStateImplCopyWithImpl<$Res>
   }) {
     return _then(_$SuccessStateImpl(
       null == schedule
-          ? _value._schedule
+          ? _value.schedule
           : schedule // ignore: cast_nullable_to_non_nullable
-              as List<GetClassScheduleModel>,
+              as StudentSemesterSchedule,
     ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $StudentSemesterScheduleCopyWith<$Res> get schedule {
+    return $StudentSemesterScheduleCopyWith<$Res>(_value.schedule, (value) {
+      return _then(_value.copyWith(schedule: value));
+    });
   }
 }
 
 /// @nodoc
 
 class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
-  const _$SuccessStateImpl(final List<GetClassScheduleModel> schedule)
-      : _schedule = schedule;
+  const _$SuccessStateImpl(this.schedule);
 
-  final List<GetClassScheduleModel> _schedule;
   @override
-  List<GetClassScheduleModel> get schedule {
-    if (_schedule is EqualUnmodifiableListView) return _schedule;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_schedule);
-  }
+  final StudentSemesterSchedule schedule;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -257,12 +261,12 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SuccessStateImpl &&
-            const DeepCollectionEquality().equals(other._schedule, _schedule));
+            (identical(other.schedule, schedule) ||
+                other.schedule == schedule));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_schedule));
+  int get hashCode => Object.hash(runtimeType, schedule);
 
   @JsonKey(ignore: true)
   @override
@@ -274,7 +278,7 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<GetClassScheduleModel> schedule) success,
+    required TResult Function(StudentSemesterSchedule schedule) success,
     required TResult Function(String message) error,
   }) {
     return success(schedule);
@@ -284,7 +288,7 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<GetClassScheduleModel> schedule)? success,
+    TResult? Function(StudentSemesterSchedule schedule)? success,
     TResult? Function(String message)? error,
   }) {
     return success?.call(schedule);
@@ -294,7 +298,7 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<GetClassScheduleModel> schedule)? success,
+    TResult Function(StudentSemesterSchedule schedule)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -340,10 +344,10 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
 }
 
 abstract class SuccessState implements ScheduleState {
-  const factory SuccessState(final List<GetClassScheduleModel> schedule) =
+  const factory SuccessState(final StudentSemesterSchedule schedule) =
       _$SuccessStateImpl;
 
-  List<GetClassScheduleModel> get schedule;
+  StudentSemesterSchedule get schedule;
   @JsonKey(ignore: true)
   _$$SuccessStateImplCopyWith<_$SuccessStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -422,7 +426,7 @@ class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<GetClassScheduleModel> schedule) success,
+    required TResult Function(StudentSemesterSchedule schedule) success,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -432,7 +436,7 @@ class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<GetClassScheduleModel> schedule)? success,
+    TResult? Function(StudentSemesterSchedule schedule)? success,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -442,7 +446,7 @@ class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<GetClassScheduleModel> schedule)? success,
+    TResult Function(StudentSemesterSchedule schedule)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
