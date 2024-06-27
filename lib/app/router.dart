@@ -52,7 +52,7 @@ class RouterBuilder {
         ),
       ],
       redirect: (context, state) {
-        if (!authRepository.isAuthenticated || !sigaClient.hasAuthToken) {
+        if (!authRepository.hasAuthCredentials) {
           return '/login';
         }
         return null;

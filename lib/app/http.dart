@@ -2,15 +2,19 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-@singleton
 class HttpClientBuilder {
   final Dio _dio = Dio();
-  final CookieManager _cookieManager;
+  late String _id;
+  late final CookieManager _cookieManager;
 
-  HttpClientBuilder(this._cookieManager) {
+  HttpClientBuilder({
+    required String id,
+    required SharedPreferences prefs,
+  }) {
+    _id = id;
+    _cookieManager = CookieManager(id: _id, prefs: prefs);
     _setup();
   }
 
@@ -95,13 +99,16 @@ class HttpClientBuilder {
     return this;
   }
 
-  Dio build() {
-    return _dio;
+  HttpClientBuilderResult build() {
+    return HttpClientBuilderResult(
+      client: _dio,
+      cookieManager: _cookieManager,
+    );
   }
 
   void _printRequest(RequestOptions options) {
     if (kDebugMode) {
-      print('👻 Request: ${options.method} ${options.uri}');
+      print('👻 [$_id] Request: ${options.method} ${options.uri}');
       print('Headers: ${json.encode(options.headers)}');
       try {
         print('Data: ${json.encode(options.data)}');
@@ -114,7 +121,7 @@ class HttpClientBuilder {
   void _printResponse(Response<dynamic> response) {
     if (kDebugMode) {
       print(
-          '👻 Response: ${response.requestOptions.method} ${response.requestOptions.uri} ${response.statusCode}');
+          '👻 [$_id] Response: ${response.requestOptions.method} ${response.requestOptions.uri} ${response.statusCode}');
       print('Headers: ${json.encode(response.headers.map)}');
       try {
         print('Data: ${json.encode(response.data)}');
@@ -125,14 +132,22 @@ class HttpClientBuilder {
   }
 }
 
-@singleton
 class CookieManager {
   final SharedPreferences _prefs;
+  final String _id;
 
-  CookieManager(this._prefs);
+  CookieManager({
+    required String id,
+    required SharedPreferences prefs,
+  })  : _prefs = prefs,
+        _id = id;
+
+  String _buildKey(String host) {
+    return '${_id}_cookies_$host';
+  }
 
   Future<void> saveCookies(String host, List<String> newCookies) async {
-    final key = 'cookies_$host';
+    final key = _buildKey(host);
     var existingCookies = _prefs.getStringList(key) ?? [];
     existingCookies.addAll(newCookies);
 
@@ -157,12 +172,12 @@ class CookieManager {
   List<String> getCookies(String host) {
     removeExpiredCookies(host);
 
-    final key = 'cookies_$host';
+    final key = _buildKey(host);
     return _prefs.getStringList(key) ?? [];
   }
 
   void clearCookies(String host) {
-    final key = 'cookies_$host';
+    final key = _buildKey(host);
     _prefs.remove(key);
   }
 
@@ -172,7 +187,7 @@ class CookieManager {
   }
 
   Future<void> removeExpiredCookies(String host) async {
-    final key = 'cookies_$host';
+    final key = _buildKey(host);
     var cookies = _prefs.getStringList(key) ?? [];
 
     cookies.removeWhere((cookie) {
@@ -191,4 +206,14 @@ class CookieManager {
 
     await _prefs.setStringList(key, cookies);
   }
+}
+
+class HttpClientBuilderResult {
+  final Dio client;
+  final CookieManager cookieManager;
+
+  HttpClientBuilderResult({
+    required this.client,
+    required this.cookieManager,
+  });
 }

@@ -5,10 +5,14 @@ import 'package:injectable/injectable.dart';
 import 'package:sigapp/app/siga_client.dart';
 
 @singleton
-class AuthRepository {
-  final SigaClient _sigaClient;
+class AuthRepository extends BaseAuthRepository {
+  AuthRepository(SigaClient sigaClient) : super(sigaClient.http);
+}
 
-  AuthRepository(this._sigaClient);
+class BaseAuthRepository {
+  final Dio _http;
+
+  BaseAuthRepository(this._http);
 
   Future<Response<dynamic>> login(String username, String password) async {
     // curl 'https://academico.unp.edu.pe/' \
@@ -33,7 +37,7 @@ class AuthRepository {
     // (expected response is a 302 redirect to https://academico.unp.edu.pe/Home/Index)
 
     // Now, replicate using Dio
-    final response = await _sigaClient.http.post(
+    final response = await _http.post(
       '/',
       data: {
         'Instancia': '01',
@@ -87,7 +91,7 @@ class AuthRepository {
     //   -H 'sec-fetch-site: same-origin' \
     //   -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0' \
     //   -H 'x-requested-with: XMLHttpRequest'
-    final response = await _sigaClient.http.post('/Home/KeepSession',
+    final response = await _http.post('/Home/KeepSession',
         options: Options(
           validateStatus: (status) => true,
         ));

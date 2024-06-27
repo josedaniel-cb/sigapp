@@ -1,34 +1,25 @@
 import 'dart:async';
 
 import 'package:injectable/injectable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sigapp/app/router.dart';
+import 'package:sigapp/app/siga_client.dart';
 import 'package:sigapp/auth/auth_repository.dart';
 
 @singleton
 class AuthService {
+  final SigaClient _sigaClient;
   final AuthRepository _authRepository;
-  final SharedPreferences _prefs;
-  final RouterRefreshListenable _routerRefreshListenable;
 
-  AuthService(this._authRepository, this._prefs, this._routerRefreshListenable);
+  AuthService(this._authRepository, this._sigaClient);
 
   Future<void> init() async {
-    if (isAuthenticated) {
+    if (hasAuthCredentials) {
       // Get auth cookie silently
       await _authRepository.login(getUsername()!, getPassword()!);
     }
-
-    Timer.periodic(const Duration(seconds: 45), (timer) async {
-      final response = await _authRepository.keepSession();
-      if (response.statusCode != 200 && isAuthenticated) {
-        _authRepository.login(getUsername()!, getPassword()!);
-      }
-    });
   }
 
-  get isAuthenticated {
-    return _prefs.containsKey('username') && _prefs.containsKey('password');
+  get hasAuthCredentials {
+    return _sigaClient.hasAuthCredentials;
   }
 
   Future<bool> login(String username, String password) async {
@@ -50,24 +41,18 @@ class AuthService {
   }
 
   void logout() {
-    // _prefs.remove('username');
-    _prefs.remove('password');
-    // _sigaClient.logout();
-    _routerRefreshListenable.refresh();
+    _sigaClient.logout();
   }
 
   String? getUsername() {
-    return _prefs.getString('username');
+    return _sigaClient.username;
   }
 
   String? getPassword() {
-    return _prefs.getString('password');
+    return _sigaClient.password;
   }
 
   void _saveCredentials(String username, String password) {
-    _prefs.setString('username', username);
-    _prefs.setString('password', password);
-
-    // Set a timer to POST /keep-session every minute until the user logs out
+    _sigaClient.saveCredentials(username, password);
   }
 }
