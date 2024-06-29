@@ -5,12 +5,14 @@ class WeeklySchedule extends StatefulWidget {
   final List<WeeklyScheduleEvent> events;
   final String? bottomText;
   final bool disableScroll;
+  final double fontSize;
 
   const WeeklySchedule({
     super.key,
     required this.events,
     this.bottomText,
     this.disableScroll = false,
+    this.fontSize = 12.0,
   });
 
   @override
@@ -62,6 +64,7 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
         .toList();
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         // Header for days of the week
         Row(
@@ -74,13 +77,13 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
           ],
         ),
         // Combined hourly labels and events grid
-        Expanded(
-          child: widget.disableScroll
-              ? _buildBody(daysWithEvents, context)
-              : SingleChildScrollView(
+        widget.disableScroll
+            ? _buildBody(daysWithEvents, context)
+            : Expanded(
+                child: SingleChildScrollView(
                   child: _buildBody(daysWithEvents, context),
                 ),
-        ),
+              ),
       ],
     );
   }
@@ -273,11 +276,12 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
         (event.end.minute - event.start.minute);
     int dayIndex = daysWithEvents.indexOf(event.start.weekday);
 
-    const fontSize1 = 12.0;
+    final fontSize1 = widget.fontSize;
     const lineHeight1 = 1.1;
-    const fontSize2 = 10.0; // Unified font size for both place and duration
+    final fontSize2 =
+        fontSize1 * 0.75; // Unified font size for both place and duration
     const lineHeight2 = 1.2; // Unified line height for both place and duration
-    const paddingFactor = 4.0;
+    final paddingFactor = widget.fontSize / 3;
     const secondTextThreshold = 30.0;
 
     // Adjusting the available height calculation to account for the place and duration information
@@ -306,7 +310,7 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
       width: gridWidth - paddingFactor,
       height: height,
       child: Container(
-        margin: const EdgeInsets.symmetric(
+        margin: EdgeInsets.symmetric(
           horizontal: paddingFactor / 2,
           vertical: paddingFactor / 4,
         ),
@@ -315,7 +319,7 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
           borderRadius: BorderRadius.circular(paddingFactor),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(paddingFactor),
+          padding: EdgeInsets.all(paddingFactor),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

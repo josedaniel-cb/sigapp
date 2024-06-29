@@ -111,6 +111,12 @@ class SchedulePageState extends State<SchedulePage> {
     );
   }
 
+  /// https://stackoverflow.com/a/57054302
+  double _pixelsToDIP(BuildContext context, double pixels) {
+    final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+    return pixels / devicePixelRatio;
+  }
+
   void _showShareBottomSheet(SuccessState state) {
     showModalBottomSheet(
       context: context,
@@ -118,19 +124,16 @@ class SchedulePageState extends State<SchedulePage> {
         return SizedBox(
           height: MediaQuery.of(context).size.height / 2,
           child: InteractiveViewer(
-            constrained:
-                false, // Allow the child to be bigger than the viewport
+            constrained: false,
             minScale: 1,
             maxScale: 3,
-            // panEnabled: true, // This is the default, but just to be explicit
             child: SizedBox(
-              width: MediaQuery.of(context).size.height,
-              height: MediaQuery.of(context).size.height,
+              width: _pixelsToDIP(context, 1920),
               child: WeeklySchedule(
                 events: state.schedule.weeklyEvents,
                 bottomText: 'Semestre ${state.schedule.semester.name} | Sigapp',
-                disableScroll:
-                    true, // Consider adjusting if this interferes with desired behavior
+                disableScroll: true,
+                fontSize: _pixelsToDIP(context, 40),
               ),
             ),
           ),
