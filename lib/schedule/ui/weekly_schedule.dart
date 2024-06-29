@@ -4,11 +4,13 @@ import 'package:sigapp/student/entities/weekly_schedule_event.dart';
 class WeeklySchedule extends StatefulWidget {
   final List<WeeklyScheduleEvent> events;
   final String? bottomText;
+  final bool disableScroll;
 
   const WeeklySchedule({
     super.key,
     required this.events,
     this.bottomText,
+    this.disableScroll = false,
   });
 
   @override
@@ -65,119 +67,117 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
         Row(
           children: [
             Container(
-              // color: Colors.red,
               width: hourWidth,
               padding: const EdgeInsets.all(8),
-              // child: const Center(
-              //   child: Text('Hora'),
-              // ),
             ),
             for (var day in daysWithEvents) _buildDayHeader(day),
           ],
         ),
         // Combined hourly labels and events grid
         Expanded(
-          child: SingleChildScrollView(
-            child: Stack(
-              children: [
-                Column(
-                  // children: List.generate(endHour - startHour, (hour) {
-                  children: List.generate(endHour - startHour - 1, (hour) {
-                    return Row(
-                      children: [
-                        // +1 because the alignment
-                        // _buildHourLabel(_formatHour(startHour + hour])),
-                        _buildHourLabel(_formatHour(startHour + hour)),
-                        Expanded(
-                          child: Row(
-                            children: List.generate(daysWithEvents.length,
-                                (dayIndex) {
-                              return Expanded(
-                                child: Container(
-                                  height: hourHeight,
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      left: dayIndex == 0
-                                          ? BorderSide(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
-                                            )
-                                          : BorderSide.none,
-                                      right: dayIndex !=
-                                              daysWithEvents.length - 1
-                                          ? BorderSide(
-                                              color:
-                                                  Colors.grey.withOpacity(0.5),
-                                            )
-                                          : BorderSide.none,
-                                      bottom: BorderSide(
-                                        color: Colors.grey.withOpacity(0.5),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                          ),
-                        ),
-                      ],
-                    );
-                  })
-                    ..addAll([
-                      // an aux row just to print right borders of 10 height
-                      Row(
-                        children: [
-                          const SizedBox(
-                            width: hourWidth,
-                            height: littleRay,
-                          ),
-                          for (var dayIndex in List.generate(
-                              daysWithEvents.length, (index) => index))
-                            Container(
-                              width: (MediaQuery.of(context).size.width -
-                                      hourWidth) /
-                                  daysWithEvents.length,
-                              height: littleRay,
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  left: dayIndex == 0
-                                      ? BorderSide(
-                                          color: Colors.grey.withOpacity(0.5),
-                                        )
-                                      : BorderSide.none,
-                                  right: dayIndex != daysWithEvents.length - 1
-                                      ? BorderSide(
-                                          color: Colors.grey.withOpacity(0.5),
-                                        )
-                                      : BorderSide.none,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                      if (widget.bottomText != null)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
-                                child: Text(widget.bottomText!)),
-                          ],
-                        ),
-                    ]),
+          child: widget.disableScroll
+              ? _buildBody(daysWithEvents, context)
+              : SingleChildScrollView(
+                  child: _buildBody(daysWithEvents, context),
                 ),
-                ...widget.events
-                    .where((event) =>
-                        event.start.hour >= startHour &&
-                        event.end.hour <= endHour)
-                    .map((event) => _buildEvent(event, context, daysWithEvents))
-                    .toList(),
-              ],
-            ),
-          ),
         ),
       ],
+    );
+  }
+
+  Widget _buildBody(List<int> daysWithEvents, BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      return Stack(
+        children: [
+          _buildGrid(daysWithEvents, context),
+          ...widget.events
+              .where((event) =>
+                  event.start.hour >= startHour && event.end.hour <= endHour)
+              .map((event) => _buildEvent(event, constraints, daysWithEvents)),
+        ],
+      );
+    });
+  }
+
+  Widget _buildGrid(List<int> daysWithEvents, BuildContext context) {
+    return Column(
+      children: List.generate(endHour - 1 - startHour, (hour) {
+        return Row(
+          children: [
+            _buildHourLabel(_formatHour(startHour + hour)),
+            Expanded(
+              child: Row(
+                children: List.generate(daysWithEvents.length, (dayIndex) {
+                  return Expanded(
+                    child: Container(
+                      height: hourHeight,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          left: dayIndex == 0
+                              ? BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                )
+                              : BorderSide.none,
+                          right: dayIndex != daysWithEvents.length - 1
+                              ? BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                )
+                              : BorderSide.none,
+                          bottom: BorderSide(
+                            color: Colors.grey.withOpacity(0.5),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+          ],
+        );
+      })
+        ..addAll([
+          // an aux row just to print right borders of 10 height
+          Row(
+            children: [
+              const SizedBox(
+                width: hourWidth,
+                height: littleRay,
+              ),
+              for (var dayIndex
+                  in List.generate(daysWithEvents.length, (index) => index))
+                Container(
+                  width: (MediaQuery.of(context).size.width - hourWidth) /
+                      daysWithEvents.length,
+                  height: littleRay,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      left: dayIndex == 0
+                          ? BorderSide(
+                              color: Colors.grey.withOpacity(0.5),
+                            )
+                          : BorderSide.none,
+                      right: dayIndex != daysWithEvents.length - 1
+                          ? BorderSide(
+                              color: Colors.grey.withOpacity(0.5),
+                            )
+                          : BorderSide.none,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          if (widget.bottomText != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    child: Text(widget.bottomText!)),
+              ],
+            ),
+        ]),
     );
   }
 
@@ -252,7 +252,7 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
     );
   }
 
-  Widget _buildEvent(WeeklyScheduleEvent event, BuildContext context,
+  Widget _buildEvent(WeeklyScheduleEvent event, BoxConstraints constraints,
       List<int> daysWithEvents) {
     double calculateLuminance(Color color) {
       final double r = color.red / 255;
@@ -273,8 +273,6 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
         (event.end.minute - event.start.minute);
     int dayIndex = daysWithEvents.indexOf(event.start.weekday);
 
-    double gridWidth =
-        (MediaQuery.of(context).size.width - hourWidth) / daysWithEvents.length;
     const fontSize1 = 12.0;
     const lineHeight1 = 1.1;
     const fontSize2 = 10.0; // Unified font size for both place and duration
@@ -298,6 +296,10 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
 
     final textColor = chooseTextColor(event.color);
 
+    // final gridWidth =
+    //     (MediaQuery.of(context).size.width - hourWidth) / daysWithEvents.length;
+    final gridWidth =
+        (constraints.maxWidth - hourWidth) / daysWithEvents.length;
     return Positioned(
       top: top,
       left: hourWidth + dayIndex * gridWidth,

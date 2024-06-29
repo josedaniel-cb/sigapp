@@ -5,7 +5,6 @@ import 'package:sigapp/schedule/ui/schedule_semester_select.dart';
 import 'package:sigapp/schedule/ui/weekly_schedule.dart';
 import 'package:sigapp/shared/error_state.dart';
 import 'package:sigapp/shared/loading_state.dart';
-import 'package:sigapp/student/entities/student_semester_schedule.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
@@ -43,12 +42,17 @@ class SchedulePageState extends State<SchedulePage> {
             ),
             actions: <Widget>[
               IconButton(
+                icon: const Icon(Icons.share),
+                onPressed: (state is SuccessState &&
+                        state.schedule.semesterList.isNotEmpty)
+                    ? () => _showShareBottomSheet(state)
+                    : null,
+              ),
+              IconButton(
                 icon: const Icon(Icons.calendar_today),
-                onPressed: state.map(
-                  loading: (_) => null,
-                  success: (state) => () => _showModalBottomSheet(state),
-                  error: (_) => null,
-                ),
+                onPressed: state is SuccessState
+                    ? () => _showModalBottomSheet(state)
+                    : null,
               ),
             ],
           ),
@@ -84,7 +88,7 @@ class SchedulePageState extends State<SchedulePage> {
       width: MediaQuery.of(context).size.width,
       child: WeeklySchedule(
         events: state.schedule.weeklyEvents,
-        bottomText: 'Semestre ${state.schedule.semester.name} | Sigapp',
+        // bottomText: 'Semestre ${state.schedule.semester.name} | Sigapp',
       ),
     );
   }
@@ -101,6 +105,34 @@ class SchedulePageState extends State<SchedulePage> {
               Navigator.pop(context);
             },
             schedule: state.schedule,
+          ),
+        );
+      },
+    );
+  }
+
+  void _showShareBottomSheet(SuccessState state) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height / 2,
+          child: InteractiveViewer(
+            constrained:
+                false, // Allow the child to be bigger than the viewport
+            minScale: 1,
+            maxScale: 3,
+            // panEnabled: true, // This is the default, but just to be explicit
+            child: SizedBox(
+              width: MediaQuery.of(context).size.height,
+              height: MediaQuery.of(context).size.height,
+              child: WeeklySchedule(
+                events: state.schedule.weeklyEvents,
+                bottomText: 'Semestre ${state.schedule.semester.name} | Sigapp',
+                disableScroll:
+                    true, // Consider adjusting if this interferes with desired behavior
+              ),
+            ),
           ),
         );
       },
