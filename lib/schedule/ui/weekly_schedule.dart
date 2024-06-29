@@ -29,9 +29,9 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
   late int startHour;
   late int endHour;
 
-  static const littleRay = 10.0;
   static const hourWidth = 50.0;
-  static const hourHeight = 75.0;
+  static const rowHeight = 75.0;
+  static const littleRay = rowHeight * 0.1;
 
   @override
   void initState() {
@@ -41,9 +41,10 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
 
   void _calculateHourRange() {
     if (widget.events.isEmpty) {
-      // Set default values or handle the case when there are no events
-      startHour = 0; // Default or a sensible value for your use case
-      endHour = 24; // Default or a sensible value for your use case
+      startHour =
+          8; // Cambiado para un valor más común para un horario académico
+      endHour =
+          18; // Cambiado para un valor más común para un horario académico
     } else {
       startHour = widget.events
           .map((event) => event.start.hour)
@@ -58,7 +59,6 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
   @override
   Widget build(BuildContext context) {
     if (widget.events.isEmpty) {
-      // Display a message or alternative content when there are no events
       return const Center(
         child: Text('No events to display'),
       );
@@ -72,6 +72,8 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
         color: Colors.white,
+        // height: constraints.maxHeight, // Asegurando tamaño fijo
+        // width: constraints.maxWidth, // Asegurando tamaño fijo
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -137,8 +139,10 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
   }
 
   Widget _buildGrid(List<int> daysWithEvents, BoxConstraints constraints) {
+    final numOfRows =
+        endHour - startHour - 1; // -1 required to avoid an empty row
     return Column(
-      children: List.generate(endHour - 1 - startHour, (hour) {
+      children: List.generate(numOfRows, (hour) {
         return Row(
           children: [
             _buildHourLabel(_formatHour(startHour + hour)),
@@ -147,7 +151,7 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
                 children: List.generate(daysWithEvents.length, (dayIndex) {
                   return Expanded(
                     child: Container(
-                      height: hourHeight,
+                      height: rowHeight,
                       decoration: BoxDecoration(
                         border: Border(
                           left: dayIndex == 0
@@ -281,8 +285,7 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
   Widget _buildHourLabel(String hour) {
     return Container(
       width: hourWidth,
-      height: hourHeight,
-      // color: Colors.green,
+      height: rowHeight,
       child: Stack(
         children: [
           Positioned(
@@ -318,10 +321,10 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
           : Colors.white;
     }
 
-    double top =
-        (event.start.hour - startHour) * hourHeight + event.start.minute;
-    double height = (event.end.hour - event.start.hour) * hourHeight +
-        (event.end.minute - event.start.minute);
+    double top = (event.start.hour - startHour) * rowHeight +
+        (event.start.minute / 60) * rowHeight;
+    double height = (event.end.hour - event.start.hour) * rowHeight +
+        ((event.end.minute - event.start.minute) / 60) * rowHeight;
     int dayIndex = daysWithEvents.indexOf(event.start.weekday);
 
     final fontSize1 = widget.fontSize;
@@ -332,18 +335,13 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
     final paddingFactor = widget.fontSize / 3;
     const secondTextThreshold = 30.0;
 
-    // Adjusting the available height calculation to account for the place and duration information
-    double availableHeight =
-        height - paddingFactor; // Subtracting vertical padding
+    double availableHeight = height - paddingFactor;
     if (height > secondTextThreshold) {
       double secondTextHeight = fontSize2 * lineHeight2 + paddingFactor / 2;
-      availableHeight -=
-          secondTextHeight; // Adjust for one line of text, since both will share style
-      availableHeight -=
-          secondTextHeight; // Adjust for the second line if place is available
+      availableHeight -= secondTextHeight;
+      availableHeight -= secondTextHeight;
     }
 
-    // Recalculate maxLines for the first text considering the additional information
     int maxLines = (availableHeight / (fontSize1 * lineHeight1)).floor();
 
     final textColor = chooseTextColor(event.color);
@@ -404,18 +402,15 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
   }
 
   String _formatEventDuration(WeeklyScheduleEvent event) {
-    // Determine start and end hours, adjusting for 12-hour format without leading zeros
     String startHour =
         (event.start.hour > 12 ? event.start.hour - 12 : event.start.hour)
             .toString();
     String endHour =
         (event.end.hour > 12 ? event.end.hour - 12 : event.end.hour).toString();
 
-    // Determine if start and end times are AM or PM
     String startPeriod = event.start.hour >= 12 ? 'pm' : 'am';
     String endPeriod = event.end.hour >= 12 ? 'pm' : 'am';
 
-    // Format minutes to include leading zero if not on the hour, otherwise leave as empty string
     String startMinute = event.start.minute == 0
         ? ''
         : ':${event.start.minute.toString().padLeft(2, '0')}';
@@ -423,16 +418,12 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
         ? ''
         : ':${event.end.minute.toString().padLeft(2, '0')}';
 
-    // Determine if the AM/PM indicator should be shown for the start time
     String startAmPm = startPeriod == endPeriod ? '' : startPeriod;
     String endAmPm = endPeriod;
 
-    // Construct the formatted time string based on whether minutes are included
     if (startMinute.isEmpty && endMinute.isEmpty) {
-      // If both times are on the hour, don't show minutes, and only show AM/PM once if they are the same
       return '$startHour$startAmPm - $endHour$endAmPm';
     } else {
-      // If either time includes minutes, show minutes and AM/PM indicators as needed
       return '$startHour$startMinute$startAmPm - $endHour$endMinute$endAmPm';
     }
   }
