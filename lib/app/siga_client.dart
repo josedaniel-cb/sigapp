@@ -25,6 +25,8 @@ class SigaClient {
   // final GoRouter _router;
   final SharedPreferences _prefs;
 
+  Completer<void>? _refreshSessionCompleter;
+
   SigaClient(
     this._prefs,
     // this._router,
@@ -56,6 +58,8 @@ class SigaClient {
   }
 
   Future<void> _refreshSession() async {
+    _refreshSessionCompleter = Completer<void>();
+
     try {
       final keepSessionResponse = await _authRepository.keepSession();
       if (keepSessionResponse.statusCode == 302 &&
@@ -68,24 +72,26 @@ class SigaClient {
           password!,
         );
         if (loginResponse.statusCode != 302) {
-          if (kDebugMode) {
-            print('Error refreshing session');
-          }
-        } else {
-          // transfer cookies to main client
-          final authCookieManager = _authClient.cookieManager;
-          final authCookies = authCookieManager.getCookies(sigaHost);
-          _cookieManager.saveCookies(sigaHost, authCookies);
-          if (kDebugMode) {
-            print('Session refreshed');
-          }
+          throw Exception('Error refreshing session');
         }
+        // transfer cookies to main client
+        final authCookieManager = _authClient.cookieManager;
+        final authCookies = authCookieManager.getCookies(sigaHost);
+        _cookieManager.saveCookies(sigaHost, authCookies);
+        if (kDebugMode) {
+          print('Session refreshed');
+        }
+
+        _refreshSessionCompleter!.complete();
       }
     } on Exception catch (e, s) {
       if (kDebugMode) {
         print('Error refreshing session: $e');
         print(s);
       }
+      _refreshSessionCompleter!.completeError(e);
+    } finally {
+      _refreshSessionCompleter = null;
     }
   }
 
@@ -122,6 +128,15 @@ class SigaClient {
 
   void _onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
+    if (_refreshSessionCompleter != null) {
+      await _refreshSessionCompleter!.future.catchError((e, s) {
+        if (kDebugMode) {
+          print('Error refreshing session: $e');
+          print(s);
+        }
+        logout();
+      });
+    }
     return handler.next(options);
   }
 
