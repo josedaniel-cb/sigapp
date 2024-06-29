@@ -19,21 +19,39 @@ mixin _$ScheduleState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(SemesterSchedule schedule) success,
+    required TResult Function(
+            bool renderingImageForSharing,
+            bool changingSemester,
+            SemesterSchedule schedule,
+            String? errorMessage,
+            bool? errorMessageWasShown)
+        success,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(SemesterSchedule schedule)? success,
+    TResult? Function(
+            bool renderingImageForSharing,
+            bool changingSemester,
+            SemesterSchedule schedule,
+            String? errorMessage,
+            bool? errorMessageWasShown)?
+        success,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(SemesterSchedule schedule)? success,
+    TResult Function(
+            bool renderingImageForSharing,
+            bool changingSemester,
+            SemesterSchedule schedule,
+            String? errorMessage,
+            bool? errorMessageWasShown)?
+        success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -125,7 +143,13 @@ class _$LoadingStateImpl with DiagnosticableTreeMixin implements LoadingState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(SemesterSchedule schedule) success,
+    required TResult Function(
+            bool renderingImageForSharing,
+            bool changingSemester,
+            SemesterSchedule schedule,
+            String? errorMessage,
+            bool? errorMessageWasShown)
+        success,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -135,7 +159,13 @@ class _$LoadingStateImpl with DiagnosticableTreeMixin implements LoadingState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(SemesterSchedule schedule)? success,
+    TResult? Function(
+            bool renderingImageForSharing,
+            bool changingSemester,
+            SemesterSchedule schedule,
+            String? errorMessage,
+            bool? errorMessageWasShown)?
+        success,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -145,7 +175,13 @@ class _$LoadingStateImpl with DiagnosticableTreeMixin implements LoadingState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(SemesterSchedule schedule)? success,
+    TResult Function(
+            bool renderingImageForSharing,
+            bool changingSemester,
+            SemesterSchedule schedule,
+            String? errorMessage,
+            bool? errorMessageWasShown)?
+        success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -200,7 +236,12 @@ abstract class _$$SuccessStateImplCopyWith<$Res> {
           _$SuccessStateImpl value, $Res Function(_$SuccessStateImpl) then) =
       __$$SuccessStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({SemesterSchedule schedule});
+  $Res call(
+      {bool renderingImageForSharing,
+      bool changingSemester,
+      SemesterSchedule schedule,
+      String? errorMessage,
+      bool? errorMessageWasShown});
 
   $SemesterScheduleCopyWith<$Res> get schedule;
 }
@@ -216,13 +257,33 @@ class __$$SuccessStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? renderingImageForSharing = null,
+    Object? changingSemester = null,
     Object? schedule = null,
+    Object? errorMessage = freezed,
+    Object? errorMessageWasShown = freezed,
   }) {
     return _then(_$SuccessStateImpl(
-      null == schedule
+      renderingImageForSharing: null == renderingImageForSharing
+          ? _value.renderingImageForSharing
+          : renderingImageForSharing // ignore: cast_nullable_to_non_nullable
+              as bool,
+      changingSemester: null == changingSemester
+          ? _value.changingSemester
+          : changingSemester // ignore: cast_nullable_to_non_nullable
+              as bool,
+      schedule: null == schedule
           ? _value.schedule
           : schedule // ignore: cast_nullable_to_non_nullable
               as SemesterSchedule,
+      errorMessage: freezed == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String?,
+      errorMessageWasShown: freezed == errorMessageWasShown
+          ? _value.errorMessageWasShown
+          : errorMessageWasShown // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 
@@ -238,14 +299,27 @@ class __$$SuccessStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
-  const _$SuccessStateImpl(this.schedule);
+  const _$SuccessStateImpl(
+      {required this.renderingImageForSharing,
+      required this.changingSemester,
+      required this.schedule,
+      this.errorMessage,
+      this.errorMessageWasShown});
 
   @override
+  final bool renderingImageForSharing;
+  @override
+  final bool changingSemester;
+  @override
   final SemesterSchedule schedule;
+  @override
+  final String? errorMessage;
+  @override
+  final bool? errorMessageWasShown;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ScheduleState.success(schedule: $schedule)';
+    return 'ScheduleState.success(renderingImageForSharing: $renderingImageForSharing, changingSemester: $changingSemester, schedule: $schedule, errorMessage: $errorMessage, errorMessageWasShown: $errorMessageWasShown)';
   }
 
   @override
@@ -253,7 +327,12 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ScheduleState.success'))
-      ..add(DiagnosticsProperty('schedule', schedule));
+      ..add(DiagnosticsProperty(
+          'renderingImageForSharing', renderingImageForSharing))
+      ..add(DiagnosticsProperty('changingSemester', changingSemester))
+      ..add(DiagnosticsProperty('schedule', schedule))
+      ..add(DiagnosticsProperty('errorMessage', errorMessage))
+      ..add(DiagnosticsProperty('errorMessageWasShown', errorMessageWasShown));
   }
 
   @override
@@ -261,12 +340,22 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SuccessStateImpl &&
+            (identical(
+                    other.renderingImageForSharing, renderingImageForSharing) ||
+                other.renderingImageForSharing == renderingImageForSharing) &&
+            (identical(other.changingSemester, changingSemester) ||
+                other.changingSemester == changingSemester) &&
             (identical(other.schedule, schedule) ||
-                other.schedule == schedule));
+                other.schedule == schedule) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage) &&
+            (identical(other.errorMessageWasShown, errorMessageWasShown) ||
+                other.errorMessageWasShown == errorMessageWasShown));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, schedule);
+  int get hashCode => Object.hash(runtimeType, renderingImageForSharing,
+      changingSemester, schedule, errorMessage, errorMessageWasShown);
 
   @JsonKey(ignore: true)
   @override
@@ -278,32 +367,53 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(SemesterSchedule schedule) success,
+    required TResult Function(
+            bool renderingImageForSharing,
+            bool changingSemester,
+            SemesterSchedule schedule,
+            String? errorMessage,
+            bool? errorMessageWasShown)
+        success,
     required TResult Function(String message) error,
   }) {
-    return success(schedule);
+    return success(renderingImageForSharing, changingSemester, schedule,
+        errorMessage, errorMessageWasShown);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(SemesterSchedule schedule)? success,
+    TResult? Function(
+            bool renderingImageForSharing,
+            bool changingSemester,
+            SemesterSchedule schedule,
+            String? errorMessage,
+            bool? errorMessageWasShown)?
+        success,
     TResult? Function(String message)? error,
   }) {
-    return success?.call(schedule);
+    return success?.call(renderingImageForSharing, changingSemester, schedule,
+        errorMessage, errorMessageWasShown);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(SemesterSchedule schedule)? success,
+    TResult Function(
+            bool renderingImageForSharing,
+            bool changingSemester,
+            SemesterSchedule schedule,
+            String? errorMessage,
+            bool? errorMessageWasShown)?
+        success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(schedule);
+      return success(renderingImageForSharing, changingSemester, schedule,
+          errorMessage, errorMessageWasShown);
     }
     return orElse();
   }
@@ -344,10 +454,18 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
 }
 
 abstract class SuccessState implements ScheduleState {
-  const factory SuccessState(final SemesterSchedule schedule) =
-      _$SuccessStateImpl;
+  const factory SuccessState(
+      {required final bool renderingImageForSharing,
+      required final bool changingSemester,
+      required final SemesterSchedule schedule,
+      final String? errorMessage,
+      final bool? errorMessageWasShown}) = _$SuccessStateImpl;
 
+  bool get renderingImageForSharing;
+  bool get changingSemester;
   SemesterSchedule get schedule;
+  String? get errorMessage;
+  bool? get errorMessageWasShown;
   @JsonKey(ignore: true)
   _$$SuccessStateImplCopyWith<_$SuccessStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -426,7 +544,13 @@ class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(SemesterSchedule schedule) success,
+    required TResult Function(
+            bool renderingImageForSharing,
+            bool changingSemester,
+            SemesterSchedule schedule,
+            String? errorMessage,
+            bool? errorMessageWasShown)
+        success,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -436,7 +560,13 @@ class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(SemesterSchedule schedule)? success,
+    TResult? Function(
+            bool renderingImageForSharing,
+            bool changingSemester,
+            SemesterSchedule schedule,
+            String? errorMessage,
+            bool? errorMessageWasShown)?
+        success,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -446,7 +576,13 @@ class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(SemesterSchedule schedule)? success,
+    TResult Function(
+            bool renderingImageForSharing,
+            bool changingSemester,
+            SemesterSchedule schedule,
+            String? errorMessage,
+            bool? errorMessageWasShown)?
+        success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

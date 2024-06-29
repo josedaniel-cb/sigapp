@@ -341,14 +341,13 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
     final titleOneLineHeight = titleFontSize *
         titleLineHeight; // this is not calculating the actual rendered height
 
-    final separatorSpace = titleOneLineHeight * 0.5;
-
     final captionFontSize = titleFontSize * 0.75; // for place and duration
     const double captionLineHeight = 1.2;
     final captionOneLineHeight = captionFontSize *
         captionLineHeight; // this is not calculating the actual rendered height
-    final captionsHeight = captionOneLineHeight * 2 +
-        4; // place + duration / adding 4 for auxiliar padding
+    final captionsHeight = captionOneLineHeight * 2; // place + duration
+
+    final separatorSpace = captionOneLineHeight;
 
     // Padding for all sides of the event
     final verticalPadding = titleFontSize / 2;
@@ -403,18 +402,12 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
             horizontal: horizontalPadding,
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                padding: captionsCanBeShown
-                    ? EdgeInsets.only(bottom: separatorSpace)
-                    : null,
-                // color: Colors.white30,
-                height: availableHeightForTitle +
-                    (captionsCanBeShown ? separatorSpace : 0),
+                height: availableHeightForTitle,
                 width: availableWidth,
-
                 child: Text(
                   event.title,
                   style: TextStyle(
@@ -424,12 +417,11 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
                   ),
                   maxLines: titleMaxLines,
                   overflow: TextOverflow.ellipsis,
-                  // textAlign: TextAlign.center,
                 ),
               ),
               if (captionsCanBeShown)
                 Container(
-                  height: captionsHeight,
+                  // height: captionsHeight,
                   width: availableWidth,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -443,7 +435,6 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        // textAlign: TextAlign.center,
                       ),
                       Text(
                         _formatEventDuration(event),
@@ -454,7 +445,6 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        // textAlign: TextAlign.center,
                       ),
                     ],
                   ),

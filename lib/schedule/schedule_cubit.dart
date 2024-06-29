@@ -10,9 +10,13 @@ part 'schedule_cubit.freezed.dart';
 @freezed
 abstract class ScheduleState with _$ScheduleState {
   const factory ScheduleState.loading() = LoadingState;
-  const factory ScheduleState.success(
-    SemesterSchedule schedule,
-  ) = SuccessState;
+  const factory ScheduleState.success({
+    required bool renderingImageForSharing,
+    required bool changingSemester,
+    required SemesterSchedule schedule,
+    String? errorMessage,
+    bool? errorMessageWasShown,
+  }) = SuccessState;
   const factory ScheduleState.error(String message) = ErrorState;
 }
 
@@ -30,7 +34,11 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       final studentSemesterSchedule =
           await _studentService.getDefaultClassSchedule();
 
-      emit(ScheduleState.success(studentSemesterSchedule));
+      emit(ScheduleState.success(
+        changingSemester: false,
+        renderingImageForSharing: false,
+        schedule: studentSemesterSchedule,
+      ));
     } catch (e, s) {
       if (kDebugMode) {
         print(e);
@@ -45,20 +53,59 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       return;
     }
     final successState = state as SuccessState;
-    emit(const ScheduleState.loading());
+    emit(successState.copyWith(changingSemester: true));
     try {
       final weeklyEvents = await _studentService.getClassSchedule(semester.id);
       final newSchedule = successState.schedule.copyWith(
         semester: semester,
         weeklyEvents: weeklyEvents,
       );
-      emit(ScheduleState.success(newSchedule));
+      // throw Exception('Not implemented ajefobea ');
+      emit(successState.copyWith(
+        changingSemester: false,
+        schedule: newSchedule,
+      ));
     } catch (e, s) {
       if (kDebugMode) {
         print(e);
         print(s);
       }
-      emit(ScheduleState.error(e.toString()));
+      emit(successState.copyWith(
+        changingSemester: false,
+        errorMessage: e.toString(),
+        errorMessageWasShown: false,
+      ));
     }
+  }
+
+  void updateRenderingImageForSharing(bool value) {
+    if (state is! SuccessState) {
+      return;
+    }
+    final successState = state as SuccessState;
+    emit(successState.copyWith(
+      renderingImageForSharing: value,
+    ));
+  }
+
+  void showErrorMessage(String message) {
+    if (state is! SuccessState) {
+      return;
+    }
+    final successState = state as SuccessState;
+    emit(successState.copyWith(
+      errorMessage: message,
+      errorMessageWasShown: false,
+    ));
+  }
+
+  void setErrorMessageAsShown() {
+    if (state is! SuccessState) {
+      return;
+    }
+    final successState = state as SuccessState;
+    emit(successState.copyWith(
+      errorMessageWasShown: true,
+    ));
   }
 }

@@ -41,23 +41,39 @@ class SchedulePageState extends State<SchedulePage> {
           appBar: AppBar(
             title: Text(
               'Horario${state.map(
-                loading: (_) => '...',
+                loading: (_) => '',
                 success: (state) => ' ${state.schedule.semester.name}',
                 error: (_) => '',
               )}',
             ),
             actions: <Widget>[
               IconButton(
-                icon: const Icon(Icons.share),
+                icon:
+                    (state is SuccessState && (state.renderingImageForSharing))
+                        ? const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(),
+                          )
+                        : const Icon(Icons.share),
                 onPressed: (state is SuccessState &&
-                        state.schedule.semesterList.isNotEmpty)
-                    // ? () => _showShareBottomSheet(state)
+                        state.schedule.semesterList.isNotEmpty &&
+                        !state.renderingImageForSharing &&
+                        !state.changingSemester)
                     ? () => _captureAndShare(state)
                     : null,
               ),
               IconButton(
-                icon: const Icon(Icons.calendar_today),
-                onPressed: state is SuccessState
+                icon: (state is SuccessState && state.changingSemester)
+                    ? const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(),
+                      )
+                    : const Icon(Icons.calendar_today),
+                onPressed: (state is SuccessState &&
+                        !state.changingSemester &&
+                        !state.renderingImageForSharing)
                     ? () => _showModalBottomSheet(state)
                     : null,
               ),
@@ -75,7 +91,19 @@ class SchedulePageState extends State<SchedulePage> {
       },
       listener: (context, state) {
         if (state is SuccessState) {
-          // Do something
+          if (state.errorMessage != null &&
+              state.errorMessageWasShown == false) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(
+                  SnackBar(
+                    content: Text(state.errorMessage!),
+                  ),
+                )
+                .closed
+                .then((_) {
+              _cubit.setErrorMessageAsShown();
+            });
+          }
         } else if (state is ErrorState) {
           // Do something
         }
@@ -93,8 +121,18 @@ class SchedulePageState extends State<SchedulePage> {
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
-      child: WeeklySchedule(
-        events: state.schedule.weeklyEvents,
+      child: Stack(
+        children: [
+          WeeklySchedule(
+            events: state.schedule.weeklyEvents,
+          ),
+          // if (state.busy)
+          //   Container(
+          //     alignment: Alignment.center,
+          //     color: Colors.white30,
+          //     child: const CircularProgressIndicator(),
+          //   ),
+        ],
       ),
     );
   }
@@ -125,87 +163,63 @@ class SchedulePageState extends State<SchedulePage> {
 
   ScreenshotController screenshotController = ScreenshotController();
 
-  // void _showShareBottomSheet(SuccessState state) {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return Container(
-  //         child: Column(
-  //           children: [
-  //             ElevatedButton(
-  //               onPressed: () => captureAndShare(),
-  //               child: const Text('Compartir'),
-  //             ),
-  //             SizedBox(
-  //               height: MediaQuery.of(context).size.height / 2,
-  //               child: InteractiveViewer(
-  //                 constrained: false,
-  //                 minScale: 1,
-  //                 maxScale: 3,
-  //                 child: Screenshot(
-  //                   controller: screenshotController,
-  //                   child: SizedBox(
-  //                     width: _pixelsToDIP(context, 1920),
-  //                     child: WeeklySchedule(
-  //                       events: state.schedule.weeklyEvents,
-  //                       bottomText:
-  //                           'Semestre ${state.schedule.semester.name} | Sigapp',
-  //                       disableScroll: true,
-  //                       fontSize: _pixelsToDIP(context, 40),
-  //                     ),
-  //                   ),
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
   Future<void> _captureAndShare(SuccessState state) async {
-    final Uint8List image = await screenshotController.captureFromWidget(
-      SizedBox(
-        width: _pixelsToDIP(context, 1920),
-        child: WeeklySchedule(
-          events: state.schedule.weeklyEvents,
-          topLeftText: 'Semestre ${state.schedule.semester.name}',
-          topRightText: 'Sigapp',
-          bottomLeftText:
-              '${state.schedule.studentAcademicReport.firstName} ${state.schedule.studentAcademicReport.lastName}',
-          bottomRightText:
-              'Promoción ${state.schedule.studentAcademicReport.cohort}, ${state.schedule.studentAcademicReport.school}',
-          disableScroll: true,
-          fontSize: _pixelsToDIP(context, 40),
+    _cubit.updateRenderingImageForSharing(true);
+
+    try {
+      final Uint8List image = await screenshotController.captureFromWidget(
+        SizedBox(
+          width: _pixelsToDIP(context, 1920),
+          child: WeeklySchedule(
+            events: state.schedule.weeklyEvents,
+            topLeftText: 'Semestre ${state.schedule.semester.name}',
+            topRightText: 'Sigapp',
+            bottomLeftText:
+                '${state.schedule.studentAcademicReport.firstName} ${state.schedule.studentAcademicReport.lastName}',
+            bottomRightText:
+                'Promoción ${state.schedule.studentAcademicReport.cohort}, ${state.schedule.studentAcademicReport.school}',
+            disableScroll: true,
+            fontSize: _pixelsToDIP(context, 40),
+          ),
         ),
-      ),
-      context: context,
-      pixelRatio: MediaQuery.of(context).devicePixelRatio,
-      targetSize: Size(
-        _pixelsToDIP(context, 1920),
-        // _pixelsToDIP(context, 1920),
-        double.infinity,
-      ),
-    );
+        context: context,
+        pixelRatio: MediaQuery.of(context).devicePixelRatio,
+        targetSize: Size(
+          _pixelsToDIP(context, 1920),
+          // _pixelsToDIP(context, 1920),
+          double.infinity,
+        ),
+      );
 
-    final directory = await getApplicationDocumentsDirectory();
-    final imagePath = await File('${directory.path}/image.png').create();
-    await imagePath.writeAsBytes(image);
+      final directory = await getApplicationDocumentsDirectory();
+      final imagePath = await File('${directory.path}/image.png').create();
+      await imagePath.writeAsBytes(image);
 
-    // Updated to use shareXFiles for sharing files
-    final result = await Share.shareXFiles([XFile(imagePath.path)],
-        text: 'Check out this image!');
+      _cubit.updateRenderingImageForSharing(false);
 
-    // Handling the result of sharing
-    if (result.status == ShareResultStatus.success) {
-      if (kDebugMode) {
-        print('Image shared successfully!');
+      // Updated to use shareXFiles for sharing files
+      final result = await Share.shareXFiles([XFile(imagePath.path)],
+          text: 'Check out this image!');
+
+      // Handling the result of sharing
+      if (result.status == ShareResultStatus.success) {
+        if (kDebugMode) {
+          print('Image shared successfully!');
+        }
+      } else if (result.status == ShareResultStatus.dismissed) {
+        if (kDebugMode) {
+          print('Share dismissed.');
+        }
       }
-    } else if (result.status == ShareResultStatus.dismissed) {
+    } catch (e, s) {
       if (kDebugMode) {
-        print('Share dismissed.');
+        print(e);
+        print(s);
       }
+      _cubit.updateRenderingImageForSharing(false);
+
+      _cubit.showErrorMessage(
+          'Ocurrió un error al intentar compartir el horario. Por favor, inténtalo de nuevo.');
     }
   }
 }
