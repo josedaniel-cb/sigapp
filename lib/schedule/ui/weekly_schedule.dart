@@ -321,49 +321,60 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
           : Colors.white;
     }
 
-    double top = (event.start.hour - startHour) * rowHeight +
+    // Position and size
+    final top = (event.start.hour - startHour) * rowHeight +
         (event.start.minute / 60) * rowHeight;
-    double height = (event.end.hour - event.start.hour) * rowHeight +
-        ((event.end.minute - event.start.minute) / 60) * rowHeight;
-    int dayIndex = daysWithEvents.indexOf(event.start.weekday);
+    final gridWidth =
+        (constraints.maxWidth - hourWidth) / daysWithEvents.length;
+    final littleMarginForSides = gridWidth * 0.05;
+    final width = gridWidth - littleMarginForSides; // some margin to right
+    final dayIndex = daysWithEvents.indexOf(event.start.weekday);
+    final left = hourWidth + dayIndex * gridWidth;
+    final height = ((event.end.hour - event.start.hour) * rowHeight +
+            ((event.end.minute - event.start.minute) / 60) * rowHeight) -
+        littleMarginForSides; // some margin to bottom
 
-    final fontSize1 = widget.fontSize;
-    const lineHeight1 = 1.1;
-    final fontSize2 =
-        fontSize1 * 0.75; // Unified font size for both place and duration
-    const lineHeight2 = 1.2; // Unified line height for both place and duration
-    final paddingFactor = widget.fontSize / 3;
-    const secondTextThreshold = 30.0;
+    // Texts: title and captions (place and duration)
+    final titleFontSize = widget.fontSize; // for title
+    const titleLineHeight = 1.1;
+    final titleOneLineHeight = titleFontSize * titleLineHeight;
 
-    double availableHeight = height - paddingFactor;
-    if (height > secondTextThreshold) {
-      double secondTextHeight = fontSize2 * lineHeight2 + paddingFactor / 2;
-      availableHeight -= secondTextHeight;
-      availableHeight -= secondTextHeight;
+    final captionFontSize = titleFontSize * 0.75; // for place and duration
+    const captionLineHeight = 1.2;
+    final captionOneLineHeight = captionFontSize * captionLineHeight;
+    final captionsHeight = captionOneLineHeight * 2; // place + duration
+
+    // Padding for all sides of the event
+    final verticalPadding = titleFontSize / 2;
+    final horizontalPadding = titleFontSize / 3;
+
+    final availableHeight = height - (verticalPadding * 2);
+    var availableHeightForTitle = availableHeight;
+    final captionsCanBeShown = // if there is enough space for title captions
+        availableHeight > (titleOneLineHeight + captionsHeight);
+    if (captionsCanBeShown) {
+      availableHeightForTitle -= captionsHeight;
     }
-
-    int maxLines = (availableHeight / (fontSize1 * lineHeight1)).floor();
+    final titleMaxLines =
+        (availableHeightForTitle / titleOneLineHeight).floor();
 
     final textColor = chooseTextColor(event.color);
 
-    final gridWidth =
-        (constraints.maxWidth - hourWidth) / daysWithEvents.length;
     return Positioned(
       top: top,
-      left: hourWidth + dayIndex * gridWidth,
-      width: gridWidth - paddingFactor,
+      left: left,
+      width: width,
       height: height,
       child: Container(
-        margin: EdgeInsets.symmetric(
-          horizontal: paddingFactor / 2,
-          vertical: paddingFactor / 4,
-        ),
         decoration: BoxDecoration(
           color: event.color,
-          borderRadius: BorderRadius.circular(paddingFactor),
+          borderRadius: BorderRadius.circular(verticalPadding),
         ),
         child: Padding(
-          padding: EdgeInsets.all(paddingFactor),
+          padding: EdgeInsets.symmetric(
+            vertical: verticalPadding,
+            horizontal: horizontalPadding,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -372,28 +383,37 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
                 event.title,
                 style: TextStyle(
                   color: textColor,
-                  fontSize: fontSize1,
-                  height: lineHeight1,
+                  fontSize: titleFontSize,
+                  height: titleLineHeight,
                 ),
-                maxLines: maxLines,
+                maxLines: titleMaxLines,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
               ),
-              Text(
-                event.place,
-                style: TextStyle(
-                    color: textColor, fontSize: fontSize2, height: lineHeight2),
-                textAlign: TextAlign.center,
-              ),
-              if (height > secondTextThreshold)
+              if (captionsCanBeShown) ...[
+                Text(
+                  event.place,
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: captionFontSize,
+                    height: captionLineHeight,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                ),
                 Text(
                   _formatEventDuration(event),
                   style: TextStyle(
-                      color: textColor,
-                      fontSize: fontSize2,
-                      height: lineHeight2),
+                    color: textColor,
+                    fontSize: captionFontSize,
+                    height: captionLineHeight,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
                 ),
+              ],
             ],
           ),
         ),
