@@ -63,46 +63,47 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
             (day) => widget.events.any((event) => event.start.weekday == day))
         .toList();
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Header for days of the week
-        Row(
-          children: [
-            Container(
-              width: hourWidth,
-              padding: const EdgeInsets.all(8),
-            ),
-            for (var day in daysWithEvents) _buildDayHeader(day),
-          ],
-        ),
-        // Combined hourly labels and events grid
-        widget.disableScroll
-            ? _buildBody(daysWithEvents, context)
-            : Expanded(
-                child: SingleChildScrollView(
-                  child: _buildBody(daysWithEvents, context),
-                ),
-              ),
-      ],
-    );
-  }
-
-  Widget _buildBody(List<int> daysWithEvents, BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      return Stack(
+      return Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          _buildGrid(daysWithEvents, context),
-          ...widget.events
-              .where((event) =>
-                  event.start.hour >= startHour && event.end.hour <= endHour)
-              .map((event) => _buildEvent(event, constraints, daysWithEvents)),
+          // Header for days of the week
+          Row(
+            children: [
+              Container(
+                width: hourWidth,
+                padding: const EdgeInsets.all(8),
+              ),
+              for (var day in daysWithEvents) _buildDayHeader(day),
+            ],
+          ),
+          // Combined hourly labels and events grid
+          widget.disableScroll
+              ? _buildBody(daysWithEvents, context, constraints)
+              : Expanded(
+                  child: SingleChildScrollView(
+                    child: _buildBody(daysWithEvents, context, constraints),
+                  ),
+                ),
         ],
       );
     });
   }
 
-  Widget _buildGrid(List<int> daysWithEvents, BuildContext context) {
+  Widget _buildBody(List<int> daysWithEvents, BuildContext context,
+      BoxConstraints constraints) {
+    return Stack(
+      children: [
+        _buildGrid(daysWithEvents, constraints),
+        ...widget.events
+            .where((event) =>
+                event.start.hour >= startHour && event.end.hour <= endHour)
+            .map((event) => _buildEvent(event, constraints, daysWithEvents)),
+      ],
+    );
+  }
+
+  Widget _buildGrid(List<int> daysWithEvents, BoxConstraints constraints) {
     return Column(
       children: List.generate(endHour - 1 - startHour, (hour) {
         return Row(
@@ -150,7 +151,7 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
               for (var dayIndex
                   in List.generate(daysWithEvents.length, (index) => index))
                 Container(
-                  width: (MediaQuery.of(context).size.width - hourWidth) /
+                  width: (constraints.maxWidth - hourWidth) /
                       daysWithEvents.length,
                   height: littleRay,
                   decoration: BoxDecoration(
@@ -300,8 +301,6 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
 
     final textColor = chooseTextColor(event.color);
 
-    // final gridWidth =
-    //     (MediaQuery.of(context).size.width - hourWidth) / daysWithEvents.length;
     final gridWidth =
         (constraints.maxWidth - hourWidth) / daysWithEvents.length;
     return Positioned(

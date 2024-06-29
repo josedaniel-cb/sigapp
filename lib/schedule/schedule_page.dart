@@ -51,7 +51,8 @@ class SchedulePageState extends State<SchedulePage> {
                 icon: const Icon(Icons.share),
                 onPressed: (state is SuccessState &&
                         state.schedule.semesterList.isNotEmpty)
-                    ? () => _showShareBottomSheet(state)
+                    // ? () => _showShareBottomSheet(state)
+                    ? () => captureAndShare2(state)
                     : null,
               ),
               IconButton(
@@ -166,6 +167,45 @@ class SchedulePageState extends State<SchedulePage> {
 
   Future<void> captureAndShare() async {
     final Uint8List? image = await screenshotController.capture();
+
+    if (image != null) {
+      final directory = await getApplicationDocumentsDirectory();
+      final imagePath = await File('${directory.path}/image.png').create();
+      await imagePath.writeAsBytes(image);
+
+      // Updated to use shareXFiles for sharing files
+      final result = await Share.shareXFiles([XFile(imagePath.path)],
+          text: 'Check out this image!');
+
+      // Handling the result of sharing
+      if (result.status == ShareResultStatus.success) {
+        print('Image shared successfully!');
+      } else if (result.status == ShareResultStatus.dismissed) {
+        print('Share dismissed.');
+      }
+    }
+  }
+
+  Future<void> captureAndShare2(SuccessState state) async {
+    final Uint8List? image = await screenshotController.captureFromWidget(
+      SizedBox(
+        width: _pixelsToDIP(context, 1920),
+        child: WeeklySchedule(
+          events: state.schedule.weeklyEvents,
+          bottomText: 'Semestre ${state.schedule.semester.name} | Sigapp',
+          disableScroll: true,
+          fontSize: _pixelsToDIP(context, 40),
+        ),
+      ),
+      context: context,
+      pixelRatio: MediaQuery.of(context).devicePixelRatio,
+      targetSize: Size(
+        _pixelsToDIP(context, 1920),
+        // _pixelsToDIP(context, 1920),
+        double.infinity,
+      ),
+    );
+
     if (image != null) {
       final directory = await getApplicationDocumentsDirectory();
       final imagePath = await File('${directory.path}/image.png').create();
