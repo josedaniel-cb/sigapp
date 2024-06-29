@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:injectable/injectable.dart';
+// import 'package:injectable/injectable.dart';
 import 'package:sigapp/app/get_it.dart';
 import 'package:sigapp/app/siga_client.dart';
 import 'package:sigapp/auth/auth_service.dart';
@@ -12,21 +12,21 @@ import 'package:sigapp/home/home_page.dart';
 import 'package:sigapp/schedule/schedule_cubit.dart';
 import 'package:sigapp/schedule/schedule_page.dart';
 
-@injectable
-class RouterRefreshListenable extends ChangeNotifier {
-  void refresh() {
-    notifyListeners();
-  }
-}
+// @injectable
+// class RouterRefreshListenable extends ChangeNotifier {
+//   void refresh() {
+//     notifyListeners();
+//   }
+// }
 
 class RouterBuilder {
   static GoRouter build(
     SigaClient sigaClient,
     AuthService authRepository,
-    RouterRefreshListenable refreshListenable,
+    // RouterRefreshListenable refreshListenable,
   ) {
     final router = GoRouter(
-      refreshListenable: refreshListenable,
+      // refreshListenable: refreshListenable,
       initialLocation: '/',
       routes: [
         GoRoute(

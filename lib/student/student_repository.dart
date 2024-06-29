@@ -3,12 +3,41 @@ import 'package:injectable/injectable.dart';
 import 'package:sigapp/app/siga_client.dart';
 import 'package:sigapp/student/models/get_academic_report.dart';
 import 'package:sigapp/student/models/get_class_schedule.dart';
+import 'package:html/parser.dart' as htmlParser;
 
 @lazySingleton
 class StudentRepository {
   final SigaClient _sigaClient;
 
   StudentRepository(this._sigaClient);
+
+  Future<String> getCurrentSemesterId() async {
+    // curl 'https://academico.unp.edu.pe/Home/Index' \
+    //   -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
+    //   -H 'accept-language: en-US,en;q=0.9,es-PE;q=0.8,es-ES;q=0.7,es;q=0.6' \
+    //   -H 'cache-control: max-age=0' \
+    //   -H 'cookie: ASP.NET_SessionId=stactn4sojhvn4kxi4hyzgvv; .ASPXAUTH=71A081DBCF70877A3D0E30EF79894DC0AB86277E1A3C0C71633CE87C79FE6446318C502EBD986E97D3DF32E5C2D7E09C1369BEEAEEEE4336F818485922A6961FE4F029846764815F32E87A97A553F8E7B993F775D827C02EFE56CA99C91BCCE8419D4C534C669472BDB49C6B627F398FFD5E6AA69198508FC0D7F951A729436107F71FBA31CA617B565E3F235FCB1894CBBFC2DFDAB89511B26A9F9B765A1897F1560DE07A0DBEAF968ADEDC7D46F3A0BC9C8992F6F2CA9DE0D7DD81C83FB8D3BA4F5605B54E581B987855929748CF46' \
+    //   -H 'priority: u=0, i' \
+    //   -H 'referer: https://academico.unp.edu.pe/Academico/VerificaCursos' \
+    //   -H 'sec-ch-ua: "Not)A;Brand";v="99", "Microsoft Edge";v="127", "Chromium";v="127"' \
+    //   -H 'sec-ch-ua-mobile: ?0' \
+    //   -H 'sec-ch-ua-platform: "Windows"' \
+    //   -H 'sec-fetch-dest: document' \
+    //   -H 'sec-fetch-mode: navigate' \
+    //   -H 'sec-fetch-site: same-origin' \
+    //   -H 'sec-fetch-user: ?1' \
+    //   -H 'upgrade-insecure-requests: 1' \
+    //   -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0'
+    final response = await _sigaClient.http.get('/');
+    final rawHtml = response.data as String;
+    final html = htmlParser.parse(rawHtml);
+    // print(html.querySelectorAll('dd').map((e) => e.text).toList());
+    final currentSemesterId = html.querySelector('dd:nth-child(3)')?.text;
+    if (currentSemesterId == null) {
+      throw Exception('Semester id not found');
+    }
+    return currentSemesterId;
+  }
 
   Future<GetAcademicReportModel> getAcademicReport() async {
     // curl 'https://academico.unp.edu.pe/Academico/ListarParametrosInforme' \

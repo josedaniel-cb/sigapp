@@ -39,4 +39,26 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       emit(ScheduleState.error(e.toString()));
     }
   }
+
+  void changeSemester(String semester) async {
+    if (state is! SuccessState) {
+      return;
+    }
+    final successState = state as SuccessState;
+    emit(const ScheduleState.loading());
+    try {
+      final weeklyEvents = await _studentService.getClassSchedule(semester);
+      final newSchedule = successState.schedule.copyWith(
+        semester: semester,
+        weeklyEvents: weeklyEvents,
+      );
+      emit(ScheduleState.success(newSchedule));
+    } catch (e, s) {
+      if (kDebugMode) {
+        print(e);
+        print(s);
+      }
+      emit(ScheduleState.error(e.toString()));
+    }
+  }
 }

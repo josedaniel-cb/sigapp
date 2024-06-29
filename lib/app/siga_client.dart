@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sigapp/app/get_it.dart';
 import 'package:sigapp/app/http.dart';
-import 'package:sigapp/app/router.dart';
 import 'package:sigapp/auth/auth_repository.dart';
 
 const sigaHost = 'academico.unp.edu.pe';
@@ -20,12 +22,12 @@ class SigaClient {
   late final BaseAuthRepository _authRepository;
   late final HttpClientBuilderResult _authClient;
 
-  final RouterRefreshListenable _routerRefreshListenable;
+  // final GoRouter _router;
   final SharedPreferences _prefs;
 
   SigaClient(
     this._prefs,
-    this._routerRefreshListenable,
+    // this._router,
   ) {
     final result = HttpClientBuilder(id: 'siga', prefs: _prefs)
         .setBaseUrl(sigaApiUrl)
@@ -66,18 +68,24 @@ class SigaClient {
           password!,
         );
         if (loginResponse.statusCode != 302) {
-          print('Error refreshing session');
+          if (kDebugMode) {
+            print('Error refreshing session');
+          }
         } else {
           // transfer cookies to main client
           final authCookieManager = _authClient.cookieManager;
           final authCookies = authCookieManager.getCookies(sigaHost);
           _cookieManager.saveCookies(sigaHost, authCookies);
-          print('Session refreshed');
+          if (kDebugMode) {
+            print('Session refreshed');
+          }
         }
       }
     } on Exception catch (e, s) {
-      print('Error refreshing session: $e');
-      print(s);
+      if (kDebugMode) {
+        print('Error refreshing session: $e');
+        print(s);
+      }
     }
   }
 
@@ -109,12 +117,8 @@ class SigaClient {
 
   void logout() {
     _prefs.remove('password');
-    _routerRefreshListenable.refresh();
+    getIt<GoRouter>().refresh();
   }
-
-  // get hasAuthToken {
-  //   return _cookieManager.hasCookie(sigaHost, sigaAuthCookieKey);
-  // }
 
   void _onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
@@ -123,10 +127,6 @@ class SigaClient {
 
   void _onResponse(
       Response response, ResponseInterceptorHandler handler) async {
-    // if (!hasAuthToken) {
-    //   _handleExpiredAuthCookie();
-    // }
-
     return handler.next(response);
   }
 
@@ -136,15 +136,9 @@ class SigaClient {
         response.statusCode == 302 &&
         response.headers['location'] != null &&
         response.headers['location']!.contains(sigaLogoutRedirectionLocation)) {
-      // _cookieManager.clearCookies(sigaHost);
-      _refreshExpiredSession();
+      logout();
     }
     // this is not helping us because we need to retry to use the correct cookies
     return handler.next(err);
-  }
-
-  void _refreshExpiredSession() {
-    _prefs.remove('password');
-    _routerRefreshListenable.refresh();
   }
 }

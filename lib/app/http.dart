@@ -149,21 +149,29 @@ class CookieManager {
   Future<void> saveCookies(String host, List<String> newCookies) async {
     final key = _buildKey(host);
     var existingCookies = _prefs.getStringList(key) ?? [];
-    existingCookies.addAll(newCookies);
 
-    // Sort reverse to remove duplicates from the end
-    existingCookies.sort((a, b) => b.compareTo(a));
+    // Create a map to track the latest cookie value by name
+    final Map<String, String> cookiesMap = {};
 
-    // Remove duplicates
-    final uniqueCookies = <String>[];
+    // Add existing cookies to the map
     for (var cookie in existingCookies) {
-      final exists = uniqueCookies.any(
-        (uniqueCookie) => uniqueCookie.contains(cookie.split('=')[0]),
-      );
-      if (!exists) {
-        uniqueCookies.add(cookie);
+      final parts = cookie.split('=');
+      if (parts.length >= 2) {
+        cookiesMap[parts[0]] = parts.sublist(1).join('=');
       }
     }
+
+    // Update the map with new cookies, replacing values for existing names
+    for (var cookie in newCookies) {
+      final parts = cookie.split('=');
+      if (parts.length >= 2) {
+        cookiesMap[parts[0]] = parts.sublist(1).join('=');
+      }
+    }
+
+    // Convert the map back to a list of cookies
+    final uniqueCookies =
+        cookiesMap.entries.map((e) => "${e.key}=${e.value}").toList();
 
     // Save the updated list back to SharedPreferences
     await _prefs.setStringList(key, uniqueCookies);
@@ -173,7 +181,8 @@ class CookieManager {
     removeExpiredCookies(host);
 
     final key = _buildKey(host);
-    return _prefs.getStringList(key) ?? [];
+    final cookies = _prefs.getStringList(key) ?? [];
+    return cookies;
   }
 
   void clearCookies(String host) {

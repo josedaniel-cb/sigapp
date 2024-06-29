@@ -6,8 +6,8 @@ part 'student_semester_schedule.freezed.dart';
 @freezed
 class StudentSemesterSchedule with _$StudentSemesterSchedule {
   factory StudentSemesterSchedule({
-    required String semester, // YYYYX where X is 1 or 2
-    // required List<GetClassScheduleModel> rawSchedule,
+    required List<String> semesterList,
+    required String semester, // YYYYX where X is 0 or 2
     required List<WeeklyScheduleEvent> weeklyEvents,
   }) = _StudentSemesterSchedule;
 }

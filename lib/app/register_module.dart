@@ -15,7 +15,6 @@ abstract class RegisterModule {
   GoRouter router(
     SigaClient sigaClient,
     AuthService authRepository,
-    RouterRefreshListenable refreshListenable,
   ) =>
-      RouterBuilder.build(sigaClient, authRepository, refreshListenable);
+      RouterBuilder.build(sigaClient, authRepository);
 }

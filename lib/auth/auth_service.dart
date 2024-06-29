@@ -12,10 +12,11 @@ class AuthService {
   AuthService(this._authRepository, this._sigaClient);
 
   Future<void> init() async {
-    if (hasAuthCredentials) {
-      // Get auth cookie silently
-      await _authRepository.login(getUsername()!, getPassword()!);
-    }
+    // if (hasAuthCredentials) {
+    //   // TODO: THIS COULD INTERFERE
+    //   // Get auth cookie silently
+    //   await _authRepository.login(getUsername()!, getPassword()!);
+    // }
   }
 
   get hasAuthCredentials {

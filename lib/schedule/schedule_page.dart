@@ -4,7 +4,6 @@ import 'package:sigapp/schedule/schedule_cubit.dart';
 import 'package:sigapp/schedule/ui/weekly_schedule.dart';
 import 'package:sigapp/shared/error_state.dart';
 import 'package:sigapp/shared/loading_state.dart';
-import 'package:sigapp/student/entities/weekly_schedule_event.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
@@ -29,45 +28,85 @@ class SchedulePageState extends State<SchedulePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Horario'),
-      ),
-      body: BlocConsumer<ScheduleCubit, ScheduleState>(
-        builder: (context, state) {
-          return state.map(
+    return BlocConsumer<ScheduleCubit, ScheduleState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              'Horario${state.map(
+                loading: (_) => '...',
+                success: (state) => ' ${state.schedule.semester}',
+                error: (_) => '',
+              )}',
+            ),
+            actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.calendar_today),
+                onPressed: state.map(
+                  loading: (_) => null,
+                  success: (state) => () => _showModalBottomSheet(state),
+                  error: (_) => null,
+                ),
+              ),
+            ],
+          ),
+          body: state.map(
             loading: (_) => const LoadingStateWidget(),
             success: (state) => _buildSuccessState(context, state),
             error: (state) => ErrorStateWidget(
               message: state.message,
               onRetry: () => _cubit.setup(),
             ),
-          );
-        },
-        listener: (context, state) {
-          if (state is SuccessState) {
-            // Do something
-          } else if (state is ErrorState) {
-            // Do something
-          }
-        },
-      ),
+          ),
+        );
+      },
+      listener: (context, state) {
+        if (state is SuccessState) {
+          // Do something
+        } else if (state is ErrorState) {
+          // Do something
+        }
+      },
     );
   }
 
   Widget _buildSuccessState(BuildContext context, SuccessState state) {
-    List<WeeklyScheduleEvent> events = state.schedule.weeklyEvents;
-    // return WeeklySchedule(events: events);
-    // Set a fixed h and w for the WeeklySchedule because it internally uses a CustomScrollView
-    // The h and w must be the available space, use MediaQuery
+    final semesterList = state.schedule.semesterList;
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       child: WeeklySchedule(
-        events: events,
+        events: state.schedule.weeklyEvents,
         bottomText:
             'Semestre ${state.schedule.semester.substring(0, 4)}-${state.schedule.semester.substring(4)} | Sigapp',
       ),
+    );
+  }
+
+  void _showModalBottomSheet(SuccessState state) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height / 2,
+          child: _buildSemesterList(state),
+        );
+      },
+    );
+  }
+
+  Widget _buildSemesterList(SuccessState state) {
+    return ListView.builder(
+      itemCount: state.schedule.semesterList.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(state.schedule.semesterList[index]),
+          onTap: () {
+            _cubit.changeSemester(state.schedule.semesterList[index]);
+            Navigator.pop(context);
+          },
+        );
+      },
     );
   }
 }
