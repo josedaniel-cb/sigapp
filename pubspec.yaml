@@ -56,6 +56,10 @@ dependencies:
 
   html: ^0.15.4
 
+  screenshot: ^3.0.0
+
+  share_plus: ^9.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

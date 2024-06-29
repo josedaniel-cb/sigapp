@@ -1,5 +1,11 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:sigapp/schedule/schedule_cubit.dart';
 import 'package:sigapp/schedule/ui/schedule_semester_select.dart';
 import 'package:sigapp/schedule/ui/weekly_schedule.dart';
@@ -117,28 +123,64 @@ class SchedulePageState extends State<SchedulePage> {
     return pixels / devicePixelRatio;
   }
 
+  ScreenshotController screenshotController = ScreenshotController();
+
   void _showShareBottomSheet(SuccessState state) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return SizedBox(
-          height: MediaQuery.of(context).size.height / 2,
-          child: InteractiveViewer(
-            constrained: false,
-            minScale: 1,
-            maxScale: 3,
-            child: SizedBox(
-              width: _pixelsToDIP(context, 1920),
-              child: WeeklySchedule(
-                events: state.schedule.weeklyEvents,
-                bottomText: 'Semestre ${state.schedule.semester.name} | Sigapp',
-                disableScroll: true,
-                fontSize: _pixelsToDIP(context, 40),
+        return Container(
+          child: Column(
+            children: [
+              ElevatedButton(
+                onPressed: () => captureAndShare(),
+                child: const Text('Compartir'),
               ),
-            ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 2,
+                child: InteractiveViewer(
+                  constrained: false,
+                  minScale: 1,
+                  maxScale: 3,
+                  child: Screenshot(
+                    controller: screenshotController,
+                    child: SizedBox(
+                      width: _pixelsToDIP(context, 1920),
+                      child: WeeklySchedule(
+                        events: state.schedule.weeklyEvents,
+                        bottomText:
+                            'Semestre ${state.schedule.semester.name} | Sigapp',
+                        disableScroll: true,
+                        fontSize: _pixelsToDIP(context, 40),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       },
     );
+  }
+
+  Future<void> captureAndShare() async {
+    final Uint8List? image = await screenshotController.capture();
+    if (image != null) {
+      final directory = await getApplicationDocumentsDirectory();
+      final imagePath = await File('${directory.path}/image.png').create();
+      await imagePath.writeAsBytes(image);
+
+      // Updated to use shareXFiles for sharing files
+      final result = await Share.shareXFiles([XFile(imagePath.path)],
+          text: 'Check out this image!');
+
+      // Handling the result of sharing
+      if (result.status == ShareResultStatus.success) {
+        print('Image shared successfully!');
+      } else if (result.status == ShareResultStatus.dismissed) {
+        print('Share dismissed.');
+      }
+    }
   }
 }
