@@ -28,7 +28,7 @@ class StudentRepository {
     //   -H 'sec-fetch-user: ?1' \
     //   -H 'upgrade-insecure-requests: 1' \
     //   -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0'
-    final response = await _sigaClient.http.get('/');
+    final response = await _sigaClient.http.get('/Home/Index');
     final rawHtml = response.data as String;
     final html = htmlParser.parse(rawHtml);
     // print(html.querySelectorAll('dd').map((e) => e.text).toList());
@@ -75,7 +75,8 @@ class StudentRepository {
     return result;
   }
 
-  Future<List<GetClassScheduleModel>> getClassSchedule(String semester) async {
+  Future<List<GetClassScheduleModel>> getClassSchedule(
+      String semesterId) async {
     // Request
     // curl 'https://academico.unp.edu.pe/Academico/ListarHorario' \
     //   -H 'accept: application/json, text/javascript, */*; q=0.01' \
@@ -106,7 +107,7 @@ class StudentRepository {
         },
       ),
       data: {
-        'semestre': semester,
+        'semestre': semesterId,
       },
     );
     return (response.data['results'] as List)

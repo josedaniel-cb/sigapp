@@ -128,16 +128,18 @@ class SigaClient {
 
   void _onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
-    if (_refreshSessionCompleter != null) {
-      await _refreshSessionCompleter!.future.catchError((e, s) {
-        if (kDebugMode) {
-          print('Error refreshing session: $e');
-          print(s);
-        }
-        logout();
-      });
+    if (_refreshSessionCompleter == null) {
+      return handler.next(options);
     }
-    return handler.next(options);
+    return _refreshSessionCompleter!.future
+        .then((_) => handler.next(options))
+        .catchError((e, s) {
+      if (kDebugMode) {
+        print('Error refreshing session: $e');
+        print(s);
+      }
+      logout();
+    });
   }
 
   void _onResponse(

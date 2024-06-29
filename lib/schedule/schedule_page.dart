@@ -4,6 +4,7 @@ import 'package:sigapp/schedule/schedule_cubit.dart';
 import 'package:sigapp/schedule/ui/weekly_schedule.dart';
 import 'package:sigapp/shared/error_state.dart';
 import 'package:sigapp/shared/loading_state.dart';
+import 'package:sigapp/student/entities/student_semester_schedule.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
@@ -35,7 +36,7 @@ class SchedulePageState extends State<SchedulePage> {
             title: Text(
               'Horario${state.map(
                 loading: (_) => '...',
-                success: (state) => ' ${state.schedule.semester}',
+                success: (state) => ' ${state.schedule.semester.name}',
                 error: (_) => '',
               )}',
             ),
@@ -82,8 +83,7 @@ class SchedulePageState extends State<SchedulePage> {
       width: MediaQuery.of(context).size.width,
       child: WeeklySchedule(
         events: state.schedule.weeklyEvents,
-        bottomText:
-            'Semestre ${state.schedule.semester.substring(0, 4)}-${state.schedule.semester.substring(4)} | Sigapp',
+        bottomText: 'Semestre ${state.schedule.semester.name} | Sigapp',
       ),
     );
   }
@@ -101,26 +101,50 @@ class SchedulePageState extends State<SchedulePage> {
   }
 
   Widget _buildSemesterList(SuccessState state) {
-    if (state.schedule.semesterList.isEmpty) {
+    final semesterList = [...state.schedule.semesterList]
+      ..sort((a, b) => b.id.compareTo(a.id));
+
+    if (semesterList.isEmpty) {
       return const Center(
         child: Text('No hay semestres disponibles'),
       );
     }
 
-    return ListView.builder(
-      itemCount: state.schedule.semesterList.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(state.schedule.semesterList[index]),
-          onTap: () {
-            _cubit.changeSemester(state.schedule.semesterList[index]);
-            Navigator.pop(context);
-          },
-          // disable current semester
-          enabled:
-              state.schedule.semester != state.schedule.semesterList[index],
+    // Group semesters by year
+    final Map<String, List<SemesterScheduleSemesterMetadata>> groupedByYear =
+        {};
+    for (var semester in semesterList) {
+      groupedByYear.putIfAbsent(semester.year, () => []).add(semester);
+    }
+
+    // Convert map to list of widgets
+    List<Widget> groupedWidgets = [];
+    groupedByYear.forEach((year, semesters) {
+      if (groupedWidgets.isNotEmpty) {
+        groupedWidgets.add(
+          const Divider(),
         );
-      },
+      }
+      groupedWidgets.addAll(semesters.map((semester) {
+        final enabled = state.schedule.semester.id != semester.id;
+        return Center(
+          child: ListTile(
+            title: Text(
+              semester.name,
+              textAlign: TextAlign.center,
+            ),
+            onTap: () {
+              _cubit.changeSemester(semester);
+              Navigator.pop(context);
+            },
+            enabled: enabled,
+          ),
+        );
+      }).toList());
+    });
+
+    return ListView(
+      children: groupedWidgets,
     );
   }
 }

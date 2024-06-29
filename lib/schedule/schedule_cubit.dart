@@ -11,7 +11,7 @@ part 'schedule_cubit.freezed.dart';
 abstract class ScheduleState with _$ScheduleState {
   const factory ScheduleState.loading() = LoadingState;
   const factory ScheduleState.success(
-    StudentSemesterSchedule schedule,
+    SemesterSchedule schedule,
   ) = SuccessState;
   const factory ScheduleState.error(String message) = ErrorState;
 }
@@ -40,14 +40,14 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     }
   }
 
-  void changeSemester(String semester) async {
+  void changeSemester(SemesterScheduleSemesterMetadata semester) async {
     if (state is! SuccessState) {
       return;
     }
     final successState = state as SuccessState;
     emit(const ScheduleState.loading());
     try {
-      final weeklyEvents = await _studentService.getClassSchedule(semester);
+      final weeklyEvents = await _studentService.getClassSchedule(semester.id);
       final newSchedule = successState.schedule.copyWith(
         semester: semester,
         weeklyEvents: weeklyEvents,

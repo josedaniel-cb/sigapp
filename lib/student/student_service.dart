@@ -20,32 +20,39 @@ class StudentService {
     }
 
     _academicReportModel = await _studentRepository.getAcademicReport();
+    _academicReportModel = _academicReportModel!.copyWith(
+      UltSemestre: _academicReportModel!.UltSemestre?.trim(),
+      SemestrePlan: _academicReportModel!.SemestrePlan.trim(),
+      SemestreIngreso: _academicReportModel!.SemestreIngreso.trim(),
+    );
 
     return _academicReportModel!;
   }
 
-  Future<List<WeeklyScheduleEvent>> getClassSchedule(String semester) async {
-    final rawResult = await _studentRepository.getClassSchedule(semester);
+  Future<List<WeeklyScheduleEvent>> getClassSchedule(String semesterId) async {
+    final rawResult = await _studentRepository.getClassSchedule(semesterId);
     final result = _processClassSchedule(rawResult);
     return result;
   }
 
-  Future<StudentSemesterSchedule> getDefaultClassSchedule() async {
+  Future<SemesterSchedule> getDefaultClassSchedule() async {
     final currentSemester = await _studentRepository.getCurrentSemesterId();
 
     final academicReport = await getAcademicReport();
-    final firstSemester = academicReport.SemestreIngreso;
-    final lastSemester = academicReport.UltSemestre;
-    final semester = lastSemester ?? firstSemester;
-    final semesterList =
-        _buildSemesterRange(firstSemester, lastSemester ?? currentSemester);
+    final firstSemesterId = academicReport.SemestreIngreso;
+    final lastSemesterId = academicReport.UltSemestre;
+    final semesterId = lastSemesterId ?? firstSemesterId;
+    final semestersIdsList =
+        _buildSemesterRange(firstSemesterId, lastSemesterId ?? currentSemester);
 
-    final weeklyEvents = await getClassSchedule(semester);
+    final weeklyEvents = await getClassSchedule(semesterId);
 
-    return StudentSemesterSchedule(
-      semester: semester,
+    return SemesterSchedule(
+      semester: SemesterScheduleSemesterMetadata.buildFromId(semesterId),
       weeklyEvents: weeklyEvents,
-      semesterList: semesterList,
+      semesterList: semestersIdsList
+          .map((id) => SemesterScheduleSemesterMetadata.buildFromId(id))
+          .toList(),
     );
   }
 
