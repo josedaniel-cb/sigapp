@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sigapp/student/entities/weekly_schedule_event.dart';
 
@@ -337,12 +338,17 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
     // Texts: title and captions (place and duration)
     final titleFontSize = widget.fontSize; // for title
     const titleLineHeight = 1.1;
-    final titleOneLineHeight = titleFontSize * titleLineHeight;
+    final titleOneLineHeight = titleFontSize *
+        titleLineHeight; // this is not calculating the actual rendered height
+
+    final separatorSpace = titleOneLineHeight * 0.5;
 
     final captionFontSize = titleFontSize * 0.75; // for place and duration
-    const captionLineHeight = 1.2;
-    final captionOneLineHeight = captionFontSize * captionLineHeight;
-    final captionsHeight = captionOneLineHeight * 2; // place + duration
+    const double captionLineHeight = 1.2;
+    final captionOneLineHeight = captionFontSize *
+        captionLineHeight; // this is not calculating the actual rendered height
+    final captionsHeight = captionOneLineHeight * 2 +
+        4; // place + duration / adding 4 for auxiliar padding
 
     // Padding for all sides of the event
     final verticalPadding = titleFontSize / 2;
@@ -351,14 +357,33 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
     final availableHeight = height - (verticalPadding * 2);
     var availableHeightForTitle = availableHeight;
     final captionsCanBeShown = // if there is enough space for title captions
-        availableHeight > (titleOneLineHeight + captionsHeight);
+        availableHeight >
+            (titleOneLineHeight + separatorSpace + captionsHeight);
     if (captionsCanBeShown) {
-      availableHeightForTitle -= captionsHeight;
+      availableHeightForTitle -= separatorSpace + captionsHeight;
     }
     final titleMaxLines =
         (availableHeightForTitle / titleOneLineHeight).floor();
 
     final textColor = chooseTextColor(event.color);
+
+    if (kDebugMode) {
+      // cat emoji: 🐱
+      // debugging:
+      var acumulativeHeight = verticalPadding;
+      acumulativeHeight += titleMaxLines * titleOneLineHeight;
+      if (captionsCanBeShown) {
+        acumulativeHeight += captionsHeight;
+      }
+      acumulativeHeight += verticalPadding;
+      print('🐱 ${event.title} (${_formatEventDuration(event)})');
+      print('height: $height');
+      print('acumulativeHeight: $acumulativeHeight');
+
+      if (acumulativeHeight > height) {
+        print('🐱 WARNING: Not enough space for text');
+      }
+    }
 
     return Positioned(
       top: top,
@@ -379,41 +404,54 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                event.title,
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: titleFontSize,
-                  height: titleLineHeight,
+              Container(
+                padding: captionsCanBeShown
+                    ? EdgeInsets.only(bottom: separatorSpace)
+                    : null,
+                // color: Colors.white30,
+                height: availableHeightForTitle,
+                child: Text(
+                  event.title,
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: titleFontSize,
+                    height: titleLineHeight,
+                  ),
+                  maxLines: titleMaxLines,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
-                maxLines: titleMaxLines,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
               ),
-              if (captionsCanBeShown) ...[
-                Text(
-                  event.place,
-                  style: TextStyle(
-                    color: textColor,
-                    fontSize: captionFontSize,
-                    height: captionLineHeight,
+              if (captionsCanBeShown)
+                Container(
+                  height: captionsHeight,
+                  child: Column(
+                    children: [
+                      Text(
+                        event.place,
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: captionFontSize,
+                          height: captionLineHeight,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        _formatEventDuration(event),
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: captionFontSize,
+                          height: captionLineHeight,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
                 ),
-                Text(
-                  _formatEventDuration(event),
-                  style: TextStyle(
-                    color: textColor,
-                    fontSize: captionFontSize,
-                    height: captionLineHeight,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                ),
-              ],
             ],
           ),
         ),
