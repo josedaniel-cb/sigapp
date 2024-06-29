@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sigapp/student/entities/student_academic_report.dart';
 import 'package:sigapp/student/entities/weekly_schedule_event.dart';
 
 part 'student_semester_schedule.freezed.dart';
@@ -6,6 +7,7 @@ part 'student_semester_schedule.freezed.dart';
 @freezed
 class SemesterSchedule with _$SemesterSchedule {
   factory SemesterSchedule({
+    required StudentAcademicReport studentAcademicReport,
     required List<SemesterScheduleSemesterMetadata> semesterList,
     required SemesterScheduleSemesterMetadata semester,
     required List<WeeklyScheduleEvent> weeklyEvents,

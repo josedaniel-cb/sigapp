@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:sigapp/student/entities/student_academic_report.dart';
 import 'package:sigapp/student/entities/student_semester_schedule.dart';
 import 'package:sigapp/student/entities/weekly_schedule_event.dart';
-import 'package:sigapp/student/models/get_academic_report.dart';
 import 'package:sigapp/student/models/get_class_schedule.dart';
 import 'package:sigapp/student/student_repository.dart';
 
@@ -10,23 +10,50 @@ import 'package:sigapp/student/student_repository.dart';
 class StudentService {
   final StudentRepository _studentRepository;
 
-  GetAcademicReportModel? _academicReportModel;
+  StudentAcademicReport? _studentAcademicReport;
 
   StudentService(this._studentRepository);
 
-  Future<GetAcademicReportModel> getAcademicReport() async {
-    if (_academicReportModel != null) {
-      return _academicReportModel!;
+  Future<StudentAcademicReport> getAcademicReport() async {
+    if (_studentAcademicReport != null) {
+      return _studentAcademicReport!;
     }
 
-    _academicReportModel = await _studentRepository.getAcademicReport();
-    _academicReportModel = _academicReportModel!.copyWith(
-      UltSemestre: _academicReportModel!.UltSemestre?.trim(),
-      SemestrePlan: _academicReportModel!.SemestrePlan.trim(),
-      SemestreIngreso: _academicReportModel!.SemestreIngreso.trim(),
+    final academicReportModel =
+        await _studentRepository.getAcademicReport().then(
+              (value) => value.copyWith(
+                UltSemestre: value.UltSemestre?.trim(),
+                SemestrePlan: value.SemestrePlan.trim(),
+                SemestreIngreso: value.SemestreIngreso.trim(),
+              ),
+            );
+    final sessionStudentInfoModel =
+        await _studentRepository.getSessionStudentInfo();
+
+    final studentInfoParts = academicReportModel.NomAlumno.split(' - ');
+    studentInfoParts.replaceRange(1, 2, studentInfoParts[1].split(', '));
+    _studentAcademicReport = StudentAcademicReport(
+      faculty: academicReportModel.Facultad,
+      school: sessionStudentInfoModel.schoolName,
+      firstName: studentInfoParts[2],
+      lastName: studentInfoParts[1],
+      code: studentInfoParts[0],
+      cohort: academicReportModel.Promocion,
+      enrollmentSemesterId: academicReportModel.SemestreIngreso,
+      curriculumSemesterId: academicReportModel.SemestrePlan,
+      lastSemesterId: academicReportModel.UltSemestre,
+      cumulativeWeightedAverage: academicReportModel.PPA,
+      cumulativeWeightedAverageOfPassedCourses: academicReportModel.PPAAprob,
+      lastCumulativeWeightedAverage: academicReportModel.UPPS,
+      curriculumMandatoryCredits: academicReportModel.CredObligPlan,
+      curriculumElectiveCredits: academicReportModel.CredElectPlan,
+      totalCreditsOfPassedCourses: academicReportModel.TotalCredAprob,
+      mandatoryCreditsOfPassedCourses: academicReportModel.CredObligAprob,
+      electiveCreditsOfPassedCourses: academicReportModel.CredElectAprob,
+      currentSemesterId: sessionStudentInfoModel.currentSemesterId,
     );
 
-    return _academicReportModel!;
+    return _studentAcademicReport!;
   }
 
   Future<List<WeeklyScheduleEvent>> getClassSchedule(String semesterId) async {
@@ -36,18 +63,17 @@ class StudentService {
   }
 
   Future<SemesterSchedule> getDefaultClassSchedule() async {
-    final currentSemester = await _studentRepository.getCurrentSemesterId();
-
     final academicReport = await getAcademicReport();
-    final firstSemesterId = academicReport.SemestreIngreso;
-    final lastSemesterId = academicReport.UltSemestre;
+    final firstSemesterId = academicReport.enrollmentSemesterId;
+    final lastSemesterId = academicReport.lastSemesterId;
     final semesterId = lastSemesterId ?? firstSemesterId;
-    final semestersIdsList =
-        _buildSemesterRange(firstSemesterId, lastSemesterId ?? currentSemester);
+    final semestersIdsList = _buildSemesterRange(
+        firstSemesterId, lastSemesterId ?? academicReport.currentSemesterId);
 
     final weeklyEvents = await getClassSchedule(semesterId);
 
     return SemesterSchedule(
+      studentAcademicReport: academicReport,
       semester: SemesterScheduleSemesterMetadata.buildFromId(semesterId),
       weeklyEvents: weeklyEvents,
       semesterList: semestersIdsList
@@ -173,12 +199,13 @@ class StudentService {
     return events;
   }
 
-  List<String> _buildSemesterRange(String firstSemester, String lastSemester) {
+  List<String> _buildSemesterRange(
+      String firstSemesterId, String lastSemesterId) {
     List<String> semesters = [];
-    int firstYear = int.parse(firstSemester.substring(0, 4));
-    int lastYear = int.parse(lastSemester.substring(0, 4));
-    int firstSemesterNumber = int.parse(firstSemester.substring(4)); // 0 to 2
-    int lastSemesterNumber = int.parse(lastSemester.substring(4)); // 0 to 2
+    int firstYear = int.parse(firstSemesterId.substring(0, 4));
+    int lastYear = int.parse(lastSemesterId.substring(0, 4));
+    int firstSemesterNumber = int.parse(firstSemesterId.substring(4)); // 0 to 2
+    int lastSemesterNumber = int.parse(lastSemesterId.substring(4)); // 0 to 2
     for (int year = firstYear; year <= lastYear; year++) {
       int start = (year == firstYear) ? firstSemesterNumber : 0;
       int end = (year == lastYear) ? lastSemesterNumber : 2;

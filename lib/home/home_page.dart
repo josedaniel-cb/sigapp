@@ -78,22 +78,7 @@ class _HomePageState extends State<HomePage> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Text('Facultad: ${info.Facultad}'),
-          Text('Nombre: ${info.NomAlumno}'),
-          Text('Promoción: ${info.Promocion}'),
-          Text('Semestre de ingreso: ${info.SemestreIngreso}'),
-          Text('Semestre de plan de estudios: ${info.SemestrePlan}'),
-          Text('Último semestre: ${info.UltSemestre ?? 'No disponible'}'),
-          Text('Promedio Ponderado Acumulado: ${info.PPA}'),
-          Text('Promedio Ponderado Acumulado Aprobado: ${info.PPAAprob}'),
-          Text('Último promedio ponderado semestral: ${info.UPPS}'),
-          Text('Total de créditos aprobados: ${info.TotalCredAprob}'),
-          Text(
-              'Créditos obligatorios del plan de estudios: ${info.CredObligPlan}'),
-          Text(
-              'Créditos electivos del plan de estudios: ${info.CredElectPlan}'),
-          Text('Créditos obligatorios aprobados: ${info.CredObligAprob}'),
-          Text('Créditos electivos aprobados: ${info.CredElectAprob}'),
+          Text(info.toString()),
           ListTile(
             title: const Text('Horario'),
             onTap: () {

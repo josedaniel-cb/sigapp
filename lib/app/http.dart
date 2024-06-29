@@ -29,7 +29,7 @@ class HttpClientBuilder {
         return handler.next(options);
       },
       onResponse: (response, handler) async {
-        _printResponse(response);
+        _printResponse(response, '✅');
         final setCookieHeader = response.headers['set-cookie'];
         if (setCookieHeader != null && setCookieHeader.isNotEmpty) {
           _cookieManager.saveCookies(
@@ -42,7 +42,7 @@ class HttpClientBuilder {
       onError: (err, handler) async {
         final response = err.response;
         if (response != null) {
-          _printResponse(response);
+          _printResponse(response, '❌');
         }
         return handler.next(err);
       },
@@ -108,7 +108,7 @@ class HttpClientBuilder {
 
   void _printRequest(RequestOptions options) {
     if (kDebugMode) {
-      print('👻 [$_id] Request: ${options.method} ${options.uri}');
+      print('📡⬆️ [Request] $_id: ${options.method} ${options.uri}');
       print('Headers: ${json.encode(options.headers)}');
       try {
         print('Data: ${json.encode(options.data)}');
@@ -118,10 +118,10 @@ class HttpClientBuilder {
     }
   }
 
-  void _printResponse(Response<dynamic> response) {
+  void _printResponse(Response<dynamic> response, String emoji) {
     if (kDebugMode) {
       print(
-          '👻 [$_id] Response: ${response.requestOptions.method} ${response.requestOptions.uri} ${response.statusCode}');
+          '📡⬇️$emoji [Response] $_id: ${response.requestOptions.method} ${response.requestOptions.uri} ${response.statusCode}');
       print('Headers: ${json.encode(response.headers.map)}');
       try {
         print('Data: ${json.encode(response.data)}');

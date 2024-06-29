@@ -52,7 +52,7 @@ class SchedulePageState extends State<SchedulePage> {
                 onPressed: (state is SuccessState &&
                         state.schedule.semesterList.isNotEmpty)
                     // ? () => _showShareBottomSheet(state)
-                    ? () => captureAndShare2(state)
+                    ? () => _captureAndShare(state)
                     : null,
               ),
               IconButton(
@@ -95,7 +95,6 @@ class SchedulePageState extends State<SchedulePage> {
       width: MediaQuery.of(context).size.width,
       child: WeeklySchedule(
         events: state.schedule.weeklyEvents,
-        // bottomText: 'Semestre ${state.schedule.semester.name} | Sigapp',
       ),
     );
   }
@@ -126,73 +125,57 @@ class SchedulePageState extends State<SchedulePage> {
 
   ScreenshotController screenshotController = ScreenshotController();
 
-  void _showShareBottomSheet(SuccessState state) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          child: Column(
-            children: [
-              ElevatedButton(
-                onPressed: () => captureAndShare(),
-                child: const Text('Compartir'),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 2,
-                child: InteractiveViewer(
-                  constrained: false,
-                  minScale: 1,
-                  maxScale: 3,
-                  child: Screenshot(
-                    controller: screenshotController,
-                    child: SizedBox(
-                      width: _pixelsToDIP(context, 1920),
-                      child: WeeklySchedule(
-                        events: state.schedule.weeklyEvents,
-                        bottomText:
-                            'Semestre ${state.schedule.semester.name} | Sigapp',
-                        disableScroll: true,
-                        fontSize: _pixelsToDIP(context, 40),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  // void _showShareBottomSheet(SuccessState state) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return Container(
+  //         child: Column(
+  //           children: [
+  //             ElevatedButton(
+  //               onPressed: () => captureAndShare(),
+  //               child: const Text('Compartir'),
+  //             ),
+  //             SizedBox(
+  //               height: MediaQuery.of(context).size.height / 2,
+  //               child: InteractiveViewer(
+  //                 constrained: false,
+  //                 minScale: 1,
+  //                 maxScale: 3,
+  //                 child: Screenshot(
+  //                   controller: screenshotController,
+  //                   child: SizedBox(
+  //                     width: _pixelsToDIP(context, 1920),
+  //                     child: WeeklySchedule(
+  //                       events: state.schedule.weeklyEvents,
+  //                       bottomText:
+  //                           'Semestre ${state.schedule.semester.name} | Sigapp',
+  //                       disableScroll: true,
+  //                       fontSize: _pixelsToDIP(context, 40),
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
-  Future<void> captureAndShare() async {
-    final Uint8List? image = await screenshotController.capture();
-
-    if (image != null) {
-      final directory = await getApplicationDocumentsDirectory();
-      final imagePath = await File('${directory.path}/image.png').create();
-      await imagePath.writeAsBytes(image);
-
-      // Updated to use shareXFiles for sharing files
-      final result = await Share.shareXFiles([XFile(imagePath.path)],
-          text: 'Check out this image!');
-
-      // Handling the result of sharing
-      if (result.status == ShareResultStatus.success) {
-        print('Image shared successfully!');
-      } else if (result.status == ShareResultStatus.dismissed) {
-        print('Share dismissed.');
-      }
-    }
-  }
-
-  Future<void> captureAndShare2(SuccessState state) async {
-    final Uint8List? image = await screenshotController.captureFromWidget(
+  Future<void> _captureAndShare(SuccessState state) async {
+    final Uint8List image = await screenshotController.captureFromWidget(
       SizedBox(
         width: _pixelsToDIP(context, 1920),
         child: WeeklySchedule(
           events: state.schedule.weeklyEvents,
-          bottomText: 'Semestre ${state.schedule.semester.name} | Sigapp',
+          topLeftText: 'Semestre ${state.schedule.semester.name}',
+          topRightText: 'Sigapp',
+          bottomLeftText:
+              '${state.schedule.studentAcademicReport.firstName} ${state.schedule.studentAcademicReport.lastName}',
+          bottomRightText:
+              'Promoción ${state.schedule.studentAcademicReport.cohort}, ${state.schedule.studentAcademicReport.school}',
           disableScroll: true,
           fontSize: _pixelsToDIP(context, 40),
         ),
@@ -206,19 +189,21 @@ class SchedulePageState extends State<SchedulePage> {
       ),
     );
 
-    if (image != null) {
-      final directory = await getApplicationDocumentsDirectory();
-      final imagePath = await File('${directory.path}/image.png').create();
-      await imagePath.writeAsBytes(image);
+    final directory = await getApplicationDocumentsDirectory();
+    final imagePath = await File('${directory.path}/image.png').create();
+    await imagePath.writeAsBytes(image);
 
-      // Updated to use shareXFiles for sharing files
-      final result = await Share.shareXFiles([XFile(imagePath.path)],
-          text: 'Check out this image!');
+    // Updated to use shareXFiles for sharing files
+    final result = await Share.shareXFiles([XFile(imagePath.path)],
+        text: 'Check out this image!');
 
-      // Handling the result of sharing
-      if (result.status == ShareResultStatus.success) {
+    // Handling the result of sharing
+    if (result.status == ShareResultStatus.success) {
+      if (kDebugMode) {
         print('Image shared successfully!');
-      } else if (result.status == ShareResultStatus.dismissed) {
+      }
+    } else if (result.status == ShareResultStatus.dismissed) {
+      if (kDebugMode) {
         print('Share dismissed.');
       }
     }

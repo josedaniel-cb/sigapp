@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/app/siga_client.dart';
 import 'package:sigapp/student/models/get_academic_report.dart';
 import 'package:sigapp/student/models/get_class_schedule.dart';
 import 'package:html/parser.dart' as htmlParser;
+import 'package:sigapp/student/models/get_session_student_info.dart';
 
 @lazySingleton
 class StudentRepository {
@@ -11,7 +13,7 @@ class StudentRepository {
 
   StudentRepository(this._sigaClient);
 
-  Future<String> getCurrentSemesterId() async {
+  Future<GetSessionStudentInfoModel> getSessionStudentInfo() async {
     // curl 'https://academico.unp.edu.pe/Home/Index' \
     //   -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7' \
     //   -H 'accept-language: en-US,en;q=0.9,es-PE;q=0.8,es-ES;q=0.7,es;q=0.6' \
@@ -31,12 +33,21 @@ class StudentRepository {
     final response = await _sigaClient.http.get('/Home/Index');
     final rawHtml = response.data as String;
     final html = htmlParser.parse(rawHtml);
-    // print(html.querySelectorAll('dd').map((e) => e.text).toList());
-    final currentSemesterId = html.querySelector('dd:nth-child(3)')?.text;
-    if (currentSemesterId == null) {
-      throw Exception('Semester id not found');
+    // if (kDebugMode) {
+    //   print();
+    // }
+    final parts =
+        html.querySelectorAll('dd').map((e) => e.text.trim()).toList();
+    if (parts.length < 4) {
+      // TODO: LOGOUT?
+      throw Exception('Session info not found');
     }
-    return currentSemesterId;
+    final currentSemesterId = parts[3];
+    final schoolName = parts[1];
+    return GetSessionStudentInfoModel(
+      currentSemesterId: currentSemesterId,
+      schoolName: schoolName,
+    );
   }
 
   Future<GetAcademicReportModel> getAcademicReport() async {

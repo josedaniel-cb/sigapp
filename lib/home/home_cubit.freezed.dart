@@ -19,21 +19,21 @@ mixin _$HomeState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(GetAcademicReportModel academicReport) success,
+    required TResult Function(StudentAcademicReport academicReport) success,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(GetAcademicReportModel academicReport)? success,
+    TResult? Function(StudentAcademicReport academicReport)? success,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(GetAcademicReportModel academicReport)? success,
+    TResult Function(StudentAcademicReport academicReport)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -118,7 +118,7 @@ class _$LoadingStateImpl implements LoadingState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(GetAcademicReportModel academicReport) success,
+    required TResult Function(StudentAcademicReport academicReport) success,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -128,7 +128,7 @@ class _$LoadingStateImpl implements LoadingState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(GetAcademicReportModel academicReport)? success,
+    TResult? Function(StudentAcademicReport academicReport)? success,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -138,7 +138,7 @@ class _$LoadingStateImpl implements LoadingState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(GetAcademicReportModel academicReport)? success,
+    TResult Function(StudentAcademicReport academicReport)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -193,9 +193,9 @@ abstract class _$$SuccessStateImplCopyWith<$Res> {
           _$SuccessStateImpl value, $Res Function(_$SuccessStateImpl) then) =
       __$$SuccessStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({GetAcademicReportModel academicReport});
+  $Res call({StudentAcademicReport academicReport});
 
-  $GetAcademicReportModelCopyWith<$Res> get academicReport;
+  $StudentAcademicReportCopyWith<$Res> get academicReport;
 }
 
 /// @nodoc
@@ -215,15 +215,14 @@ class __$$SuccessStateImplCopyWithImpl<$Res>
       null == academicReport
           ? _value.academicReport
           : academicReport // ignore: cast_nullable_to_non_nullable
-              as GetAcademicReportModel,
+              as StudentAcademicReport,
     ));
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $GetAcademicReportModelCopyWith<$Res> get academicReport {
-    return $GetAcademicReportModelCopyWith<$Res>(_value.academicReport,
-        (value) {
+  $StudentAcademicReportCopyWith<$Res> get academicReport {
+    return $StudentAcademicReportCopyWith<$Res>(_value.academicReport, (value) {
       return _then(_value.copyWith(academicReport: value));
     });
   }
@@ -235,7 +234,7 @@ class _$SuccessStateImpl implements SuccessState {
   const _$SuccessStateImpl(this.academicReport);
 
   @override
-  final GetAcademicReportModel academicReport;
+  final StudentAcademicReport academicReport;
 
   @override
   String toString() {
@@ -264,7 +263,7 @@ class _$SuccessStateImpl implements SuccessState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(GetAcademicReportModel academicReport) success,
+    required TResult Function(StudentAcademicReport academicReport) success,
     required TResult Function(String message) error,
   }) {
     return success(academicReport);
@@ -274,7 +273,7 @@ class _$SuccessStateImpl implements SuccessState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(GetAcademicReportModel academicReport)? success,
+    TResult? Function(StudentAcademicReport academicReport)? success,
     TResult? Function(String message)? error,
   }) {
     return success?.call(academicReport);
@@ -284,7 +283,7 @@ class _$SuccessStateImpl implements SuccessState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(GetAcademicReportModel academicReport)? success,
+    TResult Function(StudentAcademicReport academicReport)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -330,10 +329,10 @@ class _$SuccessStateImpl implements SuccessState {
 }
 
 abstract class SuccessState implements HomeState {
-  const factory SuccessState(final GetAcademicReportModel academicReport) =
+  const factory SuccessState(final StudentAcademicReport academicReport) =
       _$SuccessStateImpl;
 
-  GetAcademicReportModel get academicReport;
+  StudentAcademicReport get academicReport;
   @JsonKey(ignore: true)
   _$$SuccessStateImplCopyWith<_$SuccessStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -404,7 +403,7 @@ class _$ErrorStateImpl implements ErrorState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(GetAcademicReportModel academicReport) success,
+    required TResult Function(StudentAcademicReport academicReport) success,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -414,7 +413,7 @@ class _$ErrorStateImpl implements ErrorState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(GetAcademicReportModel academicReport)? success,
+    TResult? Function(StudentAcademicReport academicReport)? success,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -424,7 +423,7 @@ class _$ErrorStateImpl implements ErrorState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(GetAcademicReportModel academicReport)? success,
+    TResult Function(StudentAcademicReport academicReport)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

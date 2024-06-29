@@ -12,7 +12,8 @@ import 'package:sigapp/auth/auth_repository.dart';
 const sigaHost = 'academico.unp.edu.pe';
 const sigaApiUrl = 'https://$sigaHost';
 const sigaAuthCookieKey = '.ASPXAUTH';
-const sigaLogoutRedirectionLocation = '/Cuenta/InicioSesion';
+const sigaForceLogoutRedirectionLocation = '/Cuenta/InicioSesion';
+const sigaLoginPageRedirectionLocation = '/Home/Index';
 
 @singleton
 class SigaClient {
@@ -41,7 +42,7 @@ class SigaClient {
     _http = result.client;
     _cookieManager = result.cookieManager;
 
-    _authClient = HttpClientBuilder(id: 'siga_auth', prefs: _prefs)
+    _authClient = HttpClientBuilder(id: 'siga_auth_🛡️', prefs: _prefs)
         .setBaseUrl(sigaApiUrl)
         .addHeader('Content-Type', 'application/json')
         // .addRequestHandler(...)
@@ -62,10 +63,7 @@ class SigaClient {
 
     try {
       final keepSessionResponse = await _authRepository.keepSession();
-      if (keepSessionResponse.statusCode == 302 &&
-          keepSessionResponse.headers['location'] != null &&
-          keepSessionResponse.headers['location']!
-              .contains(sigaLogoutRedirectionLocation)) {
+      if (_evaluateSessionExpiration(keepSessionResponse)) {
         // Login
         final loginResponse = await _authRepository.login(
           username!,
@@ -93,6 +91,16 @@ class SigaClient {
     } finally {
       _refreshSessionCompleter = null;
     }
+  }
+
+  bool _evaluateSessionExpiration(Response<dynamic> keepSessionResponse) {
+    final locationHeaderValue = keepSessionResponse.headers['location'];
+    if (!(keepSessionResponse.statusCode == 302 &&
+        locationHeaderValue != null)) {
+      return false;
+    }
+    return locationHeaderValue.contains(sigaForceLogoutRedirectionLocation) ||
+        locationHeaderValue.contains(sigaLoginPageRedirectionLocation);
   }
 
   Dio get http => _http;
@@ -149,10 +157,7 @@ class SigaClient {
 
   void _onError(DioException err, ErrorInterceptorHandler handler) {
     final response = err.response;
-    if (response != null &&
-        response.statusCode == 302 &&
-        response.headers['location'] != null &&
-        response.headers['location']!.contains(sigaLogoutRedirectionLocation)) {
+    if (response != null && _evaluateSessionExpiration(response)) {
       logout();
     }
     // this is not helping us because we need to retry to use the correct cookies

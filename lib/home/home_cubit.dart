@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/auth/auth_service.dart';
+import 'package:sigapp/student/entities/student_academic_report.dart';
 import 'package:sigapp/student/models/get_academic_report.dart';
 import 'package:sigapp/student/student_service.dart';
 
@@ -14,7 +15,7 @@ abstract class HomeState with _$HomeState {
   // const factory HomeState.initial() = InitialState;
   const factory HomeState.loading() = LoadingState;
   const factory HomeState.success(
-    GetAcademicReportModel academicReport,
+    StudentAcademicReport academicReport,
   ) = SuccessState;
   const factory HomeState.error(String message) = ErrorState;
   // const factory HomeState.signedOut() = SignedOutState;

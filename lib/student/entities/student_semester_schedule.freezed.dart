@@ -16,6 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$SemesterSchedule {
+  StudentAcademicReport get studentAcademicReport =>
+      throw _privateConstructorUsedError;
   List<SemesterScheduleSemesterMetadata> get semesterList =>
       throw _privateConstructorUsedError;
   SemesterScheduleSemesterMetadata get semester =>
@@ -35,10 +37,12 @@ abstract class $SemesterScheduleCopyWith<$Res> {
       _$SemesterScheduleCopyWithImpl<$Res, SemesterSchedule>;
   @useResult
   $Res call(
-      {List<SemesterScheduleSemesterMetadata> semesterList,
+      {StudentAcademicReport studentAcademicReport,
+      List<SemesterScheduleSemesterMetadata> semesterList,
       SemesterScheduleSemesterMetadata semester,
       List<WeeklyScheduleEvent> weeklyEvents});
 
+  $StudentAcademicReportCopyWith<$Res> get studentAcademicReport;
   $SemesterScheduleSemesterMetadataCopyWith<$Res> get semester;
 }
 
@@ -55,11 +59,16 @@ class _$SemesterScheduleCopyWithImpl<$Res, $Val extends SemesterSchedule>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? studentAcademicReport = null,
     Object? semesterList = null,
     Object? semester = null,
     Object? weeklyEvents = null,
   }) {
     return _then(_value.copyWith(
+      studentAcademicReport: null == studentAcademicReport
+          ? _value.studentAcademicReport
+          : studentAcademicReport // ignore: cast_nullable_to_non_nullable
+              as StudentAcademicReport,
       semesterList: null == semesterList
           ? _value.semesterList
           : semesterList // ignore: cast_nullable_to_non_nullable
@@ -73,6 +82,15 @@ class _$SemesterScheduleCopyWithImpl<$Res, $Val extends SemesterSchedule>
           : weeklyEvents // ignore: cast_nullable_to_non_nullable
               as List<WeeklyScheduleEvent>,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $StudentAcademicReportCopyWith<$Res> get studentAcademicReport {
+    return $StudentAcademicReportCopyWith<$Res>(_value.studentAcademicReport,
+        (value) {
+      return _then(_value.copyWith(studentAcademicReport: value) as $Val);
+    });
   }
 
   @override
@@ -94,10 +112,13 @@ abstract class _$$SemesterScheduleImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<SemesterScheduleSemesterMetadata> semesterList,
+      {StudentAcademicReport studentAcademicReport,
+      List<SemesterScheduleSemesterMetadata> semesterList,
       SemesterScheduleSemesterMetadata semester,
       List<WeeklyScheduleEvent> weeklyEvents});
 
+  @override
+  $StudentAcademicReportCopyWith<$Res> get studentAcademicReport;
   @override
   $SemesterScheduleSemesterMetadataCopyWith<$Res> get semester;
 }
@@ -113,11 +134,16 @@ class __$$SemesterScheduleImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? studentAcademicReport = null,
     Object? semesterList = null,
     Object? semester = null,
     Object? weeklyEvents = null,
   }) {
     return _then(_$SemesterScheduleImpl(
+      studentAcademicReport: null == studentAcademicReport
+          ? _value.studentAcademicReport
+          : studentAcademicReport // ignore: cast_nullable_to_non_nullable
+              as StudentAcademicReport,
       semesterList: null == semesterList
           ? _value._semesterList
           : semesterList // ignore: cast_nullable_to_non_nullable
@@ -138,12 +164,15 @@ class __$$SemesterScheduleImplCopyWithImpl<$Res>
 
 class _$SemesterScheduleImpl implements _SemesterSchedule {
   _$SemesterScheduleImpl(
-      {required final List<SemesterScheduleSemesterMetadata> semesterList,
+      {required this.studentAcademicReport,
+      required final List<SemesterScheduleSemesterMetadata> semesterList,
       required this.semester,
       required final List<WeeklyScheduleEvent> weeklyEvents})
       : _semesterList = semesterList,
         _weeklyEvents = weeklyEvents;
 
+  @override
+  final StudentAcademicReport studentAcademicReport;
   final List<SemesterScheduleSemesterMetadata> _semesterList;
   @override
   List<SemesterScheduleSemesterMetadata> get semesterList {
@@ -164,7 +193,7 @@ class _$SemesterScheduleImpl implements _SemesterSchedule {
 
   @override
   String toString() {
-    return 'SemesterSchedule(semesterList: $semesterList, semester: $semester, weeklyEvents: $weeklyEvents)';
+    return 'SemesterSchedule(studentAcademicReport: $studentAcademicReport, semesterList: $semesterList, semester: $semester, weeklyEvents: $weeklyEvents)';
   }
 
   @override
@@ -172,6 +201,8 @@ class _$SemesterScheduleImpl implements _SemesterSchedule {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SemesterScheduleImpl &&
+            (identical(other.studentAcademicReport, studentAcademicReport) ||
+                other.studentAcademicReport == studentAcademicReport) &&
             const DeepCollectionEquality()
                 .equals(other._semesterList, _semesterList) &&
             (identical(other.semester, semester) ||
@@ -183,6 +214,7 @@ class _$SemesterScheduleImpl implements _SemesterSchedule {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      studentAcademicReport,
       const DeepCollectionEquality().hash(_semesterList),
       semester,
       const DeepCollectionEquality().hash(_weeklyEvents));
@@ -197,11 +229,14 @@ class _$SemesterScheduleImpl implements _SemesterSchedule {
 
 abstract class _SemesterSchedule implements SemesterSchedule {
   factory _SemesterSchedule(
-          {required final List<SemesterScheduleSemesterMetadata> semesterList,
+          {required final StudentAcademicReport studentAcademicReport,
+          required final List<SemesterScheduleSemesterMetadata> semesterList,
           required final SemesterScheduleSemesterMetadata semester,
           required final List<WeeklyScheduleEvent> weeklyEvents}) =
       _$SemesterScheduleImpl;
 
+  @override
+  StudentAcademicReport get studentAcademicReport;
   @override
   List<SemesterScheduleSemesterMetadata> get semesterList;
   @override

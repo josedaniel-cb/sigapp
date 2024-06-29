@@ -3,16 +3,22 @@ import 'package:sigapp/student/entities/weekly_schedule_event.dart';
 
 class WeeklySchedule extends StatefulWidget {
   final List<WeeklyScheduleEvent> events;
-  final String? bottomText;
+  final String? bottomRightText;
+  final String? bottomLeftText;
+  final String? topRightText;
+  final String? topLeftText;
   final bool disableScroll;
   final double fontSize;
 
   const WeeklySchedule({
     super.key,
     required this.events,
-    this.bottomText,
-    this.disableScroll = false,
     this.fontSize = 12.0,
+    this.disableScroll = false,
+    this.bottomRightText,
+    this.bottomLeftText,
+    this.topRightText,
+    this.topLeftText,
   });
 
   @override
@@ -64,28 +70,55 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
         .toList();
 
     return LayoutBuilder(builder: (context, constraints) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Header for days of the week
-          Row(
-            children: [
-              Container(
-                width: hourWidth,
-                padding: const EdgeInsets.all(8),
+      return Container(
+        color: Colors.white,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (widget.topRightText != null || widget.topLeftText != null)
+              Row(
+                mainAxisAlignment: widget.topLeftText != null
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.end,
+                children: [
+                  if (widget.topLeftText != null)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      child: Text(
+                        widget.topLeftText!,
+                      ),
+                    ),
+                  if (widget.topRightText != null)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      child: Text(
+                        widget.topRightText!,
+                      ),
+                    ),
+                ],
               ),
-              for (var day in daysWithEvents) _buildDayHeader(day),
-            ],
-          ),
-          // Combined hourly labels and events grid
-          widget.disableScroll
-              ? _buildBody(daysWithEvents, context, constraints)
-              : Expanded(
-                  child: SingleChildScrollView(
-                    child: _buildBody(daysWithEvents, context, constraints),
-                  ),
+            // Header for days of the week
+            Row(
+              children: [
+                Container(
+                  width: hourWidth,
+                  padding: const EdgeInsets.all(8),
                 ),
-        ],
+                for (var day in daysWithEvents) _buildDayHeader(day),
+              ],
+            ),
+            // Combined hourly labels and events grid
+            widget.disableScroll
+                ? _buildBody(daysWithEvents, context, constraints)
+                : Expanded(
+                    child: SingleChildScrollView(
+                      child: _buildBody(daysWithEvents, context, constraints),
+                    ),
+                  ),
+          ],
+        ),
       );
     });
   }
@@ -171,14 +204,28 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
                 ),
             ],
           ),
-          if (widget.bottomText != null)
+          if (widget.bottomRightText != null || widget.bottomLeftText != null)
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: widget.bottomLeftText != null
+                  ? MainAxisAlignment.spaceBetween
+                  : MainAxisAlignment.end,
               children: [
-                Container(
+                if (widget.bottomLeftText != null)
+                  Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    child: Text(widget.bottomText!)),
+                    child: Text(
+                      widget.bottomLeftText!,
+                    ),
+                  ),
+                if (widget.bottomRightText != null)
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    child: Text(
+                      widget.bottomRightText!,
+                    ),
+                  ),
               ],
             ),
         ]),
