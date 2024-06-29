@@ -30,17 +30,30 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
   }
 
   void _calculateHourRange() {
-    startHour = widget.events
-        .map((event) => event.start.hour)
-        .reduce((a, b) => a < b ? a : b);
-    endHour = widget.events
-            .map((event) => event.end.hour)
-            .reduce((a, b) => a > b ? a : b) +
-        1;
+    if (widget.events.isEmpty) {
+      // Set default values or handle the case when there are no events
+      startHour = 0; // Default or a sensible value for your use case
+      endHour = 24; // Default or a sensible value for your use case
+    } else {
+      startHour = widget.events
+          .map((event) => event.start.hour)
+          .reduce((a, b) => a < b ? a : b);
+      endHour = widget.events
+              .map((event) => event.end.hour)
+              .reduce((a, b) => a > b ? a : b) +
+          1;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.events.isEmpty) {
+      // Display a message or alternative content when there are no events
+      return const Center(
+        child: Text('No events to display'),
+      );
+    }
+
     List<int> daysWithEvents = List.generate(7, (index) => index + 1)
         .where(
             (day) => widget.events.any((event) => event.start.weekday == day))

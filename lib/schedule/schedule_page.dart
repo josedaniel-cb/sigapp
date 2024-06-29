@@ -71,7 +71,12 @@ class SchedulePageState extends State<SchedulePage> {
   }
 
   Widget _buildSuccessState(BuildContext context, SuccessState state) {
-    final semesterList = state.schedule.semesterList;
+    if (state.schedule.weeklyEvents.isEmpty) {
+      return const Center(
+        child: Text('No disponible'),
+      );
+    }
+
     return SizedBox(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
@@ -96,6 +101,12 @@ class SchedulePageState extends State<SchedulePage> {
   }
 
   Widget _buildSemesterList(SuccessState state) {
+    if (state.schedule.semesterList.isEmpty) {
+      return const Center(
+        child: Text('No hay semestres disponibles'),
+      );
+    }
+
     return ListView.builder(
       itemCount: state.schedule.semesterList.length,
       itemBuilder: (context, index) {
@@ -105,6 +116,9 @@ class SchedulePageState extends State<SchedulePage> {
             _cubit.changeSemester(state.schedule.semesterList[index]);
             Navigator.pop(context);
           },
+          // disable current semester
+          enabled:
+              state.schedule.semester != state.schedule.semesterList[index],
         );
       },
     );
