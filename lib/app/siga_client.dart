@@ -51,16 +51,18 @@ class SigaClient {
         .build();
 
     _authRepository = BaseAuthRepository(_authClient.client);
-    Timer.periodic(const Duration(seconds: 30), (timer) async {
-      if (hasAuthCredentials) {
-        await _refreshSession();
-      }
+    Timer.periodic(const Duration(seconds: 45), (timer) {
+      _refreshSession();
     });
+    _refreshSession();
   }
 
   Future<void> _refreshSession() async {
-    _refreshSessionCompleter = Completer<void>();
+    if (!hasAuthCredentials) {
+      return;
+    }
 
+    _refreshSessionCompleter = Completer<void>();
     try {
       final keepSessionResponse = await _authRepository.keepSession();
       if (_evaluateSessionExpiration(keepSessionResponse)) {
@@ -79,9 +81,8 @@ class SigaClient {
         if (kDebugMode) {
           print('Session refreshed');
         }
-
-        _refreshSessionCompleter!.complete();
       }
+      _refreshSessionCompleter!.complete();
     } on Exception catch (e, s) {
       if (kDebugMode) {
         print('Error refreshing session: $e');
@@ -104,6 +105,39 @@ class SigaClient {
   }
 
   Dio get http => _http;
+
+  void _onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
+    if (_refreshSessionCompleter == null) {
+      return handler.next(options);
+    }
+    return _refreshSessionCompleter!.future
+        .then((_) => handler.next(options))
+        .catchError((e, s) {
+      if (kDebugMode) {
+        print('Error refreshing session: $e');
+        print(s);
+      }
+      logout();
+    });
+  }
+
+  void _onResponse(
+      Response response, ResponseInterceptorHandler handler) async {
+    return handler.next(response);
+  }
+
+  void _onError(DioException err, ErrorInterceptorHandler handler) {
+    final response = err.response;
+    if (response != null && _evaluateSessionExpiration(response)) {
+      if (kDebugMode) {
+        print('This should not happen, the session has expired!');
+      }
+      logout();
+    }
+    // this is not helping us because we need to retry to use the correct cookies
+    return handler.next(err);
+  }
 
   String? get username {
     return _prefs.getString('username');
@@ -132,35 +166,5 @@ class SigaClient {
   void logout() {
     _prefs.remove('password');
     getIt<GoRouter>().refresh();
-  }
-
-  void _onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
-    if (_refreshSessionCompleter == null) {
-      return handler.next(options);
-    }
-    return _refreshSessionCompleter!.future
-        .then((_) => handler.next(options))
-        .catchError((e, s) {
-      if (kDebugMode) {
-        print('Error refreshing session: $e');
-        print(s);
-      }
-      logout();
-    });
-  }
-
-  void _onResponse(
-      Response response, ResponseInterceptorHandler handler) async {
-    return handler.next(response);
-  }
-
-  void _onError(DioException err, ErrorInterceptorHandler handler) {
-    final response = err.response;
-    if (response != null && _evaluateSessionExpiration(response)) {
-      logout();
-    }
-    // this is not helping us because we need to retry to use the correct cookies
-    return handler.next(err);
   }
 }
