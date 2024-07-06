@@ -111,9 +111,11 @@ class SigaClient {
     if (_refreshSessionCompleter == null) {
       return handler.next(options);
     }
-    return _refreshSessionCompleter!.future
-        .then((_) => handler.next(options))
-        .catchError((e, s) {
+    return _refreshSessionCompleter!.future.then((_) {
+      final cookies = _cookieManager.getCookies(sigaHost);
+      options.headers['Cookie'] = cookies.join('; ');
+      handler.next(options);
+    }).catchError((e, s) {
       if (kDebugMode) {
         print('Error refreshing session: $e');
         print(s);

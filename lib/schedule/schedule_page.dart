@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
@@ -11,6 +12,9 @@ import 'package:sigapp/schedule/ui/schedule_semester_select.dart';
 import 'package:sigapp/schedule/ui/weekly_schedule.dart';
 import 'package:sigapp/shared/error_state.dart';
 import 'package:sigapp/shared/loading_state.dart';
+import 'package:device_calendar/device_calendar.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
@@ -21,6 +25,8 @@ class SchedulePage extends StatefulWidget {
 
 class SchedulePageState extends State<SchedulePage> {
   late final ScheduleCubit _cubit;
+  final DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
+  Calendar? _calendar;
 
   @override
   void initState() {
@@ -31,6 +37,8 @@ class SchedulePageState extends State<SchedulePage> {
     });
 
     super.initState();
+
+    _retrieveCalendars();
   }
 
   @override
@@ -70,7 +78,9 @@ class SchedulePageState extends State<SchedulePage> {
                         height: 24,
                         child: CircularProgressIndicator(),
                       )
-                    : const Icon(Icons.calendar_today),
+                    : const Icon(Icons.list),
+                // : const Icon(Icons.schedule),
+                // : const Icon(Icons.history),
                 onPressed: (state is SuccessState &&
                         !state.changingSemester &&
                         !state.renderingImageForSharing)
@@ -86,6 +96,14 @@ class SchedulePageState extends State<SchedulePage> {
               message: state.message,
               onRetry: () => _cubit.setup(),
             ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              if (state is SuccessState) {
+                _insertEvent();
+              }
+            },
+            child: const Icon(Icons.calendar_today),
           ),
         );
       },
@@ -109,6 +127,55 @@ class SchedulePageState extends State<SchedulePage> {
         }
       },
     );
+  }
+
+  Future<void> _retrieveCalendars() async {
+    try {
+      var permissionsGranted = await _deviceCalendarPlugin.hasPermissions();
+      if (permissionsGranted.isSuccess && !permissionsGranted.data!) {
+        permissionsGranted = await _deviceCalendarPlugin.requestPermissions();
+        if (!permissionsGranted.isSuccess || !permissionsGranted.data!) {
+          return;
+        }
+      }
+
+      final calendarsResult = await _deviceCalendarPlugin.retrieveCalendars();
+
+      _calendar = calendarsResult.data?.first;
+    } catch (e, s) {
+      if (kDebugMode) {
+        print(e);
+        print(s);
+      }
+    }
+  }
+
+  Future<void> _insertEvent() async {
+    if (_calendar == null) return;
+
+    final event = Event(
+      _calendar!.id,
+      title: 'Nuevo Evento',
+      description: 'Descripción del evento',
+      start: TZDateTime.now(local).add(const Duration(hours: 1)),
+      end: TZDateTime.now(local).add(const Duration(hours: 2)),
+    );
+
+    final result = await _deviceCalendarPlugin.createOrUpdateEvent(event);
+
+    if (result != null && result.isSuccess) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Evento creado con éxito'),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error al crear el evento'),
+        ),
+      );
+    }
   }
 
   Widget _buildSuccessState(BuildContext context, SuccessState state) {
