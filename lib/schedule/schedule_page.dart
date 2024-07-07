@@ -55,23 +55,22 @@ class SchedulePageState extends State<SchedulePage> {
             ),
             actions: <Widget>[
               IconButton(
-                icon:
-                    (state is SuccessState && (state.renderingImageForSharing))
-                        ? const SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: CircularProgressIndicator(),
-                          )
-                        : const Icon(Icons.share),
+                icon: (state is SuccessState && (state.loadingShare))
+                    ? const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(),
+                      )
+                    : const Icon(Icons.share),
                 onPressed: (state is SuccessState &&
                         state.schedule.semesterList.isNotEmpty &&
-                        !state.renderingImageForSharing &&
-                        !state.changingSemester)
+                        !state.loadingShare &&
+                        !state.loadingChangeSemester)
                     ? () => _captureAndShare(state)
                     : null,
               ),
               IconButton(
-                icon: (state is SuccessState && state.changingSemester)
+                icon: (state is SuccessState && state.loadingChangeSemester)
                     ? const SizedBox(
                         width: 24,
                         height: 24,
@@ -81,8 +80,8 @@ class SchedulePageState extends State<SchedulePage> {
                 // : const Icon(Icons.schedule),
                 // : const Icon(Icons.history),
                 onPressed: (state is SuccessState &&
-                        !state.changingSemester &&
-                        !state.renderingImageForSharing)
+                        !state.loadingChangeSemester &&
+                        !state.loadingShare)
                     ? () => _showModalBottomSheet(state)
                     : null,
               ),

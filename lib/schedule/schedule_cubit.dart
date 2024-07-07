@@ -1,3 +1,4 @@
+import 'package:device_calendar/device_calendar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -11,9 +12,11 @@ part 'schedule_cubit.freezed.dart';
 abstract class ScheduleState with _$ScheduleState {
   const factory ScheduleState.loading() = LoadingState;
   const factory ScheduleState.success({
-    required bool renderingImageForSharing,
-    required bool changingSemester,
-    required SemesterSchedule schedule,
+    required bool loadingShare,
+    required bool loadingChangeSemester,
+    required SemesterSchedule schedule, // rename to studentSemesterSchedule
+    // required List<Calendar> calendars,
+    // required Calendar? selectedCalendar,
     String? errorMessage,
     bool? errorMessageWasShown,
   }) = SuccessState;
@@ -23,6 +26,7 @@ abstract class ScheduleState with _$ScheduleState {
 @injectable
 class ScheduleCubit extends Cubit<ScheduleState> {
   final StudentService _studentService;
+  final DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
 
   ScheduleCubit(
     this._studentService,
@@ -35,8 +39,8 @@ class ScheduleCubit extends Cubit<ScheduleState> {
           await _studentService.getDefaultClassSchedule();
 
       emit(ScheduleState.success(
-        changingSemester: false,
-        renderingImageForSharing: false,
+        loadingChangeSemester: false,
+        loadingShare: false,
         schedule: studentSemesterSchedule,
       ));
     } catch (e, s) {
@@ -53,7 +57,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       return;
     }
     final successState = state as SuccessState;
-    emit(successState.copyWith(changingSemester: true));
+    emit(successState.copyWith(loadingChangeSemester: true));
     try {
       final weeklyEvents = await _studentService.getClassSchedule(semester.id);
       final newSchedule = successState.schedule.copyWith(
@@ -62,7 +66,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       );
       // throw Exception('Not implemented ajefobea ');
       emit(successState.copyWith(
-        changingSemester: false,
+        loadingChangeSemester: false,
         schedule: newSchedule,
       ));
     } catch (e, s) {
@@ -71,7 +75,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
         print(s);
       }
       emit(successState.copyWith(
-        changingSemester: false,
+        loadingChangeSemester: false,
         errorMessage: e.toString(),
         errorMessageWasShown: false,
       ));
@@ -84,7 +88,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     }
     final successState = state as SuccessState;
     emit(successState.copyWith(
-      renderingImageForSharing: value,
+      loadingShare: value,
     ));
   }
 
