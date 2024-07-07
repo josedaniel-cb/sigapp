@@ -84,9 +84,9 @@ class StudentService {
 
   List<WeeklyScheduleEvent> _processClassSchedule(
       List<GetClassScheduleModel> schedule) {
-    Map<String, Color> courseColors = {};
-    List<WeeklyScheduleEvent> events = [];
-    List<Color> availableColors = [
+    Map<String, Color> courseColorMap = {};
+    List<WeeklyScheduleEvent> weeklyScheduleEvents = [];
+    List<Color> colorPalette = [
       Colors.purple,
       Colors.green,
       Colors.orange,
@@ -99,31 +99,31 @@ class StudentService {
       Colors.pink,
     ];
 
-    Color getCourseColor(String course) {
-      if (!courseColors.containsKey(course)) {
-        courseColors[course] =
-            availableColors[courseColors.length % availableColors.length];
+    Color _assignColorToCourse(String courseName) {
+      if (!courseColorMap.containsKey(courseName)) {
+        courseColorMap[courseName] =
+            colorPalette[courseColorMap.length % colorPalette.length];
       }
-      return courseColors[course]!;
+      return courseColorMap[courseName]!;
     }
 
-    DateTime getDateTimeForDay(DateTime time, int weekday) {
-      DateTime now = DateTime.now();
-      int currentWeekday = now.weekday;
-      int daysToAdd = (weekday - currentWeekday) % 7;
-      if (daysToAdd < 0) daysToAdd += 7;
+    DateTime _calculateEventDateTime(DateTime baseTime, int targetWeekday) {
+      DateTime currentDate = DateTime.now();
+      int currentWeekday = currentDate.weekday;
+      int daysDifference = (targetWeekday - currentWeekday) % 7;
+      if (daysDifference < 0) daysDifference += 7;
       return DateTime(
-        now.year,
-        now.month,
-        now.day + daysToAdd,
-        time.hour,
-        time.minute,
+        currentDate.year,
+        currentDate.month,
+        currentDate.day + daysDifference,
+        baseTime.hour,
+        baseTime.minute,
       );
     }
 
-    DateTime convertToDateTime(String timestamp) {
-      final regex = RegExp(r'\/Date\((\d+)\)\/');
-      final match = regex.firstMatch(timestamp);
+    DateTime _parseTimestamp(String timestamp) {
+      final timestampPattern = RegExp(r'\/Date\((\d+)\)\/');
+      final match = timestampPattern.firstMatch(timestamp);
       if (match != null) {
         final milliseconds = int.parse(match.group(1)!);
         return DateTime.fromMillisecondsSinceEpoch(milliseconds);
@@ -131,72 +131,55 @@ class StudentService {
       throw const FormatException("Invalid timestamp format");
     }
 
-    for (var item in schedule) {
-      DateTime startTime = convertToDateTime(item.HoraInicio);
-      DateTime endTime = convertToDateTime(item.HoraFinal);
+    for (var classSchedule in schedule) {
+      final classStartTime = _parseTimestamp(classSchedule.HoraInicio);
+      final classEndTime = _parseTimestamp(classSchedule.HoraFinal);
 
-      if (item.Lunes.isNotEmpty) {
-        final parts = item.Lunes.split(' ? ');
-        events.add(WeeklyScheduleEvent(
-          title: parts[0],
-          start: getDateTimeForDay(startTime, DateTime.monday),
-          end: getDateTimeForDay(endTime, DateTime.monday),
-          color: getCourseColor(item.Lunes),
-          place: parts[1],
-        ));
+      List<List<dynamic>> classDaysAndNames = [];
+
+      if (classSchedule.Lunes.isNotEmpty) {
+        classDaysAndNames.add([classSchedule.Lunes, DateTime.monday]);
       }
-      if (item.Martes.isNotEmpty) {
-        final parts = item.Martes.split(' ? ');
-        events.add(WeeklyScheduleEvent(
-          title: parts[0],
-          start: getDateTimeForDay(startTime, DateTime.tuesday),
-          end: getDateTimeForDay(endTime, DateTime.tuesday),
-          color: getCourseColor(item.Martes),
-          place: parts[1],
-        ));
+      if (classSchedule.Martes.isNotEmpty) {
+        classDaysAndNames.add([classSchedule.Martes, DateTime.tuesday]);
       }
-      if (item.Miercoles.isNotEmpty) {
-        final parts = item.Miercoles.split(' ? ');
-        events.add(WeeklyScheduleEvent(
-          title: parts[0],
-          start: getDateTimeForDay(startTime, DateTime.wednesday),
-          end: getDateTimeForDay(endTime, DateTime.wednesday),
-          color: getCourseColor(item.Miercoles),
-          place: parts[1],
-        ));
+      if (classSchedule.Miercoles.isNotEmpty) {
+        classDaysAndNames.add([classSchedule.Miercoles, DateTime.wednesday]);
       }
-      if (item.Jueves.isNotEmpty) {
-        final parts = item.Jueves.split(' ? ');
-        events.add(WeeklyScheduleEvent(
-          title: parts[0],
-          start: getDateTimeForDay(startTime, DateTime.thursday),
-          end: getDateTimeForDay(endTime, DateTime.thursday),
-          color: getCourseColor(item.Jueves),
-          place: parts[1],
-        ));
+      if (classSchedule.Jueves.isNotEmpty) {
+        classDaysAndNames.add([classSchedule.Jueves, DateTime.thursday]);
       }
-      if (item.Viernes.isNotEmpty) {
-        final parts = item.Viernes.split(' ? ');
-        events.add(WeeklyScheduleEvent(
-          title: parts[0],
-          start: getDateTimeForDay(startTime, DateTime.friday),
-          end: getDateTimeForDay(endTime, DateTime.friday),
-          color: getCourseColor(item.Viernes),
-          place: parts[1],
-        ));
+      if (classSchedule.Viernes.isNotEmpty) {
+        classDaysAndNames.add([classSchedule.Viernes, DateTime.friday]);
       }
-      if (item.Sabado.isNotEmpty) {
-        final parts = item.Sabado.split(' ? ');
-        events.add(WeeklyScheduleEvent(
-          title: parts[0],
-          start: getDateTimeForDay(startTime, DateTime.saturday),
-          end: getDateTimeForDay(endTime, DateTime.saturday),
-          color: getCourseColor(item.Sabado),
-          place: parts[1],
+      if (classSchedule.Sabado.isNotEmpty) {
+        classDaysAndNames.add([classSchedule.Sabado, DateTime.saturday]);
+      }
+
+      for (var dayAndName in classDaysAndNames) {
+        final classInfo = dayAndName[0];
+        final weekday = dayAndName[1];
+
+        final parts = classInfo.split(' ? ');
+        final className = parts[0];
+        final classLocation = parts[1];
+
+        final eventStart = _calculateEventDateTime(classStartTime, weekday);
+        final eventEnd = _calculateEventDateTime(classEndTime, weekday);
+        // final eventStart = classStartTime;
+        // final eventEnd = classEndTime;
+
+        weeklyScheduleEvents.add(WeeklyScheduleEvent(
+          id: '[$className]-${eventStart.toString().substring(0, 16)}-${eventEnd.toString().substring(0, 16)}',
+          title: className,
+          start: eventStart,
+          end: eventEnd,
+          color: _assignColorToCourse(classInfo),
+          place: classLocation,
         ));
       }
     }
-    return events;
+    return weeklyScheduleEvents;
   }
 
   List<String> _buildSemesterRange(

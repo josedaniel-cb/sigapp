@@ -13,8 +13,7 @@ import 'package:sigapp/schedule/ui/weekly_schedule.dart';
 import 'package:sigapp/shared/error_state.dart';
 import 'package:sigapp/shared/loading_state.dart';
 import 'package:device_calendar/device_calendar.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart';
+import 'package:sigapp/student/entities/student_semester_schedule.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
@@ -100,7 +99,7 @@ class SchedulePageState extends State<SchedulePage> {
           floatingActionButton: FloatingActionButton(
             onPressed: () {
               if (state is SuccessState) {
-                _insertEvent();
+                _insertEvent(state.schedule);
               }
             },
             child: const Icon(Icons.calendar_today),
@@ -141,6 +140,12 @@ class SchedulePageState extends State<SchedulePage> {
 
       final calendarsResult = await _deviceCalendarPlugin.retrieveCalendars();
 
+      if (kDebugMode) {
+        print('founed calendars: ${calendarsResult.data?.length}');
+        for (final calendar in calendarsResult.data!) {
+          print('calendar: ${calendar.name}');
+        }
+      }
       _calendar = calendarsResult.data?.first;
     } catch (e, s) {
       if (kDebugMode) {
@@ -150,32 +155,83 @@ class SchedulePageState extends State<SchedulePage> {
     }
   }
 
-  Future<void> _insertEvent() async {
+  Future<void> _insertEvent(SemesterSchedule semesterSchedule) async {
     if (_calendar == null) return;
 
-    final event = Event(
-      _calendar!.id,
-      title: 'Nuevo Evento',
-      description: 'Descripción del evento',
-      start: TZDateTime.now(local).add(const Duration(hours: 1)),
-      end: TZDateTime.now(local).add(const Duration(hours: 2)),
-    );
+    // Delete all events from the calendar
+    await _removeAllEventsFromCalendar();
 
-    final result = await _deviceCalendarPlugin.createOrUpdateEvent(event);
+    // use semesterSchedule to create events for the current week
+    for (final weeklyEvent in semesterSchedule.weeklyEvents) {
+      final event = Event(
+        _calendar!.id,
+        eventId: weeklyEvent.id,
+        title: weeklyEvent.title,
+        description: weeklyEvent.place,
+        start: TZDateTime.from(weeklyEvent.start, local),
+        end: TZDateTime.from(weeklyEvent.end, local),
+      );
+      if (kDebugMode) {
+        print(event.eventId);
+      }
+      final result = await _deviceCalendarPlugin.createOrUpdateEvent(event);
 
-    if (result != null && result.isSuccess) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Evento creado con éxito'),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Error al crear el evento'),
-        ),
-      );
+      if (result != null && result.isSuccess) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Evento creado con éxito'),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error al crear el evento'),
+          ),
+        );
+      }
     }
+  }
+
+  Future<void> _removeAllEventsFromCalendar() async {
+    final events = await _deviceCalendarPlugin.retrieveEvents(
+      _calendar!.id,
+      RetrieveEventsParams(
+        startDate: DateTime.now().subtract(const Duration(days: 14)),
+        endDate: DateTime.now().add(const Duration(days: 14)),
+      ),
+    );
+    if (events.errors.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              'Error al obtener eventos: ${events.errors.map((e) => '(${e.errorCode}) ${e.errorMessage}').join(', ')}'),
+        ),
+      );
+      return;
+    }
+    var successCount = 0;
+    var errorCount = 0;
+    for (final event in events.data ?? []) {
+      final result = await _deviceCalendarPlugin.deleteEvent(
+        _calendar!.id,
+        event.eventId,
+      );
+      if (result.isSuccess) {
+        successCount++;
+      } else {
+        if (kDebugMode) {
+          print(
+              'Error deleting event: ${result.errors.map((e) => '(${e.errorCode}) ${e.errorMessage}').join(', ')}');
+        }
+        errorCount++;
+      }
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+            'Se eliminaron $successCount eventos con éxito, $errorCount errores.'),
+      ),
+    );
   }
 
   Widget _buildSuccessState(BuildContext context, SuccessState state) {
