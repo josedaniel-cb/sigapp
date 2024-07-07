@@ -26,7 +26,7 @@ abstract class ScheduleState with _$ScheduleState {
 @injectable
 class ScheduleCubit extends Cubit<ScheduleState> {
   final StudentService _studentService;
-  final DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
+  // final DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
 
   ScheduleCubit(
     this._studentService,

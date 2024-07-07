@@ -7,13 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:sigapp/schedule/partials/export_to_calendar.dart';
 import 'package:sigapp/schedule/schedule_cubit.dart';
-import 'package:sigapp/schedule/ui/schedule_semester_select.dart';
-import 'package:sigapp/schedule/ui/weekly_schedule.dart';
+import 'package:sigapp/schedule/partials/schedule_semester_select.dart';
+import 'package:sigapp/schedule/partials/weekly_schedule.dart';
 import 'package:sigapp/shared/error_state.dart';
 import 'package:sigapp/shared/loading_state.dart';
-import 'package:device_calendar/device_calendar.dart';
-import 'package:sigapp/student/entities/student_semester_schedule.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
@@ -24,8 +23,6 @@ class SchedulePage extends StatefulWidget {
 
 class SchedulePageState extends State<SchedulePage> {
   late final ScheduleCubit _cubit;
-  final DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
-  Calendar? _calendar;
 
   @override
   void initState() {
@@ -36,8 +33,6 @@ class SchedulePageState extends State<SchedulePage> {
     });
 
     super.initState();
-
-    _retrieveCalendars();
   }
 
   @override
@@ -95,14 +90,23 @@ class SchedulePageState extends State<SchedulePage> {
               onRetry: () => _cubit.setup(),
             ),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              if (state is SuccessState) {
-                _insertEvent(state.schedule);
-              }
-            },
-            child: const Icon(Icons.calendar_today),
-          ),
+          floatingActionButton: state is SuccessState
+              ? FloatingActionButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          content: ExportToCalendar(
+                            weeklyEvents: state.schedule.weeklyEvents,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: const Icon(Icons.calendar_today),
+                )
+              : null,
         );
       },
       listener: (context, state) {
@@ -127,111 +131,32 @@ class SchedulePageState extends State<SchedulePage> {
     );
   }
 
-  Future<void> _retrieveCalendars() async {
-    try {
-      var permissionsGranted = await _deviceCalendarPlugin.hasPermissions();
-      if (permissionsGranted.isSuccess && !permissionsGranted.data!) {
-        permissionsGranted = await _deviceCalendarPlugin.requestPermissions();
-        if (!permissionsGranted.isSuccess || !permissionsGranted.data!) {
-          return;
-        }
-      }
+  // Future<void> _retrieveCalendars() async {
+  //   try {
+  //     var permissionsGranted = await _deviceCalendarPlugin.hasPermissions();
+  //     if (permissionsGranted.isSuccess && !permissionsGranted.data!) {
+  //       permissionsGranted = await _deviceCalendarPlugin.requestPermissions();
+  //       if (!permissionsGranted.isSuccess || !permissionsGranted.data!) {
+  //         return;
+  //       }
+  //     }
 
-      final calendarsResult = await _deviceCalendarPlugin.retrieveCalendars();
+  //     final calendarsResult = await _deviceCalendarPlugin.retrieveCalendars();
 
-      if (kDebugMode) {
-        print('founed calendars: ${calendarsResult.data?.length}');
-        for (final calendar in calendarsResult.data!) {
-          print('calendar: ${calendar.name}');
-        }
-      }
-      _calendar = calendarsResult.data?.first;
-    } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
-    }
-  }
-
-  Future<void> _insertEvent(SemesterSchedule semesterSchedule) async {
-    if (_calendar == null) return;
-
-    // Delete all events from the calendar
-    await _removeAllEventsFromCalendar();
-
-    // use semesterSchedule to create events for the current week
-    for (final weeklyEvent in semesterSchedule.weeklyEvents) {
-      final event = Event(
-        _calendar!.id,
-        eventId: weeklyEvent.id,
-        title: weeklyEvent.title,
-        description: weeklyEvent.place,
-        start: TZDateTime.from(weeklyEvent.start, local),
-        end: TZDateTime.from(weeklyEvent.end, local),
-      );
-      if (kDebugMode) {
-        print(event.eventId);
-      }
-      final result = await _deviceCalendarPlugin.createOrUpdateEvent(event);
-
-      if (result != null && result.isSuccess) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Evento creado con éxito'),
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Error al crear el evento'),
-          ),
-        );
-      }
-    }
-  }
-
-  Future<void> _removeAllEventsFromCalendar() async {
-    final events = await _deviceCalendarPlugin.retrieveEvents(
-      _calendar!.id,
-      RetrieveEventsParams(
-        startDate: DateTime.now().subtract(const Duration(days: 14)),
-        endDate: DateTime.now().add(const Duration(days: 14)),
-      ),
-    );
-    if (events.errors.isNotEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              'Error al obtener eventos: ${events.errors.map((e) => '(${e.errorCode}) ${e.errorMessage}').join(', ')}'),
-        ),
-      );
-      return;
-    }
-    var successCount = 0;
-    var errorCount = 0;
-    for (final event in events.data ?? []) {
-      final result = await _deviceCalendarPlugin.deleteEvent(
-        _calendar!.id,
-        event.eventId,
-      );
-      if (result.isSuccess) {
-        successCount++;
-      } else {
-        if (kDebugMode) {
-          print(
-              'Error deleting event: ${result.errors.map((e) => '(${e.errorCode}) ${e.errorMessage}').join(', ')}');
-        }
-        errorCount++;
-      }
-    }
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-            'Se eliminaron $successCount eventos con éxito, $errorCount errores.'),
-      ),
-    );
-  }
+  //     if (kDebugMode) {
+  //       print('founed calendars: ${calendarsResult.data?.length}');
+  //       for (final calendar in calendarsResult.data!) {
+  //         print('calendar: ${calendar.name}');
+  //       }
+  //     }
+  //     _calendar = calendarsResult.data?.first;
+  //   } catch (e, s) {
+  //     if (kDebugMode) {
+  //       print(e);
+  //       print(s);
+  //     }
+  //   }
+  // }
 
   Widget _buildSuccessState(BuildContext context, SuccessState state) {
     if (state.schedule.weeklyEvents.isEmpty) {
