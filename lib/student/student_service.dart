@@ -134,6 +134,7 @@ class StudentService {
     for (var classSchedule in schedule) {
       final classStartTime = _parseTimestamp(classSchedule.HoraInicio);
       final classEndTime = _parseTimestamp(classSchedule.HoraFinal);
+      // print(classSchedule);
 
       List<List<dynamic>> classDaysAndNames = [];
 
@@ -157,6 +158,7 @@ class StudentService {
       }
 
       for (var dayAndName in classDaysAndNames) {
+        // print(dayAndName);
         final classInfo = dayAndName[0];
         final weekday = dayAndName[1];
 
@@ -167,8 +169,10 @@ class StudentService {
         final eventStart = _calculateEventDateTime(classStartTime, weekday);
         final eventEnd = _calculateEventDateTime(classEndTime, weekday);
 
+        final id =
+            '[$className]-${eventStart.toString().substring(0, 16)}-${eventEnd.toString().substring(0, 16)}';
         weeklyScheduleEvents.add(WeeklyScheduleEvent(
-          id: '[$className]-${eventStart.toString().substring(0, 16)}-${eventEnd.toString().substring(0, 16)}',
+          id: id,
           title: className,
           weekday: weekday,
           startHour: eventStart.hour,

@@ -27,24 +27,21 @@ class WeeklySchedule extends StatefulWidget {
 }
 
 class _WeeklyScheduleState extends State<WeeklySchedule> {
-  late int startHour;
-  late int endHour;
+  var startHour = 0;
+  var endHour = 0;
 
   static const hourWidth = 50.0;
   static const rowHeight = 75.0;
   static const littleRay = rowHeight * 0.1;
-
-  @override
-  void initState() {
-    super.initState();
-    _calculateHourRange();
-  }
 
   void _calculateHourRange() {
     if (widget.events.isEmpty) {
       startHour = 8;
       endHour = 18;
     } else {
+      // widget.events.forEach((event) {
+      //   print(event.id);
+      // });
       startHour = widget.events
           .map((event) => event.startHour)
           .reduce((a, b) => a < b ? a : b);
@@ -62,6 +59,8 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
         child: Text('No events to display'),
       );
     }
+
+    _calculateHourRange();
 
     List<int> daysWithEvents = List.generate(7, (index) => index + 1)
         .where((day) => widget.events.any((event) => event.weekday == day))
