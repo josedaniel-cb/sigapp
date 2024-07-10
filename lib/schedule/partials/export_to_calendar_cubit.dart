@@ -83,10 +83,12 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
           eventEndDate.isAfter(successState.startDate);
 
       if (!weekdayIsInRange) {
-        print('weekday is out of range: ${weeklyEvent.weekday}');
-        print('startDate: ${successState.startDate.weekday}');
-        print('endDate: ${successState.endDate.weekday}');
-        print(weeklyEvent);
+        if (kDebugMode) {
+          print('weekday is out of range: ${weeklyEvent.weekday}');
+          print('startDate: ${successState.startDate.weekday}');
+          print('endDate: ${successState.endDate.weekday}');
+          print(weeklyEvent);
+        }
         continue;
       }
 

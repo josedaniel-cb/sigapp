@@ -49,21 +49,21 @@ class SchedulePageState extends State<SchedulePage> {
               )}',
             ),
             actions: <Widget>[
-              IconButton(
-                icon: (state is SuccessState && (state.loadingShare))
-                    ? const SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(),
-                      )
-                    : const Icon(Icons.share),
-                onPressed: (state is SuccessState &&
-                        state.schedule.semesterList.isNotEmpty &&
-                        !state.loadingShare &&
-                        !state.loadingChangeSemester)
-                    ? () => _captureAndShare(state)
-                    : null,
-              ),
+              // IconButton(
+              //   icon: (state is SuccessState && (state.loadingShare))
+              //       ? const SizedBox(
+              //           width: 24,
+              //           height: 24,
+              //           child: CircularProgressIndicator(),
+              //         )
+              //       : const Icon(Icons.share),
+              //   onPressed: (state is SuccessState &&
+              //           state.schedule.semesterList.isNotEmpty &&
+              //           !state.loadingShare &&
+              //           !state.loadingChangeSemester)
+              //       ? () => _captureAndShare(state)
+              //       : null,
+              // ),
               IconButton(
                 icon: (state is SuccessState && state.loadingChangeSemester)
                     ? const SizedBox(
@@ -71,14 +71,39 @@ class SchedulePageState extends State<SchedulePage> {
                         height: 24,
                         child: CircularProgressIndicator(),
                       )
-                    : const Icon(Icons.list),
-                // : const Icon(Icons.schedule),
-                // : const Icon(Icons.history),
+                    : const Icon(Icons.calendar_today),
                 onPressed: (state is SuccessState &&
                         !state.loadingChangeSemester &&
                         !state.loadingShare)
                     ? () => _showModalBottomSheet(state)
                     : null,
+              ),
+              // Build a "three dots" menu
+              PopupMenuButton<String>(
+                enabled: state is SuccessState,
+                offset: const Offset(0, 50),
+                onSelected: (String value) {
+                  if (value == 'export' && state is SuccessState) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          content: ExportToCalendar(
+                            weeklyEvents: state.schedule.weeklyEvents,
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
+                itemBuilder: (BuildContext context) {
+                  return <PopupMenuEntry<String>>[
+                    const PopupMenuItem<String>(
+                      value: 'export',
+                      child: Text('Exportar a calendario'),
+                    ),
+                  ];
+                },
               ),
             ],
           ),
@@ -90,21 +115,37 @@ class SchedulePageState extends State<SchedulePage> {
               onRetry: () => _cubit.setup(),
             ),
           ),
+          // floatingActionButton: state is SuccessState
+          //     ? FloatingActionButton(
+          //         onPressed: () {
+          //           showDialog(
+          //             context: context,
+          //             builder: (context) {
+          //               return AlertDialog(
+          //                 content: ExportToCalendar(
+          //                   weeklyEvents: state.schedule.weeklyEvents,
+          //                 ),
+          //               );
+          //             },
+          //           );
+          //         },
+          //         child: const Icon(Icons.calendar_today),
+          //       )
+          //     : null,
           floatingActionButton: state is SuccessState
               ? FloatingActionButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          content: ExportToCalendar(
-                            weeklyEvents: state.schedule.weeklyEvents,
-                          ),
-                        );
-                      },
-                    );
-                  },
-                  child: const Icon(Icons.calendar_today),
+                  onPressed: (state.schedule.semesterList.isNotEmpty &&
+                          !state.loadingShare &&
+                          !state.loadingChangeSemester)
+                      ? () => _captureAndShare(state)
+                      : null,
+                  child: (state.loadingShare)
+                      ? const SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(),
+                        )
+                      : const Icon(Icons.share),
                 )
               : null,
         );
