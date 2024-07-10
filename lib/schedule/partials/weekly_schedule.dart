@@ -42,10 +42,8 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
 
   void _calculateHourRange() {
     if (widget.events.isEmpty) {
-      startHour =
-          8; // Cambiado para un valor más común para un horario académico
-      endHour =
-          18; // Cambiado para un valor más común para un horario académico
+      startHour = 8;
+      endHour = 18;
     } else {
       startHour = widget.events
           .map((event) => event.startHour)
@@ -72,51 +70,42 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
         color: Colors.white,
-        // height: constraints.maxHeight, // Asegurando tamaño fijo
-        // width: constraints.maxWidth, // Asegurando tamaño fijo
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (widget.topRightText != null || widget.topLeftText != null)
-              Row(
-                mainAxisAlignment: widget.topLeftText != null
-                    ? MainAxisAlignment.spaceBetween
-                    : MainAxisAlignment.end,
-                children: [
-                  if (widget.topLeftText != null)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      child: Text(
-                        widget.topLeftText!,
-                      ),
-                    ),
-                  if (widget.topRightText != null)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      child: Text(
-                        widget.topRightText!,
-                      ),
-                    ),
-                ],
+              TopTextRow(
+                topLeftText: widget.topLeftText,
+                topRightText: widget.topRightText,
               ),
-            // Header for days of the week
             Row(
               children: [
                 Container(
                   width: hourWidth,
                   padding: const EdgeInsets.all(8),
                 ),
-                for (var day in daysWithEvents) _buildDayHeader(day),
+                for (var day in daysWithEvents) DayHeader(day: day),
               ],
             ),
-            // Combined hourly labels and events grid
             widget.disableScroll
-                ? _buildBody(daysWithEvents, context, constraints)
+                ? Body(
+                    events: widget.events,
+                    daysWithEvents: daysWithEvents,
+                    startHour: startHour,
+                    endHour: endHour,
+                    constraints: constraints,
+                    fontSize: widget.fontSize,
+                  )
                 : Expanded(
                     child: SingleChildScrollView(
-                      child: _buildBody(daysWithEvents, context, constraints),
+                      child: Body(
+                        events: widget.events,
+                        daysWithEvents: daysWithEvents,
+                        startHour: startHour,
+                        endHour: endHour,
+                        constraints: constraints,
+                        fontSize: widget.fontSize,
+                      ),
                     ),
                   ),
           ],
@@ -124,126 +113,44 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
       );
     });
   }
+}
 
-  Widget _buildBody(List<int> daysWithEvents, BuildContext context,
-      BoxConstraints constraints) {
-    return Stack(
+class TopTextRow extends StatelessWidget {
+  final String? topLeftText;
+  final String? topRightText;
+
+  const TopTextRow({Key? key, this.topLeftText, this.topRightText})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: topLeftText != null
+          ? MainAxisAlignment.spaceBetween
+          : MainAxisAlignment.end,
       children: [
-        _buildGrid(daysWithEvents, constraints),
-        ...widget.events
-            .where((event) =>
-                event.startHour >= startHour && event.endHour <= endHour)
-            .map((event) => _buildEvent(event, constraints, daysWithEvents)),
+        if (topLeftText != null)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Text(topLeftText!),
+          ),
+        if (topRightText != null)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Text(topRightText!),
+          ),
       ],
     );
   }
+}
 
-  Widget _buildGrid(List<int> daysWithEvents, BoxConstraints constraints) {
-    final numOfRows =
-        endHour - startHour - 1; // -1 required to avoid an empty row
-    return Column(
-      children: List.generate(numOfRows, (hour) {
-        return Row(
-          children: [
-            _buildHourLabel(_formatHour(startHour + hour)),
-            Expanded(
-              child: Row(
-                children: List.generate(daysWithEvents.length, (dayIndex) {
-                  return Expanded(
-                    child: Container(
-                      height: rowHeight,
-                      decoration: BoxDecoration(
-                        border: Border(
-                          left: dayIndex == 0
-                              ? BorderSide(
-                                  color: Colors.grey.withOpacity(0.5),
-                                )
-                              : BorderSide.none,
-                          right: dayIndex != daysWithEvents.length - 1
-                              ? BorderSide(
-                                  color: Colors.grey.withOpacity(0.5),
-                                )
-                              : BorderSide.none,
-                          bottom: BorderSide(
-                            color: Colors.grey.withOpacity(0.5),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-              ),
-            ),
-          ],
-        );
-      })
-        ..addAll([
-          // an aux row just to print right borders of 10 height
-          Row(
-            children: [
-              const SizedBox(
-                width: hourWidth,
-                height: littleRay,
-              ),
-              for (var dayIndex
-                  in List.generate(daysWithEvents.length, (index) => index))
-                Container(
-                  width: (constraints.maxWidth - hourWidth) /
-                      daysWithEvents.length,
-                  height: littleRay,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      left: dayIndex == 0
-                          ? BorderSide(
-                              color: Colors.grey.withOpacity(0.5),
-                            )
-                          : BorderSide.none,
-                      right: dayIndex != daysWithEvents.length - 1
-                          ? BorderSide(
-                              color: Colors.grey.withOpacity(0.5),
-                            )
-                          : BorderSide.none,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-          if (widget.bottomRightText != null || widget.bottomLeftText != null)
-            Row(
-              mainAxisAlignment: widget.bottomLeftText != null
-                  ? MainAxisAlignment.spaceBetween
-                  : MainAxisAlignment.end,
-              children: [
-                if (widget.bottomLeftText != null)
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    child: Text(
-                      widget.bottomLeftText!,
-                    ),
-                  ),
-                if (widget.bottomRightText != null)
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    child: Text(
-                      widget.bottomRightText!,
-                    ),
-                  ),
-              ],
-            ),
-        ]),
-    );
-  }
+class DayHeader extends StatelessWidget {
+  final int day;
 
-  String _formatHour(int hour) {
-    String period = hour >= 12 ? 'pm' : 'am';
-    int displayHour = hour > 12 ? hour - 12 : hour;
-    displayHour = displayHour == 0 ? 12 : displayHour;
-    return '$displayHour$period';
-  }
+  const DayHeader({Key? key, required this.day}) : super(key: key);
 
-  Widget _buildDayHeader(int day) {
+  @override
+  Widget build(BuildContext context) {
     String dayLabel;
     switch (day) {
       case 1:
@@ -270,44 +177,199 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
       default:
         dayLabel = '';
     }
-    return _buildHeader(dayLabel);
-  }
-
-  Widget _buildHeader(String text) {
     return Expanded(
       child: Container(
         padding: const EdgeInsets.all(8),
-        child: Center(child: Text(text)),
+        child: Center(child: Text(dayLabel)),
       ),
     );
   }
+}
 
-  Widget _buildHourLabel(String hour) {
+class Body extends StatelessWidget {
+  final List<WeeklyScheduleEvent> events;
+  final List<int> daysWithEvents;
+  final int startHour;
+  final int endHour;
+  final BoxConstraints constraints;
+  final double fontSize;
+
+  const Body({
+    Key? key,
+    required this.events,
+    required this.daysWithEvents,
+    required this.startHour,
+    required this.endHour,
+    required this.constraints,
+    required this.fontSize,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Grid(
+          daysWithEvents: daysWithEvents,
+          startHour: startHour,
+          endHour: endHour,
+          constraints: constraints,
+        ),
+        ...events
+            .where((event) =>
+                event.startHour >= startHour && event.endHour <= endHour)
+            .map((event) => EventWidget(
+                  event: event,
+                  constraints: constraints,
+                  daysWithEvents: daysWithEvents,
+                  startHour: startHour,
+                  fontSize: fontSize,
+                )),
+      ],
+    );
+  }
+}
+
+class Grid extends StatelessWidget {
+  final List<int> daysWithEvents;
+  final int startHour;
+  final int endHour;
+  final BoxConstraints constraints;
+
+  const Grid({
+    Key? key,
+    required this.daysWithEvents,
+    required this.startHour,
+    required this.endHour,
+    required this.constraints,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final numOfRows = endHour - startHour - 1;
+    return Column(
+      children: List.generate(numOfRows, (hour) {
+        return Row(
+          children: [
+            HourLabel(hour: startHour + hour),
+            Expanded(
+              child: Row(
+                children: List.generate(daysWithEvents.length, (dayIndex) {
+                  return Expanded(
+                    child: Container(
+                      height: 75.0,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          left: dayIndex == 0
+                              ? BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                )
+                              : BorderSide.none,
+                          right: dayIndex != daysWithEvents.length - 1
+                              ? BorderSide(
+                                  color: Colors.grey.withOpacity(0.5),
+                                )
+                              : BorderSide.none,
+                          bottom: BorderSide(
+                            color: Colors.grey.withOpacity(0.5),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
+          ],
+        );
+      })
+        ..addAll([
+          Row(
+            children: [
+              const SizedBox(
+                width: 50.0,
+                height: 7.5,
+              ),
+              for (var dayIndex
+                  in List.generate(daysWithEvents.length, (index) => index))
+                Container(
+                  width: (constraints.maxWidth - 50.0) / daysWithEvents.length,
+                  height: 7.5,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      left: dayIndex == 0
+                          ? BorderSide(
+                              color: Colors.grey.withOpacity(0.5),
+                            )
+                          : BorderSide.none,
+                      right: dayIndex != daysWithEvents.length - 1
+                          ? BorderSide(
+                              color: Colors.grey.withOpacity(0.5),
+                            )
+                          : BorderSide.none,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ]),
+    );
+  }
+}
+
+class HourLabel extends StatelessWidget {
+  final int hour;
+
+  const HourLabel({Key? key, required this.hour}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    String period = hour >= 12 ? 'pm' : 'am';
+    int displayHour = hour > 12 ? hour - 12 : hour;
+    displayHour = displayHour == 0 ? 12 : displayHour;
+    String formattedHour = '$displayHour$period';
+
     return Container(
-      width: hourWidth,
-      height: rowHeight,
+      width: 50.0,
+      height: 75.0,
       child: Stack(
         children: [
           Positioned(
             right: 0,
             bottom: 0,
             child: Container(
-              width: littleRay, // Width of the right side border
-              height: 1, // Height to simulate the bottom border
+              width: 7.5,
+              height: 1,
               color: Colors.grey.withOpacity(0.5),
             ),
           ),
           Container(
             alignment: Alignment.topCenter,
-            child: Text(hour),
+            child: Text(formattedHour),
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildEvent(WeeklyScheduleEvent event, BoxConstraints constraints,
-      List<int> daysWithEvents) {
+class EventWidget extends StatelessWidget {
+  final WeeklyScheduleEvent event;
+  final BoxConstraints constraints;
+  final List<int> daysWithEvents;
+  final int startHour;
+  final double fontSize;
+
+  const EventWidget({
+    Key? key,
+    required this.event,
+    required this.constraints,
+    required this.daysWithEvents,
+    required this.startHour,
+    required this.fontSize,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     double calculateLuminance(Color color) {
       final double r = color.red / 255;
       final double g = color.green / 255;
@@ -321,42 +383,35 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
           : Colors.white;
     }
 
-    // Position and size
-    final top = (event.startHour - startHour) * rowHeight +
-        (event.startMinute / 60) * rowHeight;
-    final gridWidth =
-        (constraints.maxWidth - hourWidth) / daysWithEvents.length;
+    final top =
+        (event.startHour - startHour) * 75.0 + (event.startMinute / 60) * 75.0;
+    final gridWidth = (constraints.maxWidth - 50.0) / daysWithEvents.length;
     final littleMarginForSides = gridWidth * 0.05;
-    final width = gridWidth - littleMarginForSides; // some margin to right
+    final width = gridWidth - littleMarginForSides;
     final dayIndex = daysWithEvents.indexOf(event.weekday);
-    final left = hourWidth + dayIndex * gridWidth;
-    final height = ((event.endHour - event.startHour) * rowHeight +
-            ((event.endMinute - event.startMinute) / 60) * rowHeight) -
-        littleMarginForSides; // some margin to bottom
+    final left = 50.0 + dayIndex * gridWidth;
+    final height = ((event.endHour - event.startHour) * 75.0 +
+            ((event.endMinute - event.startMinute) / 60) * 75.0) -
+        littleMarginForSides;
 
-    // Texts: title and captions (place and duration)
-    final titleFontSize = widget.fontSize; // for title
+    final titleFontSize = fontSize;
     const titleLineHeight = 1.1;
-    final titleOneLineHeight = titleFontSize *
-        titleLineHeight; // this is not calculating the actual rendered height
+    final titleOneLineHeight = titleFontSize * titleLineHeight;
 
-    final captionFontSize = titleFontSize * 0.75; // for place and duration
+    final captionFontSize = titleFontSize * 0.75;
     const double captionLineHeight = 1.2;
-    final captionOneLineHeight = captionFontSize *
-        captionLineHeight; // this is not calculating the actual rendered height
-    final captionsHeight = captionOneLineHeight * 2; // place + duration
+    final captionOneLineHeight = captionFontSize * captionLineHeight;
+    final captionsHeight = captionOneLineHeight * 2;
 
     final separatorSpace = captionOneLineHeight;
 
-    // Padding for all sides of the event
     final verticalPadding = titleFontSize / 2;
     final horizontalPadding = titleFontSize / 3;
 
     final availableHeight = height - (verticalPadding * 2);
     var availableHeightForTitle = availableHeight;
-    final captionsCanBeShown = // if there is enough space for title captions
-        availableHeight >
-            (titleOneLineHeight + separatorSpace + captionsHeight);
+    final captionsCanBeShown = availableHeight >
+        (titleOneLineHeight + separatorSpace + captionsHeight);
     if (captionsCanBeShown) {
       availableHeightForTitle -= separatorSpace + captionsHeight;
     }
@@ -366,24 +421,6 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
     final availableWidth = width - (horizontalPadding * 2);
 
     final textColor = chooseTextColor(event.color);
-
-    if (kDebugMode) {
-      // cat emoji: 🐱
-      // debugging:
-      var acumulativeHeight = verticalPadding;
-      acumulativeHeight += titleMaxLines * titleOneLineHeight;
-      if (captionsCanBeShown) {
-        acumulativeHeight += captionsHeight;
-      }
-      acumulativeHeight += verticalPadding;
-      print('🐱 ${event.title} (${_formatEventDuration(event)})');
-      print('height: $height');
-      print('acumulativeHeight: $acumulativeHeight');
-
-      if (acumulativeHeight > height) {
-        print('🐱 WARNING: Not enough space for text');
-      }
-    }
 
     return Positioned(
       top: top,
@@ -420,7 +457,6 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
               ),
               if (captionsCanBeShown)
                 Container(
-                  // height: captionsHeight,
                   width: availableWidth,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

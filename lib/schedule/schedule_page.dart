@@ -49,21 +49,6 @@ class SchedulePageState extends State<SchedulePage> {
               )}',
             ),
             actions: <Widget>[
-              // IconButton(
-              //   icon: (state is SuccessState && (state.loadingShare))
-              //       ? const SizedBox(
-              //           width: 24,
-              //           height: 24,
-              //           child: CircularProgressIndicator(),
-              //         )
-              //       : const Icon(Icons.share),
-              //   onPressed: (state is SuccessState &&
-              //           state.schedule.semesterList.isNotEmpty &&
-              //           !state.loadingShare &&
-              //           !state.loadingChangeSemester)
-              //       ? () => _captureAndShare(state)
-              //       : null,
-              // ),
               IconButton(
                 icon: (state is SuccessState && state.loadingChangeSemester)
                     ? const SizedBox(
@@ -115,23 +100,6 @@ class SchedulePageState extends State<SchedulePage> {
               onRetry: () => _cubit.setup(),
             ),
           ),
-          // floatingActionButton: state is SuccessState
-          //     ? FloatingActionButton(
-          //         onPressed: () {
-          //           showDialog(
-          //             context: context,
-          //             builder: (context) {
-          //               return AlertDialog(
-          //                 content: ExportToCalendar(
-          //                   weeklyEvents: state.schedule.weeklyEvents,
-          //                 ),
-          //               );
-          //             },
-          //           );
-          //         },
-          //         child: const Icon(Icons.calendar_today),
-          //       )
-          //     : null,
           floatingActionButton: state is SuccessState
               ? FloatingActionButton(
                   onPressed: (state.schedule.semesterList.isNotEmpty &&
@@ -172,33 +140,6 @@ class SchedulePageState extends State<SchedulePage> {
     );
   }
 
-  // Future<void> _retrieveCalendars() async {
-  //   try {
-  //     var permissionsGranted = await _deviceCalendarPlugin.hasPermissions();
-  //     if (permissionsGranted.isSuccess && !permissionsGranted.data!) {
-  //       permissionsGranted = await _deviceCalendarPlugin.requestPermissions();
-  //       if (!permissionsGranted.isSuccess || !permissionsGranted.data!) {
-  //         return;
-  //       }
-  //     }
-
-  //     final calendarsResult = await _deviceCalendarPlugin.retrieveCalendars();
-
-  //     if (kDebugMode) {
-  //       print('founed calendars: ${calendarsResult.data?.length}');
-  //       for (final calendar in calendarsResult.data!) {
-  //         print('calendar: ${calendar.name}');
-  //       }
-  //     }
-  //     _calendar = calendarsResult.data?.first;
-  //   } catch (e, s) {
-  //     if (kDebugMode) {
-  //       print(e);
-  //       print(s);
-  //     }
-  //   }
-  // }
-
   Widget _buildSuccessState(BuildContext context, SuccessState state) {
     if (state.schedule.weeklyEvents.isEmpty) {
       return const Center(
@@ -214,12 +155,6 @@ class SchedulePageState extends State<SchedulePage> {
           WeeklySchedule(
             events: state.schedule.weeklyEvents,
           ),
-          // if (state.busy)
-          //   Container(
-          //     alignment: Alignment.center,
-          //     color: Colors.white30,
-          //     child: const CircularProgressIndicator(),
-          //   ),
         ],
       ),
     );
