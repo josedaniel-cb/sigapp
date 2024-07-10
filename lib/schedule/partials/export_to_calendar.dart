@@ -1,10 +1,9 @@
-import 'package:device_calendar/device_calendar.dart';
+import 'package:flutter_date_range_picker/flutter_date_range_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigapp/app/get_it.dart';
 import 'package:sigapp/schedule/partials/export_to_calendar_cubit.dart';
-import 'package:sigapp/schedule/schedule_cubit.dart' as schedule;
 import 'package:sigapp/student/entities/weekly_schedule_event.dart';
 
 class ExportToCalendar extends StatefulWidget {
@@ -61,6 +60,26 @@ class _ExportToCalendarState extends State<ExportToCalendar> {
                       state.calendars
                           .firstWhere((calendar) => calendar.id == calendarId),
                     );
+                  },
+                ),
+                // date range picker
+                const Text('Select a date range'),
+                DateRangePickerWidget(
+                  doubleMonth: false,
+                  // maximumDateRangeLength: 10,
+                  // minimumDateRangeLength: 3,
+                  initialDateRange: DateRange(
+                    state.startDate,
+                    state.endDate,
+                  ),
+                  // disabledDates: [DateTime(2023, 11, 20)],
+                  // initialDisplayedDate:
+                  //     selectedDateRange?.start ?? DateTime(2023, 11, 20),
+                  onDateRangeChanged: (range) {
+                    if (range == null) {
+                      return;
+                    }
+                    _cubit.selectDateRange(range.start, range.end);
                   },
                 ),
                 Row(

@@ -13,6 +13,8 @@ abstract class ExportToCalendarState with _$ExportToCalendarState {
   const factory ExportToCalendarState.success({
     required List<Calendar> calendars,
     required Calendar selectedCalendar,
+    required DateTime startDate,
+    required DateTime endDate,
   }) = SuccessState;
   const factory ExportToCalendarState.error(String message) = ErrorState;
 }
@@ -43,10 +45,15 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
         }
       }
 
-      emit(ExportToCalendarState.success(
-        calendars: calendarsResult.data!,
-        selectedCalendar: calendarsResult.data!.first,
-      ));
+      final now = DateTime.now();
+      emit(
+        ExportToCalendarState.success(
+          calendars: calendarsResult.data!,
+          selectedCalendar: calendarsResult.data!.first,
+          startDate: now,
+          endDate: DateTime(now.year, now.month + 1, 0),
+        ),
+      );
     } catch (e, s) {
       if (kDebugMode) {
         print(e);
@@ -56,31 +63,71 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
     }
   }
 
+  /// Export the list of [weeklyEvents] to the selected calendar.
   Future<void> export(List<WeeklyScheduleEvent> weeklyEvents) async {
     final successState = state as SuccessState;
 
-    // Delete all events from the calendar
+    // Remove all existing events from the calendar
     await _removeAllEventsFromCalendar();
 
-    // use semesterSchedule to create events for the current week
+    // Iterate through each weekly event
     for (final weeklyEvent in weeklyEvents) {
+      // Convert startDate and endDate to the same weekday as the event for comparison
+      final eventStartDate = successState.startDate.add(Duration(
+          days: (weeklyEvent.weekday - successState.startDate.weekday) % 7));
+      final eventEndDate = successState.endDate.add(Duration(
+          days: (weeklyEvent.weekday - successState.endDate.weekday) % 7));
+
+      // Check if the weekday of the event is within the selected date range
+      final weekdayIsInRange = eventStartDate.isBefore(successState.endDate) &&
+          eventEndDate.isAfter(successState.startDate);
+
+      if (!weekdayIsInRange) {
+        print('weekday is out of range: ${weeklyEvent.weekday}');
+        print('startDate: ${successState.startDate.weekday}');
+        print('endDate: ${successState.endDate.weekday}');
+        print(weeklyEvent);
+        continue;
+      }
+
+      // Calculate the date and time for the event
+      final date = successState.startDate.add(
+          Duration(days: weeklyEvent.weekday - successState.startDate.weekday));
+      final start = date.copyWith(
+        hour: weeklyEvent.startHour,
+        minute: weeklyEvent.startMinute,
+      );
+      final end = date.copyWith(
+        hour: weeklyEvent.endHour,
+        minute: weeklyEvent.endMinute,
+      );
+
+      // Create the event object
       final event = Event(
         successState.selectedCalendar.id,
         eventId: weeklyEvent.id,
         title: weeklyEvent.title,
-        // description: weeklyEvent.place,
-        start: TZDateTime.from(weeklyEvent.start, local),
-        end: TZDateTime.from(weeklyEvent.end, local),
-        location: weeklyEvent.place,
+        start: TZDateTime.from(start, local),
+        end: TZDateTime.from(end, local),
+        location: weeklyEvent.location,
+        recurrenceRule: RecurrenceRule(
+          RecurrenceFrequency.Weekly,
+          endDate: successState.endDate,
+        ),
       );
+
       if (kDebugMode) {
         print(event.eventId);
       }
+
+      // Create or update the event in the calendar
       final result = await _deviceCalendarPlugin.createOrUpdateEvent(event);
 
       if (result != null && result.isSuccess) {
         if (kDebugMode) {
           print('Evento creado con éxito');
+          print('Evento ID: ${result.data}');
+          print('Evento: $event');
         }
       } else {
         throw Exception('Error al crear el evento');
@@ -135,5 +182,13 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
       print(
           'Se eliminaron $successCount eventos con éxito, $errorCount errores.');
     }
+  }
+
+  void selectDateRange(DateTime start, DateTime end) {
+    if (state is! SuccessState) {
+      return;
+    }
+
+    emit((state as SuccessState).copyWith(startDate: start, endDate: end));
   }
 }

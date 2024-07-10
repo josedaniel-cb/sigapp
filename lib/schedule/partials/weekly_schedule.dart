@@ -48,10 +48,10 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
           18; // Cambiado para un valor más común para un horario académico
     } else {
       startHour = widget.events
-          .map((event) => event.start.hour)
+          .map((event) => event.startHour)
           .reduce((a, b) => a < b ? a : b);
       endHour = widget.events
-              .map((event) => event.end.hour)
+              .map((event) => event.endHour)
               .reduce((a, b) => a > b ? a : b) +
           1;
     }
@@ -66,8 +66,7 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
     }
 
     List<int> daysWithEvents = List.generate(7, (index) => index + 1)
-        .where(
-            (day) => widget.events.any((event) => event.start.weekday == day))
+        .where((day) => widget.events.any((event) => event.weekday == day))
         .toList();
 
     return LayoutBuilder(builder: (context, constraints) {
@@ -133,7 +132,7 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
         _buildGrid(daysWithEvents, constraints),
         ...widget.events
             .where((event) =>
-                event.start.hour >= startHour && event.end.hour <= endHour)
+                event.startHour >= startHour && event.endHour <= endHour)
             .map((event) => _buildEvent(event, constraints, daysWithEvents)),
       ],
     );
@@ -323,16 +322,16 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
     }
 
     // Position and size
-    final top = (event.start.hour - startHour) * rowHeight +
-        (event.start.minute / 60) * rowHeight;
+    final top = (event.startHour - startHour) * rowHeight +
+        (event.startMinute / 60) * rowHeight;
     final gridWidth =
         (constraints.maxWidth - hourWidth) / daysWithEvents.length;
     final littleMarginForSides = gridWidth * 0.05;
     final width = gridWidth - littleMarginForSides; // some margin to right
-    final dayIndex = daysWithEvents.indexOf(event.start.weekday);
+    final dayIndex = daysWithEvents.indexOf(event.weekday);
     final left = hourWidth + dayIndex * gridWidth;
-    final height = ((event.end.hour - event.start.hour) * rowHeight +
-            ((event.end.minute - event.start.minute) / 60) * rowHeight) -
+    final height = ((event.endHour - event.startHour) * rowHeight +
+            ((event.endMinute - event.startMinute) / 60) * rowHeight) -
         littleMarginForSides; // some margin to bottom
 
     // Texts: title and captions (place and duration)
@@ -427,7 +426,7 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        event.place,
+                        event.location,
                         style: TextStyle(
                           color: textColor,
                           fontSize: captionFontSize,
@@ -458,20 +457,20 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
 
   String _formatEventDuration(WeeklyScheduleEvent event) {
     String startHour =
-        (event.start.hour > 12 ? event.start.hour - 12 : event.start.hour)
+        (event.startHour > 12 ? event.startHour - 12 : event.startHour)
             .toString();
     String endHour =
-        (event.end.hour > 12 ? event.end.hour - 12 : event.end.hour).toString();
+        (event.endHour > 12 ? event.endHour - 12 : event.endHour).toString();
 
-    String startPeriod = event.start.hour >= 12 ? 'pm' : 'am';
-    String endPeriod = event.end.hour >= 12 ? 'pm' : 'am';
+    String startPeriod = event.startHour >= 12 ? 'pm' : 'am';
+    String endPeriod = event.endHour >= 12 ? 'pm' : 'am';
 
-    String startMinute = event.start.minute == 0
+    String startMinute = event.startMinute == 0
         ? ''
-        : ':${event.start.minute.toString().padLeft(2, '0')}';
-    String endMinute = event.end.minute == 0
+        : ':${event.startMinute.toString().padLeft(2, '0')}';
+    String endMinute = event.endMinute == 0
         ? ''
-        : ':${event.end.minute.toString().padLeft(2, '0')}';
+        : ':${event.endMinute.toString().padLeft(2, '0')}';
 
     String startAmPm = startPeriod == endPeriod ? '' : startPeriod;
     String endAmPm = endPeriod;

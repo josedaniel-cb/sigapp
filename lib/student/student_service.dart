@@ -166,16 +166,17 @@ class StudentService {
 
         final eventStart = _calculateEventDateTime(classStartTime, weekday);
         final eventEnd = _calculateEventDateTime(classEndTime, weekday);
-        // final eventStart = classStartTime;
-        // final eventEnd = classEndTime;
 
         weeklyScheduleEvents.add(WeeklyScheduleEvent(
           id: '[$className]-${eventStart.toString().substring(0, 16)}-${eventEnd.toString().substring(0, 16)}',
           title: className,
-          start: eventStart,
-          end: eventEnd,
+          weekday: weekday,
+          startHour: eventStart.hour,
+          startMinute: eventStart.minute,
+          endHour: eventEnd.hour,
+          endMinute: eventEnd.minute,
           color: _assignColorToCourse(classInfo),
-          place: classLocation,
+          location: classLocation,
         ));
       }
     }
