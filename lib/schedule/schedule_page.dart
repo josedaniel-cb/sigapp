@@ -85,7 +85,13 @@ class SchedulePageState extends State<SchedulePage> {
                   return <PopupMenuEntry<String>>[
                     const PopupMenuItem<String>(
                       value: 'export',
-                      child: Text('Exportar a calendario'),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Exportar a calendario'),
+                          Icon(Icons.calendar_month),
+                        ],
+                      ),
                     ),
                   ];
                 },
@@ -203,6 +209,8 @@ class SchedulePageState extends State<SchedulePage> {
                 'Promoción ${state.schedule.studentAcademicReport.cohort}, ${state.schedule.studentAcademicReport.school}',
             disableScroll: true,
             fontSize: _pixelsToDIP(context, 40),
+            hourWidth: _pixelsToDIP(context, 200),
+            rowHeight: _pixelsToDIP(context, 200),
           ),
         ),
         context: context,

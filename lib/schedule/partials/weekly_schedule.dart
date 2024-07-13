@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sigapp/student/entities/weekly_schedule_event.dart';
 
@@ -8,6 +7,8 @@ class WeeklySchedule extends StatefulWidget {
   final String? bottomLeftText;
   final String? topRightText;
   final String? topLeftText;
+  final double hourWidth;
+  final double rowHeight;
   final bool disableScroll;
   final double fontSize;
 
@@ -20,6 +21,8 @@ class WeeklySchedule extends StatefulWidget {
     this.bottomLeftText,
     this.topRightText,
     this.topLeftText,
+    this.hourWidth = 50.0,
+    this.rowHeight = 75.0,
   });
 
   @override
@@ -29,10 +32,6 @@ class WeeklySchedule extends StatefulWidget {
 class _WeeklyScheduleState extends State<WeeklySchedule> {
   var startHour = 0;
   var endHour = 0;
-
-  static const hourWidth = 50.0;
-  static const rowHeight = 75.0;
-  static const littleRay = rowHeight * 0.1;
 
   void _calculateHourRange() {
     if (widget.events.isEmpty) {
@@ -73,14 +72,18 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (widget.topRightText != null || widget.topLeftText != null)
-              TopTextRow(
-                topLeftText: widget.topLeftText,
-                topRightText: widget.topRightText,
+              TextInfo(
+                leftText: widget.topLeftText != null
+                    ? Text(widget.topLeftText!)
+                    : null,
+                rightText: widget.topRightText != null
+                    ? Text(widget.topRightText!)
+                    : null,
               ),
             Row(
               children: [
                 Container(
-                  width: hourWidth,
+                  width: widget.hourWidth,
                   padding: const EdgeInsets.all(8),
                 ),
                 for (var day in daysWithEvents) DayHeader(day: day),
@@ -94,6 +97,8 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
                     endHour: endHour,
                     constraints: constraints,
                     fontSize: widget.fontSize,
+                    hourWidth: widget.hourWidth,
+                    rowHeight: widget.rowHeight,
                   )
                 : Expanded(
                     child: SingleChildScrollView(
@@ -104,9 +109,20 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
                         endHour: endHour,
                         constraints: constraints,
                         fontSize: widget.fontSize,
+                        hourWidth: widget.hourWidth,
+                        rowHeight: widget.rowHeight,
                       ),
                     ),
                   ),
+            if (widget.bottomRightText != null || widget.bottomLeftText != null)
+              TextInfo(
+                leftText: widget.bottomRightText != null
+                    ? Text(widget.bottomRightText!)
+                    : null,
+                rightText: widget.bottomLeftText != null
+                    ? Text(widget.bottomLeftText!)
+                    : null,
+              ),
           ],
         ),
       );
@@ -114,29 +130,28 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
   }
 }
 
-class TopTextRow extends StatelessWidget {
-  final String? topLeftText;
-  final String? topRightText;
+class TextInfo extends StatelessWidget {
+  final Widget? leftText;
+  final Widget? rightText;
 
-  const TopTextRow({Key? key, this.topLeftText, this.topRightText})
-      : super(key: key);
+  const TextInfo({super.key, this.leftText, this.rightText});
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: topLeftText != null
+      mainAxisAlignment: leftText != null
           ? MainAxisAlignment.spaceBetween
           : MainAxisAlignment.end,
       children: [
-        if (topLeftText != null)
+        if (leftText != null)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            child: Text(topLeftText!),
+            child: leftText!,
           ),
-        if (topRightText != null)
+        if (rightText != null)
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            child: Text(topRightText!),
+            child: rightText!,
           ),
       ],
     );
@@ -192,6 +207,8 @@ class Body extends StatelessWidget {
   final int endHour;
   final BoxConstraints constraints;
   final double fontSize;
+  final double hourWidth;
+  final double rowHeight;
 
   const Body({
     Key? key,
@@ -201,6 +218,8 @@ class Body extends StatelessWidget {
     required this.endHour,
     required this.constraints,
     required this.fontSize,
+    required this.hourWidth,
+    required this.rowHeight,
   }) : super(key: key);
 
   @override
@@ -212,6 +231,8 @@ class Body extends StatelessWidget {
           startHour: startHour,
           endHour: endHour,
           constraints: constraints,
+          hourWidth: hourWidth,
+          rowHeight: rowHeight,
         ),
         ...events
             .where((event) =>
@@ -222,6 +243,8 @@ class Body extends StatelessWidget {
                   daysWithEvents: daysWithEvents,
                   startHour: startHour,
                   fontSize: fontSize,
+                  rowHeight: rowHeight,
+                  hourWidth: hourWidth,
                 )),
       ],
     );
@@ -233,14 +256,19 @@ class Grid extends StatelessWidget {
   final int startHour;
   final int endHour;
   final BoxConstraints constraints;
+  final double hourWidth;
+  final double rowHeight;
+  final double littleRayLength;
 
   const Grid({
-    Key? key,
+    super.key,
     required this.daysWithEvents,
     required this.startHour,
     required this.endHour,
     required this.constraints,
-  }) : super(key: key);
+    required this.hourWidth,
+    required this.rowHeight,
+  }) : littleRayLength = hourWidth * 0.15;
 
   @override
   Widget build(BuildContext context) {
@@ -249,13 +277,18 @@ class Grid extends StatelessWidget {
       children: List.generate(numOfRows, (hour) {
         return Row(
           children: [
-            HourLabel(hour: startHour + hour),
+            HourLabel(
+              hour: startHour + hour,
+              rowHeight: rowHeight,
+              littleRayLength: littleRayLength,
+              hourWidth: hourWidth,
+            ),
             Expanded(
               child: Row(
                 children: List.generate(daysWithEvents.length, (dayIndex) {
                   return Expanded(
                     child: Container(
-                      height: 75.0,
+                      height: rowHeight,
                       decoration: BoxDecoration(
                         border: Border(
                           left: dayIndex == 0
@@ -284,15 +317,13 @@ class Grid extends StatelessWidget {
         ..addAll([
           Row(
             children: [
-              const SizedBox(
-                width: 50.0,
-                height: 7.5,
-              ),
+              SizedBox(width: hourWidth, height: littleRayLength),
               for (var dayIndex
                   in List.generate(daysWithEvents.length, (index) => index))
                 Container(
-                  width: (constraints.maxWidth - 50.0) / daysWithEvents.length,
-                  height: 7.5,
+                  width: (constraints.maxWidth - hourWidth) /
+                      daysWithEvents.length,
+                  height: littleRayLength,
                   decoration: BoxDecoration(
                     border: Border(
                       left: dayIndex == 0
@@ -317,8 +348,17 @@ class Grid extends StatelessWidget {
 
 class HourLabel extends StatelessWidget {
   final int hour;
+  final double rowHeight;
+  final double littleRayLength;
+  final double hourWidth;
 
-  const HourLabel({Key? key, required this.hour}) : super(key: key);
+  const HourLabel({
+    super.key,
+    required this.hour,
+    required this.rowHeight,
+    required this.littleRayLength,
+    required this.hourWidth,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -328,15 +368,15 @@ class HourLabel extends StatelessWidget {
     String formattedHour = '$displayHour$period';
 
     return Container(
-      width: 50.0,
-      height: 75.0,
+      width: hourWidth,
+      height: rowHeight,
       child: Stack(
         children: [
           Positioned(
             right: 0,
             bottom: 0,
             child: Container(
-              width: 7.5,
+              width: littleRayLength,
               height: 1,
               color: Colors.grey.withOpacity(0.5),
             ),
@@ -357,15 +397,19 @@ class EventWidget extends StatelessWidget {
   final List<int> daysWithEvents;
   final int startHour;
   final double fontSize;
+  final double rowHeight;
+  final double hourWidth;
 
   const EventWidget({
-    Key? key,
+    super.key,
     required this.event,
     required this.constraints,
     required this.daysWithEvents,
     required this.startHour,
     required this.fontSize,
-  }) : super(key: key);
+    required this.rowHeight,
+    required this.hourWidth,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -382,15 +426,16 @@ class EventWidget extends StatelessWidget {
           : Colors.white;
     }
 
-    final top =
-        (event.startHour - startHour) * 75.0 + (event.startMinute / 60) * 75.0;
-    final gridWidth = (constraints.maxWidth - 50.0) / daysWithEvents.length;
+    final top = (event.startHour - startHour) * rowHeight +
+        (event.startMinute / 60) * rowHeight;
+    final gridWidth =
+        (constraints.maxWidth - hourWidth) / daysWithEvents.length;
     final littleMarginForSides = gridWidth * 0.05;
     final width = gridWidth - littleMarginForSides;
     final dayIndex = daysWithEvents.indexOf(event.weekday);
-    final left = 50.0 + dayIndex * gridWidth;
-    final height = ((event.endHour - event.startHour) * 75.0 +
-            ((event.endMinute - event.startMinute) / 60) * 75.0) -
+    final left = hourWidth + dayIndex * gridWidth;
+    final height = ((event.endHour - event.startHour) * rowHeight +
+            ((event.endMinute - event.startMinute) / 60) * rowHeight) -
         littleMarginForSides;
 
     final titleFontSize = fontSize;
