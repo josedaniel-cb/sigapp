@@ -19,8 +19,8 @@ mixin _$ExportToCalendarState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Calendar> calendars,
-            Calendar selectedCalendar, DateTime startDate, DateTime endDate)
+    required TResult Function(
+            List<Calendar> calendars, Calendar selectedCalendar)
         success,
     required TResult Function(String message) error,
   }) =>
@@ -28,8 +28,7 @@ mixin _$ExportToCalendarState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Calendar> calendars, Calendar selectedCalendar,
-            DateTime startDate, DateTime endDate)?
+    TResult? Function(List<Calendar> calendars, Calendar selectedCalendar)?
         success,
     TResult? Function(String message)? error,
   }) =>
@@ -37,8 +36,7 @@ mixin _$ExportToCalendarState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Calendar> calendars, Calendar selectedCalendar,
-            DateTime startDate, DateTime endDate)?
+    TResult Function(List<Calendar> calendars, Calendar selectedCalendar)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -133,8 +131,8 @@ class _$LoadingStateImpl with DiagnosticableTreeMixin implements LoadingState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Calendar> calendars,
-            Calendar selectedCalendar, DateTime startDate, DateTime endDate)
+    required TResult Function(
+            List<Calendar> calendars, Calendar selectedCalendar)
         success,
     required TResult Function(String message) error,
   }) {
@@ -145,8 +143,7 @@ class _$LoadingStateImpl with DiagnosticableTreeMixin implements LoadingState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Calendar> calendars, Calendar selectedCalendar,
-            DateTime startDate, DateTime endDate)?
+    TResult? Function(List<Calendar> calendars, Calendar selectedCalendar)?
         success,
     TResult? Function(String message)? error,
   }) {
@@ -157,8 +154,7 @@ class _$LoadingStateImpl with DiagnosticableTreeMixin implements LoadingState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Calendar> calendars, Calendar selectedCalendar,
-            DateTime startDate, DateTime endDate)?
+    TResult Function(List<Calendar> calendars, Calendar selectedCalendar)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -214,11 +210,7 @@ abstract class _$$SuccessStateImplCopyWith<$Res> {
           _$SuccessStateImpl value, $Res Function(_$SuccessStateImpl) then) =
       __$$SuccessStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call(
-      {List<Calendar> calendars,
-      Calendar selectedCalendar,
-      DateTime startDate,
-      DateTime endDate});
+  $Res call({List<Calendar> calendars, Calendar selectedCalendar});
 }
 
 /// @nodoc
@@ -234,8 +226,6 @@ class __$$SuccessStateImplCopyWithImpl<$Res>
   $Res call({
     Object? calendars = null,
     Object? selectedCalendar = null,
-    Object? startDate = null,
-    Object? endDate = null,
   }) {
     return _then(_$SuccessStateImpl(
       calendars: null == calendars
@@ -246,14 +236,6 @@ class __$$SuccessStateImplCopyWithImpl<$Res>
           ? _value.selectedCalendar
           : selectedCalendar // ignore: cast_nullable_to_non_nullable
               as Calendar,
-      startDate: null == startDate
-          ? _value.startDate
-          : startDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      endDate: null == endDate
-          ? _value.endDate
-          : endDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
     ));
   }
 }
@@ -262,10 +244,7 @@ class __$$SuccessStateImplCopyWithImpl<$Res>
 
 class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
   const _$SuccessStateImpl(
-      {required final List<Calendar> calendars,
-      required this.selectedCalendar,
-      required this.startDate,
-      required this.endDate})
+      {required final List<Calendar> calendars, required this.selectedCalendar})
       : _calendars = calendars;
 
   final List<Calendar> _calendars;
@@ -278,14 +257,10 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
 
   @override
   final Calendar selectedCalendar;
-  @override
-  final DateTime startDate;
-  @override
-  final DateTime endDate;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ExportToCalendarState.success(calendars: $calendars, selectedCalendar: $selectedCalendar, startDate: $startDate, endDate: $endDate)';
+    return 'ExportToCalendarState.success(calendars: $calendars, selectedCalendar: $selectedCalendar)';
   }
 
   @override
@@ -294,9 +269,7 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
     properties
       ..add(DiagnosticsProperty('type', 'ExportToCalendarState.success'))
       ..add(DiagnosticsProperty('calendars', calendars))
-      ..add(DiagnosticsProperty('selectedCalendar', selectedCalendar))
-      ..add(DiagnosticsProperty('startDate', startDate))
-      ..add(DiagnosticsProperty('endDate', endDate));
+      ..add(DiagnosticsProperty('selectedCalendar', selectedCalendar));
   }
 
   @override
@@ -307,19 +280,12 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
             const DeepCollectionEquality()
                 .equals(other._calendars, _calendars) &&
             (identical(other.selectedCalendar, selectedCalendar) ||
-                other.selectedCalendar == selectedCalendar) &&
-            (identical(other.startDate, startDate) ||
-                other.startDate == startDate) &&
-            (identical(other.endDate, endDate) || other.endDate == endDate));
+                other.selectedCalendar == selectedCalendar));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(_calendars),
-      selectedCalendar,
-      startDate,
-      endDate);
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_calendars), selectedCalendar);
 
   @JsonKey(ignore: true)
   @override
@@ -331,38 +297,36 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Calendar> calendars,
-            Calendar selectedCalendar, DateTime startDate, DateTime endDate)
+    required TResult Function(
+            List<Calendar> calendars, Calendar selectedCalendar)
         success,
     required TResult Function(String message) error,
   }) {
-    return success(calendars, selectedCalendar, startDate, endDate);
+    return success(calendars, selectedCalendar);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Calendar> calendars, Calendar selectedCalendar,
-            DateTime startDate, DateTime endDate)?
+    TResult? Function(List<Calendar> calendars, Calendar selectedCalendar)?
         success,
     TResult? Function(String message)? error,
   }) {
-    return success?.call(calendars, selectedCalendar, startDate, endDate);
+    return success?.call(calendars, selectedCalendar);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Calendar> calendars, Calendar selectedCalendar,
-            DateTime startDate, DateTime endDate)?
+    TResult Function(List<Calendar> calendars, Calendar selectedCalendar)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(calendars, selectedCalendar, startDate, endDate);
+      return success(calendars, selectedCalendar);
     }
     return orElse();
   }
@@ -405,14 +369,10 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
 abstract class SuccessState implements ExportToCalendarState {
   const factory SuccessState(
       {required final List<Calendar> calendars,
-      required final Calendar selectedCalendar,
-      required final DateTime startDate,
-      required final DateTime endDate}) = _$SuccessStateImpl;
+      required final Calendar selectedCalendar}) = _$SuccessStateImpl;
 
   List<Calendar> get calendars;
   Calendar get selectedCalendar;
-  DateTime get startDate;
-  DateTime get endDate;
   @JsonKey(ignore: true)
   _$$SuccessStateImplCopyWith<_$SuccessStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -491,8 +451,8 @@ class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(List<Calendar> calendars,
-            Calendar selectedCalendar, DateTime startDate, DateTime endDate)
+    required TResult Function(
+            List<Calendar> calendars, Calendar selectedCalendar)
         success,
     required TResult Function(String message) error,
   }) {
@@ -503,8 +463,7 @@ class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<Calendar> calendars, Calendar selectedCalendar,
-            DateTime startDate, DateTime endDate)?
+    TResult? Function(List<Calendar> calendars, Calendar selectedCalendar)?
         success,
     TResult? Function(String message)? error,
   }) {
@@ -515,8 +474,7 @@ class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<Calendar> calendars, Calendar selectedCalendar,
-            DateTime startDate, DateTime endDate)?
+    TResult Function(List<Calendar> calendars, Calendar selectedCalendar)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),

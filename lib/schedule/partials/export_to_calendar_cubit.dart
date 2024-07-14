@@ -13,8 +13,8 @@ abstract class ExportToCalendarState with _$ExportToCalendarState {
   const factory ExportToCalendarState.success({
     required List<Calendar> calendars,
     required Calendar selectedCalendar,
-    required DateTime startDate,
-    required DateTime endDate,
+    // required DateTime startDate,
+    // required DateTime endDate,
   }) = SuccessState;
   const factory ExportToCalendarState.error(String message) = ErrorState;
 }
@@ -32,7 +32,7 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
       if (permissionsGranted.isSuccess && !permissionsGranted.data!) {
         permissionsGranted = await _deviceCalendarPlugin.requestPermissions();
         if (!permissionsGranted.isSuccess || !permissionsGranted.data!) {
-          return;
+          throw Exception('No se han concedido los permisos necesarios');
         }
       }
 
@@ -45,13 +45,13 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
         }
       }
 
-      final now = DateTime.now();
+      // final now = DateTime.now();
       emit(
         ExportToCalendarState.success(
           calendars: calendarsResult.data!,
           selectedCalendar: calendarsResult.data!.first,
-          startDate: now,
-          endDate: DateTime(now.year, now.month + 1, 0),
+          // startDate: now,
+          // endDate: DateTime(now.year, now.month + 1, 0),
         ),
       );
     } catch (e, s) {
@@ -64,7 +64,11 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
   }
 
   /// Export the list of [weeklyEvents] to the selected calendar.
-  Future<void> export(List<WeeklyScheduleEvent> weeklyEvents) async {
+  Future<void> export({
+    required List<WeeklyScheduleEvent> weeklyEvents,
+    required DateTime startDate,
+    required DateTime endDate,
+  }) async {
     final successState = state as SuccessState;
 
     // Remove all existing events from the calendar
@@ -73,28 +77,28 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
     // Iterate through each weekly event
     for (final weeklyEvent in weeklyEvents) {
       // Convert startDate and endDate to the same weekday as the event for comparison
-      final eventStartDate = successState.startDate.add(Duration(
-          days: (weeklyEvent.weekday - successState.startDate.weekday) % 7));
-      final eventEndDate = successState.endDate.add(Duration(
-          days: (weeklyEvent.weekday - successState.endDate.weekday) % 7));
+      final eventStartDate = startDate
+          .add(Duration(days: (weeklyEvent.weekday - startDate.weekday) % 7));
+      final eventEndDate = endDate
+          .add(Duration(days: (weeklyEvent.weekday - endDate.weekday) % 7));
 
       // Check if the weekday of the event is within the selected date range
-      final weekdayIsInRange = eventStartDate.isBefore(successState.endDate) &&
-          eventEndDate.isAfter(successState.startDate);
+      final weekdayIsInRange =
+          eventStartDate.isBefore(endDate) && eventEndDate.isAfter(startDate);
 
       if (!weekdayIsInRange) {
         if (kDebugMode) {
           print('weekday is out of range: ${weeklyEvent.weekday}');
-          print('startDate: ${successState.startDate.weekday}');
-          print('endDate: ${successState.endDate.weekday}');
+          print('startDate: ${startDate.weekday}');
+          print('endDate: ${endDate.weekday}');
           print(weeklyEvent);
         }
         continue;
       }
 
       // Calculate the date and time for the event
-      final date = successState.startDate.add(
-          Duration(days: weeklyEvent.weekday - successState.startDate.weekday));
+      final date = startDate
+          .add(Duration(days: weeklyEvent.weekday - startDate.weekday));
       final start = date.copyWith(
         hour: weeklyEvent.startHour,
         minute: weeklyEvent.startMinute,
@@ -114,7 +118,7 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
         location: weeklyEvent.location,
         recurrenceRule: RecurrenceRule(
           RecurrenceFrequency.Weekly,
-          endDate: successState.endDate,
+          endDate: endDate,
         ),
       );
 
@@ -186,11 +190,11 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
     }
   }
 
-  void selectDateRange(DateTime start, DateTime end) {
-    if (state is! SuccessState) {
-      return;
-    }
+  // void selectDateRange(DateTime start, DateTime end) {
+  //   if (state is! SuccessState) {
+  //     return;
+  //   }
 
-    emit((state as SuccessState).copyWith(startDate: start, endDate: end));
-  }
+  //   emit((state as SuccessState).copyWith(startDate: start, endDate: end));
+  // }
 }

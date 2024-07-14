@@ -161,7 +161,7 @@ class TextInfo extends StatelessWidget {
 class DayHeader extends StatelessWidget {
   final int day;
 
-  const DayHeader({Key? key, required this.day}) : super(key: key);
+  const DayHeader({super.key, required this.day});
 
   @override
   Widget build(BuildContext context) {
