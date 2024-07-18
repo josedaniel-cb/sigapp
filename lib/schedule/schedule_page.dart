@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
-// import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:sigapp/schedule/partials/export_to_calendar.dart';
 import 'package:sigapp/schedule/schedule_cubit.dart';
 import 'package:sigapp/schedule/partials/schedule_semester_select.dart';
@@ -71,191 +70,7 @@ class SchedulePageState extends State<SchedulePage> {
                 offset: const Offset(0, 50),
                 onSelected: (String value) {
                   if (value == 'export' && state is SuccessState) {
-                    final now = DateTime.now();
-                    // final startDate = now;
-                    // final endDate = DateTime(now.year, now.month + 1, 0);
-                    // showCustomDateRangePicker(
-                    //   context,
-                    //   dismissible: true,
-                    //   minimumDate:
-                    //       DateTime.now().subtract(const Duration(days: 30)),
-                    //   maximumDate: DateTime.now().add(const Duration(days: 30)),
-                    //   endDate: endDate,
-                    //   startDate: startDate,
-                    //   backgroundColor:
-                    //       Theme.of(context).scaffoldBackgroundColor,
-                    //   primaryColor: Theme.of(context).primaryColor,
-                    //   onApplyClick: (start, end) {
-                    //     showDialog(
-                    //       context: context,
-                    //       builder: (context) {
-                    //         return AlertDialog(
-                    //           content: ExportToCalendar(
-                    //             startDate: start,
-                    //             endDate: end,
-                    //             weeklyEvents: state.schedule.weeklyEvents,
-                    //           ),
-                    //         );
-                    //       },
-                    //     );
-                    //   },
-                    //   onCancelClick: () {
-                    //     // setState(() {
-                    //     //   endDate = null;
-                    //     //   startDate = null;
-                    //     // });
-                    //   },
-                    // );
-
-                    const dayTextStyle = TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.w700);
-                    final weekendTextStyle = TextStyle(
-                        color: Colors.grey[500], fontWeight: FontWeight.w600);
-                    final anniversaryTextStyle = TextStyle(
-                      color: Colors.red[400],
-                      fontWeight: FontWeight.w700,
-                      decoration: TextDecoration.underline,
-                    );
-                    final config = CalendarDatePicker2WithActionButtonsConfig(
-                      calendarViewScrollPhysics:
-                          const NeverScrollableScrollPhysics(),
-                      dayTextStyle: dayTextStyle,
-                      calendarType: CalendarDatePicker2Type.range,
-                      selectedDayHighlightColor: Colors.purple[800],
-                      closeDialogOnCancelTapped: true,
-                      firstDayOfWeek: 1,
-                      weekdayLabelTextStyle: const TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      controlsTextStyle: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      centerAlignModePicker: true,
-                      customModePickerIcon: const SizedBox(),
-                      selectedDayTextStyle:
-                          dayTextStyle.copyWith(color: Colors.white),
-                      dayTextStylePredicate: ({required date}) {
-                        TextStyle? textStyle;
-                        if (date.weekday == DateTime.saturday ||
-                            date.weekday == DateTime.sunday) {
-                          textStyle = weekendTextStyle;
-                        }
-                        if (DateUtils.isSameDay(date, DateTime(2021, 1, 25))) {
-                          textStyle = anniversaryTextStyle;
-                        }
-                        return textStyle;
-                      },
-                      dayBuilder: ({
-                        required date,
-                        textStyle,
-                        decoration,
-                        isSelected,
-                        isDisabled,
-                        isToday,
-                      }) {
-                        Widget? dayWidget;
-                        if (date.day % 3 == 0 && date.day % 9 != 0) {
-                          dayWidget = Container(
-                            decoration: decoration,
-                            child: Center(
-                              child: Stack(
-                                alignment: AlignmentDirectional.center,
-                                children: [
-                                  Text(
-                                    MaterialLocalizations.of(context)
-                                        .formatDecimal(date.day),
-                                    style: textStyle,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 27.5),
-                                    child: Container(
-                                      height: 4,
-                                      width: 4,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: isSelected == true
-                                            ? Colors.white
-                                            : Colors.grey[500],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }
-                        return dayWidget;
-                      },
-                      yearBuilder: ({
-                        required year,
-                        decoration,
-                        isCurrentYear,
-                        isDisabled,
-                        isSelected,
-                        textStyle,
-                      }) {
-                        return Center(
-                          child: Container(
-                            decoration: decoration,
-                            height: 36,
-                            width: 72,
-                            child: Center(
-                              child: Semantics(
-                                selected: isSelected,
-                                button: true,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      year.toString(),
-                                      style: textStyle,
-                                    ),
-                                    if (isCurrentYear == true)
-                                      Container(
-                                        padding: const EdgeInsets.all(5),
-                                        margin: const EdgeInsets.only(left: 5),
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.redAccent,
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                    showCalendarDatePicker2Dialog(
-                      context: context,
-                      config: config,
-                      dialogSize: const Size(325, 370),
-                      borderRadius: BorderRadius.circular(15),
-                      value: [
-                        DateTime(now.year, now.month, 1),
-                        DateTime(now.year, now.month + 1, 0),
-                      ],
-                      dialogBackgroundColor: Colors.white,
-                    ).then((values) {
-                      if (values != null) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              content: ExportToCalendar(
-                                startDate: values[0]!,
-                                endDate: values[1]!,
-                                weeklyEvents: state.schedule.weeklyEvents,
-                              ),
-                            );
-                          },
-                        );
-                      }
-                    });
+                    _exportToCalendar(context, state);
                   }
                 },
                 itemBuilder: (BuildContext context) {
@@ -319,6 +134,164 @@ class SchedulePageState extends State<SchedulePage> {
         } else if (state is ErrorState) {
           // Do something
         }
+      },
+    );
+  }
+
+  Future<void> _exportToCalendar(
+      BuildContext context, SuccessState state) async {
+    final config = _buildCalendarDatePicker2Dialog();
+    final now = DateTime.now();
+    final values = await showCalendarDatePicker2Dialog(
+      context: context,
+      config: config,
+      dialogSize: const Size(325, 370),
+      borderRadius: BorderRadius.circular(15),
+      value: [
+        DateTime(now.year, now.month, 1),
+        DateTime(now.year, now.month + 1, 0),
+      ],
+      dialogBackgroundColor: Colors.white,
+    );
+    if (values != null) {
+      showDialog(
+        // ignore: use_build_context_synchronously
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: ExportToCalendar(
+              startDate: values[0]!,
+              endDate: values[1]!,
+              weeklyEvents: state.schedule.weeklyEvents,
+            ),
+          );
+        },
+      );
+    }
+  }
+
+  CalendarDatePicker2WithActionButtonsConfig _buildCalendarDatePicker2Dialog() {
+    final theme = Theme.of(context);
+    final dayTextStyle =
+        theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w700);
+    final weekendTextStyle = theme.textTheme.bodyLarge
+        ?.copyWith(color: theme.hintColor, fontWeight: FontWeight.w600);
+    final anniversaryTextStyle = theme.textTheme.bodyLarge?.copyWith(
+      color: theme.colorScheme.error,
+      fontWeight: FontWeight.w700,
+      decoration: TextDecoration.underline,
+    );
+
+    return CalendarDatePicker2WithActionButtonsConfig(
+      calendarViewScrollPhysics: const NeverScrollableScrollPhysics(),
+      dayTextStyle: dayTextStyle,
+      calendarType: CalendarDatePicker2Type.range,
+      selectedDayHighlightColor: theme.colorScheme.primary,
+      closeDialogOnCancelTapped: true,
+      firstDayOfWeek: 1,
+      weekdayLabelTextStyle: theme.textTheme.bodyLarge?.copyWith(
+        color: theme.colorScheme.onSurface,
+        fontWeight: FontWeight.bold,
+      ),
+      controlsTextStyle: theme.textTheme.bodyLarge?.copyWith(
+        color: theme.colorScheme.onSurface,
+        fontSize: 15,
+        fontWeight: FontWeight.bold,
+      ),
+      centerAlignModePicker: true,
+      customModePickerIcon: const SizedBox(),
+      selectedDayTextStyle:
+          dayTextStyle?.copyWith(color: theme.colorScheme.onPrimary),
+      dayTextStylePredicate: ({required date}) {
+        TextStyle? textStyle;
+        if (date.weekday == DateTime.saturday ||
+            date.weekday == DateTime.sunday) {
+          textStyle = weekendTextStyle;
+        }
+        if (DateUtils.isSameDay(date, DateTime(2021, 1, 25))) {
+          textStyle = anniversaryTextStyle;
+        }
+        return textStyle;
+      },
+      dayBuilder: ({
+        required date,
+        textStyle,
+        decoration,
+        isSelected,
+        isDisabled,
+        isToday,
+      }) {
+        Widget? dayWidget;
+        if (date.day % 3 == 0 && date.day % 9 != 0) {
+          dayWidget = Container(
+            decoration: decoration,
+            child: Center(
+              child: Stack(
+                alignment: AlignmentDirectional.center,
+                children: [
+                  Text(
+                    MaterialLocalizations.of(context).formatDecimal(date.day),
+                    style: textStyle,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 27.5),
+                    child: Container(
+                      height: 4,
+                      width: 4,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: isSelected == true
+                            ? theme.colorScheme.onPrimary
+                            : theme.hintColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        return dayWidget;
+      },
+      yearBuilder: ({
+        required year,
+        decoration,
+        isCurrentYear,
+        isDisabled,
+        isSelected,
+        textStyle,
+      }) {
+        return Center(
+          child: Container(
+            decoration: decoration,
+            height: 36,
+            width: 72,
+            child: Center(
+              child: Semantics(
+                selected: isSelected,
+                button: true,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      year.toString(),
+                      style: textStyle,
+                    ),
+                    if (isCurrentYear == true)
+                      Container(
+                        padding: const EdgeInsets.all(5),
+                        margin: const EdgeInsets.only(left: 5),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: theme.colorScheme.error,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
       },
     );
   }

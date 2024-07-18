@@ -10,6 +10,8 @@ import 'package:sigapp/student/student_repository.dart';
 class StudentService {
   final StudentRepository _studentRepository;
 
+  static const String _eventsIdsPrefix = 'SIGAPP';
+
   StudentAcademicReport? _studentAcademicReport;
 
   StudentService(this._studentRepository);
@@ -170,7 +172,7 @@ class StudentService {
         final eventEnd = _calculateEventDateTime(classEndTime, weekday);
 
         final id =
-            '[$className]-${eventStart.toString().substring(0, 16)}-${eventEnd.toString().substring(0, 16)}';
+            '$_eventsIdsPrefix-[$className]-${eventStart.toString().substring(0, 16)}-${eventEnd.toString().substring(0, 16)}';
         weeklyScheduleEvents.add(WeeklyScheduleEvent(
           id: id,
           title: className,
@@ -202,5 +204,9 @@ class StudentService {
       }
     }
     return semesters;
+  }
+
+  bool calculateIfEventIsOwnedByThisApp(String eventId) {
+    return eventId.startsWith(_eventsIdsPrefix);
   }
 }

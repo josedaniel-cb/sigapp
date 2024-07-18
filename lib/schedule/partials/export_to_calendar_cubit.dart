@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/student/entities/weekly_schedule_event.dart';
+import 'package:sigapp/student/student_service.dart';
 
 part 'export_to_calendar_cubit.freezed.dart';
 
@@ -22,8 +23,10 @@ abstract class ExportToCalendarState with _$ExportToCalendarState {
 @injectable
 class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
   final DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
+  final StudentService _studentService;
 
-  ExportToCalendarCubit() : super(const ExportToCalendarState.loading());
+  ExportToCalendarCubit(this._studentService)
+      : super(const ExportToCalendarState.loading());
 
   Future<void> setup() async {
     emit(const ExportToCalendarState.loading());
@@ -72,7 +75,9 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
     final successState = state as SuccessState;
 
     // Remove all existing events from the calendar
-    await _removeAllEventsFromCalendar();
+    await _removeEventsFromCalendar();
+    // await _removeEventsFromCalendar(all: true);
+    // return;
 
     // Iterate through each weekly event
     for (final weeklyEvent in weeklyEvents) {
@@ -149,7 +154,7 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
     emit((state as SuccessState).copyWith(selectedCalendar: calendar));
   }
 
-  Future<void> _removeAllEventsFromCalendar() async {
+  Future<void> _removeEventsFromCalendar({clearCalendar = false}) async {
     if (state is! SuccessState) {
       return;
     }
@@ -159,17 +164,55 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
     final events = await _deviceCalendarPlugin.retrieveEvents(
       successState.selectedCalendar.id,
       RetrieveEventsParams(
-        startDate: DateTime.now().subtract(const Duration(days: 14)),
-        endDate: DateTime.now().add(const Duration(days: 14)),
+        startDate: DateTime.now().subtract(const Duration(days: 356)),
+        endDate: DateTime.now().add(const Duration(days: 356)),
       ),
     );
     if (events.errors.isNotEmpty) {
       throw Exception(
           'Error al obtener eventos: ${events.errors.map((e) => '(${e.errorCode}) ${e.errorMessage}').join(', ')}');
     }
+    if (events.data?.isEmpty ?? true) {
+      if (kDebugMode) {
+        print('There is no old events between the selected dates');
+      }
+      return;
+    }
+    final allEvents = events.data?.toList() ?? [];
+
+    var filteredEvents = allEvents;
+    if (!clearCalendar) {
+      var discardedToRemoveCount = 0;
+      var selectedToRemoveCount = 0;
+      filteredEvents = allEvents.where((event) {
+        final eventId = event.eventId;
+        if (eventId == null) {
+          discardedToRemoveCount++;
+          return false;
+        }
+        final eventIsOwnedByThisApp =
+            _studentService.calculateIfEventIsOwnedByThisApp(
+          eventId,
+        );
+        if (eventIsOwnedByThisApp) {
+          selectedToRemoveCount++;
+        } else {
+          if (kDebugMode) {
+            print('Discarded event $eventId: ${event.description}');
+          }
+          discardedToRemoveCount++;
+        }
+        return eventIsOwnedByThisApp;
+      }).toList();
+      if (kDebugMode) {
+        print('Discarded events: $discardedToRemoveCount');
+        print('Selected to remove: $selectedToRemoveCount');
+      }
+    }
+
     var successCount = 0;
     var errorCount = 0;
-    for (final Event event in events.data ?? []) {
+    for (final Event event in filteredEvents) {
       final result = await _deviceCalendarPlugin.deleteEvent(
         successState.selectedCalendar.id,
         event.eventId,
@@ -189,12 +232,4 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
           'Se eliminaron $successCount eventos con éxito, $errorCount errores.');
     }
   }
-
-  // void selectDateRange(DateTime start, DateTime end) {
-  //   if (state is! SuccessState) {
-  //     return;
-  //   }
-
-  //   emit((state as SuccessState).copyWith(startDate: start, endDate: end));
-  // }
 }
