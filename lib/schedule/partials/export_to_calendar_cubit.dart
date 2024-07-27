@@ -76,7 +76,7 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
 
     // Remove all existing events from the calendar
     await _removeEventsFromCalendar();
-    // await _removeEventsFromCalendar(all: true);
+    // await _removeEventsFromCalendar(clearCalendar: true);
     // return;
 
     // Iterate through each weekly event

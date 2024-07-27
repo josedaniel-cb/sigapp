@@ -70,7 +70,7 @@ class SigaClient {
         .build();
 
     _authRepository = BaseAuthRepository(_authClient.client);
-    Timer.periodic(const Duration(seconds: 45), (timer) {
+    Timer.periodic(const Duration(seconds: 60), (timer) {
       _refreshSession();
     });
     _refreshSession();
@@ -189,3 +189,12 @@ class SigaClient {
     getIt<GoRouter>().refresh();
   }
 }
+
+
+// check this out #file:siga_client.dart
+
+// re write this file in order to change te way of keeping the session credentials (cookies)
+
+// what you have to do is perform a "keep session" with every request. if keep session fails, then logout. the reasoj behind this is to use fresh cookies every time of a request.
+
+// keep the periodic "refresh session"
