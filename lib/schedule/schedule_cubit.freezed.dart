@@ -96,6 +96,9 @@ class _$ScheduleStateCopyWithImpl<$Res, $Val extends ScheduleState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of ScheduleState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -112,6 +115,9 @@ class __$$LoadingStateImplCopyWithImpl<$Res>
   __$$LoadingStateImplCopyWithImpl(
       _$LoadingStateImpl _value, $Res Function(_$LoadingStateImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of ScheduleState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -127,7 +133,7 @@ class _$LoadingStateImpl with DiagnosticableTreeMixin implements LoadingState {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('type', 'ScheduleState.loading'));
+    properties..add(DiagnosticsProperty('type', 'ScheduleState.loading'));
   }
 
   @override
@@ -254,6 +260,8 @@ class __$$SuccessStateImplCopyWithImpl<$Res>
       _$SuccessStateImpl _value, $Res Function(_$SuccessStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ScheduleState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -287,6 +295,8 @@ class __$$SuccessStateImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of ScheduleState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $SemesterScheduleCopyWith<$Res> get schedule {
@@ -358,7 +368,9 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
   int get hashCode => Object.hash(runtimeType, loadingShare,
       loadingChangeSemester, schedule, errorMessage, errorMessageWasShown);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ScheduleState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SuccessStateImplCopyWith<_$SuccessStateImpl> get copyWith =>
@@ -469,7 +481,10 @@ abstract class SuccessState implements ScheduleState {
 // required Calendar? selectedCalendar,
   String? get errorMessage;
   bool? get errorMessageWasShown;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ScheduleState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SuccessStateImplCopyWith<_$SuccessStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -491,6 +506,8 @@ class __$$ErrorStateImplCopyWithImpl<$Res>
       _$ErrorStateImpl _value, $Res Function(_$ErrorStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ScheduleState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -537,7 +554,9 @@ class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ScheduleState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ErrorStateImplCopyWith<_$ErrorStateImpl> get copyWith =>
@@ -634,7 +653,10 @@ abstract class ErrorState implements ScheduleState {
   const factory ErrorState(final String message) = _$ErrorStateImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ScheduleState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ErrorStateImplCopyWith<_$ErrorStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

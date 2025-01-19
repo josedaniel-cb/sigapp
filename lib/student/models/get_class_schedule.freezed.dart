@@ -30,8 +30,12 @@ mixin _$GetClassScheduleModel {
   String get Viernes => throw _privateConstructorUsedError;
   String get Sabado => throw _privateConstructorUsedError;
 
+  /// Serializes this GetClassScheduleModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GetClassScheduleModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $GetClassScheduleModelCopyWith<GetClassScheduleModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -64,6 +68,8 @@ class _$GetClassScheduleModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of GetClassScheduleModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -142,6 +148,8 @@ class __$$GetClassScheduleModelImplCopyWithImpl<$Res>
       $Res Function(_$GetClassScheduleModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GetClassScheduleModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -247,12 +255,14 @@ class _$GetClassScheduleModelImpl implements _GetClassScheduleModel {
             (identical(other.Sabado, Sabado) || other.Sabado == Sabado));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, HoraFinal, HoraInicio, Lunes,
       Martes, Miercoles, Jueves, Viernes, Sabado);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GetClassScheduleModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GetClassScheduleModelImplCopyWith<_$GetClassScheduleModelImpl>
@@ -297,8 +307,11 @@ abstract class _GetClassScheduleModel implements GetClassScheduleModel {
   String get Viernes;
   @override
   String get Sabado;
+
+  /// Create a copy of GetClassScheduleModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GetClassScheduleModelImplCopyWith<_$GetClassScheduleModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

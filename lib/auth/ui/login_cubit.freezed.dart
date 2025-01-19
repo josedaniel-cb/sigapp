@@ -20,7 +20,9 @@ mixin _$LoginState {
   String get password => throw _privateConstructorUsedError;
   LoginStatus get status => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $LoginStateCopyWith<LoginState> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -46,6 +48,8 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -69,6 +73,8 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
     ) as $Val);
   }
 
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $LoginStatusCopyWith<$Res> get status {
@@ -100,6 +106,8 @@ class __$$LoginStateImplCopyWithImpl<$Res>
       _$LoginStateImpl _value, $Res Function(_$LoginStateImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -167,7 +175,9 @@ class _$LoginStateImpl with DiagnosticableTreeMixin implements _LoginState {
   @override
   int get hashCode => Object.hash(runtimeType, username, password, status);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$LoginStateImplCopyWith<_$LoginStateImpl> get copyWith =>
@@ -186,8 +196,11 @@ abstract class _LoginState implements LoginState {
   String get password;
   @override
   LoginStatus get status;
+
+  /// Create a copy of LoginState
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LoginStateImplCopyWith<_$LoginStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -262,6 +275,9 @@ class _$LoginStatusCopyWithImpl<$Res, $Val extends LoginStatus>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of LoginStatus
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -278,6 +294,9 @@ class __$$LoginInitialImplCopyWithImpl<$Res>
   __$$LoginInitialImplCopyWithImpl(
       _$LoginInitialImpl _value, $Res Function(_$LoginInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of LoginStatus
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -293,7 +312,7 @@ class _$LoginInitialImpl with DiagnosticableTreeMixin implements LoginInitial {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('type', 'LoginStatus.initial'));
+    properties..add(DiagnosticsProperty('type', 'LoginStatus.initial'));
   }
 
   @override
@@ -398,6 +417,9 @@ class __$$LoginLoadingImplCopyWithImpl<$Res>
   __$$LoginLoadingImplCopyWithImpl(
       _$LoginLoadingImpl _value, $Res Function(_$LoginLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of LoginStatus
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -413,7 +435,7 @@ class _$LoginLoadingImpl with DiagnosticableTreeMixin implements LoginLoading {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('type', 'LoginStatus.loading'));
+    properties..add(DiagnosticsProperty('type', 'LoginStatus.loading'));
   }
 
   @override
@@ -518,6 +540,9 @@ class __$$LoginSuccessImplCopyWithImpl<$Res>
   __$$LoginSuccessImplCopyWithImpl(
       _$LoginSuccessImpl _value, $Res Function(_$LoginSuccessImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of LoginStatus
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -533,7 +558,7 @@ class _$LoginSuccessImpl with DiagnosticableTreeMixin implements LoginSuccess {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('type', 'LoginStatus.success'));
+    properties..add(DiagnosticsProperty('type', 'LoginStatus.success'));
   }
 
   @override
@@ -641,6 +666,8 @@ class __$$LoginErrorImplCopyWithImpl<$Res>
       _$LoginErrorImpl _value, $Res Function(_$LoginErrorImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of LoginStatus
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -687,7 +714,9 @@ class _$LoginErrorImpl with DiagnosticableTreeMixin implements LoginError {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LoginStatus
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$LoginErrorImplCopyWith<_$LoginErrorImpl> get copyWith =>
@@ -772,7 +801,10 @@ abstract class LoginError implements LoginStatus {
   const factory LoginError(final String message) = _$LoginErrorImpl;
 
   String get message;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of LoginStatus
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LoginErrorImplCopyWith<_$LoginErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

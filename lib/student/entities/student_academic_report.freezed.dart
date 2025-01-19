@@ -38,7 +38,9 @@ mixin _$StudentAcademicReport {
       throw _privateConstructorUsedError; // General
   String get currentSemesterId => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of StudentAcademicReport
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $StudentAcademicReportCopyWith<StudentAcademicReport> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -81,6 +83,8 @@ class _$StudentAcademicReportCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of StudentAcademicReport
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -220,6 +224,8 @@ class __$$StudentAcademicReportImplCopyWithImpl<$Res>
       $Res Function(_$StudentAcademicReportImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of StudentAcademicReport
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -455,7 +461,9 @@ class _$StudentAcademicReportImpl implements _StudentAcademicReport {
       electiveCreditsOfPassedCourses,
       currentSemesterId);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of StudentAcademicReport
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$StudentAcademicReportImplCopyWith<_$StudentAcademicReportImpl>
@@ -517,11 +525,14 @@ abstract class _StudentAcademicReport implements StudentAcademicReport {
   @override
   int get mandatoryCreditsOfPassedCourses;
   @override
-  int get electiveCreditsOfPassedCourses;
-  @override // General
-  String get currentSemesterId;
+  int get electiveCreditsOfPassedCourses; // General
   @override
-  @JsonKey(ignore: true)
+  String get currentSemesterId;
+
+  /// Create a copy of StudentAcademicReport
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$StudentAcademicReportImplCopyWith<_$StudentAcademicReportImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

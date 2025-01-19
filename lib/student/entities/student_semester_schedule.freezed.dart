@@ -25,7 +25,9 @@ mixin _$SemesterSchedule {
   List<WeeklyScheduleEvent> get weeklyEvents =>
       throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SemesterSchedule
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SemesterScheduleCopyWith<SemesterSchedule> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -56,6 +58,8 @@ class _$SemesterScheduleCopyWithImpl<$Res, $Val extends SemesterSchedule>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SemesterSchedule
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -84,6 +88,8 @@ class _$SemesterScheduleCopyWithImpl<$Res, $Val extends SemesterSchedule>
     ) as $Val);
   }
 
+  /// Create a copy of SemesterSchedule
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $StudentAcademicReportCopyWith<$Res> get studentAcademicReport {
@@ -93,6 +99,8 @@ class _$SemesterScheduleCopyWithImpl<$Res, $Val extends SemesterSchedule>
     });
   }
 
+  /// Create a copy of SemesterSchedule
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $SemesterScheduleSemesterMetadataCopyWith<$Res> get semester {
@@ -131,6 +139,8 @@ class __$$SemesterScheduleImplCopyWithImpl<$Res>
       $Res Function(_$SemesterScheduleImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SemesterSchedule
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -219,7 +229,9 @@ class _$SemesterScheduleImpl implements _SemesterSchedule {
       semester,
       const DeepCollectionEquality().hash(_weeklyEvents));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SemesterSchedule
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SemesterScheduleImplCopyWith<_$SemesterScheduleImpl> get copyWith =>
@@ -243,8 +255,11 @@ abstract class _SemesterSchedule implements SemesterSchedule {
   SemesterScheduleSemesterMetadata get semester;
   @override
   List<WeeklyScheduleEvent> get weeklyEvents;
+
+  /// Create a copy of SemesterSchedule
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SemesterScheduleImplCopyWith<_$SemesterScheduleImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -257,7 +272,9 @@ mixin _$SemesterScheduleSemesterMetadata {
   String get year => throw _privateConstructorUsedError;
   String get period => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SemesterScheduleSemesterMetadata
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $SemesterScheduleSemesterMetadataCopyWith<SemesterScheduleSemesterMetadata>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -284,6 +301,8 @@ class _$SemesterScheduleSemesterMetadataCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of SemesterScheduleSemesterMetadata
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -335,6 +354,8 @@ class __$$SemesterScheduleSemesterMetadataImplCopyWithImpl<$Res>
       $Res Function(_$SemesterScheduleSemesterMetadataImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of SemesterScheduleSemesterMetadata
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -403,7 +424,9 @@ class _$SemesterScheduleSemesterMetadataImpl
   @override
   int get hashCode => Object.hash(runtimeType, id, name, year, period);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of SemesterScheduleSemesterMetadata
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SemesterScheduleSemesterMetadataImplCopyWith<
@@ -421,15 +444,18 @@ abstract class _SemesterScheduleSemesterMetadata
       required final String period}) = _$SemesterScheduleSemesterMetadataImpl;
 
   @override
-  String get id;
-  @override // YYYYX where X is from 0 to 2
+  String get id; // YYYYX where X is from 0 to 2
+  @override
   String get name;
   @override
   String get year;
   @override
   String get period;
+
+  /// Create a copy of SemesterScheduleSemesterMetadata
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SemesterScheduleSemesterMetadataImplCopyWith<
           _$SemesterScheduleSemesterMetadataImpl>
       get copyWith => throw _privateConstructorUsedError;

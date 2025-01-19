@@ -19,7 +19,9 @@ mixin _$GetSessionStudentInfoModel {
   String get currentSemesterId => throw _privateConstructorUsedError;
   String get schoolName => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GetSessionStudentInfoModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $GetSessionStudentInfoModelCopyWith<GetSessionStudentInfoModel>
       get copyWith => throw _privateConstructorUsedError;
 }
@@ -45,6 +47,8 @@ class _$GetSessionStudentInfoModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of GetSessionStudentInfoModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -86,6 +90,8 @@ class __$$GetSessionStudentInfoModelImplCopyWithImpl<$Res>
       $Res Function(_$GetSessionStudentInfoModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GetSessionStudentInfoModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -135,7 +141,9 @@ class _$GetSessionStudentInfoModelImpl implements _GetSessionStudentInfoModel {
   @override
   int get hashCode => Object.hash(runtimeType, currentSemesterId, schoolName);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GetSessionStudentInfoModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GetSessionStudentInfoModelImplCopyWith<_$GetSessionStudentInfoModelImpl>
@@ -153,8 +161,11 @@ abstract class _GetSessionStudentInfoModel
   String get currentSemesterId;
   @override
   String get schoolName;
+
+  /// Create a copy of GetSessionStudentInfoModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GetSessionStudentInfoModelImplCopyWith<_$GetSessionStudentInfoModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }

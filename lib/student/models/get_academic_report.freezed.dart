@@ -36,8 +36,12 @@ mixin _$GetAcademicReportModel {
   int get CredObligAprob => throw _privateConstructorUsedError;
   int get CredElectAprob => throw _privateConstructorUsedError;
 
+  /// Serializes this GetAcademicReportModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of GetAcademicReportModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $GetAcademicReportModelCopyWith<GetAcademicReportModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -76,6 +80,8 @@ class _$GetAcademicReportModelCopyWithImpl<$Res,
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of GetAcademicReportModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -191,6 +197,8 @@ class __$$GetAcademicReportModelImplCopyWithImpl<$Res>
       $Res Function(_$GetAcademicReportModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of GetAcademicReportModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -382,7 +390,7 @@ class _$GetAcademicReportModelImpl
                 other.CredElectAprob == CredElectAprob));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -401,7 +409,9 @@ class _$GetAcademicReportModelImpl
       CredObligAprob,
       CredElectAprob);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of GetAcademicReportModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$GetAcademicReportModelImplCopyWith<_$GetAcademicReportModelImpl>
@@ -464,8 +474,11 @@ abstract class _GetAcademicReportModel implements GetAcademicReportModel {
   int get CredObligAprob;
   @override
   int get CredElectAprob;
+
+  /// Create a copy of GetAcademicReportModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GetAcademicReportModelImplCopyWith<_$GetAcademicReportModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
