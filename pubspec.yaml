@@ -65,6 +65,8 @@ dependencies:
   # custom_date_range_picker: ^1.1.0
   calendar_date_picker2: ^1.1.5
 
+  flutter_inappwebview: ^6.1.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
