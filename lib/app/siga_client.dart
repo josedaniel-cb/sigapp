@@ -6,7 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigapp/app/get_it.dart';
-import 'package:sigapp/app/http.dart';
+import 'package:sigapp/app/http/http_client_builder.dart';
+import 'package:sigapp/app/http/cookie_manager.dart';
 import 'package:sigapp/auth/auth_repository.dart';
 
 const sigaHost = 'academico.unp.edu.pe';
@@ -189,7 +190,6 @@ class SigaClient {
     getIt<GoRouter>().refresh();
   }
 }
-
 
 // check this out #file:siga_client.dart
 
