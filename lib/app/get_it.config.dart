@@ -15,7 +15,6 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 import 'package:sigapp/app/register_module.dart' as _i363;
 import 'package:sigapp/app/siga_client.dart' as _i748;
-import 'package:sigapp/app/siga_webview_client.dart' as _i115;
 import 'package:sigapp/auth/auth_repository.dart' as _i389;
 import 'package:sigapp/auth/auth_service.dart' as _i587;
 import 'package:sigapp/auth/ui/login_cubit.dart' as _i1044;
@@ -42,7 +41,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.prefs,
       preResolve: true,
     );
-    gh.singleton<_i115.SigaWebViewClient>(() => _i115.SigaWebViewClient());
     gh.singleton<_i748.SigaClient>(
         () => _i748.SigaClient(gh<_i460.SharedPreferences>()));
     gh.lazySingleton<_i12.StudentRepository>(
