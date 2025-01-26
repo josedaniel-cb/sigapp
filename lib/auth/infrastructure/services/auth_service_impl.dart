@@ -2,14 +2,15 @@ import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/app/siga_client.dart';
-import 'package:sigapp/auth/auth_repository.dart';
+import 'package:sigapp/auth/domain/auth_service.dart';
+import 'package:sigapp/auth/infrastructure/repositories/auth_repository.dart';
 
-@singleton
-class AuthService {
+@Singleton(as: AuthService)
+class AuthServiceImpl implements AuthService {
   final SigaClient _sigaClient;
   final AuthRepository _authRepository;
 
-  AuthService(this._authRepository, this._sigaClient);
+  AuthServiceImpl(this._authRepository, this._sigaClient);
 
   Future<void> init() async {
     // if (hasAuthCredentials) {

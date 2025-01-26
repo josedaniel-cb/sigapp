@@ -2,8 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/auth/auth_service.dart';
-// import 'package:sigapp/student/get_academic_report.dart';
+import 'package:sigapp/auth/domain/auth_service.dart';
 
 part 'login_cubit.freezed.dart';
 

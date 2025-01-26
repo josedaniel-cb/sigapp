@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigapp/app/router.dart';
 import 'package:sigapp/app/siga_client.dart';
-import 'package:sigapp/auth/auth_service.dart';
+import 'package:sigapp/auth/domain/auth_service.dart';
 
 @module
 abstract class RegisterModule {

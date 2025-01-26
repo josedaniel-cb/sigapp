@@ -3,9 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/auth/auth_service.dart';
+import 'package:sigapp/auth/domain/auth_service.dart';
 import 'package:sigapp/student/entities/student_academic_report.dart';
-import 'package:sigapp/student/models/get_academic_report.dart';
 import 'package:sigapp/student/student_service.dart';
 
 part 'home_cubit.freezed.dart';

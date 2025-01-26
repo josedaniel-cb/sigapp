@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigapp/app/get_it.dart';
 import 'package:sigapp/app/http/http_client_builder.dart';
 import 'package:sigapp/app/http/cookie_manager.dart';
-import 'package:sigapp/auth/auth_repository.dart';
+import 'package:sigapp/auth/infrastructure/repositories/auth_repository.dart';
 
 const sigaHost = 'academico.unp.edu.pe';
 const sigaApiUrl = 'https://$sigaHost';
@@ -128,6 +128,8 @@ class SigaClient {
 
   void _onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
+    // TODO: siga client is not awaiting for siga_auth_🛡️
+
     if (_refreshSessionCompleter == null) {
       return handler.next(options);
     }
