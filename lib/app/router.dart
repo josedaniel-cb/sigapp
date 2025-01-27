@@ -42,7 +42,8 @@ class RouterBuilder {
         ),
       ],
       redirect: (context, state) async {
-        if (!getStoredCredentialsUseCase.execute().hasCredentials) {
+        final credentials = getStoredCredentialsUseCase.execute();
+        if (!credentials.hasCredentials) {
           return '/login';
         }
         return null;

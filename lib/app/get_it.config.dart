@@ -79,10 +79,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i633.ExportToCalendarCubit(gh<_i638.StudentService>()));
     gh.factory<_i953.ScheduleCubit>(
         () => _i953.ScheduleCubit(gh<_i638.StudentService>()));
-    gh.factory<_i365.SignInUseCase>(() => _i365.SignInUseCase(
-          gh<_i10.AuthRepository>(),
-          gh<_i1010.SharedPreferencesAuthRepository>(),
-        ));
     gh.singleton<_i583.GoRouter>(
         () => registerModule.router(gh<_i193.GetStoredCredentialsUseCase>()));
     gh.singleton<_i679.SessionLifecycleService>(
@@ -90,6 +86,11 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i748.SigaClient>(),
               gh<_i583.GoRouter>(),
             ));
+    gh.factory<_i365.SignInUseCase>(() => _i365.SignInUseCase(
+          gh<_i10.AuthRepository>(),
+          gh<_i1010.SharedPreferencesAuthRepository>(),
+          gh<_i679.SessionLifecycleService>(),
+        ));
     gh.factory<_i48.SignOutUseCase>(() => _i48.SignOutUseCase(
           gh<_i1010.SharedPreferencesAuthRepository>(),
           gh<_i679.SessionLifecycleService>(),

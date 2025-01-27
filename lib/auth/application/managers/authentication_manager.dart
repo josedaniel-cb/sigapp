@@ -88,11 +88,12 @@ class AuthenticationManager {
   }
 
   Future<void> completeSessionRefresh() async {
-    if (kDebugMode) {
-      if (_refreshSessionCompleter == null) {
+    if (_refreshSessionCompleter == null) {
+      if (kDebugMode) {
         print('[🧢] There is no session refresh in progress');
       }
+      return;
     }
-    await _refreshSessionCompleter?.future;
+    await _refreshSessionCompleter!.future;
   }
 }

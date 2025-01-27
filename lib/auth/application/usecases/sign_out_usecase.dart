@@ -12,6 +12,6 @@ class SignOutUseCase {
 
   Future<void> execute() async {
     await _sharedPreferencesAuthRepository.removePassword();
-    _sessionLifecycleService.signOutRouter();
+    _sessionLifecycleService.refreshNavigation();
   }
 }

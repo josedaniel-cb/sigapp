@@ -103,7 +103,7 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
   }
 
   @override
-  void signOutRouter() {
+  void refreshNavigation() {
     _router.refresh();
   }
 }
