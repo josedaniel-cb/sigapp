@@ -102,7 +102,7 @@ class HttpClientBuilder {
 
   HttpClientBuilderResult build() {
     return HttpClientBuilderResult(
-      client: _dio,
+      http: _dio,
       cookieManager: _cookieManager,
     );
   }
@@ -134,11 +134,11 @@ class HttpClientBuilder {
 }
 
 class HttpClientBuilderResult {
-  final Dio client;
+  final Dio http;
   final CookieManager cookieManager;
 
   HttpClientBuilderResult({
-    required this.client,
+    required this.http,
     required this.cookieManager,
   });
 }

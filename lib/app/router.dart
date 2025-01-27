@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sigapp/app/get_it.dart';
-import 'package:sigapp/app/siga_client.dart';
-import 'package:sigapp/auth/domain/auth_service.dart';
+import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.dart';
 import 'package:sigapp/auth/infrastructure/pages/login_cubit.dart';
 import 'package:sigapp/auth/infrastructure/pages/login_page.dart';
 import 'package:sigapp/home/home_cubit.dart';
@@ -11,17 +10,9 @@ import 'package:sigapp/home/home_page.dart';
 import 'package:sigapp/schedule/schedule_cubit.dart';
 import 'package:sigapp/schedule/schedule_page.dart';
 
-// @injectable
-// class RouterRefreshListenable extends ChangeNotifier {
-//   void refresh() {
-//     notifyListeners();
-//   }
-// }
-
 class RouterBuilder {
   static GoRouter build(
-    SigaClient sigaClient,
-    AuthService authRepository,
+    GetStoredCredentialsUseCase getStoredCredentialsUseCase,
     // RouterRefreshListenable refreshListenable,
   ) {
     final router = GoRouter(
@@ -50,8 +41,8 @@ class RouterBuilder {
           ),
         ),
       ],
-      redirect: (context, state) {
-        if (!authRepository.hasAuthCredentials) {
+      redirect: (context, state) async {
+        if (!getStoredCredentialsUseCase.execute().hasCredentials) {
           return '/login';
         }
         return null;

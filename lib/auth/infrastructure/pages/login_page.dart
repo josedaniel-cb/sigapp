@@ -5,6 +5,8 @@ import 'package:sigapp/app/get_it.dart';
 import 'login_cubit.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }

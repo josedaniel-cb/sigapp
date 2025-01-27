@@ -2,17 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/auth/domain/auth_service.dart';
+import 'package:sigapp/auth/application/usecases.dart';
+import 'package:sigapp/auth/domain/value-objects/stored_credentials.dart';
 
 part 'login_cubit.freezed.dart';
-
-// @freezed
-// abstract class LoginState with _$LoginState {
-//   const factory LoginState.initial() = InitialState;
-//   const factory LoginState.loading() = LoadingState;
-//   const factory LoginState.success() = SuccessState;
-//   const factory LoginState.error(String message) = ErrorState;
-// }
 
 @freezed
 class LoginState with _$LoginState {
@@ -33,22 +26,25 @@ abstract class LoginStatus with _$LoginStatus {
 
 @injectable
 class LoginCubit extends Cubit<LoginState> {
-  final AuthService _authService;
+  final AuthUsecases _authUsecases;
 
-  LoginCubit(this._authService)
+  LoginCubit(this._authUsecases)
       : super(const LoginState(
           username: '',
           password: '',
           status: LoginStatus.initial(),
         ));
 
-  void setup() {
-    final storedUsername = _authService.getUsername();
+  Future<void> setup() async {
+    final StoredCredentials(
+      username: storedUsername,
+      password: storedPassword
+    ) = _authUsecases.getStoredCredentials.execute();
+
     if (storedUsername != null) {
       emit(state.copyWith(username: storedUsername));
     }
 
-    final storedPassword = _authService.getPassword();
     if (storedUsername != null && storedPassword != null) {
       emit(state.copyWith(
         username: storedUsername,
@@ -67,7 +63,8 @@ class LoginCubit extends Cubit<LoginState> {
       status: const LoginStatus.loading(),
     ));
     try {
-      final successAuth = await _authService.login(username, password);
+      final successAuth =
+          await _authUsecases.signIn.execute(username, password);
       if (!successAuth) {
         emit(state.copyWith(
           status: const LoginStatus.error('Credenciales inválidos'),

@@ -211,7 +211,7 @@ class Body extends StatelessWidget {
   final double rowHeight;
 
   const Body({
-    Key? key,
+    super.key,
     required this.events,
     required this.daysWithEvents,
     required this.startHour,
@@ -220,7 +220,7 @@ class Body extends StatelessWidget {
     required this.fontSize,
     required this.hourWidth,
     required this.rowHeight,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -367,7 +367,7 @@ class HourLabel extends StatelessWidget {
     displayHour = displayHour == 0 ? 12 : displayHour;
     String formattedHour = '$displayHour$period';
 
-    return Container(
+    return SizedBox(
       width: hourWidth,
       height: rowHeight,
       child: Stack(
@@ -485,7 +485,7 @@ class EventWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
+              SizedBox(
                 height: availableHeightForTitle,
                 width: availableWidth,
                 child: Text(
@@ -500,7 +500,7 @@ class EventWidget extends StatelessWidget {
                 ),
               ),
               if (captionsCanBeShown)
-                Container(
+                SizedBox(
                   width: availableWidth,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

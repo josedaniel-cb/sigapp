@@ -12,8 +12,8 @@ import 'package:sigapp/schedule/partials/export_to_calendar.dart';
 import 'package:sigapp/schedule/schedule_cubit.dart';
 import 'package:sigapp/schedule/partials/schedule_semester_select.dart';
 import 'package:sigapp/schedule/partials/weekly_schedule.dart';
-import 'package:sigapp/shared/error_state.dart';
-import 'package:sigapp/shared/loading_state.dart';
+import 'package:sigapp/shared/infrastructure/value_objects/error_state.dart';
+import 'package:sigapp/shared/infrastructure/value_objects/loading_state.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});

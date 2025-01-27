@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sigapp/app/get_it.dart';
 import 'package:sigapp/home/home_cubit.dart';
-import 'package:sigapp/shared/error_state.dart';
-import 'package:sigapp/shared/loading_state.dart';
+import 'package:sigapp/shared/infrastructure/value_objects/error_state.dart';
+import 'package:sigapp/shared/infrastructure/value_objects/loading_state.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

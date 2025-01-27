@@ -101,7 +101,7 @@ class StudentService {
       Colors.pink,
     ];
 
-    Color _assignColorToCourse(String courseName) {
+    Color assignColorToCourse(String courseName) {
       if (!courseColorMap.containsKey(courseName)) {
         courseColorMap[courseName] =
             colorPalette[courseColorMap.length % colorPalette.length];
@@ -109,7 +109,7 @@ class StudentService {
       return courseColorMap[courseName]!;
     }
 
-    DateTime _calculateEventDateTime(DateTime baseTime, int targetWeekday) {
+    DateTime calculateEventDateTime(DateTime baseTime, int targetWeekday) {
       DateTime currentDate = DateTime.now();
       int currentWeekday = currentDate.weekday;
       int daysDifference = (targetWeekday - currentWeekday) % 7;
@@ -123,7 +123,7 @@ class StudentService {
       );
     }
 
-    DateTime _parseTimestamp(String timestamp) {
+    DateTime parseTimestamp(String timestamp) {
       final timestampPattern = RegExp(r'\/Date\((\d+)\)\/');
       final match = timestampPattern.firstMatch(timestamp);
       if (match != null) {
@@ -134,8 +134,8 @@ class StudentService {
     }
 
     for (var classSchedule in schedule) {
-      final classStartTime = _parseTimestamp(classSchedule.HoraInicio);
-      final classEndTime = _parseTimestamp(classSchedule.HoraFinal);
+      final classStartTime = parseTimestamp(classSchedule.HoraInicio);
+      final classEndTime = parseTimestamp(classSchedule.HoraFinal);
       // print(classSchedule);
 
       List<List<dynamic>> classDaysAndNames = [];
@@ -168,8 +168,8 @@ class StudentService {
         final className = parts[0];
         final classLocation = parts[1];
 
-        final eventStart = _calculateEventDateTime(classStartTime, weekday);
-        final eventEnd = _calculateEventDateTime(classEndTime, weekday);
+        final eventStart = calculateEventDateTime(classStartTime, weekday);
+        final eventEnd = calculateEventDateTime(classEndTime, weekday);
 
         final id =
             '$_eventsIdsPrefix-[$className]-${eventStart.toString().substring(0, 16)}-${eventEnd.toString().substring(0, 16)}';
@@ -181,7 +181,7 @@ class StudentService {
           startMinute: eventStart.minute,
           endHour: eventEnd.hour,
           endMinute: eventEnd.minute,
-          color: _assignColorToCourse(classInfo),
+          color: assignColorToCourse(classInfo),
           location: classLocation,
         ));
       }

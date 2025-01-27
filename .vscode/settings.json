@@ -5,7 +5,9 @@
     "Inspectable",
     "prefs",
     "Reintentar",
-    "sigapp"
+    "sigapp",
+    "usecase",
+    "usecases"
   ],
   "java.configuration.updateBuildConfiguration": "interactive"
 }
