@@ -7,8 +7,8 @@ import 'package:sigapp/auth/infrastructure/pages/login_cubit.dart';
 import 'package:sigapp/auth/infrastructure/pages/login_page.dart';
 import 'package:sigapp/home/home_cubit.dart';
 import 'package:sigapp/home/home_page.dart';
-import 'package:sigapp/schedule/schedule_cubit.dart';
-import 'package:sigapp/schedule/schedule_page.dart';
+import 'package:sigapp/courses/infrastructure/pages/schedule_cubit.dart';
+import 'package:sigapp/courses/infrastructure/pages/schedule_page.dart';
 
 class RouterBuilder {
   static GoRouter build(

@@ -19,21 +19,21 @@ mixin _$HomeState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(StudentAcademicReport academicReport) success,
+    required TResult Function(AcademicReport academicReport) success,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(StudentAcademicReport academicReport)? success,
+    TResult? Function(AcademicReport academicReport)? success,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(StudentAcademicReport academicReport)? success,
+    TResult Function(AcademicReport academicReport)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -124,7 +124,7 @@ class _$LoadingStateImpl implements LoadingState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(StudentAcademicReport academicReport) success,
+    required TResult Function(AcademicReport academicReport) success,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -134,7 +134,7 @@ class _$LoadingStateImpl implements LoadingState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(StudentAcademicReport academicReport)? success,
+    TResult? Function(AcademicReport academicReport)? success,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -144,7 +144,7 @@ class _$LoadingStateImpl implements LoadingState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(StudentAcademicReport academicReport)? success,
+    TResult Function(AcademicReport academicReport)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -199,9 +199,9 @@ abstract class _$$SuccessStateImplCopyWith<$Res> {
           _$SuccessStateImpl value, $Res Function(_$SuccessStateImpl) then) =
       __$$SuccessStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({StudentAcademicReport academicReport});
+  $Res call({AcademicReport academicReport});
 
-  $StudentAcademicReportCopyWith<$Res> get academicReport;
+  $AcademicReportCopyWith<$Res> get academicReport;
 }
 
 /// @nodoc
@@ -223,7 +223,7 @@ class __$$SuccessStateImplCopyWithImpl<$Res>
       null == academicReport
           ? _value.academicReport
           : academicReport // ignore: cast_nullable_to_non_nullable
-              as StudentAcademicReport,
+              as AcademicReport,
     ));
   }
 
@@ -231,8 +231,8 @@ class __$$SuccessStateImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $StudentAcademicReportCopyWith<$Res> get academicReport {
-    return $StudentAcademicReportCopyWith<$Res>(_value.academicReport, (value) {
+  $AcademicReportCopyWith<$Res> get academicReport {
+    return $AcademicReportCopyWith<$Res>(_value.academicReport, (value) {
       return _then(_value.copyWith(academicReport: value));
     });
   }
@@ -244,7 +244,7 @@ class _$SuccessStateImpl implements SuccessState {
   const _$SuccessStateImpl(this.academicReport);
 
   @override
-  final StudentAcademicReport academicReport;
+  final AcademicReport academicReport;
 
   @override
   String toString() {
@@ -275,7 +275,7 @@ class _$SuccessStateImpl implements SuccessState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(StudentAcademicReport academicReport) success,
+    required TResult Function(AcademicReport academicReport) success,
     required TResult Function(String message) error,
   }) {
     return success(academicReport);
@@ -285,7 +285,7 @@ class _$SuccessStateImpl implements SuccessState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(StudentAcademicReport academicReport)? success,
+    TResult? Function(AcademicReport academicReport)? success,
     TResult? Function(String message)? error,
   }) {
     return success?.call(academicReport);
@@ -295,7 +295,7 @@ class _$SuccessStateImpl implements SuccessState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(StudentAcademicReport academicReport)? success,
+    TResult Function(AcademicReport academicReport)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -341,10 +341,10 @@ class _$SuccessStateImpl implements SuccessState {
 }
 
 abstract class SuccessState implements HomeState {
-  const factory SuccessState(final StudentAcademicReport academicReport) =
+  const factory SuccessState(final AcademicReport academicReport) =
       _$SuccessStateImpl;
 
-  StudentAcademicReport get academicReport;
+  AcademicReport get academicReport;
 
   /// Create a copy of HomeState
   /// with the given fields replaced by the non-null parameter values.
@@ -422,7 +422,7 @@ class _$ErrorStateImpl implements ErrorState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(StudentAcademicReport academicReport) success,
+    required TResult Function(AcademicReport academicReport) success,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -432,7 +432,7 @@ class _$ErrorStateImpl implements ErrorState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(StudentAcademicReport academicReport)? success,
+    TResult? Function(AcademicReport academicReport)? success,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -442,7 +442,7 @@ class _$ErrorStateImpl implements ErrorState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(StudentAcademicReport academicReport)? success,
+    TResult Function(AcademicReport academicReport)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {

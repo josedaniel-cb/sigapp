@@ -8,10 +8,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:sigapp/schedule/partials/export_to_calendar.dart';
-import 'package:sigapp/schedule/schedule_cubit.dart';
-import 'package:sigapp/schedule/partials/schedule_semester_select.dart';
-import 'package:sigapp/schedule/partials/weekly_schedule.dart';
+import 'package:sigapp/courses/infrastructure/pages/partials/export_to_calendar.dart';
+import 'package:sigapp/courses/infrastructure/pages/schedule_cubit.dart';
+import 'package:sigapp/courses/infrastructure/pages/partials/schedule_semester_select.dart';
+import 'package:sigapp/courses/infrastructure/pages/partials/weekly_schedule.dart';
 import 'package:sigapp/shared/infrastructure/widgets/error_state.dart';
 import 'package:sigapp/shared/infrastructure/widgets/loading_state.dart';
 

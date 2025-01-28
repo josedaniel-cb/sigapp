@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'get_session_student_info.dart';
+part of 'student_session_info.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,39 +15,37 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$GetSessionStudentInfoModel {
+mixin _$StudentSessionInfo {
   String get currentSemesterId => throw _privateConstructorUsedError;
   String get schoolName => throw _privateConstructorUsedError;
 
-  /// Create a copy of GetSessionStudentInfoModel
+  /// Create a copy of StudentSessionInfo
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $GetSessionStudentInfoModelCopyWith<GetSessionStudentInfoModel>
-      get copyWith => throw _privateConstructorUsedError;
+  $StudentSessionInfoCopyWith<StudentSessionInfo> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $GetSessionStudentInfoModelCopyWith<$Res> {
-  factory $GetSessionStudentInfoModelCopyWith(GetSessionStudentInfoModel value,
-          $Res Function(GetSessionStudentInfoModel) then) =
-      _$GetSessionStudentInfoModelCopyWithImpl<$Res,
-          GetSessionStudentInfoModel>;
+abstract class $StudentSessionInfoCopyWith<$Res> {
+  factory $StudentSessionInfoCopyWith(
+          StudentSessionInfo value, $Res Function(StudentSessionInfo) then) =
+      _$StudentSessionInfoCopyWithImpl<$Res, StudentSessionInfo>;
   @useResult
   $Res call({String currentSemesterId, String schoolName});
 }
 
 /// @nodoc
-class _$GetSessionStudentInfoModelCopyWithImpl<$Res,
-        $Val extends GetSessionStudentInfoModel>
-    implements $GetSessionStudentInfoModelCopyWith<$Res> {
-  _$GetSessionStudentInfoModelCopyWithImpl(this._value, this._then);
+class _$StudentSessionInfoCopyWithImpl<$Res, $Val extends StudentSessionInfo>
+    implements $StudentSessionInfoCopyWith<$Res> {
+  _$StudentSessionInfoCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of GetSessionStudentInfoModel
+  /// Create a copy of StudentSessionInfo
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -69,28 +67,25 @@ class _$GetSessionStudentInfoModelCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$GetSessionStudentInfoModelImplCopyWith<$Res>
-    implements $GetSessionStudentInfoModelCopyWith<$Res> {
-  factory _$$GetSessionStudentInfoModelImplCopyWith(
-          _$GetSessionStudentInfoModelImpl value,
-          $Res Function(_$GetSessionStudentInfoModelImpl) then) =
-      __$$GetSessionStudentInfoModelImplCopyWithImpl<$Res>;
+abstract class _$$StudentSessionInfoImplCopyWith<$Res>
+    implements $StudentSessionInfoCopyWith<$Res> {
+  factory _$$StudentSessionInfoImplCopyWith(_$StudentSessionInfoImpl value,
+          $Res Function(_$StudentSessionInfoImpl) then) =
+      __$$StudentSessionInfoImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String currentSemesterId, String schoolName});
 }
 
 /// @nodoc
-class __$$GetSessionStudentInfoModelImplCopyWithImpl<$Res>
-    extends _$GetSessionStudentInfoModelCopyWithImpl<$Res,
-        _$GetSessionStudentInfoModelImpl>
-    implements _$$GetSessionStudentInfoModelImplCopyWith<$Res> {
-  __$$GetSessionStudentInfoModelImplCopyWithImpl(
-      _$GetSessionStudentInfoModelImpl _value,
-      $Res Function(_$GetSessionStudentInfoModelImpl) _then)
+class __$$StudentSessionInfoImplCopyWithImpl<$Res>
+    extends _$StudentSessionInfoCopyWithImpl<$Res, _$StudentSessionInfoImpl>
+    implements _$$StudentSessionInfoImplCopyWith<$Res> {
+  __$$StudentSessionInfoImplCopyWithImpl(_$StudentSessionInfoImpl _value,
+      $Res Function(_$StudentSessionInfoImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of GetSessionStudentInfoModel
+  /// Create a copy of StudentSessionInfo
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -98,7 +93,7 @@ class __$$GetSessionStudentInfoModelImplCopyWithImpl<$Res>
     Object? currentSemesterId = null,
     Object? schoolName = null,
   }) {
-    return _then(_$GetSessionStudentInfoModelImpl(
+    return _then(_$StudentSessionInfoImpl(
       currentSemesterId: null == currentSemesterId
           ? _value.currentSemesterId
           : currentSemesterId // ignore: cast_nullable_to_non_nullable
@@ -113,8 +108,8 @@ class __$$GetSessionStudentInfoModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$GetSessionStudentInfoModelImpl implements _GetSessionStudentInfoModel {
-  _$GetSessionStudentInfoModelImpl(
+class _$StudentSessionInfoImpl implements _StudentSessionInfo {
+  _$StudentSessionInfoImpl(
       {required this.currentSemesterId, required this.schoolName});
 
   @override
@@ -124,14 +119,14 @@ class _$GetSessionStudentInfoModelImpl implements _GetSessionStudentInfoModel {
 
   @override
   String toString() {
-    return 'GetSessionStudentInfoModel(currentSemesterId: $currentSemesterId, schoolName: $schoolName)';
+    return 'StudentSessionInfo(currentSemesterId: $currentSemesterId, schoolName: $schoolName)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GetSessionStudentInfoModelImpl &&
+            other is _$StudentSessionInfoImpl &&
             (identical(other.currentSemesterId, currentSemesterId) ||
                 other.currentSemesterId == currentSemesterId) &&
             (identical(other.schoolName, schoolName) ||
@@ -141,31 +136,30 @@ class _$GetSessionStudentInfoModelImpl implements _GetSessionStudentInfoModel {
   @override
   int get hashCode => Object.hash(runtimeType, currentSemesterId, schoolName);
 
-  /// Create a copy of GetSessionStudentInfoModel
+  /// Create a copy of StudentSessionInfo
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$GetSessionStudentInfoModelImplCopyWith<_$GetSessionStudentInfoModelImpl>
-      get copyWith => __$$GetSessionStudentInfoModelImplCopyWithImpl<
-          _$GetSessionStudentInfoModelImpl>(this, _$identity);
+  _$$StudentSessionInfoImplCopyWith<_$StudentSessionInfoImpl> get copyWith =>
+      __$$StudentSessionInfoImplCopyWithImpl<_$StudentSessionInfoImpl>(
+          this, _$identity);
 }
 
-abstract class _GetSessionStudentInfoModel
-    implements GetSessionStudentInfoModel {
-  factory _GetSessionStudentInfoModel(
+abstract class _StudentSessionInfo implements StudentSessionInfo {
+  factory _StudentSessionInfo(
       {required final String currentSemesterId,
-      required final String schoolName}) = _$GetSessionStudentInfoModelImpl;
+      required final String schoolName}) = _$StudentSessionInfoImpl;
 
   @override
   String get currentSemesterId;
   @override
   String get schoolName;
 
-  /// Create a copy of GetSessionStudentInfoModel
+  /// Create a copy of StudentSessionInfo
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GetSessionStudentInfoModelImplCopyWith<_$GetSessionStudentInfoModelImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$StudentSessionInfoImplCopyWith<_$StudentSessionInfoImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

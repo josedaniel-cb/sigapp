@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.dart';
 import 'package:sigapp/student/domain/entities/weekly_schedule_event.dart';
-import 'package:sigapp/student/application/student_usecases_aux.dart';
 
 part 'export_to_calendar_cubit.freezed.dart';
 
@@ -23,9 +23,9 @@ abstract class ExportToCalendarState with _$ExportToCalendarState {
 @injectable
 class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
   final DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
-  final StudentUsecasesAux _studentService;
+  final GetClassScheduleUsecase _getClassScheduleUsecase;
 
-  ExportToCalendarCubit(this._studentService)
+  ExportToCalendarCubit(this._getClassScheduleUsecase)
       : super(const ExportToCalendarState.loading());
 
   Future<void> setup() async {
@@ -191,7 +191,7 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
           return false;
         }
         final eventIsOwnedByThisApp =
-            _studentService.calculateIfEventIsOwnedByThisApp(
+            _getClassScheduleUsecase.calculateIfEventIsOwnedByThisApp(
           eventId,
         );
         if (eventIsOwnedByThisApp) {

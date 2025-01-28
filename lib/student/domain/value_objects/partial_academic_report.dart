@@ -1,15 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'student_academic_report.freezed.dart';
+part 'partial_academic_report.freezed.dart';
 
 @freezed
-class AcademicReport with _$AcademicReport {
-  factory AcademicReport({
+class PartialAcademicReport with _$PartialAcademicReport {
+  factory PartialAcademicReport({
     required String faculty,
-    required String school,
-    required String firstName,
-    required String lastName,
-    required String code,
+    required String studentName,
     required String cohort,
     required String enrollmentSemesterId,
     required String curriculumSemesterId,
@@ -22,8 +19,5 @@ class AcademicReport with _$AcademicReport {
     required int curriculumElectiveCredits,
     required int mandatoryCreditsOfPassedCourses,
     required int electiveCreditsOfPassedCourses,
-
-    // General
-    required String currentSemesterId,
-  }) = _AcademicReport;
+  }) = _PartialAcademicReport;
 }

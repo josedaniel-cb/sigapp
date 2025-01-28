@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$SemesterSchedule {
-  StudentAcademicReport get studentAcademicReport =>
+  AcademicReport get studentAcademicReport =>
       throw _privateConstructorUsedError;
   List<SemesterScheduleSemesterMetadata> get semesterList =>
       throw _privateConstructorUsedError;
@@ -39,12 +39,12 @@ abstract class $SemesterScheduleCopyWith<$Res> {
       _$SemesterScheduleCopyWithImpl<$Res, SemesterSchedule>;
   @useResult
   $Res call(
-      {StudentAcademicReport studentAcademicReport,
+      {AcademicReport studentAcademicReport,
       List<SemesterScheduleSemesterMetadata> semesterList,
       SemesterScheduleSemesterMetadata semester,
       List<WeeklyScheduleEvent> weeklyEvents});
 
-  $StudentAcademicReportCopyWith<$Res> get studentAcademicReport;
+  $AcademicReportCopyWith<$Res> get studentAcademicReport;
   $SemesterScheduleSemesterMetadataCopyWith<$Res> get semester;
 }
 
@@ -72,7 +72,7 @@ class _$SemesterScheduleCopyWithImpl<$Res, $Val extends SemesterSchedule>
       studentAcademicReport: null == studentAcademicReport
           ? _value.studentAcademicReport
           : studentAcademicReport // ignore: cast_nullable_to_non_nullable
-              as StudentAcademicReport,
+              as AcademicReport,
       semesterList: null == semesterList
           ? _value.semesterList
           : semesterList // ignore: cast_nullable_to_non_nullable
@@ -92,9 +92,8 @@ class _$SemesterScheduleCopyWithImpl<$Res, $Val extends SemesterSchedule>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $StudentAcademicReportCopyWith<$Res> get studentAcademicReport {
-    return $StudentAcademicReportCopyWith<$Res>(_value.studentAcademicReport,
-        (value) {
+  $AcademicReportCopyWith<$Res> get studentAcademicReport {
+    return $AcademicReportCopyWith<$Res>(_value.studentAcademicReport, (value) {
       return _then(_value.copyWith(studentAcademicReport: value) as $Val);
     });
   }
@@ -120,13 +119,13 @@ abstract class _$$SemesterScheduleImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {StudentAcademicReport studentAcademicReport,
+      {AcademicReport studentAcademicReport,
       List<SemesterScheduleSemesterMetadata> semesterList,
       SemesterScheduleSemesterMetadata semester,
       List<WeeklyScheduleEvent> weeklyEvents});
 
   @override
-  $StudentAcademicReportCopyWith<$Res> get studentAcademicReport;
+  $AcademicReportCopyWith<$Res> get studentAcademicReport;
   @override
   $SemesterScheduleSemesterMetadataCopyWith<$Res> get semester;
 }
@@ -153,7 +152,7 @@ class __$$SemesterScheduleImplCopyWithImpl<$Res>
       studentAcademicReport: null == studentAcademicReport
           ? _value.studentAcademicReport
           : studentAcademicReport // ignore: cast_nullable_to_non_nullable
-              as StudentAcademicReport,
+              as AcademicReport,
       semesterList: null == semesterList
           ? _value._semesterList
           : semesterList // ignore: cast_nullable_to_non_nullable
@@ -182,7 +181,7 @@ class _$SemesterScheduleImpl implements _SemesterSchedule {
         _weeklyEvents = weeklyEvents;
 
   @override
-  final StudentAcademicReport studentAcademicReport;
+  final AcademicReport studentAcademicReport;
   final List<SemesterScheduleSemesterMetadata> _semesterList;
   @override
   List<SemesterScheduleSemesterMetadata> get semesterList {
@@ -241,14 +240,14 @@ class _$SemesterScheduleImpl implements _SemesterSchedule {
 
 abstract class _SemesterSchedule implements SemesterSchedule {
   factory _SemesterSchedule(
-          {required final StudentAcademicReport studentAcademicReport,
+          {required final AcademicReport studentAcademicReport,
           required final List<SemesterScheduleSemesterMetadata> semesterList,
           required final SemesterScheduleSemesterMetadata semester,
           required final List<WeeklyScheduleEvent> weeklyEvents}) =
       _$SemesterScheduleImpl;
 
   @override
-  StudentAcademicReport get studentAcademicReport;
+  AcademicReport get studentAcademicReport;
   @override
   List<SemesterScheduleSemesterMetadata> get semesterList;
   @override

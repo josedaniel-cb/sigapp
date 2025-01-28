@@ -7,7 +7,7 @@ part 'student_semester_schedule.freezed.dart';
 @freezed
 class SemesterSchedule with _$SemesterSchedule {
   factory SemesterSchedule({
-    required StudentAcademicReport studentAcademicReport,
+    required AcademicReport studentAcademicReport,
     required List<SemesterScheduleSemesterMetadata> semesterList,
     required SemesterScheduleSemesterMetadata semester,
     required List<WeeklyScheduleEvent> weeklyEvents,

@@ -2,8 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.dart';
+import 'package:sigapp/courses/application/usecases/get_default_class_schedule_usecase.dart';
 import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
-import 'package:sigapp/student/application/student_usecases_aux.dart';
 
 part 'schedule_cubit.freezed.dart';
 
@@ -24,18 +25,20 @@ abstract class ScheduleState with _$ScheduleState {
 
 @injectable
 class ScheduleCubit extends Cubit<ScheduleState> {
-  final StudentUsecasesAux _studentService;
+  final GetDefaultClassScheduleUsecase _getDefaultClassScheduleUsecase;
+  final GetClassScheduleUsecase _getClassScheduleUsecase;
   // final DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
 
   ScheduleCubit(
-    this._studentService,
+    this._getDefaultClassScheduleUsecase,
+    this._getClassScheduleUsecase,
   ) : super(const ScheduleState.loading());
 
   Future<void> setup() async {
     emit(const ScheduleState.loading());
     try {
       final studentSemesterSchedule =
-          await _studentService.getDefaultClassSchedule();
+          await _getDefaultClassScheduleUsecase.execute();
 
       emit(ScheduleState.success(
         loadingChangeSemester: false,
@@ -58,7 +61,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     final successState = state as SuccessState;
     emit(successState.copyWith(loadingChangeSemester: true));
     try {
-      final weeklyEvents = await _studentService.getClassSchedule(semester.id);
+      final weeklyEvents = await _getClassScheduleUsecase.execute(semester.id);
       final newSchedule = successState.schedule.copyWith(
         semester: semester,
         weeklyEvents: weeklyEvents,
