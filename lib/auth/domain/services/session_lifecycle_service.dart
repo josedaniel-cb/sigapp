@@ -8,5 +8,4 @@ abstract class SessionLifecycleService {
     required List<ApiPathAndMethod> excludedRequests,
     required void Function() onSessionExpired,
   });
-  void refreshNavigation();
 }

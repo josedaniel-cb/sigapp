@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/app/siga_client.dart';
 import 'package:sigapp/auth/domain/services/session_lifecycle_service.dart';
@@ -9,13 +8,9 @@ import 'package:sigapp/auth/domain/value-objects/api_path_and_method.dart';
 @Singleton(as: SessionLifecycleService)
 class SessionLifecycleServiceImpl implements SessionLifecycleService {
   final SigaClient _sigaClient;
-  final GoRouter _router;
   // final AuthUsecases _authUsecases; // Nope, you will break the dependency injection
 
-  SessionLifecycleServiceImpl(
-    this._sigaClient,
-    this._router,
-  );
+  SessionLifecycleServiceImpl(this._sigaClient);
 
   @override
   bool evaluateSessionExpiration({
@@ -100,10 +95,5 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
         handler.next(response);
       },
     ));
-  }
-
-  @override
-  void refreshNavigation() {
-    _router.refresh();
   }
 }

@@ -27,6 +27,7 @@ import 'package:sigapp/auth/application/usecases/sign_out_usecase.dart' as _i48;
 import 'package:sigapp/auth/domain/repositories/auth_repository.dart' as _i10;
 import 'package:sigapp/auth/domain/repositories/shared_preferences_auth_repository.dart'
     as _i1010;
+import 'package:sigapp/auth/domain/services/navigation_service.dart' as _i528;
 import 'package:sigapp/auth/domain/services/session_lifecycle_service.dart'
     as _i679;
 import 'package:sigapp/auth/infrastructure/pages/login_cubit.dart' as _i41;
@@ -34,6 +35,8 @@ import 'package:sigapp/auth/infrastructure/repositories/auth_repository.dart'
     as _i127;
 import 'package:sigapp/auth/infrastructure/repositories/shared_preferences_auth_repository.dart'
     as _i247;
+import 'package:sigapp/auth/infrastructure/services/navigation_service.dart'
+    as _i561;
 import 'package:sigapp/auth/infrastructure/services/session_lifecycle_service.dart'
     as _i649;
 import 'package:sigapp/home/home_cubit.dart' as _i486;
@@ -65,6 +68,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i127.AuthRepositoryImpl(gh<_i748.SigaClient>()));
     gh.lazySingleton<_i12.StudentRepository>(
         () => _i12.StudentRepository(gh<_i748.SigaClient>()));
+    gh.singleton<_i679.SessionLifecycleService>(
+        () => _i649.SessionLifecycleServiceImpl(gh<_i748.SigaClient>()));
     gh.singleton<_i1010.SharedPreferencesAuthRepository>(() =>
         _i247.SharedPreferencesAuthRepositoryImpl(
             gh<_i460.SharedPreferences>()));
@@ -81,19 +86,16 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i953.ScheduleCubit(gh<_i638.StudentService>()));
     gh.singleton<_i583.GoRouter>(
         () => registerModule.router(gh<_i193.GetStoredCredentialsUseCase>()));
-    gh.singleton<_i679.SessionLifecycleService>(
-        () => _i649.SessionLifecycleServiceImpl(
-              gh<_i748.SigaClient>(),
-              gh<_i583.GoRouter>(),
-            ));
+    gh.singleton<_i528.NavigationService>(
+        () => _i561.NavigationServiceImpl(gh<_i583.GoRouter>()));
+    gh.factory<_i48.SignOutUseCase>(() => _i48.SignOutUseCase(
+          gh<_i1010.SharedPreferencesAuthRepository>(),
+          gh<_i528.NavigationService>(),
+        ));
     gh.factory<_i365.SignInUseCase>(() => _i365.SignInUseCase(
           gh<_i10.AuthRepository>(),
           gh<_i1010.SharedPreferencesAuthRepository>(),
-          gh<_i679.SessionLifecycleService>(),
-        ));
-    gh.factory<_i48.SignOutUseCase>(() => _i48.SignOutUseCase(
-          gh<_i1010.SharedPreferencesAuthRepository>(),
-          gh<_i679.SessionLifecycleService>(),
+          gh<_i528.NavigationService>(),
         ));
     gh.singleton<_i447.AuthUsecases>(() => _i447.AuthUsecases(
           gh<_i365.SignInUseCase>(),
