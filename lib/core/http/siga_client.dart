@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sigapp/app/http/http_client_builder.dart';
-import 'package:sigapp/app/http/cookie_manager.dart';
+import 'package:sigapp/core/http/http_client_builder.dart';
+import 'package:sigapp/core/http/cookie_manager.dart';
 
 @singleton
 class SigaClient {

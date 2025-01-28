@@ -2,7 +2,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sigapp/app/get_it.dart';
+import 'package:sigapp/core/injection/get_it.dart';
 import 'package:sigapp/schedule/partials/export_to_calendar_cubit.dart';
 import 'package:sigapp/student/entities/weekly_schedule_event.dart';
 

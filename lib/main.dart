@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sigapp/app/get_it.dart';
+import 'package:sigapp/core/injection/get_it.dart';
 // import 'package:sigapp/auth/domain/auth_service.dart';
 // import 'package:sigapp/app/siga_webview_client.dart';
 
