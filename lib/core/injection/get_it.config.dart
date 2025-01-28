@@ -45,13 +45,14 @@ import 'package:sigapp/courses/application/usecases/get_default_class_schedule_u
     as _i562;
 import 'package:sigapp/courses/domain/repositories/schedule_repository.dart'
     as _i974;
-import 'package:sigapp/courses/infrastructure/pages/partials/export_to_calendar_cubit.dart'
-    as _i273;
-import 'package:sigapp/courses/infrastructure/pages/schedule_cubit.dart'
-    as _i172;
+import 'package:sigapp/courses/infrastructure/pages/home/home_cubit.dart'
+    as _i575;
+import 'package:sigapp/courses/infrastructure/pages/schedule/partials/export_to_calendar_cubit.dart'
+    as _i993;
+import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_cubit.dart'
+    as _i575;
 import 'package:sigapp/courses/infrastructure/repositories/schedule_repository.dart'
     as _i637;
-import 'package:sigapp/home/home_cubit.dart' as _i486;
 import 'package:sigapp/student/application/usecases/get_academic_report_usecase.dart'
     as _i771;
 import 'package:sigapp/student/domain/repositories/student_repository.dart'
@@ -100,13 +101,13 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i771.GetAcademicReportUsecase>(),
               gh<_i315.GetClassScheduleUsecase>(),
             ));
-    gh.factory<_i273.ExportToCalendarCubit>(
-        () => _i273.ExportToCalendarCubit(gh<_i315.GetClassScheduleUsecase>()));
+    gh.factory<_i993.ExportToCalendarCubit>(
+        () => _i993.ExportToCalendarCubit(gh<_i315.GetClassScheduleUsecase>()));
     gh.singleton<_i583.GoRouter>(
         () => registerModule.router(gh<_i193.GetStoredCredentialsUseCase>()));
     gh.factory<_i908.KeepSessionAliveUsecase>(
         () => _i908.KeepSessionAliveUsecase(gh<_i10.AuthRepository>()));
-    gh.factory<_i172.ScheduleCubit>(() => _i172.ScheduleCubit(
+    gh.factory<_i575.ScheduleCubit>(() => _i575.ScheduleCubit(
           gh<_i562.GetDefaultClassScheduleUsecase>(),
           gh<_i315.GetClassScheduleUsecase>(),
         ));
@@ -127,7 +128,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i48.SignOutUseCase>(),
           gh<_i908.KeepSessionAliveUsecase>(),
         ));
-    gh.factory<_i486.HomeCubit>(() => _i486.HomeCubit(
+    gh.factory<_i575.HomeCubit>(() => _i575.HomeCubit(
           gh<_i771.GetAcademicReportUsecase>(),
           gh<_i447.AuthUsecases>(),
         ));
