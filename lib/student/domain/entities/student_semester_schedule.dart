@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sigapp/student/entities/student_academic_report.dart';
-import 'package:sigapp/student/entities/weekly_schedule_event.dart';
+import 'package:sigapp/student/domain/entities/student_academic_report.dart';
+import 'package:sigapp/student/domain/entities/weekly_schedule_event.dart';
 
 part 'student_semester_schedule.freezed.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sigapp/student/entities/weekly_schedule_event.dart';
+import 'package:sigapp/student/domain/entities/weekly_schedule_event.dart';
 
 class WeeklySchedule extends StatefulWidget {
   final List<WeeklyScheduleEvent> events;

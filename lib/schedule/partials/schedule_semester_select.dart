@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sigapp/student/entities/student_semester_schedule.dart';
+import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
 
 class ScheduleSemesterSelect extends StatelessWidget {
   const ScheduleSemesterSelect({

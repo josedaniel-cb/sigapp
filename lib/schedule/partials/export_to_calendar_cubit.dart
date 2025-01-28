@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/student/entities/weekly_schedule_event.dart';
-import 'package:sigapp/student/student_service.dart';
+import 'package:sigapp/student/domain/entities/weekly_schedule_event.dart';
+import 'package:sigapp/student/application/student_usecases_aux.dart';
 
 part 'export_to_calendar_cubit.freezed.dart';
 
@@ -23,7 +23,7 @@ abstract class ExportToCalendarState with _$ExportToCalendarState {
 @injectable
 class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
   final DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
-  final StudentService _studentService;
+  final StudentUsecasesAux _studentService;
 
   ExportToCalendarCubit(this._studentService)
       : super(const ExportToCalendarState.loading());

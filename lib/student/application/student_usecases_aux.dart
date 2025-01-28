@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/student/entities/student_academic_report.dart';
-import 'package:sigapp/student/entities/student_semester_schedule.dart';
-import 'package:sigapp/student/entities/weekly_schedule_event.dart';
-import 'package:sigapp/student/models/get_class_schedule.dart';
-import 'package:sigapp/student/student_repository.dart';
+import 'package:sigapp/student/domain/entities/student_academic_report.dart';
+import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
+import 'package:sigapp/student/domain/entities/weekly_schedule_event.dart';
+import 'package:sigapp/student/infrastructure/models/get_class_schedule.dart';
+import 'package:sigapp/student/infrastructure/repositories/student_repository.dart';
 
 @lazySingleton
-class StudentService {
+class StudentUsecasesAux {
   final StudentRepository _studentRepository;
 
   static const String _eventsIdsPrefix = 'SIGAPP';
 
   StudentAcademicReport? _studentAcademicReport;
 
-  StudentService(this._studentRepository);
+  StudentUsecasesAux(this._studentRepository);
 
   Future<StudentAcademicReport> getAcademicReport() async {
     if (_studentAcademicReport != null) {

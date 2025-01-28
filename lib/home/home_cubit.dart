@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/student/entities/student_academic_report.dart';
-import 'package:sigapp/student/student_service.dart';
+import 'package:sigapp/student/domain/entities/student_academic_report.dart';
+import 'package:sigapp/student/application/student_usecases_aux.dart';
 import 'package:sigapp/auth/application/usecases.dart';
 
 part 'home_cubit.freezed.dart';
@@ -20,7 +20,7 @@ abstract class HomeState with _$HomeState {
 
 @injectable
 class HomeCubit extends Cubit<HomeState> {
-  final StudentService _studentService;
+  final StudentUsecasesAux _studentService;
   final AuthUsecases _authUsecases;
 
   HomeCubit(

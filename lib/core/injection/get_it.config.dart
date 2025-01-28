@@ -43,8 +43,9 @@ import 'package:sigapp/home/home_cubit.dart' as _i486;
 import 'package:sigapp/schedule/partials/export_to_calendar_cubit.dart'
     as _i633;
 import 'package:sigapp/schedule/schedule_cubit.dart' as _i953;
-import 'package:sigapp/student/student_repository.dart' as _i12;
-import 'package:sigapp/student/student_service.dart' as _i638;
+import 'package:sigapp/student/application/student_usecases_aux.dart' as _i546;
+import 'package:sigapp/student/infrastructure/repositories/student_repository.dart'
+    as _i528;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -69,19 +70,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i1010.SharedPreferencesAuthRepository>(() =>
         _i247.SharedPreferencesAuthRepositoryImpl(
             gh<_i460.SharedPreferences>()));
-    gh.lazySingleton<_i12.StudentRepository>(
-        () => _i12.StudentRepository(gh<_i476.SigaClient>()));
-    gh.lazySingleton<_i638.StudentService>(
-        () => _i638.StudentService(gh<_i12.StudentRepository>()));
+    gh.lazySingleton<_i528.StudentRepository>(
+        () => _i528.StudentRepository(gh<_i476.SigaClient>()));
     gh.factory<_i193.GetStoredCredentialsUseCase>(() =>
         _i193.GetStoredCredentialsUseCase(
             gh<_i1010.SharedPreferencesAuthRepository>()));
     gh.singleton<_i10.AuthRepository>(
         () => _i127.AuthRepositoryImpl(gh<_i476.SigaClient>()));
+    gh.lazySingleton<_i546.StudentUsecasesAux>(
+        () => _i546.StudentUsecasesAux(gh<_i528.StudentRepository>()));
     gh.factory<_i633.ExportToCalendarCubit>(
-        () => _i633.ExportToCalendarCubit(gh<_i638.StudentService>()));
+        () => _i633.ExportToCalendarCubit(gh<_i546.StudentUsecasesAux>()));
     gh.factory<_i953.ScheduleCubit>(
-        () => _i953.ScheduleCubit(gh<_i638.StudentService>()));
+        () => _i953.ScheduleCubit(gh<_i546.StudentUsecasesAux>()));
     gh.singleton<_i583.GoRouter>(
         () => registerModule.router(gh<_i193.GetStoredCredentialsUseCase>()));
     gh.factory<_i908.KeepSessionAliveUsecase>(
@@ -106,7 +107,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i41.LoginCubit>(
         () => _i41.LoginCubit(gh<_i447.AuthUsecases>()));
     gh.factory<_i486.HomeCubit>(() => _i486.HomeCubit(
-          gh<_i638.StudentService>(),
+          gh<_i546.StudentUsecasesAux>(),
           gh<_i447.AuthUsecases>(),
         ));
     gh.singleton<_i767.AuthenticationManager>(() => _i767.AuthenticationManager(

@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/student/entities/student_semester_schedule.dart';
-import 'package:sigapp/student/student_service.dart';
+import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
+import 'package:sigapp/student/application/student_usecases_aux.dart';
 
 part 'schedule_cubit.freezed.dart';
 
@@ -24,7 +24,7 @@ abstract class ScheduleState with _$ScheduleState {
 
 @injectable
 class ScheduleCubit extends Cubit<ScheduleState> {
-  final StudentService _studentService;
+  final StudentUsecasesAux _studentService;
   // final DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
 
   ScheduleCubit(
