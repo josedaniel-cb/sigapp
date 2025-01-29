@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'partial_academic_report.dart';
+part of 'raw_academic_report.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$PartialAcademicReport {
+mixin _$RawAcademicReport {
   String get faculty => throw _privateConstructorUsedError;
   String get studentName => throw _privateConstructorUsedError;
   String get cohort => throw _privateConstructorUsedError;
@@ -33,18 +33,18 @@ mixin _$PartialAcademicReport {
   int get mandatoryCreditsOfPassedCourses => throw _privateConstructorUsedError;
   int get electiveCreditsOfPassedCourses => throw _privateConstructorUsedError;
 
-  /// Create a copy of PartialAcademicReport
+  /// Create a copy of RawAcademicReport
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $PartialAcademicReportCopyWith<PartialAcademicReport> get copyWith =>
+  $RawAcademicReportCopyWith<RawAcademicReport> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PartialAcademicReportCopyWith<$Res> {
-  factory $PartialAcademicReportCopyWith(PartialAcademicReport value,
-          $Res Function(PartialAcademicReport) then) =
-      _$PartialAcademicReportCopyWithImpl<$Res, PartialAcademicReport>;
+abstract class $RawAcademicReportCopyWith<$Res> {
+  factory $RawAcademicReportCopyWith(
+          RawAcademicReport value, $Res Function(RawAcademicReport) then) =
+      _$RawAcademicReportCopyWithImpl<$Res, RawAcademicReport>;
   @useResult
   $Res call(
       {String faculty,
@@ -64,17 +64,16 @@ abstract class $PartialAcademicReportCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$PartialAcademicReportCopyWithImpl<$Res,
-        $Val extends PartialAcademicReport>
-    implements $PartialAcademicReportCopyWith<$Res> {
-  _$PartialAcademicReportCopyWithImpl(this._value, this._then);
+class _$RawAcademicReportCopyWithImpl<$Res, $Val extends RawAcademicReport>
+    implements $RawAcademicReportCopyWith<$Res> {
+  _$RawAcademicReportCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of PartialAcademicReport
+  /// Create a copy of RawAcademicReport
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -157,12 +156,11 @@ class _$PartialAcademicReportCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$PartialAcademicReportImplCopyWith<$Res>
-    implements $PartialAcademicReportCopyWith<$Res> {
-  factory _$$PartialAcademicReportImplCopyWith(
-          _$PartialAcademicReportImpl value,
-          $Res Function(_$PartialAcademicReportImpl) then) =
-      __$$PartialAcademicReportImplCopyWithImpl<$Res>;
+abstract class _$$RawAcademicReportImplCopyWith<$Res>
+    implements $RawAcademicReportCopyWith<$Res> {
+  factory _$$RawAcademicReportImplCopyWith(_$RawAcademicReportImpl value,
+          $Res Function(_$RawAcademicReportImpl) then) =
+      __$$RawAcademicReportImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -183,15 +181,14 @@ abstract class _$$PartialAcademicReportImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$PartialAcademicReportImplCopyWithImpl<$Res>
-    extends _$PartialAcademicReportCopyWithImpl<$Res,
-        _$PartialAcademicReportImpl>
-    implements _$$PartialAcademicReportImplCopyWith<$Res> {
-  __$$PartialAcademicReportImplCopyWithImpl(_$PartialAcademicReportImpl _value,
-      $Res Function(_$PartialAcademicReportImpl) _then)
+class __$$RawAcademicReportImplCopyWithImpl<$Res>
+    extends _$RawAcademicReportCopyWithImpl<$Res, _$RawAcademicReportImpl>
+    implements _$$RawAcademicReportImplCopyWith<$Res> {
+  __$$RawAcademicReportImplCopyWithImpl(_$RawAcademicReportImpl _value,
+      $Res Function(_$RawAcademicReportImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of PartialAcademicReport
+  /// Create a copy of RawAcademicReport
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -211,7 +208,7 @@ class __$$PartialAcademicReportImplCopyWithImpl<$Res>
     Object? mandatoryCreditsOfPassedCourses = null,
     Object? electiveCreditsOfPassedCourses = null,
   }) {
-    return _then(_$PartialAcademicReportImpl(
+    return _then(_$RawAcademicReportImpl(
       faculty: null == faculty
           ? _value.faculty
           : faculty // ignore: cast_nullable_to_non_nullable
@@ -275,8 +272,8 @@ class __$$PartialAcademicReportImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PartialAcademicReportImpl implements _PartialAcademicReport {
-  _$PartialAcademicReportImpl(
+class _$RawAcademicReportImpl implements _RawAcademicReport {
+  _$RawAcademicReportImpl(
       {required this.faculty,
       required this.studentName,
       required this.cohort,
@@ -323,14 +320,14 @@ class _$PartialAcademicReportImpl implements _PartialAcademicReport {
 
   @override
   String toString() {
-    return 'PartialAcademicReport(faculty: $faculty, studentName: $studentName, cohort: $cohort, enrollmentSemesterId: $enrollmentSemesterId, curriculumSemesterId: $curriculumSemesterId, lastSemesterId: $lastSemesterId, cumulativeWeightedAverage: $cumulativeWeightedAverage, cumulativeWeightedAverageOfPassedCourses: $cumulativeWeightedAverageOfPassedCourses, lastCumulativeWeightedAverage: $lastCumulativeWeightedAverage, totalCreditsOfPassedCourses: $totalCreditsOfPassedCourses, curriculumMandatoryCredits: $curriculumMandatoryCredits, curriculumElectiveCredits: $curriculumElectiveCredits, mandatoryCreditsOfPassedCourses: $mandatoryCreditsOfPassedCourses, electiveCreditsOfPassedCourses: $electiveCreditsOfPassedCourses)';
+    return 'RawAcademicReport(faculty: $faculty, studentName: $studentName, cohort: $cohort, enrollmentSemesterId: $enrollmentSemesterId, curriculumSemesterId: $curriculumSemesterId, lastSemesterId: $lastSemesterId, cumulativeWeightedAverage: $cumulativeWeightedAverage, cumulativeWeightedAverageOfPassedCourses: $cumulativeWeightedAverageOfPassedCourses, lastCumulativeWeightedAverage: $lastCumulativeWeightedAverage, totalCreditsOfPassedCourses: $totalCreditsOfPassedCourses, curriculumMandatoryCredits: $curriculumMandatoryCredits, curriculumElectiveCredits: $curriculumElectiveCredits, mandatoryCreditsOfPassedCourses: $mandatoryCreditsOfPassedCourses, electiveCreditsOfPassedCourses: $electiveCreditsOfPassedCourses)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PartialAcademicReportImpl &&
+            other is _$RawAcademicReportImpl &&
             (identical(other.faculty, faculty) || other.faculty == faculty) &&
             (identical(other.studentName, studentName) ||
                 other.studentName == studentName) &&
@@ -385,18 +382,18 @@ class _$PartialAcademicReportImpl implements _PartialAcademicReport {
       mandatoryCreditsOfPassedCourses,
       electiveCreditsOfPassedCourses);
 
-  /// Create a copy of PartialAcademicReport
+  /// Create a copy of RawAcademicReport
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$PartialAcademicReportImplCopyWith<_$PartialAcademicReportImpl>
-      get copyWith => __$$PartialAcademicReportImplCopyWithImpl<
-          _$PartialAcademicReportImpl>(this, _$identity);
+  _$$RawAcademicReportImplCopyWith<_$RawAcademicReportImpl> get copyWith =>
+      __$$RawAcademicReportImplCopyWithImpl<_$RawAcademicReportImpl>(
+          this, _$identity);
 }
 
-abstract class _PartialAcademicReport implements PartialAcademicReport {
-  factory _PartialAcademicReport(
+abstract class _RawAcademicReport implements RawAcademicReport {
+  factory _RawAcademicReport(
           {required final String faculty,
           required final String studentName,
           required final String cohort,
@@ -411,7 +408,7 @@ abstract class _PartialAcademicReport implements PartialAcademicReport {
           required final int curriculumElectiveCredits,
           required final int mandatoryCreditsOfPassedCourses,
           required final int electiveCreditsOfPassedCourses}) =
-      _$PartialAcademicReportImpl;
+      _$RawAcademicReportImpl;
 
   @override
   String get faculty;
@@ -442,10 +439,10 @@ abstract class _PartialAcademicReport implements PartialAcademicReport {
   @override
   int get electiveCreditsOfPassedCourses;
 
-  /// Create a copy of PartialAcademicReport
+  /// Create a copy of RawAcademicReport
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PartialAcademicReportImplCopyWith<_$PartialAcademicReportImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$RawAcademicReportImplCopyWith<_$RawAcademicReportImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

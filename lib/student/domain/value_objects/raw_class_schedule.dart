@@ -1,10 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'partial_class_schedule.freezed.dart';
+part 'raw_class_schedule.freezed.dart';
 
 @freezed
-class PartialClassSchedule with _$PartialClassSchedule {
-  factory PartialClassSchedule({
+class RawClassSchedule with _$RawClassSchedule {
+  factory RawClassSchedule({
     required String startHour,
     required String endHour,
     required String monday,
@@ -13,5 +13,5 @@ class PartialClassSchedule with _$PartialClassSchedule {
     required String thursday,
     required String friday,
     required String saturday,
-  }) = _PartialClassSchedule;
+  }) = _RawClassSchedule;
 }

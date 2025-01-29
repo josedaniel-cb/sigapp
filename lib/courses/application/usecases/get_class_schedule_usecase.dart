@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/student/domain/entities/weekly_schedule_event.dart';
 import 'package:sigapp/courses/domain/repositories/schedule_repository.dart';
-import 'package:sigapp/student/domain/value_objects/partial_class_schedule.dart';
+import 'package:sigapp/student/domain/value_objects/raw_class_schedule.dart';
 
 @lazySingleton
 class GetClassScheduleUsecase {
@@ -19,7 +19,7 @@ class GetClassScheduleUsecase {
   }
 
   List<WeeklyScheduleEvent> _processClassSchedule(
-      List<PartialClassSchedule> schedule) {
+      List<RawClassSchedule> schedule) {
     Map<String, Color> courseColorMap = {};
     List<WeeklyScheduleEvent> weeklyScheduleEvents = [];
     List<Color> colorPalette = [

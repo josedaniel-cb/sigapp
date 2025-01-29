@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/core/http/siga_client.dart';
 import 'package:sigapp/student/domain/repositories/student_repository.dart';
-import 'package:sigapp/student/domain/value_objects/partial_academic_report.dart';
+import 'package:sigapp/student/domain/value_objects/raw_academic_report.dart';
 import 'package:sigapp/student/domain/value_objects/student_session_info.dart';
 import 'package:sigapp/student/infrastructure/models/get_academic_report.dart';
 import 'package:html/parser.dart' as htmlParser;
@@ -32,12 +32,12 @@ class StudentRepositoryImpl implements StudentRepository {
   }
 
   @override
-  Future<PartialAcademicReport> getAcademicReport() async {
+  Future<RawAcademicReport> getAcademicReport() async {
     // {"results":{"Facultad":"INGENIERIA INDUSTRIAL","NomAlumno":"0512017039 - CALLE BRICEÑO, JOSE DANIEL","Promocion":"2017","SemestreIngreso":"20171 ","SemestrePlan":"20181 ","UltSemestre":"20212 ","PPA":14.47,"PPAAprob":14.47,"UPPS":15.48,"TotalCredAprob":243,"CredObligPlan":220,"CredElectPlan":15,"CredObligAprob":220,"CredElectAprob":16}}
     final response =
         await _sigaClient.http.post('/Academico/ListarParametrosInforme');
     final model = GetAcademicReportModel.fromJson(response.data['results']);
-    return PartialAcademicReport(
+    return RawAcademicReport(
       faculty: model.Facultad,
       studentName: model.NomAlumno,
       cohort: model.Promocion,

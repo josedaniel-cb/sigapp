@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'partial_class_schedule.dart';
+part of 'raw_class_schedule.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$PartialClassSchedule {
+mixin _$RawClassSchedule {
   String get startHour => throw _privateConstructorUsedError;
   String get endHour => throw _privateConstructorUsedError;
   String get monday => throw _privateConstructorUsedError;
@@ -25,18 +25,18 @@ mixin _$PartialClassSchedule {
   String get friday => throw _privateConstructorUsedError;
   String get saturday => throw _privateConstructorUsedError;
 
-  /// Create a copy of PartialClassSchedule
+  /// Create a copy of RawClassSchedule
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $PartialClassScheduleCopyWith<PartialClassSchedule> get copyWith =>
+  $RawClassScheduleCopyWith<RawClassSchedule> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PartialClassScheduleCopyWith<$Res> {
-  factory $PartialClassScheduleCopyWith(PartialClassSchedule value,
-          $Res Function(PartialClassSchedule) then) =
-      _$PartialClassScheduleCopyWithImpl<$Res, PartialClassSchedule>;
+abstract class $RawClassScheduleCopyWith<$Res> {
+  factory $RawClassScheduleCopyWith(
+          RawClassSchedule value, $Res Function(RawClassSchedule) then) =
+      _$RawClassScheduleCopyWithImpl<$Res, RawClassSchedule>;
   @useResult
   $Res call(
       {String startHour,
@@ -50,17 +50,16 @@ abstract class $PartialClassScheduleCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$PartialClassScheduleCopyWithImpl<$Res,
-        $Val extends PartialClassSchedule>
-    implements $PartialClassScheduleCopyWith<$Res> {
-  _$PartialClassScheduleCopyWithImpl(this._value, this._then);
+class _$RawClassScheduleCopyWithImpl<$Res, $Val extends RawClassSchedule>
+    implements $RawClassScheduleCopyWith<$Res> {
+  _$RawClassScheduleCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of PartialClassSchedule
+  /// Create a copy of RawClassSchedule
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -112,11 +111,11 @@ class _$PartialClassScheduleCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$PartialClassScheduleImplCopyWith<$Res>
-    implements $PartialClassScheduleCopyWith<$Res> {
-  factory _$$PartialClassScheduleImplCopyWith(_$PartialClassScheduleImpl value,
-          $Res Function(_$PartialClassScheduleImpl) then) =
-      __$$PartialClassScheduleImplCopyWithImpl<$Res>;
+abstract class _$$RawClassScheduleImplCopyWith<$Res>
+    implements $RawClassScheduleCopyWith<$Res> {
+  factory _$$RawClassScheduleImplCopyWith(_$RawClassScheduleImpl value,
+          $Res Function(_$RawClassScheduleImpl) then) =
+      __$$RawClassScheduleImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -131,14 +130,14 @@ abstract class _$$PartialClassScheduleImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$PartialClassScheduleImplCopyWithImpl<$Res>
-    extends _$PartialClassScheduleCopyWithImpl<$Res, _$PartialClassScheduleImpl>
-    implements _$$PartialClassScheduleImplCopyWith<$Res> {
-  __$$PartialClassScheduleImplCopyWithImpl(_$PartialClassScheduleImpl _value,
-      $Res Function(_$PartialClassScheduleImpl) _then)
+class __$$RawClassScheduleImplCopyWithImpl<$Res>
+    extends _$RawClassScheduleCopyWithImpl<$Res, _$RawClassScheduleImpl>
+    implements _$$RawClassScheduleImplCopyWith<$Res> {
+  __$$RawClassScheduleImplCopyWithImpl(_$RawClassScheduleImpl _value,
+      $Res Function(_$RawClassScheduleImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of PartialClassSchedule
+  /// Create a copy of RawClassSchedule
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -152,7 +151,7 @@ class __$$PartialClassScheduleImplCopyWithImpl<$Res>
     Object? friday = null,
     Object? saturday = null,
   }) {
-    return _then(_$PartialClassScheduleImpl(
+    return _then(_$RawClassScheduleImpl(
       startHour: null == startHour
           ? _value.startHour
           : startHour // ignore: cast_nullable_to_non_nullable
@@ -191,8 +190,8 @@ class __$$PartialClassScheduleImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$PartialClassScheduleImpl implements _PartialClassSchedule {
-  _$PartialClassScheduleImpl(
+class _$RawClassScheduleImpl implements _RawClassSchedule {
+  _$RawClassScheduleImpl(
       {required this.startHour,
       required this.endHour,
       required this.monday,
@@ -221,14 +220,14 @@ class _$PartialClassScheduleImpl implements _PartialClassSchedule {
 
   @override
   String toString() {
-    return 'PartialClassSchedule(startHour: $startHour, endHour: $endHour, monday: $monday, tuesday: $tuesday, wednesday: $wednesday, thursday: $thursday, friday: $friday, saturday: $saturday)';
+    return 'RawClassSchedule(startHour: $startHour, endHour: $endHour, monday: $monday, tuesday: $tuesday, wednesday: $wednesday, thursday: $thursday, friday: $friday, saturday: $saturday)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PartialClassScheduleImpl &&
+            other is _$RawClassScheduleImpl &&
             (identical(other.startHour, startHour) ||
                 other.startHour == startHour) &&
             (identical(other.endHour, endHour) || other.endHour == endHour) &&
@@ -247,19 +246,18 @@ class _$PartialClassScheduleImpl implements _PartialClassSchedule {
   int get hashCode => Object.hash(runtimeType, startHour, endHour, monday,
       tuesday, wednesday, thursday, friday, saturday);
 
-  /// Create a copy of PartialClassSchedule
+  /// Create a copy of RawClassSchedule
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$PartialClassScheduleImplCopyWith<_$PartialClassScheduleImpl>
-      get copyWith =>
-          __$$PartialClassScheduleImplCopyWithImpl<_$PartialClassScheduleImpl>(
-              this, _$identity);
+  _$$RawClassScheduleImplCopyWith<_$RawClassScheduleImpl> get copyWith =>
+      __$$RawClassScheduleImplCopyWithImpl<_$RawClassScheduleImpl>(
+          this, _$identity);
 }
 
-abstract class _PartialClassSchedule implements PartialClassSchedule {
-  factory _PartialClassSchedule(
+abstract class _RawClassSchedule implements RawClassSchedule {
+  factory _RawClassSchedule(
       {required final String startHour,
       required final String endHour,
       required final String monday,
@@ -267,7 +265,7 @@ abstract class _PartialClassSchedule implements PartialClassSchedule {
       required final String wednesday,
       required final String thursday,
       required final String friday,
-      required final String saturday}) = _$PartialClassScheduleImpl;
+      required final String saturday}) = _$RawClassScheduleImpl;
 
   @override
   String get startHour;
@@ -286,10 +284,10 @@ abstract class _PartialClassSchedule implements PartialClassSchedule {
   @override
   String get saturday;
 
-  /// Create a copy of PartialClassSchedule
+  /// Create a copy of RawClassSchedule
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PartialClassScheduleImplCopyWith<_$PartialClassScheduleImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$RawClassScheduleImplCopyWith<_$RawClassScheduleImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
