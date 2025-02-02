@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sigapp/auth/application/usecases.dart';
 import 'package:sigapp/core/injection/get_it.dart';
+import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_cubit.dart';
+import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_page.dart';
 import 'package:sigapp/student/infrastructure/pages/student_cubit.dart';
 import 'package:sigapp/student/infrastructure/pages/student_page_view.dart';
 
@@ -29,25 +31,44 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   _logout(BuildContext context) {
     try {
       _authUsecases.signOut.execute();
-      // GoRouter.of(context).go('/login');
     } catch (e, s) {
       if (kDebugMode) {
         print(e);
         print(s);
       }
-      // emit(SemesterPageViewState.error(e.toString()));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
     }
   }
 
   @override
-  bool get wantKeepAlive => true; // Mantiene la página en memoria
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
-    super.build(context); // Llamar al build del mixin
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Title'),
+        title: (() {
+          switch (_selectedIndex) {
+            case 0:
+              return Text(
+                'Sigapp',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              );
+            case 1:
+              return Text('Horario');
+            case 2:
+              return Text('Carrera');
+            case 3:
+              return Text('Estudiante');
+            default:
+              return Container();
+          }
+        })(),
         actions: [
           PopupMenuButton<String>(
             onSelected: (value) {
@@ -74,8 +95,11 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
         },
         children: <Widget>[
           CoursesPage(),
+          BlocProvider<ScheduleCubit>(
+            create: (context) => getIt<ScheduleCubit>(),
+            child: SchedulePage(),
+          ),
           CareerPage(),
-          // StudentPage(),
           BlocProvider<StudentPageViewCubit>(
             create: (context) => getIt<StudentPageViewCubit>(),
             child: StudentPageView(),
@@ -86,7 +110,11 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.book),
-            label: 'Semestre',
+            label: 'Cursos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: 'Horario',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.school),
@@ -98,7 +126,9 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Colors.grey,
+        // showUnselectedLabels: true,
         onTap: _onItemTapped,
       ),
     );
@@ -110,26 +140,21 @@ class CoursesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Cursos'),
-      ),
-      body: ListView(
-        children: <Widget>[
-          ListTile(
-            title: Text('Claro'),
-            onTap: () {
-              GoRouter.of(context).push('/schedule');
-            },
-          ),
-          ListTile(
-            title: Text('Curso 2'),
-          ),
-          ListTile(
-            title: Text('Curso 3'),
-          ),
-        ],
-      ),
+    return ListView(
+      children: <Widget>[
+        ListTile(
+          title: Text('Horario'),
+          onTap: () {
+            GoRouter.of(context).push('/schedule');
+          },
+        ),
+        ListTile(
+          title: Text('Curso 2'),
+        ),
+        ListTile(
+          title: Text('Curso 3'),
+        ),
+      ],
     );
   }
 }
@@ -139,20 +164,15 @@ class CareerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Carrera'),
-      ),
-      body: ListView(
-        children: <Widget>[
-          ListTile(
-            title: Text('Malla Curricular'),
-          ),
-          ListTile(
-            title: Text('Historial Académico'),
-          ),
-        ],
-      ),
+    return ListView(
+      children: <Widget>[
+        ListTile(
+          title: Text('Malla Curricular'),
+        ),
+        ListTile(
+          title: Text('Historial Académico'),
+        ),
+      ],
     );
   }
 }

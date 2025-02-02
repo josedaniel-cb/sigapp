@@ -51,6 +51,8 @@ import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_cubit.dart
     as _i575;
 import 'package:sigapp/courses/infrastructure/repositories/schedule_repository.dart'
     as _i637;
+import 'package:sigapp/semester/application/get_default_semester_usecase.dart'
+    as _i689;
 import 'package:sigapp/student/application/usecases/get_academic_report_usecase.dart'
     as _i771;
 import 'package:sigapp/student/domain/repositories/student_repository.dart'
@@ -96,28 +98,31 @@ extension GetItInjectableX on _i174.GetIt {
             gh<_i1010.SharedPreferencesAuthRepository>()));
     gh.singleton<_i10.AuthRepository>(
         () => _i127.AuthRepositoryImpl(gh<_i476.SigaClient>()));
-    gh.lazySingleton<_i562.GetDefaultClassScheduleUsecase>(
-        () => _i562.GetDefaultClassScheduleUsecase(
-              gh<_i771.GetAcademicReportUsecase>(),
-              gh<_i315.GetClassScheduleUsecase>(),
-            ));
     gh.factory<_i993.ExportToCalendarCubit>(
         () => _i993.ExportToCalendarCubit(gh<_i315.GetClassScheduleUsecase>()));
     gh.factory<_i151.StudentPageViewCubit>(
         () => _i151.StudentPageViewCubit(gh<_i771.GetAcademicReportUsecase>()));
+    gh.lazySingleton<_i689.GetDefaultSemesterUsecase>(() =>
+        _i689.GetDefaultSemesterUsecase(gh<_i771.GetAcademicReportUsecase>()));
     gh.singleton<_i583.GoRouter>(
         () => registerModule.router(gh<_i193.GetStoredCredentialsUseCase>()));
     gh.factory<_i908.KeepSessionAliveUsecase>(
         () => _i908.KeepSessionAliveUsecase(gh<_i10.AuthRepository>()));
-    gh.factory<_i575.ScheduleCubit>(() => _i575.ScheduleCubit(
-          gh<_i562.GetDefaultClassScheduleUsecase>(),
-          gh<_i315.GetClassScheduleUsecase>(),
-        ));
+    gh.lazySingleton<_i562.GetDefaultClassScheduleUsecase>(
+        () => _i562.GetDefaultClassScheduleUsecase(
+              gh<_i771.GetAcademicReportUsecase>(),
+              gh<_i689.GetDefaultSemesterUsecase>(),
+              gh<_i315.GetClassScheduleUsecase>(),
+            ));
     gh.singleton<_i528.NavigationService>(
         () => _i561.NavigationServiceImpl(gh<_i583.GoRouter>()));
     gh.factory<_i48.SignOutUseCase>(() => _i48.SignOutUseCase(
           gh<_i1010.SharedPreferencesAuthRepository>(),
           gh<_i528.NavigationService>(),
+        ));
+    gh.factory<_i575.ScheduleCubit>(() => _i575.ScheduleCubit(
+          gh<_i562.GetDefaultClassScheduleUsecase>(),
+          gh<_i315.GetClassScheduleUsecase>(),
         ));
     gh.factory<_i365.SignInUseCase>(() => _i365.SignInUseCase(
           gh<_i10.AuthRepository>(),

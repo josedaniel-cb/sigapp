@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:sigapp/semester/application/get_default_semester_usecase.dart';
 import 'package:sigapp/student/application/usecases/get_academic_report_usecase.dart';
 import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.dart';
 import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
@@ -6,45 +7,24 @@ import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
 @lazySingleton
 class GetDefaultClassScheduleUsecase {
   final GetAcademicReportUsecase _getAcademicReportUsecase;
+  final GetDefaultSemesterUsecase _getDefaultSemesterUsecase;
   final GetClassScheduleUsecase _getClassScheduleUsecase;
 
   GetDefaultClassScheduleUsecase(
-      this._getAcademicReportUsecase, this._getClassScheduleUsecase);
+    this._getAcademicReportUsecase,
+    this._getDefaultSemesterUsecase,
+    this._getClassScheduleUsecase,
+  );
 
   Future<SemesterSchedule> execute() async {
-    final academicReport = await _getAcademicReportUsecase.execute();
-    final firstSemesterId = academicReport.enrollmentSemesterId;
-    final lastSemesterId = academicReport.lastSemesterId;
-    final semesterId = lastSemesterId ?? firstSemesterId;
-    final semestersIdsList = _buildSemesterRange(
-        firstSemesterId, lastSemesterId ?? academicReport.currentSemesterId);
-
-    final weeklyEvents = await _getClassScheduleUsecase.execute(semesterId);
+    final defaultSemester = await _getDefaultSemesterUsecase.execute();
 
     return SemesterSchedule(
-      studentAcademicReport: academicReport,
-      semester: SemesterScheduleSemesterMetadata.buildFromId(semesterId),
-      weeklyEvents: weeklyEvents,
-      semesterList: semestersIdsList
-          .map((id) => SemesterScheduleSemesterMetadata.buildFromId(id))
-          .toList(),
+      studentAcademicReport: await _getAcademicReportUsecase.execute(),
+      semester: defaultSemester.semester,
+      semesterList: defaultSemester.availableSemesters,
+      weeklyEvents:
+          await _getClassScheduleUsecase.execute(defaultSemester.semester.id),
     );
-  }
-
-  List<String> _buildSemesterRange(
-      String firstSemesterId, String lastSemesterId) {
-    List<String> semesters = [];
-    int firstYear = int.parse(firstSemesterId.substring(0, 4));
-    int lastYear = int.parse(lastSemesterId.substring(0, 4));
-    int firstSemesterNumber = int.parse(firstSemesterId.substring(4)); // 0 to 2
-    int lastSemesterNumber = int.parse(lastSemesterId.substring(4)); // 0 to 2
-    for (int year = firstYear; year <= lastYear; year++) {
-      int start = (year == firstYear) ? firstSemesterNumber : 0;
-      int end = (year == lastYear) ? lastSemesterNumber : 2;
-      for (int semester = start; semester <= end; semester++) {
-        semesters.add('$year$semester');
-      }
-    }
-    return semesters;
   }
 }

@@ -6,8 +6,6 @@ import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.
 import 'package:sigapp/auth/infrastructure/pages/login_cubit.dart';
 import 'package:sigapp/auth/infrastructure/pages/login_page.dart';
 import 'package:sigapp/core/pages/home_page.dart';
-import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_cubit.dart';
-import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_page.dart';
 
 class RouterBuilder {
   static GoRouter build(
@@ -28,13 +26,6 @@ class RouterBuilder {
         GoRoute(
           path: '/',
           builder: (context, state) => const HomePage(),
-        ),
-        GoRoute(
-          path: '/schedule',
-          builder: (context, state) => BlocProvider(
-            create: (context) => getIt<ScheduleCubit>(),
-            child: const SchedulePage(),
-          ),
         ),
       ],
       redirect: (context, state) async {
