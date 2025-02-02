@@ -45,8 +45,6 @@ import 'package:sigapp/courses/application/usecases/get_default_class_schedule_u
     as _i562;
 import 'package:sigapp/courses/domain/repositories/schedule_repository.dart'
     as _i974;
-import 'package:sigapp/courses/infrastructure/pages/home/home_cubit.dart'
-    as _i575;
 import 'package:sigapp/courses/infrastructure/pages/schedule/partials/export_to_calendar_cubit.dart'
     as _i993;
 import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_cubit.dart'
@@ -57,6 +55,8 @@ import 'package:sigapp/student/application/usecases/get_academic_report_usecase.
     as _i771;
 import 'package:sigapp/student/domain/repositories/student_repository.dart'
     as _i594;
+import 'package:sigapp/student/infrastructure/pages/student_cubit.dart'
+    as _i151;
 import 'package:sigapp/student/infrastructure/repositories/student_repository.dart'
     as _i528;
 
@@ -103,6 +103,8 @@ extension GetItInjectableX on _i174.GetIt {
             ));
     gh.factory<_i993.ExportToCalendarCubit>(
         () => _i993.ExportToCalendarCubit(gh<_i315.GetClassScheduleUsecase>()));
+    gh.factory<_i151.StudentPageViewCubit>(
+        () => _i151.StudentPageViewCubit(gh<_i771.GetAcademicReportUsecase>()));
     gh.singleton<_i583.GoRouter>(
         () => registerModule.router(gh<_i193.GetStoredCredentialsUseCase>()));
     gh.factory<_i908.KeepSessionAliveUsecase>(
@@ -127,10 +129,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i193.GetStoredCredentialsUseCase>(),
           gh<_i48.SignOutUseCase>(),
           gh<_i908.KeepSessionAliveUsecase>(),
-        ));
-    gh.factory<_i575.HomeCubit>(() => _i575.HomeCubit(
-          gh<_i771.GetAcademicReportUsecase>(),
-          gh<_i447.AuthUsecases>(),
         ));
     gh.factory<_i41.LoginCubit>(
         () => _i41.LoginCubit(gh<_i447.AuthUsecases>()));

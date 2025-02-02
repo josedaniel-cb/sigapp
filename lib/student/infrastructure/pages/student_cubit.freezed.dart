@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'home_cubit.dart';
+part of 'student_cubit.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$HomeState {
+mixin _$StudentPageViewState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
@@ -63,22 +63,24 @@ mixin _$HomeState {
 }
 
 /// @nodoc
-abstract class $HomeStateCopyWith<$Res> {
-  factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
-      _$HomeStateCopyWithImpl<$Res, HomeState>;
+abstract class $StudentPageViewStateCopyWith<$Res> {
+  factory $StudentPageViewStateCopyWith(StudentPageViewState value,
+          $Res Function(StudentPageViewState) then) =
+      _$StudentPageViewStateCopyWithImpl<$Res, StudentPageViewState>;
 }
 
 /// @nodoc
-class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
-    implements $HomeStateCopyWith<$Res> {
-  _$HomeStateCopyWithImpl(this._value, this._then);
+class _$StudentPageViewStateCopyWithImpl<$Res,
+        $Val extends StudentPageViewState>
+    implements $StudentPageViewStateCopyWith<$Res> {
+  _$StudentPageViewStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of HomeState
+  /// Create a copy of StudentPageViewState
   /// with the given fields replaced by the non-null parameter values.
 }
 
@@ -91,24 +93,31 @@ abstract class _$$LoadingStateImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$LoadingStateImplCopyWithImpl<$Res>
-    extends _$HomeStateCopyWithImpl<$Res, _$LoadingStateImpl>
+    extends _$StudentPageViewStateCopyWithImpl<$Res, _$LoadingStateImpl>
     implements _$$LoadingStateImplCopyWith<$Res> {
   __$$LoadingStateImplCopyWithImpl(
       _$LoadingStateImpl _value, $Res Function(_$LoadingStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HomeState
+  /// Create a copy of StudentPageViewState
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$LoadingStateImpl implements LoadingState {
+class _$LoadingStateImpl with DiagnosticableTreeMixin implements LoadingState {
   const _$LoadingStateImpl();
 
   @override
-  String toString() {
-    return 'HomeState.loading()';
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'StudentPageViewState.loading()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'StudentPageViewState.loading'));
   }
 
   @override
@@ -189,7 +198,7 @@ class _$LoadingStateImpl implements LoadingState {
   }
 }
 
-abstract class LoadingState implements HomeState {
+abstract class LoadingState implements StudentPageViewState {
   const factory LoadingState() = _$LoadingStateImpl;
 }
 
@@ -206,13 +215,13 @@ abstract class _$$SuccessStateImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$SuccessStateImplCopyWithImpl<$Res>
-    extends _$HomeStateCopyWithImpl<$Res, _$SuccessStateImpl>
+    extends _$StudentPageViewStateCopyWithImpl<$Res, _$SuccessStateImpl>
     implements _$$SuccessStateImplCopyWith<$Res> {
   __$$SuccessStateImplCopyWithImpl(
       _$SuccessStateImpl _value, $Res Function(_$SuccessStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HomeState
+  /// Create a copy of StudentPageViewState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -227,7 +236,7 @@ class __$$SuccessStateImplCopyWithImpl<$Res>
     ));
   }
 
-  /// Create a copy of HomeState
+  /// Create a copy of StudentPageViewState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -240,15 +249,23 @@ class __$$SuccessStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$SuccessStateImpl implements SuccessState {
+class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
   const _$SuccessStateImpl(this.academicReport);
 
   @override
   final AcademicReport academicReport;
 
   @override
-  String toString() {
-    return 'HomeState.success(academicReport: $academicReport)';
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'StudentPageViewState.success(academicReport: $academicReport)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'StudentPageViewState.success'))
+      ..add(DiagnosticsProperty('academicReport', academicReport));
   }
 
   @override
@@ -263,7 +280,7 @@ class _$SuccessStateImpl implements SuccessState {
   @override
   int get hashCode => Object.hash(runtimeType, academicReport);
 
-  /// Create a copy of HomeState
+  /// Create a copy of StudentPageViewState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
@@ -340,13 +357,13 @@ class _$SuccessStateImpl implements SuccessState {
   }
 }
 
-abstract class SuccessState implements HomeState {
+abstract class SuccessState implements StudentPageViewState {
   const factory SuccessState(final AcademicReport academicReport) =
       _$SuccessStateImpl;
 
   AcademicReport get academicReport;
 
-  /// Create a copy of HomeState
+  /// Create a copy of StudentPageViewState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SuccessStateImplCopyWith<_$SuccessStateImpl> get copyWith =>
@@ -364,13 +381,13 @@ abstract class _$$ErrorStateImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$ErrorStateImplCopyWithImpl<$Res>
-    extends _$HomeStateCopyWithImpl<$Res, _$ErrorStateImpl>
+    extends _$StudentPageViewStateCopyWithImpl<$Res, _$ErrorStateImpl>
     implements _$$ErrorStateImplCopyWith<$Res> {
   __$$ErrorStateImplCopyWithImpl(
       _$ErrorStateImpl _value, $Res Function(_$ErrorStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HomeState
+  /// Create a copy of StudentPageViewState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -388,15 +405,23 @@ class __$$ErrorStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ErrorStateImpl implements ErrorState {
+class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
   const _$ErrorStateImpl(this.message);
 
   @override
   final String message;
 
   @override
-  String toString() {
-    return 'HomeState.error(message: $message)';
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'StudentPageViewState.error(message: $message)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'StudentPageViewState.error'))
+      ..add(DiagnosticsProperty('message', message));
   }
 
   @override
@@ -410,7 +435,7 @@ class _$ErrorStateImpl implements ErrorState {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of HomeState
+  /// Create a copy of StudentPageViewState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
@@ -487,12 +512,12 @@ class _$ErrorStateImpl implements ErrorState {
   }
 }
 
-abstract class ErrorState implements HomeState {
+abstract class ErrorState implements StudentPageViewState {
   const factory ErrorState(final String message) = _$ErrorStateImpl;
 
   String get message;
 
-  /// Create a copy of HomeState
+  /// Create a copy of StudentPageViewState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ErrorStateImplCopyWith<_$ErrorStateImpl> get copyWith =>
