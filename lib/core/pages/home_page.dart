@@ -1,9 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:sigapp/auth/application/usecases.dart';
 import 'package:sigapp/core/injection/get_it.dart';
+import 'package:sigapp/core/pages/home_page_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_page.dart';
 import 'package:sigapp/student/infrastructure/pages/student_cubit.dart';
@@ -13,36 +11,12 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  HomePageState createState() => HomePageState();
+  HomePageStatefulWidgetState createState() => HomePageStatefulWidgetState();
 }
 
-class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
-  int _selectedIndex = 0;
+class HomePageStatefulWidgetState extends State<HomePage>
+    with AutomaticKeepAliveClientMixin {
   final PageController _pageController = PageController();
-  final AuthUsecases _authUsecases = getIt();
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    _pageController.jumpToPage(index);
-  }
-
-  _logout(BuildContext context) {
-    try {
-      _authUsecases.signOut.execute();
-    } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString()),
-        ),
-      );
-    }
-  }
 
   @override
   bool get wantKeepAlive => true;
@@ -50,87 +24,102 @@ class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: (() {
-          switch (_selectedIndex) {
-            case 0:
-              return Text(
-                'Sigapp',
-                style: TextStyle(fontWeight: FontWeight.w500),
-              );
-            case 1:
-              return Text('Horario');
-            case 2:
-              return Text('Carrera');
-            case 3:
-              return Text('Estudiante');
-            default:
-              return Container();
-          }
-        })(),
-        actions: [
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              if (value == 'logout') {
-                _logout(context);
+
+    final cubit = BlocProvider.of<HomePageCubit>(context);
+    return BlocConsumer<HomePageCubit, HomePageState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: (() {
+              switch (state.selectedIndex) {
+                case 0:
+                  return Text(
+                    'Sigapp',
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  );
+                case 1:
+                  return Text('Horario');
+                case 2:
+                  return Text('Carrera');
+                case 3:
+                  return Text('Estudiante');
+                default:
+                  return Container();
               }
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              PopupMenuItem<String>(
-                value: 'logout',
-                child: Text('Cerrar sesión'),
+            })(),
+            actions: [
+              PopupMenuButton<String>(
+                onSelected: (value) {
+                  if (value == 'logout') {
+                    cubit.logout();
+                  }
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(
+                    value: 'logout',
+                    child: Text('Cerrar sesión'),
+                  ),
+                ],
+                icon: Icon(Icons.more_vert),
               ),
             ],
-            icon: Icon(Icons.more_vert),
           ),
-        ],
-      ),
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        children: <Widget>[
-          CoursesPage(),
-          BlocProvider<ScheduleCubit>(
-            create: (context) => getIt<ScheduleCubit>(),
-            child: SchedulePage(),
+          body: PageView(
+            controller: _pageController,
+            onPageChanged: (index) => cubit.changeTab(index),
+            children: <Widget>[
+              CoursesPage(),
+              BlocProvider<ScheduleCubit>(
+                create: (_) => getIt<ScheduleCubit>(),
+                child: SchedulePage(),
+              ),
+              CareerPage(),
+              BlocProvider<StudentPageViewCubit>(
+                create: (_) => getIt<StudentPageViewCubit>(),
+                child: StudentPageView(),
+              ),
+            ],
           ),
-          CareerPage(),
-          BlocProvider<StudentPageViewCubit>(
-            create: (context) => getIt<StudentPageViewCubit>(),
-            child: StudentPageView(),
+          bottomNavigationBar: NavigationBar(
+            destinations: const <Widget>[
+              NavigationDestination(
+                icon: Icon(Icons.book),
+                label: 'Cursos',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.calendar_today),
+                label: 'Horario',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.school),
+                label: 'Carrera',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.person),
+                label: 'Estudiante',
+              ),
+            ],
+            selectedIndex: state.selectedIndex,
+            onDestinationSelected: (index) => cubit.changeTab(index),
           ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'Cursos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: 'Horario',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Carrera',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Estudiante',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Theme.of(context).primaryColor,
-        unselectedItemColor: Colors.grey,
-        // showUnselectedLabels: true,
-        onTap: _onItemTapped,
-      ),
+        );
+      },
+      listener: (context, state) {
+        if (_pageController.page != state.selectedIndex) {
+          _pageController.jumpToPage(state.selectedIndex);
+        }
+        if (state.errorMessage != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.errorMessage!),
+              action: SnackBarAction(
+                label: 'OK',
+                onPressed: () => cubit.markErrorAsRead(),
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }
@@ -141,18 +130,22 @@ class CoursesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       children: <Widget>[
-        ListTile(
-          title: Text('Horario'),
-          onTap: () {
-            GoRouter.of(context).push('/schedule');
-          },
-        ),
-        ListTile(
-          title: Text('Curso 2'),
-        ),
-        ListTile(
-          title: Text('Curso 3'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Créditos: 32'),
+            OutlinedButton(
+              onPressed: () {},
+              child: Row(
+                children: [
+                  const Text('2021-2'),
+                  Icon(Icons.arrow_drop_down),
+                ],
+              ),
+            ),
+          ],
         ),
       ],
     );

@@ -39,6 +39,7 @@ import 'package:sigapp/auth/infrastructure/services/session_lifecycle_service.da
     as _i649;
 import 'package:sigapp/core/http/siga_client.dart' as _i476;
 import 'package:sigapp/core/injection/register_module.dart' as _i799;
+import 'package:sigapp/core/pages/home_page_cubit.dart' as _i65;
 import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.dart'
     as _i315;
 import 'package:sigapp/courses/application/usecases/get_default_class_schedule_usecase.dart'
@@ -135,6 +136,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i48.SignOutUseCase>(),
           gh<_i908.KeepSessionAliveUsecase>(),
         ));
+    gh.singleton<_i65.HomePageCubit>(
+        () => _i65.HomePageCubit(gh<_i447.AuthUsecases>()));
     gh.factory<_i41.LoginCubit>(
         () => _i41.LoginCubit(gh<_i447.AuthUsecases>()));
     gh.singleton<_i767.AuthenticationManager>(() => _i767.AuthenticationManager(
