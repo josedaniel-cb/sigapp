@@ -28,7 +28,7 @@ class RouterBuilder {
           path: '/',
           builder: (context, state) => BlocProvider(
             create: (context) => getIt<HomePageCubit>(),
-            child: const HomePage(),
+            child: const HomePageWidget(),
           ),
         ),
       ],

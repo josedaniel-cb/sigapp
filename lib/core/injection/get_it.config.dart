@@ -136,8 +136,10 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i48.SignOutUseCase>(),
           gh<_i908.KeepSessionAliveUsecase>(),
         ));
-    gh.singleton<_i65.HomePageCubit>(
-        () => _i65.HomePageCubit(gh<_i447.AuthUsecases>()));
+    gh.singleton<_i65.HomePageCubit>(() => _i65.HomePageCubit(
+          gh<_i447.AuthUsecases>(),
+          gh<_i689.GetDefaultSemesterUsecase>(),
+        ));
     gh.factory<_i41.LoginCubit>(
         () => _i41.LoginCubit(gh<_i447.AuthUsecases>()));
     gh.singleton<_i767.AuthenticationManager>(() => _i767.AuthenticationManager(
