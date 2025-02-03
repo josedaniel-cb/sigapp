@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'default_semester_id.dart';
+part of 'semester_context.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,52 +15,52 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$DefaultSemester {
+mixin _$SemesterContext {
   bool get isLast => throw _privateConstructorUsedError;
   List<SemesterScheduleSemesterMetadata> get availableSemesters =>
       throw _privateConstructorUsedError;
-  SemesterScheduleSemesterMetadata get semester =>
+  SemesterScheduleSemesterMetadata get defaultSemester =>
       throw _privateConstructorUsedError;
 
-  /// Create a copy of DefaultSemester
+  /// Create a copy of SemesterContext
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $DefaultSemesterCopyWith<DefaultSemester> get copyWith =>
+  $SemesterContextCopyWith<SemesterContext> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $DefaultSemesterCopyWith<$Res> {
-  factory $DefaultSemesterCopyWith(
-          DefaultSemester value, $Res Function(DefaultSemester) then) =
-      _$DefaultSemesterCopyWithImpl<$Res, DefaultSemester>;
+abstract class $SemesterContextCopyWith<$Res> {
+  factory $SemesterContextCopyWith(
+          SemesterContext value, $Res Function(SemesterContext) then) =
+      _$SemesterContextCopyWithImpl<$Res, SemesterContext>;
   @useResult
   $Res call(
       {bool isLast,
       List<SemesterScheduleSemesterMetadata> availableSemesters,
-      SemesterScheduleSemesterMetadata semester});
+      SemesterScheduleSemesterMetadata defaultSemester});
 
-  $SemesterScheduleSemesterMetadataCopyWith<$Res> get semester;
+  $SemesterScheduleSemesterMetadataCopyWith<$Res> get defaultSemester;
 }
 
 /// @nodoc
-class _$DefaultSemesterCopyWithImpl<$Res, $Val extends DefaultSemester>
-    implements $DefaultSemesterCopyWith<$Res> {
-  _$DefaultSemesterCopyWithImpl(this._value, this._then);
+class _$SemesterContextCopyWithImpl<$Res, $Val extends SemesterContext>
+    implements $SemesterContextCopyWith<$Res> {
+  _$SemesterContextCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of DefaultSemester
+  /// Create a copy of SemesterContext
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? isLast = null,
     Object? availableSemesters = null,
-    Object? semester = null,
+    Object? defaultSemester = null,
   }) {
     return _then(_value.copyWith(
       isLast: null == isLast
@@ -71,60 +71,60 @@ class _$DefaultSemesterCopyWithImpl<$Res, $Val extends DefaultSemester>
           ? _value.availableSemesters
           : availableSemesters // ignore: cast_nullable_to_non_nullable
               as List<SemesterScheduleSemesterMetadata>,
-      semester: null == semester
-          ? _value.semester
-          : semester // ignore: cast_nullable_to_non_nullable
+      defaultSemester: null == defaultSemester
+          ? _value.defaultSemester
+          : defaultSemester // ignore: cast_nullable_to_non_nullable
               as SemesterScheduleSemesterMetadata,
     ) as $Val);
   }
 
-  /// Create a copy of DefaultSemester
+  /// Create a copy of SemesterContext
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $SemesterScheduleSemesterMetadataCopyWith<$Res> get semester {
-    return $SemesterScheduleSemesterMetadataCopyWith<$Res>(_value.semester,
-        (value) {
-      return _then(_value.copyWith(semester: value) as $Val);
+  $SemesterScheduleSemesterMetadataCopyWith<$Res> get defaultSemester {
+    return $SemesterScheduleSemesterMetadataCopyWith<$Res>(
+        _value.defaultSemester, (value) {
+      return _then(_value.copyWith(defaultSemester: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$$DefaultSemesterImplCopyWith<$Res>
-    implements $DefaultSemesterCopyWith<$Res> {
-  factory _$$DefaultSemesterImplCopyWith(_$DefaultSemesterImpl value,
-          $Res Function(_$DefaultSemesterImpl) then) =
-      __$$DefaultSemesterImplCopyWithImpl<$Res>;
+abstract class _$$SemesterContextImplCopyWith<$Res>
+    implements $SemesterContextCopyWith<$Res> {
+  factory _$$SemesterContextImplCopyWith(_$SemesterContextImpl value,
+          $Res Function(_$SemesterContextImpl) then) =
+      __$$SemesterContextImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {bool isLast,
       List<SemesterScheduleSemesterMetadata> availableSemesters,
-      SemesterScheduleSemesterMetadata semester});
+      SemesterScheduleSemesterMetadata defaultSemester});
 
   @override
-  $SemesterScheduleSemesterMetadataCopyWith<$Res> get semester;
+  $SemesterScheduleSemesterMetadataCopyWith<$Res> get defaultSemester;
 }
 
 /// @nodoc
-class __$$DefaultSemesterImplCopyWithImpl<$Res>
-    extends _$DefaultSemesterCopyWithImpl<$Res, _$DefaultSemesterImpl>
-    implements _$$DefaultSemesterImplCopyWith<$Res> {
-  __$$DefaultSemesterImplCopyWithImpl(
-      _$DefaultSemesterImpl _value, $Res Function(_$DefaultSemesterImpl) _then)
+class __$$SemesterContextImplCopyWithImpl<$Res>
+    extends _$SemesterContextCopyWithImpl<$Res, _$SemesterContextImpl>
+    implements _$$SemesterContextImplCopyWith<$Res> {
+  __$$SemesterContextImplCopyWithImpl(
+      _$SemesterContextImpl _value, $Res Function(_$SemesterContextImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of DefaultSemester
+  /// Create a copy of SemesterContext
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? isLast = null,
     Object? availableSemesters = null,
-    Object? semester = null,
+    Object? defaultSemester = null,
   }) {
-    return _then(_$DefaultSemesterImpl(
+    return _then(_$SemesterContextImpl(
       isLast: null == isLast
           ? _value.isLast
           : isLast // ignore: cast_nullable_to_non_nullable
@@ -133,9 +133,9 @@ class __$$DefaultSemesterImplCopyWithImpl<$Res>
           ? _value._availableSemesters
           : availableSemesters // ignore: cast_nullable_to_non_nullable
               as List<SemesterScheduleSemesterMetadata>,
-      semester: null == semester
-          ? _value.semester
-          : semester // ignore: cast_nullable_to_non_nullable
+      defaultSemester: null == defaultSemester
+          ? _value.defaultSemester
+          : defaultSemester // ignore: cast_nullable_to_non_nullable
               as SemesterScheduleSemesterMetadata,
     ));
   }
@@ -143,11 +143,11 @@ class __$$DefaultSemesterImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$DefaultSemesterImpl implements _DefaultSemester {
-  _$DefaultSemesterImpl(
+class _$SemesterContextImpl implements _SemesterContext {
+  _$SemesterContextImpl(
       {required this.isLast,
       required final List<SemesterScheduleSemesterMetadata> availableSemesters,
-      required this.semester})
+      required this.defaultSemester})
       : _availableSemesters = availableSemesters;
 
   @override
@@ -162,57 +162,60 @@ class _$DefaultSemesterImpl implements _DefaultSemester {
   }
 
   @override
-  final SemesterScheduleSemesterMetadata semester;
+  final SemesterScheduleSemesterMetadata defaultSemester;
 
   @override
   String toString() {
-    return 'DefaultSemester(isLast: $isLast, availableSemesters: $availableSemesters, semester: $semester)';
+    return 'SemesterContext(isLast: $isLast, availableSemesters: $availableSemesters, defaultSemester: $defaultSemester)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$DefaultSemesterImpl &&
+            other is _$SemesterContextImpl &&
             (identical(other.isLast, isLast) || other.isLast == isLast) &&
             const DeepCollectionEquality()
                 .equals(other._availableSemesters, _availableSemesters) &&
-            (identical(other.semester, semester) ||
-                other.semester == semester));
+            (identical(other.defaultSemester, defaultSemester) ||
+                other.defaultSemester == defaultSemester));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLast,
-      const DeepCollectionEquality().hash(_availableSemesters), semester);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isLast,
+      const DeepCollectionEquality().hash(_availableSemesters),
+      defaultSemester);
 
-  /// Create a copy of DefaultSemester
+  /// Create a copy of SemesterContext
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$DefaultSemesterImplCopyWith<_$DefaultSemesterImpl> get copyWith =>
-      __$$DefaultSemesterImplCopyWithImpl<_$DefaultSemesterImpl>(
+  _$$SemesterContextImplCopyWith<_$SemesterContextImpl> get copyWith =>
+      __$$SemesterContextImplCopyWithImpl<_$SemesterContextImpl>(
           this, _$identity);
 }
 
-abstract class _DefaultSemester implements DefaultSemester {
-  factory _DefaultSemester(
+abstract class _SemesterContext implements SemesterContext {
+  factory _SemesterContext(
       {required final bool isLast,
       required final List<SemesterScheduleSemesterMetadata> availableSemesters,
       required final SemesterScheduleSemesterMetadata
-          semester}) = _$DefaultSemesterImpl;
+          defaultSemester}) = _$SemesterContextImpl;
 
   @override
   bool get isLast;
   @override
   List<SemesterScheduleSemesterMetadata> get availableSemesters;
   @override
-  SemesterScheduleSemesterMetadata get semester;
+  SemesterScheduleSemesterMetadata get defaultSemester;
 
-  /// Create a copy of DefaultSemester
+  /// Create a copy of SemesterContext
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$DefaultSemesterImplCopyWith<_$DefaultSemesterImpl> get copyWith =>
+  _$$SemesterContextImplCopyWith<_$SemesterContextImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -6,6 +6,7 @@ import 'package:sigapp/core/widgets/error_state.dart';
 import 'package:sigapp/core/widgets/loading_state.dart';
 import 'package:sigapp/courses/infrastructure/pages/career/career_page.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_page.dart';
 import 'package:sigapp/student/infrastructure/pages/student_cubit.dart';
@@ -21,36 +22,36 @@ class HomePageWidget extends StatefulWidget {
 class _HomePageWidgetState extends State<HomePageWidget> {
   @override
   void initState() {
-    final cubit = BlocProvider.of<HomePageCubit>(context);
-    cubit.init();
+    // final cubit = BlocProvider.of<HomePageCubit>(context);
+    // cubit.init();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<HomePageCubit>(context);
+    // final cubit = BlocProvider.of<HomePageCubit>(context);
 
     return BlocBuilder<HomePageCubit, HomePageState>(
       builder: (context, state) {
         return state.map(
-          loading: (_) => Scaffold(body: const LoadingStateWidget()),
-          error: (state) => Scaffold(
-            body: ErrorStateWidget(
-              message: state.message,
-              onRetry: () => cubit.init(),
-            ),
-          ),
-          ready: (state) => HomePageReadyStateWidget(state: state),
+          // loading: (_) => Scaffold(body: const LoadingStateWidget()),
+          // error: (state) => Scaffold(
+          //   body: ErrorStateWidget(
+          //     message: state.message,
+          //     // onRetry: () => cubit.init(),
+          //   ),
+          // ),
+          success: (state) => HomePageSuccessStateWidget(state: state),
         );
       },
     );
   }
 }
 
-class HomePageReadyStateWidget extends StatefulWidget {
-  const HomePageReadyStateWidget({super.key, required this.state});
+class HomePageSuccessStateWidget extends StatefulWidget {
+  const HomePageSuccessStateWidget({super.key, required this.state});
 
-  final HomePageReadyState state;
+  final HomePageSuccessState state;
 
   @override
   HomeStateReadyStateStatefulWidgetState createState() =>
@@ -58,19 +59,20 @@ class HomePageReadyStateWidget extends StatefulWidget {
 }
 
 class HomeStateReadyStateStatefulWidgetState
-    extends State<HomePageReadyStateWidget> with AutomaticKeepAliveClientMixin {
+    extends State<HomePageSuccessStateWidget>
+    with AutomaticKeepAliveClientMixin {
   final PageController _pageController = PageController();
-  late final HomePageCubit _cubit;
+  // late final HomePageCubit _cubit;
 
   @override
   bool get wantKeepAlive => true;
 
-  @override
-  void initState() {
-    super.initState();
-    _cubit = BlocProvider.of<HomePageCubit>(context);
-    _cubit.init();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // _cubit = BlocProvider.of<HomePageCubit>(context);
+  //   // _cubit.init();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +83,7 @@ class HomeStateReadyStateStatefulWidgetState
       child: Scaffold(
         appBar: AppBar(
           title: (() {
-            switch (widget.state.selectedIndex) {
+            switch (widget.state.selectedTabIndex) {
               case 0:
                 return Text(
                   'Sigapp',
@@ -118,7 +120,12 @@ class HomeStateReadyStateStatefulWidgetState
           controller: _pageController,
           onPageChanged: (index) => cubit.changeTab(index),
           children: <Widget>[
-            CoursesPage(),
+            BlocProvider(
+              create: (_) => getIt<CoursesPageCubit>(),
+              child: CoursesPageWidget(
+                  // semesterContext: widget.state.semesterContext,
+                  ),
+            ),
             BlocProvider<ScheduleCubit>(
               create: (_) => getIt<ScheduleCubit>(),
               child: SchedulePage(),
@@ -149,16 +156,16 @@ class HomeStateReadyStateStatefulWidgetState
               label: 'Estudiante',
             ),
           ],
-          selectedIndex: widget.state.selectedIndex,
+          selectedIndex: widget.state.selectedTabIndex,
           onDestinationSelected: (index) => cubit.changeTab(index),
         ),
       ),
       listener: (context, state) {
-        if (state is! HomePageReadyState) return;
+        if (state is! HomePageSuccessState) return;
 
         if (_pageController.hasClients &&
-            _pageController.page != state.selectedIndex) {
-          _pageController.jumpToPage(state.selectedIndex);
+            _pageController.page != state.selectedTabIndex) {
+          _pageController.jumpToPage(state.selectedTabIndex);
         }
         if (state.errorMessage != null) {
           ScaffoldMessenger.of(context).showSnackBar(

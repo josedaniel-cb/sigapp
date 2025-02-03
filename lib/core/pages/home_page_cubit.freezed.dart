@@ -16,55 +16,47 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$HomePageState {
+  int get selectedTabIndex =>
+      throw _privateConstructorUsedError; // required SemesterContext semesterContext,
+  String? get errorMessage => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loading,
-    required TResult Function(int selectedIndex,
-            DefaultSemester defaultSemester, String? errorMessage)
-        ready,
-    required TResult Function(String message) error,
+    required TResult Function(int selectedTabIndex, String? errorMessage)
+        success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loading,
-    TResult? Function(int selectedIndex, DefaultSemester defaultSemester,
-            String? errorMessage)?
-        ready,
-    TResult? Function(String message)? error,
+    TResult? Function(int selectedTabIndex, String? errorMessage)? success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loading,
-    TResult Function(int selectedIndex, DefaultSemester defaultSemester,
-            String? errorMessage)?
-        ready,
-    TResult Function(String message)? error,
+    TResult Function(int selectedTabIndex, String? errorMessage)? success,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(HomePageLoadingState value) loading,
-    required TResult Function(HomePageReadyState value) ready,
-    required TResult Function(HomePageErrorState value) error,
+    required TResult Function(HomePageSuccessState value) success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(HomePageLoadingState value)? loading,
-    TResult? Function(HomePageReadyState value)? ready,
-    TResult? Function(HomePageErrorState value)? error,
+    TResult? Function(HomePageSuccessState value)? success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(HomePageLoadingState value)? loading,
-    TResult Function(HomePageReadyState value)? ready,
-    TResult Function(HomePageErrorState value)? error,
+    TResult Function(HomePageSuccessState value)? success,
     required TResult orElse(),
   }) =>
+      throw _privateConstructorUsedError;
+
+  /// Create a copy of HomePageState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $HomePageStateCopyWith<HomePageState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -73,6 +65,8 @@ abstract class $HomePageStateCopyWith<$Res> {
   factory $HomePageStateCopyWith(
           HomePageState value, $Res Function(HomePageState) then) =
       _$HomePageStateCopyWithImpl<$Res, HomePageState>;
+  @useResult
+  $Res call({int selectedTabIndex, String? errorMessage});
 }
 
 /// @nodoc
@@ -87,154 +81,42 @@ class _$HomePageStateCopyWithImpl<$Res, $Val extends HomePageState>
 
   /// Create a copy of HomePageState
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? selectedTabIndex = null,
+    Object? errorMessage = freezed,
+  }) {
+    return _then(_value.copyWith(
+      selectedTabIndex: null == selectedTabIndex
+          ? _value.selectedTabIndex
+          : selectedTabIndex // ignore: cast_nullable_to_non_nullable
+              as int,
+      errorMessage: freezed == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
 }
 
 /// @nodoc
-abstract class _$$HomePageLoadingStateImplCopyWith<$Res> {
-  factory _$$HomePageLoadingStateImplCopyWith(_$HomePageLoadingStateImpl value,
-          $Res Function(_$HomePageLoadingStateImpl) then) =
-      __$$HomePageLoadingStateImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$HomePageLoadingStateImplCopyWithImpl<$Res>
-    extends _$HomePageStateCopyWithImpl<$Res, _$HomePageLoadingStateImpl>
-    implements _$$HomePageLoadingStateImplCopyWith<$Res> {
-  __$$HomePageLoadingStateImplCopyWithImpl(_$HomePageLoadingStateImpl _value,
-      $Res Function(_$HomePageLoadingStateImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of HomePageState
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$HomePageLoadingStateImpl
-    with DiagnosticableTreeMixin
-    implements HomePageLoadingState {
-  const _$HomePageLoadingStateImpl();
-
+abstract class _$$HomePageSuccessStateImplCopyWith<$Res>
+    implements $HomePageStateCopyWith<$Res> {
+  factory _$$HomePageSuccessStateImplCopyWith(_$HomePageSuccessStateImpl value,
+          $Res Function(_$HomePageSuccessStateImpl) then) =
+      __$$HomePageSuccessStateImplCopyWithImpl<$Res>;
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'HomePageState.loading()';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'HomePageState.loading'));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$HomePageLoadingStateImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loading,
-    required TResult Function(int selectedIndex,
-            DefaultSemester defaultSemester, String? errorMessage)
-        ready,
-    required TResult Function(String message) error,
-  }) {
-    return loading();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loading,
-    TResult? Function(int selectedIndex, DefaultSemester defaultSemester,
-            String? errorMessage)?
-        ready,
-    TResult? Function(String message)? error,
-  }) {
-    return loading?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loading,
-    TResult Function(int selectedIndex, DefaultSemester defaultSemester,
-            String? errorMessage)?
-        ready,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(HomePageLoadingState value) loading,
-    required TResult Function(HomePageReadyState value) ready,
-    required TResult Function(HomePageErrorState value) error,
-  }) {
-    return loading(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(HomePageLoadingState value)? loading,
-    TResult? Function(HomePageReadyState value)? ready,
-    TResult? Function(HomePageErrorState value)? error,
-  }) {
-    return loading?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(HomePageLoadingState value)? loading,
-    TResult Function(HomePageReadyState value)? ready,
-    TResult Function(HomePageErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class HomePageLoadingState implements HomePageState {
-  const factory HomePageLoadingState() = _$HomePageLoadingStateImpl;
-}
-
-/// @nodoc
-abstract class _$$HomePageReadyStateImplCopyWith<$Res> {
-  factory _$$HomePageReadyStateImplCopyWith(_$HomePageReadyStateImpl value,
-          $Res Function(_$HomePageReadyStateImpl) then) =
-      __$$HomePageReadyStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call(
-      {int selectedIndex,
-      DefaultSemester defaultSemester,
-      String? errorMessage});
-
-  $DefaultSemesterCopyWith<$Res> get defaultSemester;
+  $Res call({int selectedTabIndex, String? errorMessage});
 }
 
 /// @nodoc
-class __$$HomePageReadyStateImplCopyWithImpl<$Res>
-    extends _$HomePageStateCopyWithImpl<$Res, _$HomePageReadyStateImpl>
-    implements _$$HomePageReadyStateImplCopyWith<$Res> {
-  __$$HomePageReadyStateImplCopyWithImpl(_$HomePageReadyStateImpl _value,
-      $Res Function(_$HomePageReadyStateImpl) _then)
+class __$$HomePageSuccessStateImplCopyWithImpl<$Res>
+    extends _$HomePageStateCopyWithImpl<$Res, _$HomePageSuccessStateImpl>
+    implements _$$HomePageSuccessStateImplCopyWith<$Res> {
+  __$$HomePageSuccessStateImplCopyWithImpl(_$HomePageSuccessStateImpl _value,
+      $Res Function(_$HomePageSuccessStateImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of HomePageState
@@ -242,66 +124,47 @@ class __$$HomePageReadyStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? selectedIndex = null,
-    Object? defaultSemester = null,
+    Object? selectedTabIndex = null,
     Object? errorMessage = freezed,
   }) {
-    return _then(_$HomePageReadyStateImpl(
-      selectedIndex: null == selectedIndex
-          ? _value.selectedIndex
-          : selectedIndex // ignore: cast_nullable_to_non_nullable
+    return _then(_$HomePageSuccessStateImpl(
+      selectedTabIndex: null == selectedTabIndex
+          ? _value.selectedTabIndex
+          : selectedTabIndex // ignore: cast_nullable_to_non_nullable
               as int,
-      defaultSemester: null == defaultSemester
-          ? _value.defaultSemester
-          : defaultSemester // ignore: cast_nullable_to_non_nullable
-              as DefaultSemester,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
-
-  /// Create a copy of HomePageState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $DefaultSemesterCopyWith<$Res> get defaultSemester {
-    return $DefaultSemesterCopyWith<$Res>(_value.defaultSemester, (value) {
-      return _then(_value.copyWith(defaultSemester: value));
-    });
-  }
 }
 
 /// @nodoc
 
-class _$HomePageReadyStateImpl
+class _$HomePageSuccessStateImpl
     with DiagnosticableTreeMixin
-    implements HomePageReadyState {
-  const _$HomePageReadyStateImpl(
-      {required this.selectedIndex,
-      required this.defaultSemester,
-      this.errorMessage});
+    implements HomePageSuccessState {
+  const _$HomePageSuccessStateImpl(
+      {required this.selectedTabIndex, this.errorMessage});
 
   @override
-  final int selectedIndex;
-  @override
-  final DefaultSemester defaultSemester;
+  final int selectedTabIndex;
+// required SemesterContext semesterContext,
   @override
   final String? errorMessage;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'HomePageState.ready(selectedIndex: $selectedIndex, defaultSemester: $defaultSemester, errorMessage: $errorMessage)';
+    return 'HomePageState.success(selectedTabIndex: $selectedTabIndex, errorMessage: $errorMessage)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'HomePageState.ready'))
-      ..add(DiagnosticsProperty('selectedIndex', selectedIndex))
-      ..add(DiagnosticsProperty('defaultSemester', defaultSemester))
+      ..add(DiagnosticsProperty('type', 'HomePageState.success'))
+      ..add(DiagnosticsProperty('selectedTabIndex', selectedTabIndex))
       ..add(DiagnosticsProperty('errorMessage', errorMessage));
   }
 
@@ -309,64 +172,51 @@ class _$HomePageReadyStateImpl
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$HomePageReadyStateImpl &&
-            (identical(other.selectedIndex, selectedIndex) ||
-                other.selectedIndex == selectedIndex) &&
-            (identical(other.defaultSemester, defaultSemester) ||
-                other.defaultSemester == defaultSemester) &&
+            other is _$HomePageSuccessStateImpl &&
+            (identical(other.selectedTabIndex, selectedTabIndex) ||
+                other.selectedTabIndex == selectedTabIndex) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, selectedIndex, defaultSemester, errorMessage);
+  int get hashCode => Object.hash(runtimeType, selectedTabIndex, errorMessage);
 
   /// Create a copy of HomePageState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$HomePageReadyStateImplCopyWith<_$HomePageReadyStateImpl> get copyWith =>
-      __$$HomePageReadyStateImplCopyWithImpl<_$HomePageReadyStateImpl>(
-          this, _$identity);
+  _$$HomePageSuccessStateImplCopyWith<_$HomePageSuccessStateImpl>
+      get copyWith =>
+          __$$HomePageSuccessStateImplCopyWithImpl<_$HomePageSuccessStateImpl>(
+              this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() loading,
-    required TResult Function(int selectedIndex,
-            DefaultSemester defaultSemester, String? errorMessage)
-        ready,
-    required TResult Function(String message) error,
+    required TResult Function(int selectedTabIndex, String? errorMessage)
+        success,
   }) {
-    return ready(selectedIndex, defaultSemester, errorMessage);
+    return success(selectedTabIndex, errorMessage);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loading,
-    TResult? Function(int selectedIndex, DefaultSemester defaultSemester,
-            String? errorMessage)?
-        ready,
-    TResult? Function(String message)? error,
+    TResult? Function(int selectedTabIndex, String? errorMessage)? success,
   }) {
-    return ready?.call(selectedIndex, defaultSemester, errorMessage);
+    return success?.call(selectedTabIndex, errorMessage);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loading,
-    TResult Function(int selectedIndex, DefaultSemester defaultSemester,
-            String? errorMessage)?
-        ready,
-    TResult Function(String message)? error,
+    TResult Function(int selectedTabIndex, String? errorMessage)? success,
     required TResult orElse(),
   }) {
-    if (ready != null) {
-      return ready(selectedIndex, defaultSemester, errorMessage);
+    if (success != null) {
+      return success(selectedTabIndex, errorMessage);
     }
     return orElse();
   }
@@ -374,215 +224,46 @@ class _$HomePageReadyStateImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(HomePageLoadingState value) loading,
-    required TResult Function(HomePageReadyState value) ready,
-    required TResult Function(HomePageErrorState value) error,
+    required TResult Function(HomePageSuccessState value) success,
   }) {
-    return ready(this);
+    return success(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(HomePageLoadingState value)? loading,
-    TResult? Function(HomePageReadyState value)? ready,
-    TResult? Function(HomePageErrorState value)? error,
+    TResult? Function(HomePageSuccessState value)? success,
   }) {
-    return ready?.call(this);
+    return success?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(HomePageLoadingState value)? loading,
-    TResult Function(HomePageReadyState value)? ready,
-    TResult Function(HomePageErrorState value)? error,
+    TResult Function(HomePageSuccessState value)? success,
     required TResult orElse(),
   }) {
-    if (ready != null) {
-      return ready(this);
+    if (success != null) {
+      return success(this);
     }
     return orElse();
   }
 }
 
-abstract class HomePageReadyState implements HomePageState {
-  const factory HomePageReadyState(
-      {required final int selectedIndex,
-      required final DefaultSemester defaultSemester,
-      final String? errorMessage}) = _$HomePageReadyStateImpl;
+abstract class HomePageSuccessState implements HomePageState {
+  const factory HomePageSuccessState(
+      {required final int selectedTabIndex,
+      final String? errorMessage}) = _$HomePageSuccessStateImpl;
 
-  int get selectedIndex;
-  DefaultSemester get defaultSemester;
+  @override
+  int get selectedTabIndex; // required SemesterContext semesterContext,
+  @override
   String? get errorMessage;
 
   /// Create a copy of HomePageState
   /// with the given fields replaced by the non-null parameter values.
+  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$HomePageReadyStateImplCopyWith<_$HomePageReadyStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$HomePageErrorStateImplCopyWith<$Res> {
-  factory _$$HomePageErrorStateImplCopyWith(_$HomePageErrorStateImpl value,
-          $Res Function(_$HomePageErrorStateImpl) then) =
-      __$$HomePageErrorStateImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String message});
-}
-
-/// @nodoc
-class __$$HomePageErrorStateImplCopyWithImpl<$Res>
-    extends _$HomePageStateCopyWithImpl<$Res, _$HomePageErrorStateImpl>
-    implements _$$HomePageErrorStateImplCopyWith<$Res> {
-  __$$HomePageErrorStateImplCopyWithImpl(_$HomePageErrorStateImpl _value,
-      $Res Function(_$HomePageErrorStateImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of HomePageState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? message = null,
-  }) {
-    return _then(_$HomePageErrorStateImpl(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$HomePageErrorStateImpl
-    with DiagnosticableTreeMixin
-    implements HomePageErrorState {
-  const _$HomePageErrorStateImpl(this.message);
-
-  @override
-  final String message;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'HomePageState.error(message: $message)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'HomePageState.error'))
-      ..add(DiagnosticsProperty('message', message));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$HomePageErrorStateImpl &&
-            (identical(other.message, message) || other.message == message));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, message);
-
-  /// Create a copy of HomePageState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$HomePageErrorStateImplCopyWith<_$HomePageErrorStateImpl> get copyWith =>
-      __$$HomePageErrorStateImplCopyWithImpl<_$HomePageErrorStateImpl>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() loading,
-    required TResult Function(int selectedIndex,
-            DefaultSemester defaultSemester, String? errorMessage)
-        ready,
-    required TResult Function(String message) error,
-  }) {
-    return error(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? loading,
-    TResult? Function(int selectedIndex, DefaultSemester defaultSemester,
-            String? errorMessage)?
-        ready,
-    TResult? Function(String message)? error,
-  }) {
-    return error?.call(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? loading,
-    TResult Function(int selectedIndex, DefaultSemester defaultSemester,
-            String? errorMessage)?
-        ready,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(message);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(HomePageLoadingState value) loading,
-    required TResult Function(HomePageReadyState value) ready,
-    required TResult Function(HomePageErrorState value) error,
-  }) {
-    return error(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(HomePageLoadingState value)? loading,
-    TResult? Function(HomePageReadyState value)? ready,
-    TResult? Function(HomePageErrorState value)? error,
-  }) {
-    return error?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(HomePageLoadingState value)? loading,
-    TResult Function(HomePageReadyState value)? ready,
-    TResult Function(HomePageErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class HomePageErrorState implements HomePageState {
-  const factory HomePageErrorState(final String message) =
-      _$HomePageErrorStateImpl;
-
-  String get message;
-
-  /// Create a copy of HomePageState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$HomePageErrorStateImplCopyWith<_$HomePageErrorStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$HomePageSuccessStateImplCopyWith<_$HomePageSuccessStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

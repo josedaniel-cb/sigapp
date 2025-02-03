@@ -44,16 +44,24 @@ import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.d
     as _i315;
 import 'package:sigapp/courses/application/usecases/get_default_class_schedule_usecase.dart'
     as _i562;
+import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase.dart'
+    as _i650;
+import 'package:sigapp/courses/domain/repositories/courses_repository.dart'
+    as _i986;
 import 'package:sigapp/courses/domain/repositories/schedule_repository.dart'
     as _i974;
+import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart'
+    as _i525;
 import 'package:sigapp/courses/infrastructure/pages/schedule/partials/export_to_calendar_cubit.dart'
     as _i993;
 import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_cubit.dart'
     as _i575;
+import 'package:sigapp/courses/infrastructure/repositories/courses_repository.dart'
+    as _i892;
 import 'package:sigapp/courses/infrastructure/repositories/schedule_repository.dart'
     as _i637;
-import 'package:sigapp/semester/application/get_default_semester_usecase.dart'
-    as _i689;
+import 'package:sigapp/semester/application/get_semester_context_usecase.dart'
+    as _i320;
 import 'package:sigapp/student/application/usecases/get_academic_report_usecase.dart'
     as _i771;
 import 'package:sigapp/student/domain/repositories/student_repository.dart'
@@ -83,6 +91,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i476.SigaClient(gh<_i460.SharedPreferences>()));
     gh.singleton<_i679.SessionLifecycleService>(
         () => _i649.SessionLifecycleServiceImpl(gh<_i476.SigaClient>()));
+    gh.lazySingleton<_i986.CoursesRepository>(
+        () => _i892.CoursesRepositoryImpl(gh<_i476.SigaClient>()));
     gh.lazySingleton<_i594.StudentRepository>(
         () => _i528.StudentRepositoryImpl(gh<_i476.SigaClient>()));
     gh.lazySingleton<_i974.ScheduleRepository>(
@@ -97,22 +107,28 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i193.GetStoredCredentialsUseCase>(() =>
         _i193.GetStoredCredentialsUseCase(
             gh<_i1010.SharedPreferencesAuthRepository>()));
+    gh.lazySingleton<_i650.GetEnrolledCoursesUsecase>(
+        () => _i650.GetEnrolledCoursesUsecase(gh<_i986.CoursesRepository>()));
     gh.singleton<_i10.AuthRepository>(
         () => _i127.AuthRepositoryImpl(gh<_i476.SigaClient>()));
     gh.factory<_i993.ExportToCalendarCubit>(
         () => _i993.ExportToCalendarCubit(gh<_i315.GetClassScheduleUsecase>()));
     gh.factory<_i151.StudentPageViewCubit>(
         () => _i151.StudentPageViewCubit(gh<_i771.GetAcademicReportUsecase>()));
-    gh.lazySingleton<_i689.GetDefaultSemesterUsecase>(() =>
-        _i689.GetDefaultSemesterUsecase(gh<_i771.GetAcademicReportUsecase>()));
+    gh.lazySingleton<_i320.GetSemesterContextUsecase>(() =>
+        _i320.GetSemesterContextUsecase(gh<_i771.GetAcademicReportUsecase>()));
     gh.singleton<_i583.GoRouter>(
         () => registerModule.router(gh<_i193.GetStoredCredentialsUseCase>()));
     gh.factory<_i908.KeepSessionAliveUsecase>(
         () => _i908.KeepSessionAliveUsecase(gh<_i10.AuthRepository>()));
+    gh.singleton<_i525.CoursesPageCubit>(() => _i525.CoursesPageCubit(
+          gh<_i650.GetEnrolledCoursesUsecase>(),
+          gh<_i320.GetSemesterContextUsecase>(),
+        ));
     gh.lazySingleton<_i562.GetDefaultClassScheduleUsecase>(
         () => _i562.GetDefaultClassScheduleUsecase(
               gh<_i771.GetAcademicReportUsecase>(),
-              gh<_i689.GetDefaultSemesterUsecase>(),
+              gh<_i320.GetSemesterContextUsecase>(),
               gh<_i315.GetClassScheduleUsecase>(),
             ));
     gh.singleton<_i528.NavigationService>(
@@ -136,10 +152,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i48.SignOutUseCase>(),
           gh<_i908.KeepSessionAliveUsecase>(),
         ));
-    gh.singleton<_i65.HomePageCubit>(() => _i65.HomePageCubit(
-          gh<_i447.AuthUsecases>(),
-          gh<_i689.GetDefaultSemesterUsecase>(),
-        ));
+    gh.singleton<_i65.HomePageCubit>(
+        () => _i65.HomePageCubit(gh<_i447.AuthUsecases>()));
     gh.factory<_i41.LoginCubit>(
         () => _i41.LoginCubit(gh<_i447.AuthUsecases>()));
     gh.singleton<_i767.AuthenticationManager>(() => _i767.AuthenticationManager(

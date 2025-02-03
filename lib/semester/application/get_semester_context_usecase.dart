@@ -1,15 +1,21 @@
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/semester/domain/value-objects/default_semester_id.dart';
+import 'package:sigapp/semester/domain/value-objects/semester_context.dart';
 import 'package:sigapp/student/application/usecases/get_academic_report_usecase.dart';
 import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
 
 @lazySingleton
-class GetDefaultSemesterUsecase {
+class GetSemesterContextUsecase {
   final GetAcademicReportUsecase _getAcademicReportUsecase;
 
-  GetDefaultSemesterUsecase(this._getAcademicReportUsecase);
+  GetSemesterContextUsecase(this._getAcademicReportUsecase);
 
-  Future<DefaultSemester> execute() async {
+  SemesterContext? _value;
+
+  Future<SemesterContext> execute() async {
+    if (_value != null) {
+      return _value!;
+    }
+
     final academicReport = await _getAcademicReportUsecase.execute();
     final firstSemesterId = academicReport.enrollmentSemesterId;
     final lastSemesterId = academicReport.lastSemesterId;
@@ -26,14 +32,17 @@ class GetDefaultSemesterUsecase {
       rangeLastSemesterId = academicReport.currentSemesterId;
     }
 
-    return DefaultSemester(
+    _value = SemesterContext(
       isLast: isLastSemesterIdKnown,
-      semester: SemesterScheduleSemesterMetadata.buildFromId(defaultSemesterId),
+      defaultSemester:
+          SemesterScheduleSemesterMetadata.buildFromId(defaultSemesterId),
       availableSemesters:
           _buildSemesterRange(firstSemesterId, rangeLastSemesterId)
               .map((id) => SemesterScheduleSemesterMetadata.buildFromId(id))
               .toList(),
     );
+
+    return execute();
   }
 
   List<String> _buildSemesterRange(

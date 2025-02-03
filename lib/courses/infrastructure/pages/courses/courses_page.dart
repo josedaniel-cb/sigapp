@@ -1,29 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sigapp/core/widgets/error_state.dart';
+import 'package:sigapp/core/widgets/loading_state.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
 
-class CoursesPage extends StatelessWidget {
-  const CoursesPage({super.key});
+class CoursesPageWidget extends StatefulWidget {
+  const CoursesPageWidget({super.key});
+
+  @override
+  State<CoursesPageWidget> createState() => _CoursesPageWidgetState();
+}
+
+class _CoursesPageWidgetState extends State<CoursesPageWidget> {
+  @override
+  void initState() {
+    BlocProvider.of<CoursesPageCubit>(context).init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Créditos: 32'),
-            OutlinedButton(
-              onPressed: () {},
-              child: Row(
-                children: [
-                  const Text('2021-2'),
-                  Icon(Icons.arrow_drop_down),
-                ],
-              ),
-            ),
-          ],
+    return BlocBuilder<CoursesPageCubit, CoursesPageState>(
+      builder: (context, state) => state.map(
+        loading: (_) => LoadingStateWidget(),
+        error: (state) => ErrorStateWidget(
+          message: state.message,
+          onRetry: () => BlocProvider.of<CoursesPageCubit>(context).init(),
         ),
-      ],
+        success: (state) => _buildSuccessState(state),
+      ),
+    );
+  }
+
+  Widget _buildSuccessState(CoursesPageSuccessState state) {
+    return ListView.builder(
+      itemCount: state.courses.length,
+      itemBuilder: (context, index) {
+        final course = state.courses[index];
+        return ListTile(
+          title: Text(course.courseName),
+          subtitle: Text(course.courseCode),
+        );
+      },
     );
   }
 }

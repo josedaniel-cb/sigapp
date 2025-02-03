@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/semester/application/get_default_semester_usecase.dart';
+import 'package:sigapp/semester/application/get_semester_context_usecase.dart';
 import 'package:sigapp/student/application/usecases/get_academic_report_usecase.dart';
 import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.dart';
 import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
@@ -7,7 +7,7 @@ import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
 @lazySingleton
 class GetDefaultClassScheduleUsecase {
   final GetAcademicReportUsecase _getAcademicReportUsecase;
-  final GetDefaultSemesterUsecase _getDefaultSemesterUsecase;
+  final GetSemesterContextUsecase _getDefaultSemesterUsecase;
   final GetClassScheduleUsecase _getClassScheduleUsecase;
 
   GetDefaultClassScheduleUsecase(
@@ -21,10 +21,10 @@ class GetDefaultClassScheduleUsecase {
 
     return SemesterSchedule(
       studentAcademicReport: await _getAcademicReportUsecase.execute(),
-      semester: defaultSemester.semester,
+      semester: defaultSemester.defaultSemester,
       semesterList: defaultSemester.availableSemesters,
-      weeklyEvents:
-          await _getClassScheduleUsecase.execute(defaultSemester.semester.id),
+      weeklyEvents: await _getClassScheduleUsecase
+          .execute(defaultSemester.defaultSemester.id),
     );
   }
 }
