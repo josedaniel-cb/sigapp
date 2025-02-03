@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'enrolled_course.dart';
+part of 'raw_enrolled_course.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$EnrolledCourse {
+mixin _$RawEnrolledCourse {
 // required String? Acta,
 // required String? Activo,
 // required String Aula,
@@ -45,18 +45,18 @@ mixin _$EnrolledCourse {
 // required String TipoCurso,
   CourseType get courseType => throw _privateConstructorUsedError;
 
-  /// Create a copy of EnrolledCourse
+  /// Create a copy of RawEnrolledCourse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $EnrolledCourseCopyWith<EnrolledCourse> get copyWith =>
+  $RawEnrolledCourseCopyWith<RawEnrolledCourse> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $EnrolledCourseCopyWith<$Res> {
-  factory $EnrolledCourseCopyWith(
-          EnrolledCourse value, $Res Function(EnrolledCourse) then) =
-      _$EnrolledCourseCopyWithImpl<$Res, EnrolledCourse>;
+abstract class $RawEnrolledCourseCopyWith<$Res> {
+  factory $RawEnrolledCourseCopyWith(
+          RawEnrolledCourse value, $Res Function(RawEnrolledCourse) then) =
+      _$RawEnrolledCourseCopyWithImpl<$Res, RawEnrolledCourse>;
   @useResult
   $Res call(
       {String url,
@@ -71,16 +71,16 @@ abstract class $EnrolledCourseCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$EnrolledCourseCopyWithImpl<$Res, $Val extends EnrolledCourse>
-    implements $EnrolledCourseCopyWith<$Res> {
-  _$EnrolledCourseCopyWithImpl(this._value, this._then);
+class _$RawEnrolledCourseCopyWithImpl<$Res, $Val extends RawEnrolledCourse>
+    implements $RawEnrolledCourseCopyWith<$Res> {
+  _$RawEnrolledCourseCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of EnrolledCourse
+  /// Create a copy of RawEnrolledCourse
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -137,11 +137,11 @@ class _$EnrolledCourseCopyWithImpl<$Res, $Val extends EnrolledCourse>
 }
 
 /// @nodoc
-abstract class _$$EnrolledCourseImplCopyWith<$Res>
-    implements $EnrolledCourseCopyWith<$Res> {
-  factory _$$EnrolledCourseImplCopyWith(_$EnrolledCourseImpl value,
-          $Res Function(_$EnrolledCourseImpl) then) =
-      __$$EnrolledCourseImplCopyWithImpl<$Res>;
+abstract class _$$RawEnrolledCourseImplCopyWith<$Res>
+    implements $RawEnrolledCourseCopyWith<$Res> {
+  factory _$$RawEnrolledCourseImplCopyWith(_$RawEnrolledCourseImpl value,
+          $Res Function(_$RawEnrolledCourseImpl) then) =
+      __$$RawEnrolledCourseImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -157,14 +157,14 @@ abstract class _$$EnrolledCourseImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$EnrolledCourseImplCopyWithImpl<$Res>
-    extends _$EnrolledCourseCopyWithImpl<$Res, _$EnrolledCourseImpl>
-    implements _$$EnrolledCourseImplCopyWith<$Res> {
-  __$$EnrolledCourseImplCopyWithImpl(
-      _$EnrolledCourseImpl _value, $Res Function(_$EnrolledCourseImpl) _then)
+class __$$RawEnrolledCourseImplCopyWithImpl<$Res>
+    extends _$RawEnrolledCourseCopyWithImpl<$Res, _$RawEnrolledCourseImpl>
+    implements _$$RawEnrolledCourseImplCopyWith<$Res> {
+  __$$RawEnrolledCourseImplCopyWithImpl(_$RawEnrolledCourseImpl _value,
+      $Res Function(_$RawEnrolledCourseImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of EnrolledCourse
+  /// Create a copy of RawEnrolledCourse
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -179,7 +179,7 @@ class __$$EnrolledCourseImplCopyWithImpl<$Res>
     Object? section = null,
     Object? courseType = null,
   }) {
-    return _then(_$EnrolledCourseImpl(
+    return _then(_$RawEnrolledCourseImpl(
       url: null == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
@@ -222,10 +222,10 @@ class __$$EnrolledCourseImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$EnrolledCourseImpl
+class _$RawEnrolledCourseImpl
     with DiagnosticableTreeMixin
-    implements _EnrolledCourse {
-  const _$EnrolledCourseImpl(
+    implements _RawEnrolledCourse {
+  const _$RawEnrolledCourseImpl(
       {required this.url,
       required this.courseCode,
       required this.credits,
@@ -278,14 +278,14 @@ class _$EnrolledCourseImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EnrolledCourse(url: $url, courseCode: $courseCode, credits: $credits, courseName: $courseName, professor: $professor, date: $date, group: $group, section: $section, courseType: $courseType)';
+    return 'RawEnrolledCourse(url: $url, courseCode: $courseCode, credits: $credits, courseName: $courseName, professor: $professor, date: $date, group: $group, section: $section, courseType: $courseType)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'EnrolledCourse'))
+      ..add(DiagnosticsProperty('type', 'RawEnrolledCourse'))
       ..add(DiagnosticsProperty('url', url))
       ..add(DiagnosticsProperty('courseCode', courseCode))
       ..add(DiagnosticsProperty('credits', credits))
@@ -301,7 +301,7 @@ class _$EnrolledCourseImpl
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$EnrolledCourseImpl &&
+            other is _$RawEnrolledCourseImpl &&
             (identical(other.url, url) || other.url == url) &&
             (identical(other.courseCode, courseCode) ||
                 other.courseCode == courseCode) &&
@@ -321,18 +321,18 @@ class _$EnrolledCourseImpl
   int get hashCode => Object.hash(runtimeType, url, courseCode, credits,
       courseName, professor, date, group, section, courseType);
 
-  /// Create a copy of EnrolledCourse
+  /// Create a copy of RawEnrolledCourse
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$EnrolledCourseImplCopyWith<_$EnrolledCourseImpl> get copyWith =>
-      __$$EnrolledCourseImplCopyWithImpl<_$EnrolledCourseImpl>(
+  _$$RawEnrolledCourseImplCopyWith<_$RawEnrolledCourseImpl> get copyWith =>
+      __$$RawEnrolledCourseImplCopyWithImpl<_$RawEnrolledCourseImpl>(
           this, _$identity);
 }
 
-abstract class _EnrolledCourse implements EnrolledCourse {
-  const factory _EnrolledCourse(
+abstract class _RawEnrolledCourse implements RawEnrolledCourse {
+  const factory _RawEnrolledCourse(
       {required final String url,
       required final String courseCode,
       required final int credits,
@@ -341,7 +341,7 @@ abstract class _EnrolledCourse implements EnrolledCourse {
       required final DateTime date,
       required final String group,
       required final String section,
-      required final CourseType courseType}) = _$EnrolledCourseImpl;
+      required final CourseType courseType}) = _$RawEnrolledCourseImpl;
 
 // required String? Acta,
 // required String? Activo,
@@ -375,10 +375,10 @@ abstract class _EnrolledCourse implements EnrolledCourse {
   @override
   CourseType get courseType;
 
-  /// Create a copy of EnrolledCourse
+  /// Create a copy of RawEnrolledCourse
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$EnrolledCourseImplCopyWith<_$EnrolledCourseImpl> get copyWith =>
+  _$$RawEnrolledCourseImplCopyWith<_$RawEnrolledCourseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

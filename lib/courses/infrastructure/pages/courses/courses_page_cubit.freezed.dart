@@ -20,7 +20,7 @@ mixin _$CoursesPageState {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(
-            List<EnrolledCourse> courses, String? errorMessage)
+            List<RawEnrolledCourse> courses, String? errorMessage)
         success,
     required TResult Function(String message) error,
   }) =>
@@ -28,7 +28,7 @@ mixin _$CoursesPageState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<EnrolledCourse> courses, String? errorMessage)?
+    TResult? Function(List<RawEnrolledCourse> courses, String? errorMessage)?
         success,
     TResult? Function(String message)? error,
   }) =>
@@ -36,7 +36,7 @@ mixin _$CoursesPageState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<EnrolledCourse> courses, String? errorMessage)?
+    TResult Function(List<RawEnrolledCourse> courses, String? errorMessage)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -133,7 +133,7 @@ class _$CoursesPageLoadingStateImpl implements CoursesPageLoadingState {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(
-            List<EnrolledCourse> courses, String? errorMessage)
+            List<RawEnrolledCourse> courses, String? errorMessage)
         success,
     required TResult Function(String message) error,
   }) {
@@ -144,7 +144,7 @@ class _$CoursesPageLoadingStateImpl implements CoursesPageLoadingState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<EnrolledCourse> courses, String? errorMessage)?
+    TResult? Function(List<RawEnrolledCourse> courses, String? errorMessage)?
         success,
     TResult? Function(String message)? error,
   }) {
@@ -155,7 +155,7 @@ class _$CoursesPageLoadingStateImpl implements CoursesPageLoadingState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<EnrolledCourse> courses, String? errorMessage)?
+    TResult Function(List<RawEnrolledCourse> courses, String? errorMessage)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -212,7 +212,7 @@ abstract class _$$CoursesPageSuccessStateImplCopyWith<$Res> {
           $Res Function(_$CoursesPageSuccessStateImpl) then) =
       __$$CoursesPageSuccessStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<EnrolledCourse> courses, String? errorMessage});
+  $Res call({List<RawEnrolledCourse> courses, String? errorMessage});
 }
 
 /// @nodoc
@@ -236,7 +236,7 @@ class __$$CoursesPageSuccessStateImplCopyWithImpl<$Res>
       courses: null == courses
           ? _value._courses
           : courses // ignore: cast_nullable_to_non_nullable
-              as List<EnrolledCourse>,
+              as List<RawEnrolledCourse>,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -249,12 +249,12 @@ class __$$CoursesPageSuccessStateImplCopyWithImpl<$Res>
 
 class _$CoursesPageSuccessStateImpl implements CoursesPageSuccessState {
   const _$CoursesPageSuccessStateImpl(
-      {required final List<EnrolledCourse> courses, this.errorMessage})
+      {required final List<RawEnrolledCourse> courses, this.errorMessage})
       : _courses = courses;
 
-  final List<EnrolledCourse> _courses;
+  final List<RawEnrolledCourse> _courses;
   @override
-  List<EnrolledCourse> get courses {
+  List<RawEnrolledCourse> get courses {
     if (_courses is EqualUnmodifiableListView) return _courses;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_courses);
@@ -296,7 +296,7 @@ class _$CoursesPageSuccessStateImpl implements CoursesPageSuccessState {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(
-            List<EnrolledCourse> courses, String? errorMessage)
+            List<RawEnrolledCourse> courses, String? errorMessage)
         success,
     required TResult Function(String message) error,
   }) {
@@ -307,7 +307,7 @@ class _$CoursesPageSuccessStateImpl implements CoursesPageSuccessState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<EnrolledCourse> courses, String? errorMessage)?
+    TResult? Function(List<RawEnrolledCourse> courses, String? errorMessage)?
         success,
     TResult? Function(String message)? error,
   }) {
@@ -318,7 +318,7 @@ class _$CoursesPageSuccessStateImpl implements CoursesPageSuccessState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<EnrolledCourse> courses, String? errorMessage)?
+    TResult Function(List<RawEnrolledCourse> courses, String? errorMessage)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -366,10 +366,10 @@ class _$CoursesPageSuccessStateImpl implements CoursesPageSuccessState {
 
 abstract class CoursesPageSuccessState implements CoursesPageState {
   const factory CoursesPageSuccessState(
-      {required final List<EnrolledCourse> courses,
+      {required final List<RawEnrolledCourse> courses,
       final String? errorMessage}) = _$CoursesPageSuccessStateImpl;
 
-  List<EnrolledCourse> get courses;
+  List<RawEnrolledCourse> get courses;
   String? get errorMessage;
 
   /// Create a copy of CoursesPageState
@@ -451,7 +451,7 @@ class _$CoursesPageErrorStateImpl implements CoursesPageErrorState {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(
-            List<EnrolledCourse> courses, String? errorMessage)
+            List<RawEnrolledCourse> courses, String? errorMessage)
         success,
     required TResult Function(String message) error,
   }) {
@@ -462,7 +462,7 @@ class _$CoursesPageErrorStateImpl implements CoursesPageErrorState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<EnrolledCourse> courses, String? errorMessage)?
+    TResult? Function(List<RawEnrolledCourse> courses, String? errorMessage)?
         success,
     TResult? Function(String message)? error,
   }) {
@@ -473,7 +473,7 @@ class _$CoursesPageErrorStateImpl implements CoursesPageErrorState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<EnrolledCourse> courses, String? errorMessage)?
+    TResult Function(List<RawEnrolledCourse> courses, String? errorMessage)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),

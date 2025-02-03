@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase.dart';
 import 'package:sigapp/semester/application/get_semester_context_usecase.dart';
-import 'package:sigapp/student/domain/entities/enrolled_course.dart';
+import 'package:sigapp/student/domain/entities/raw_enrolled_course.dart';
 
 part 'courses_page_cubit.freezed.dart';
 
@@ -11,7 +11,7 @@ part 'courses_page_cubit.freezed.dart';
 abstract class CoursesPageState with _$CoursesPageState {
   const factory CoursesPageState.loading() = CoursesPageLoadingState;
   const factory CoursesPageState.success({
-    required List<EnrolledCourse> courses,
+    required List<RawEnrolledCourse> courses,
     String? errorMessage,
   }) = CoursesPageSuccessState;
   const factory CoursesPageState.error(String message) = CoursesPageErrorState;
