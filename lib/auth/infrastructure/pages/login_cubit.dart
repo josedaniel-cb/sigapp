@@ -2,7 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/auth/application/usecases.dart';
+import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.dart';
+import 'package:sigapp/auth/application/usecases/sign_in_usecase.dart';
 import 'package:sigapp/auth/domain/value-objects/stored_credentials.dart';
 
 part 'login_cubit.freezed.dart';
@@ -26,9 +27,10 @@ abstract class LoginStatus with _$LoginStatus {
 
 @injectable
 class LoginCubit extends Cubit<LoginState> {
-  final AuthUsecases _authUsecases;
+  final GetStoredCredentialsUseCase _getStoredCredentials;
+  final SignInUseCase _signInUseCase;
 
-  LoginCubit(this._authUsecases)
+  LoginCubit(this._getStoredCredentials, this._signInUseCase)
       : super(const LoginState(
           username: '',
           password: '',
@@ -39,7 +41,7 @@ class LoginCubit extends Cubit<LoginState> {
     final StoredCredentials(
       username: storedUsername,
       password: storedPassword
-    ) = _authUsecases.getStoredCredentials.execute();
+    ) = _getStoredCredentials.execute();
 
     if (storedUsername != null) {
       emit(state.copyWith(username: storedUsername));
@@ -63,8 +65,7 @@ class LoginCubit extends Cubit<LoginState> {
       status: const LoginStatus.loading(),
     ));
     try {
-      final successAuth =
-          await _authUsecases.signIn.execute(username, password);
+      final successAuth = await _signInUseCase.execute(username, password);
       if (!successAuth) {
         emit(state.copyWith(
           status: const LoginStatus.error('Credenciales inválidos'),

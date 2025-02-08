@@ -15,7 +15,6 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 import 'package:sigapp/auth/application/managers/authentication_manager.dart'
     as _i767;
-import 'package:sigapp/auth/application/usecases.dart' as _i447;
 import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.dart'
     as _i193;
 import 'package:sigapp/auth/application/usecases/keep_session_alive_usecase.dart'
@@ -158,24 +157,23 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i562.GetDefaultClassScheduleUsecase>(),
           gh<_i315.GetClassScheduleUsecase>(),
         ));
+    gh.singleton<_i65.HomePageCubit>(
+        () => _i65.HomePageCubit(gh<_i48.SignOutUseCase>()));
     gh.factory<_i365.SignInUseCase>(() => _i365.SignInUseCase(
           gh<_i10.AuthRepository>(),
           gh<_i1010.SharedPreferencesAuthRepository>(),
           gh<_i528.NavigationService>(),
         ));
-    gh.singleton<_i447.AuthUsecases>(() => _i447.AuthUsecases(
+    gh.factory<_i41.LoginCubit>(() => _i41.LoginCubit(
+          gh<_i193.GetStoredCredentialsUseCase>(),
           gh<_i365.SignInUseCase>(),
+        ));
+    gh.singleton<_i767.AuthenticationManager>(() => _i767.AuthenticationManager(
+          gh<_i679.SessionLifecycleService>(),
           gh<_i193.GetStoredCredentialsUseCase>(),
           gh<_i48.SignOutUseCase>(),
           gh<_i908.KeepSessionAliveUsecase>(),
-        ));
-    gh.singleton<_i65.HomePageCubit>(
-        () => _i65.HomePageCubit(gh<_i447.AuthUsecases>()));
-    gh.factory<_i41.LoginCubit>(
-        () => _i41.LoginCubit(gh<_i447.AuthUsecases>()));
-    gh.singleton<_i767.AuthenticationManager>(() => _i767.AuthenticationManager(
-          gh<_i679.SessionLifecycleService>(),
-          gh<_i447.AuthUsecases>(),
+          gh<_i365.SignInUseCase>(),
         ));
     return this;
   }

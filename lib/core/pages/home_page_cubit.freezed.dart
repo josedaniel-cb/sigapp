@@ -16,8 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$HomePageState {
-  int get selectedTabIndex =>
-      throw _privateConstructorUsedError; // required SemesterContext semesterContext,
+  int get selectedTabIndex => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
@@ -150,7 +149,6 @@ class _$HomePageSuccessStateImpl
 
   @override
   final int selectedTabIndex;
-// required SemesterContext semesterContext,
   @override
   final String? errorMessage;
 
@@ -256,7 +254,7 @@ abstract class HomePageSuccessState implements HomePageState {
       final String? errorMessage}) = _$HomePageSuccessStateImpl;
 
   @override
-  int get selectedTabIndex; // required SemesterContext semesterContext,
+  int get selectedTabIndex;
   @override
   String? get errorMessage;
 
