@@ -1,19 +1,44 @@
+import 'dart:io';
+
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/courses/application/exceptions/regeva_authentication_exception.dart';
 import 'package:sigapp/courses/domain/repositories/courses_repository.dart';
+import 'package:sigapp/courses/domain/repositories/local_syllabus_repository.dart';
 import 'package:sigapp/courses/domain/repositories/regeva_repository.dart';
+import 'package:sigapp/courses/domain/value-objects/syllabus_download_data.dart';
 
 @lazySingleton
 class GetSyllabusFileUsecase {
   final RegevaRepository _regevaRepository;
   final CoursesRepository _coursesRepository;
+  final LocalSyllabusRepository _localSyllabusRepository;
 
-  GetSyllabusFileUsecase(this._regevaRepository, this._coursesRepository);
+  GetSyllabusFileUsecase(this._regevaRepository, this._coursesRepository,
+      this._localSyllabusRepository);
 
-  Future<dynamic> execute(String scheduledCourseId) async {
+  Future<File?> execute(String scheduledCourseId) async {
+    // Try to get the syllabus file from the local repository
+    var cached = await _localSyllabusRepository.get(scheduledCourseId);
+    if (cached != null) return cached;
+
+    // If the file is not cached, download it
+    final downloadedFile = await _downloadFile(scheduledCourseId);
+    if (downloadedFile == null) return null;
+
+    // Save the downloaded file
+    cached = await _localSyllabusRepository.replaceOrCreate(
+      scheduledCourseId,
+      downloadedFile.data,
+      downloadedFile.contentType!,
+    );
+
+    return cached;
+  }
+
+  Future<SyllabusDownloadData?> _downloadFile(String scheduledCourseId) async {
     // Try to get the syllabus file
     try {
-      return await _regevaRepository.getSyllabusFile(scheduledCourseId);
+      return await _regevaRepository.downloadSyllabus(scheduledCourseId);
     } catch (e) {
       if (e is! RegevaAuthenticationException) rethrow;
     }
@@ -26,6 +51,6 @@ class GetSyllabusFileUsecase {
       sigaToken2: token2,
       studentCode: studentCode,
     );
-    return await _regevaRepository.getSyllabusFile(scheduledCourseId);
+    return await _regevaRepository.downloadSyllabus(scheduledCourseId);
   }
 }

@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'package:sigapp/core/http/regeva_client.dart';
 import 'package:sigapp/courses/application/exceptions/regeva_authentication_exception.dart';
 import 'package:sigapp/courses/domain/repositories/regeva_repository.dart';
+import 'package:sigapp/courses/domain/value-objects/syllabus_download_data.dart';
 
 @LazySingleton(as: RegevaRepository)
 class RegevaRepositoryImpl implements RegevaRepository {
@@ -72,7 +73,8 @@ class RegevaRepositoryImpl implements RegevaRepository {
   //   "method": "GET"
   // });
   @override
-  Future<dynamic> getSyllabusFile(String scheduledCourseId) async {
+  Future<SyllabusDownloadData?> downloadSyllabus(
+      String scheduledCourseId) async {
     final response = await _regevaClient.http.get(
       'http://regeva.unp.edu.pe:8081/Cursos/Silabo/$scheduledCourseId',
       options: Options(
@@ -91,7 +93,13 @@ class RegevaRepositoryImpl implements RegevaRepository {
 
     if (response.statusCode != 200) return null;
 
-    return response.data;
+    // Extract filename from Content-Disposition header
+    final contentType = response.headers['content-type']?.first;
+
+    return SyllabusDownloadData(
+      contentType: contentType,
+      data: response.data,
+    );
   }
 
   @override

@@ -50,6 +50,8 @@ import 'package:sigapp/courses/application/usecases/get_syllabus_file_usecase.da
     as _i445;
 import 'package:sigapp/courses/domain/repositories/courses_repository.dart'
     as _i986;
+import 'package:sigapp/courses/domain/repositories/local_syllabus_repository.dart'
+    as _i504;
 import 'package:sigapp/courses/domain/repositories/regeva_repository.dart'
     as _i348;
 import 'package:sigapp/courses/domain/repositories/schedule_repository.dart'
@@ -62,6 +64,8 @@ import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_cubit.dart
     as _i575;
 import 'package:sigapp/courses/infrastructure/repositories/courses_repository.dart'
     as _i892;
+import 'package:sigapp/courses/infrastructure/repositories/local_syllabus_repository.dart'
+    as _i717;
 import 'package:sigapp/courses/infrastructure/repositories/regeva_repository.dart'
     as _i75;
 import 'package:sigapp/courses/infrastructure/repositories/schedule_repository.dart'
@@ -93,23 +97,20 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.prefs,
       preResolve: true,
     );
-    gh.singleton<_i476.SigaClient>(
-        () => _i476.SigaClient(gh<_i460.SharedPreferences>()));
     gh.singleton<_i929.RegevaClient>(
         () => _i929.RegevaClient(gh<_i460.SharedPreferences>()));
+    gh.singleton<_i476.SigaClient>(
+        () => _i476.SigaClient(gh<_i460.SharedPreferences>()));
     gh.singleton<_i679.SessionLifecycleService>(
         () => _i649.SessionLifecycleServiceImpl(gh<_i476.SigaClient>()));
     gh.lazySingleton<_i348.RegevaRepository>(
         () => _i75.RegevaRepositoryImpl(gh<_i929.RegevaClient>()));
+    gh.singleton<_i504.LocalSyllabusRepository>(
+        () => _i717.LocalSyllabusRepositoryImpl());
     gh.lazySingleton<_i986.CoursesRepository>(
         () => _i892.CoursesRepositoryImpl(gh<_i476.SigaClient>()));
     gh.lazySingleton<_i594.StudentRepository>(
         () => _i528.StudentRepositoryImpl(gh<_i476.SigaClient>()));
-    gh.lazySingleton<_i445.GetSyllabusFileUsecase>(
-        () => _i445.GetSyllabusFileUsecase(
-              gh<_i348.RegevaRepository>(),
-              gh<_i986.CoursesRepository>(),
-            ));
     gh.lazySingleton<_i974.ScheduleRepository>(
         () => _i637.ScheduleRepositoryImpl(gh<_i476.SigaClient>()));
     gh.singleton<_i1010.SharedPreferencesAuthRepository>(() =>
@@ -128,6 +129,12 @@ extension GetItInjectableX on _i174.GetIt {
             gh<_i1010.SharedPreferencesAuthRepository>()));
     gh.lazySingleton<_i650.GetEnrolledCoursesUsecase>(
         () => _i650.GetEnrolledCoursesUsecase(gh<_i986.CoursesRepository>()));
+    gh.lazySingleton<_i445.GetSyllabusFileUsecase>(
+        () => _i445.GetSyllabusFileUsecase(
+              gh<_i348.RegevaRepository>(),
+              gh<_i986.CoursesRepository>(),
+              gh<_i504.LocalSyllabusRepository>(),
+            ));
     gh.factory<_i993.ExportToCalendarCubit>(
         () => _i993.ExportToCalendarCubit(gh<_i315.GetClassScheduleUsecase>()));
     gh.factory<_i151.StudentPageViewCubit>(
