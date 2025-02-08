@@ -39,7 +39,14 @@ class _CoursesPageWidgetState extends State<CoursesPageWidget> {
         final course = state.courses[index];
         return ListTile(
           title: Text(course.courseName),
-          subtitle: Text(course.courseCode),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Text(course.courseCode),
+              // Text(course.teacher),
+              Text('Grupo ${course.group} - Sección ${course.section}'),
+            ],
+          ),
         );
       },
     );

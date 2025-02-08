@@ -38,12 +38,13 @@ mixin _$RawEnrolledCourse {
 // required String Grupo,
   String get group => throw _privateConstructorUsedError; // required int Item,
 // required String ItemProg,
-// required String Observacion,
+  String get regevaScheduledCourseId =>
+      throw _privateConstructorUsedError; // required String Observacion,
 // required String Seccion,
   String get section =>
       throw _privateConstructorUsedError; // required dynamic Sylabus,
 // required String TipoCurso,
-  CourseType get courseType => throw _privateConstructorUsedError;
+  CourseType? get courseType => throw _privateConstructorUsedError;
 
   /// Create a copy of RawEnrolledCourse
   /// with the given fields replaced by the non-null parameter values.
@@ -66,8 +67,9 @@ abstract class $RawEnrolledCourseCopyWith<$Res> {
       String professor,
       DateTime date,
       String group,
+      String regevaScheduledCourseId,
       String section,
-      CourseType courseType});
+      CourseType? courseType});
 }
 
 /// @nodoc
@@ -92,8 +94,9 @@ class _$RawEnrolledCourseCopyWithImpl<$Res, $Val extends RawEnrolledCourse>
     Object? professor = null,
     Object? date = null,
     Object? group = null,
+    Object? regevaScheduledCourseId = null,
     Object? section = null,
-    Object? courseType = null,
+    Object? courseType = freezed,
   }) {
     return _then(_value.copyWith(
       url: null == url
@@ -124,14 +127,18 @@ class _$RawEnrolledCourseCopyWithImpl<$Res, $Val extends RawEnrolledCourse>
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
               as String,
+      regevaScheduledCourseId: null == regevaScheduledCourseId
+          ? _value.regevaScheduledCourseId
+          : regevaScheduledCourseId // ignore: cast_nullable_to_non_nullable
+              as String,
       section: null == section
           ? _value.section
           : section // ignore: cast_nullable_to_non_nullable
               as String,
-      courseType: null == courseType
+      courseType: freezed == courseType
           ? _value.courseType
           : courseType // ignore: cast_nullable_to_non_nullable
-              as CourseType,
+              as CourseType?,
     ) as $Val);
   }
 }
@@ -152,8 +159,9 @@ abstract class _$$RawEnrolledCourseImplCopyWith<$Res>
       String professor,
       DateTime date,
       String group,
+      String regevaScheduledCourseId,
       String section,
-      CourseType courseType});
+      CourseType? courseType});
 }
 
 /// @nodoc
@@ -176,8 +184,9 @@ class __$$RawEnrolledCourseImplCopyWithImpl<$Res>
     Object? professor = null,
     Object? date = null,
     Object? group = null,
+    Object? regevaScheduledCourseId = null,
     Object? section = null,
-    Object? courseType = null,
+    Object? courseType = freezed,
   }) {
     return _then(_$RawEnrolledCourseImpl(
       url: null == url
@@ -208,14 +217,18 @@ class __$$RawEnrolledCourseImplCopyWithImpl<$Res>
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
               as String,
+      regevaScheduledCourseId: null == regevaScheduledCourseId
+          ? _value.regevaScheduledCourseId
+          : regevaScheduledCourseId // ignore: cast_nullable_to_non_nullable
+              as String,
       section: null == section
           ? _value.section
           : section // ignore: cast_nullable_to_non_nullable
               as String,
-      courseType: null == courseType
+      courseType: freezed == courseType
           ? _value.courseType
           : courseType // ignore: cast_nullable_to_non_nullable
-              as CourseType,
+              as CourseType?,
     ));
   }
 }
@@ -233,6 +246,7 @@ class _$RawEnrolledCourseImpl
       required this.professor,
       required this.date,
       required this.group,
+      required this.regevaScheduledCourseId,
       required this.section,
       required this.courseType});
 
@@ -267,6 +281,8 @@ class _$RawEnrolledCourseImpl
   final String group;
 // required int Item,
 // required String ItemProg,
+  @override
+  final String regevaScheduledCourseId;
 // required String Observacion,
 // required String Seccion,
   @override
@@ -274,11 +290,11 @@ class _$RawEnrolledCourseImpl
 // required dynamic Sylabus,
 // required String TipoCurso,
   @override
-  final CourseType courseType;
+  final CourseType? courseType;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'RawEnrolledCourse(url: $url, courseCode: $courseCode, credits: $credits, courseName: $courseName, professor: $professor, date: $date, group: $group, section: $section, courseType: $courseType)';
+    return 'RawEnrolledCourse(url: $url, courseCode: $courseCode, credits: $credits, courseName: $courseName, professor: $professor, date: $date, group: $group, regevaScheduledCourseId: $regevaScheduledCourseId, section: $section, courseType: $courseType)';
   }
 
   @override
@@ -293,6 +309,8 @@ class _$RawEnrolledCourseImpl
       ..add(DiagnosticsProperty('professor', professor))
       ..add(DiagnosticsProperty('date', date))
       ..add(DiagnosticsProperty('group', group))
+      ..add(DiagnosticsProperty(
+          'regevaScheduledCourseId', regevaScheduledCourseId))
       ..add(DiagnosticsProperty('section', section))
       ..add(DiagnosticsProperty('courseType', courseType));
   }
@@ -312,14 +330,27 @@ class _$RawEnrolledCourseImpl
                 other.professor == professor) &&
             (identical(other.date, date) || other.date == date) &&
             (identical(other.group, group) || other.group == group) &&
+            (identical(
+                    other.regevaScheduledCourseId, regevaScheduledCourseId) ||
+                other.regevaScheduledCourseId == regevaScheduledCourseId) &&
             (identical(other.section, section) || other.section == section) &&
             (identical(other.courseType, courseType) ||
                 other.courseType == courseType));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, url, courseCode, credits,
-      courseName, professor, date, group, section, courseType);
+  int get hashCode => Object.hash(
+      runtimeType,
+      url,
+      courseCode,
+      credits,
+      courseName,
+      professor,
+      date,
+      group,
+      regevaScheduledCourseId,
+      section,
+      courseType);
 
   /// Create a copy of RawEnrolledCourse
   /// with the given fields replaced by the non-null parameter values.
@@ -340,8 +371,9 @@ abstract class _RawEnrolledCourse implements RawEnrolledCourse {
       required final String professor,
       required final DateTime date,
       required final String group,
+      required final String regevaScheduledCourseId,
       required final String section,
-      required final CourseType courseType}) = _$RawEnrolledCourseImpl;
+      required final CourseType? courseType}) = _$RawEnrolledCourseImpl;
 
 // required String? Acta,
 // required String? Activo,
@@ -367,13 +399,14 @@ abstract class _RawEnrolledCourse implements RawEnrolledCourse {
   @override
   String get group; // required int Item,
 // required String ItemProg,
-// required String Observacion,
+  @override
+  String get regevaScheduledCourseId; // required String Observacion,
 // required String Seccion,
   @override
   String get section; // required dynamic Sylabus,
 // required String TipoCurso,
   @override
-  CourseType get courseType;
+  CourseType? get courseType;
 
   /// Create a copy of RawEnrolledCourse
   /// with the given fields replaced by the non-null parameter values.

@@ -221,6 +221,7 @@ class RawEnrolledCourse with _$RawEnrolledCourse {
     // required int Item,
 
     // required String ItemProg,
+    required String regevaScheduledCourseId,
 
     // required String Observacion,
 
@@ -230,7 +231,7 @@ class RawEnrolledCourse with _$RawEnrolledCourse {
     // required dynamic Sylabus,
 
     // required String TipoCurso,
-    required CourseType courseType,
+    required CourseType? courseType,
   }) = _RawEnrolledCourse;
 }
 
@@ -242,14 +243,14 @@ enum CourseType {
 
   const CourseType(this.value);
 
-  factory CourseType.fromValue(String value) {
+  static CourseType? fromValue(String value) {
     switch (value) {
       case 'O':
         return mandatory;
       case 'E':
         return elective;
       default:
-        throw Exception('Invalid course type');
+        return null;
     }
   }
 }

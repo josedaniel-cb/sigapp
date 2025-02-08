@@ -5,22 +5,20 @@ import 'package:sigapp/core/http/http_client_builder.dart';
 import 'package:sigapp/core/http/cookie_manager.dart';
 
 @singleton
-class SigaClient {
-  static const host = 'academico.unp.edu.pe';
-  static const url = 'https://$host';
-  static const forceSignOutRedirectionLocation = '/Cuenta/InicioSesion';
-  static const signInPageRedirectionLocation = '/Home/Index';
-  static const signInPath = '/';
-  static const keepSessionPath = "/Home/KeepSession";
+class RegevaClient {
+  static const host = 'regeva.unp.edu.pe';
+  static const url = 'http://$host:8081';
+  static const forceSignOutRedirectionLocation = '/Cuenta/Login';
+  static const successCourseRedirectionLocation = '/Cursos/Info';
 
   late final HttpClientBuilderResult _httpClient;
 
-  SigaClient(SharedPreferences prefs) {
-    _httpClient = HttpClientBuilder(id: 'siga', prefs: prefs)
+  RegevaClient(SharedPreferences prefs) {
+    _httpClient = HttpClientBuilder(id: 'regeva', prefs: prefs)
         .setBaseUrl(url)
         .addHeader('Content-Type', 'application/json')
-        .addHeader('Origin', url)
-        .addHeader('Referer', url)
+        // .addHeader('Origin', url)
+        // .addHeader('Referer', url)
         .build();
   }
 

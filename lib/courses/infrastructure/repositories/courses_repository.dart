@@ -6,6 +6,7 @@ import 'package:sigapp/student/domain/entities/raw_course_requirement.dart';
 import 'package:sigapp/student/domain/entities/raw_enrolled_course.dart';
 import 'package:sigapp/student/infrastructure/models/get_course_requirements.dart';
 import 'package:sigapp/student/infrastructure/models/get_enrolled_courses.dart';
+import 'package:html/parser.dart' as htmlParser;
 
 @LazySingleton(as: CoursesRepository)
 class CoursesRepositoryImpl implements CoursesRepository {
@@ -58,6 +59,7 @@ class CoursesRepositoryImpl implements CoursesRepository {
             professor: model.Docente,
             section: model.Seccion,
             url: model.Aula,
+            regevaScheduledCourseId: model.ItemProg,
           ),
         )
         .toList();
@@ -105,5 +107,32 @@ class CoursesRepositoryImpl implements CoursesRepository {
           ),
         )
         .toList();
+  }
+
+  @override
+  Future<List<String>> getStudentCodeAndRegevaTokens() async {
+    final response1 = await _sigaClient.http.get('/Academico/Boletin');
+    final pageSource = response1.data as String;
+
+    // Get tokens
+    final regex = RegExp(r'token1=(.*?)&amp;token2=(.*?)&amp;ip=');
+    final match = regex.firstMatch(pageSource);
+
+    if (match == null) {
+      throw Exception('Regeva tokens not found');
+    }
+    final token1 = match.group(1);
+    if (token1 == null) throw Exception('Token1 not found');
+    final token2 = match.group(2);
+    if (token2 == null) throw Exception('Token2 not found');
+
+    // Get student code
+    final html = htmlParser.parse(pageSource);
+    final parts =
+        html.querySelectorAll('dd').map((e) => e.text.trim()).toList();
+    final studentCode = parts[0].split(' - ')[0];
+    if (studentCode.isEmpty) throw Exception('Student code not found');
+
+    return [studentCode, token1, token2];
   }
 }

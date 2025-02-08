@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigapp/core/injection/get_it.dart';
 import 'package:sigapp/core/pages/home_page_cubit.dart';
-import 'package:sigapp/core/widgets/error_state.dart';
-import 'package:sigapp/core/widgets/loading_state.dart';
 import 'package:sigapp/courses/infrastructure/pages/career/career_page.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
@@ -165,7 +163,11 @@ class HomeStateReadyStateStatefulWidgetState
 
         if (_pageController.hasClients &&
             _pageController.page != state.selectedTabIndex) {
-          _pageController.jumpToPage(state.selectedTabIndex);
+          _pageController.animateToPage(
+            state.selectedTabIndex,
+            curve: Curves.easeOut,
+            duration: const Duration(milliseconds: 300),
+          );
         }
         if (state.errorMessage != null) {
           ScaffoldMessenger.of(context).showSnackBar(
