@@ -14,4 +14,6 @@ abstract class RegevaRepository {
   });
 
   Future<dynamic> getSyllabusFile(String scheduledCourseId);
+
+  Future<void> disposeCookies();
 }

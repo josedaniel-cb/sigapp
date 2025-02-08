@@ -115,17 +115,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i1010.SharedPreferencesAuthRepository>(() =>
         _i247.SharedPreferencesAuthRepositoryImpl(
             gh<_i460.SharedPreferences>()));
+    gh.singleton<_i10.AuthRepository>(
+        () => _i127.AuthRepositoryImpl(gh<_i476.SigaClient>()));
     gh.lazySingleton<_i315.GetClassScheduleUsecase>(
         () => _i315.GetClassScheduleUsecase(gh<_i974.ScheduleRepository>()));
     gh.lazySingleton<_i771.GetAcademicReportUsecase>(
         () => _i771.GetAcademicReportUsecase(gh<_i594.StudentRepository>()));
+    gh.factory<_i908.KeepSessionAliveUsecase>(
+        () => _i908.KeepSessionAliveUsecase(gh<_i10.AuthRepository>()));
     gh.factory<_i193.GetStoredCredentialsUseCase>(() =>
         _i193.GetStoredCredentialsUseCase(
             gh<_i1010.SharedPreferencesAuthRepository>()));
     gh.lazySingleton<_i650.GetEnrolledCoursesUsecase>(
         () => _i650.GetEnrolledCoursesUsecase(gh<_i986.CoursesRepository>()));
-    gh.singleton<_i10.AuthRepository>(
-        () => _i127.AuthRepositoryImpl(gh<_i476.SigaClient>()));
     gh.factory<_i993.ExportToCalendarCubit>(
         () => _i993.ExportToCalendarCubit(gh<_i315.GetClassScheduleUsecase>()));
     gh.factory<_i151.StudentPageViewCubit>(
@@ -134,8 +136,6 @@ extension GetItInjectableX on _i174.GetIt {
         _i320.GetSemesterContextUsecase(gh<_i771.GetAcademicReportUsecase>()));
     gh.singleton<_i583.GoRouter>(
         () => registerModule.router(gh<_i193.GetStoredCredentialsUseCase>()));
-    gh.factory<_i908.KeepSessionAliveUsecase>(
-        () => _i908.KeepSessionAliveUsecase(gh<_i10.AuthRepository>()));
     gh.singleton<_i525.CoursesPageCubit>(() => _i525.CoursesPageCubit(
           gh<_i650.GetEnrolledCoursesUsecase>(),
           gh<_i320.GetSemesterContextUsecase>(),
@@ -149,20 +149,20 @@ extension GetItInjectableX on _i174.GetIt {
             ));
     gh.singleton<_i528.NavigationService>(
         () => _i561.NavigationServiceImpl(gh<_i583.GoRouter>()));
-    gh.factory<_i48.SignOutUseCase>(() => _i48.SignOutUseCase(
-          gh<_i1010.SharedPreferencesAuthRepository>(),
-          gh<_i528.NavigationService>(),
-        ));
     gh.factory<_i575.ScheduleCubit>(() => _i575.ScheduleCubit(
           gh<_i562.GetDefaultClassScheduleUsecase>(),
           gh<_i315.GetClassScheduleUsecase>(),
         ));
-    gh.singleton<_i65.HomePageCubit>(
-        () => _i65.HomePageCubit(gh<_i48.SignOutUseCase>()));
     gh.factory<_i365.SignInUseCase>(() => _i365.SignInUseCase(
           gh<_i10.AuthRepository>(),
           gh<_i1010.SharedPreferencesAuthRepository>(),
           gh<_i528.NavigationService>(),
+        ));
+    gh.factory<_i48.SignOutUseCase>(() => _i48.SignOutUseCase(
+          gh<_i1010.SharedPreferencesAuthRepository>(),
+          gh<_i528.NavigationService>(),
+          gh<_i10.AuthRepository>(),
+          gh<_i348.RegevaRepository>(),
         ));
     gh.factory<_i41.LoginCubit>(() => _i41.LoginCubit(
           gh<_i193.GetStoredCredentialsUseCase>(),
@@ -175,6 +175,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i908.KeepSessionAliveUsecase>(),
           gh<_i365.SignInUseCase>(),
         ));
+    gh.singleton<_i65.HomePageCubit>(
+        () => _i65.HomePageCubit(gh<_i48.SignOutUseCase>()));
     return this;
   }
 }

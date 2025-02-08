@@ -93,4 +93,9 @@ class RegevaRepositoryImpl implements RegevaRepository {
 
     return response.data;
   }
+
+  @override
+  Future<void> disposeCookies() async {
+    await _regevaClient.cookieManager.clearAllCookies();
+  }
 }

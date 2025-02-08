@@ -144,6 +144,13 @@ class CookieManager {
     await _prefs.remove(key);
   }
 
+  Future<void> clearAllCookies() async {
+    final keys = _prefs.getKeys().where((k) => k.startsWith(_id)).toList();
+    for (final key in keys) {
+      await _prefs.remove(key);
+    }
+  }
+
   /// Verifies if there is a cookie whose name matches [cookieName] (for a given host).
   bool hasCookie(String host, String cookieName) {
     final cookies = getCookies(host);

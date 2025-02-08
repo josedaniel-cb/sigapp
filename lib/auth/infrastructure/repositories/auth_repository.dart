@@ -8,13 +8,13 @@ import 'package:sigapp/auth/domain/value-objects/api_response.dart';
 
 @Singleton(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
-  final SigaClient sigaClient;
+  final SigaClient _sigaClient;
 
-  AuthRepositoryImpl(this.sigaClient);
+  AuthRepositoryImpl(this._sigaClient);
 
   @override
   Future<ApiResponse> login(String username, String password) async {
-    final response = await sigaClient.http.post(
+    final response = await _sigaClient.http.post(
       SigaClient.signInPath,
       data: {
         'Instancia': '01',
@@ -39,7 +39,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<ApiResponse> keepSession() async {
-    final response = await sigaClient.http.post(
+    final response = await _sigaClient.http.post(
       SigaClient.keepSessionPath,
       options: Options(
         validateStatus: (status) => true,
@@ -48,5 +48,10 @@ class AuthRepositoryImpl implements AuthRepository {
     final statusCode = response.statusCode;
     if (statusCode == null) throw Exception('Status code is null');
     return ApiResponse(statusCode: statusCode, headers: response.headers.map);
+  }
+
+  @override
+  Future<void> disposeCookies() async {
+    await _sigaClient.cookieManager.clearAllCookies();
   }
 }
