@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/core/http/regeva_client.dart';
@@ -78,6 +80,7 @@ class RegevaRepositoryImpl implements RegevaRepository {
     final response = await _regevaClient.http.get(
       'http://regeva.unp.edu.pe:8081/Cursos/Silabo/$scheduledCourseId',
       options: Options(
+        responseType: ResponseType.bytes,
         validateStatus: (status) => true,
         followRedirects: false,
       ),
@@ -95,11 +98,9 @@ class RegevaRepositoryImpl implements RegevaRepository {
 
     // Extract filename from Content-Disposition header
     final contentType = response.headers['content-type']?.first;
+    final data = Uint8List.fromList(response.data);
 
-    return SyllabusDownloadData(
-      contentType: contentType,
-      data: response.data,
-    );
+    return SyllabusDownloadData(contentType: contentType, data: data);
   }
 
   @override

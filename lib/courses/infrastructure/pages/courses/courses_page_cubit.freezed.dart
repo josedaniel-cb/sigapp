@@ -15,12 +15,216 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
+mixin _$CoursesPageWidgetItem {
+  RawEnrolledCourse get data => throw _privateConstructorUsedError;
+  SyllabusState? get syllabusState => throw _privateConstructorUsedError;
+  File? get syllabusFile => throw _privateConstructorUsedError;
+
+  /// Create a copy of CoursesPageWidgetItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $CoursesPageWidgetItemCopyWith<CoursesPageWidgetItem> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $CoursesPageWidgetItemCopyWith<$Res> {
+  factory $CoursesPageWidgetItemCopyWith(CoursesPageWidgetItem value,
+          $Res Function(CoursesPageWidgetItem) then) =
+      _$CoursesPageWidgetItemCopyWithImpl<$Res, CoursesPageWidgetItem>;
+  @useResult
+  $Res call(
+      {RawEnrolledCourse data,
+      SyllabusState? syllabusState,
+      File? syllabusFile});
+
+  $RawEnrolledCourseCopyWith<$Res> get data;
+}
+
+/// @nodoc
+class _$CoursesPageWidgetItemCopyWithImpl<$Res,
+        $Val extends CoursesPageWidgetItem>
+    implements $CoursesPageWidgetItemCopyWith<$Res> {
+  _$CoursesPageWidgetItemCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of CoursesPageWidgetItem
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? data = null,
+    Object? syllabusState = freezed,
+    Object? syllabusFile = freezed,
+  }) {
+    return _then(_value.copyWith(
+      data: null == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as RawEnrolledCourse,
+      syllabusState: freezed == syllabusState
+          ? _value.syllabusState
+          : syllabusState // ignore: cast_nullable_to_non_nullable
+              as SyllabusState?,
+      syllabusFile: freezed == syllabusFile
+          ? _value.syllabusFile
+          : syllabusFile // ignore: cast_nullable_to_non_nullable
+              as File?,
+    ) as $Val);
+  }
+
+  /// Create a copy of CoursesPageWidgetItem
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $RawEnrolledCourseCopyWith<$Res> get data {
+    return $RawEnrolledCourseCopyWith<$Res>(_value.data, (value) {
+      return _then(_value.copyWith(data: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$CoursesPageWidgetItemImplCopyWith<$Res>
+    implements $CoursesPageWidgetItemCopyWith<$Res> {
+  factory _$$CoursesPageWidgetItemImplCopyWith(
+          _$CoursesPageWidgetItemImpl value,
+          $Res Function(_$CoursesPageWidgetItemImpl) then) =
+      __$$CoursesPageWidgetItemImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {RawEnrolledCourse data,
+      SyllabusState? syllabusState,
+      File? syllabusFile});
+
+  @override
+  $RawEnrolledCourseCopyWith<$Res> get data;
+}
+
+/// @nodoc
+class __$$CoursesPageWidgetItemImplCopyWithImpl<$Res>
+    extends _$CoursesPageWidgetItemCopyWithImpl<$Res,
+        _$CoursesPageWidgetItemImpl>
+    implements _$$CoursesPageWidgetItemImplCopyWith<$Res> {
+  __$$CoursesPageWidgetItemImplCopyWithImpl(_$CoursesPageWidgetItemImpl _value,
+      $Res Function(_$CoursesPageWidgetItemImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CoursesPageWidgetItem
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? data = null,
+    Object? syllabusState = freezed,
+    Object? syllabusFile = freezed,
+  }) {
+    return _then(_$CoursesPageWidgetItemImpl(
+      data: null == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as RawEnrolledCourse,
+      syllabusState: freezed == syllabusState
+          ? _value.syllabusState
+          : syllabusState // ignore: cast_nullable_to_non_nullable
+              as SyllabusState?,
+      syllabusFile: freezed == syllabusFile
+          ? _value.syllabusFile
+          : syllabusFile // ignore: cast_nullable_to_non_nullable
+              as File?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$CoursesPageWidgetItemImpl
+    with DiagnosticableTreeMixin
+    implements _CoursesPageWidgetItem {
+  _$CoursesPageWidgetItemImpl(
+      {required this.data, this.syllabusState, this.syllabusFile});
+
+  @override
+  final RawEnrolledCourse data;
+  @override
+  final SyllabusState? syllabusState;
+  @override
+  final File? syllabusFile;
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'CoursesPageWidgetItem(data: $data, syllabusState: $syllabusState, syllabusFile: $syllabusFile)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CoursesPageWidgetItem'))
+      ..add(DiagnosticsProperty('data', data))
+      ..add(DiagnosticsProperty('syllabusState', syllabusState))
+      ..add(DiagnosticsProperty('syllabusFile', syllabusFile));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CoursesPageWidgetItemImpl &&
+            (identical(other.data, data) || other.data == data) &&
+            (identical(other.syllabusState, syllabusState) ||
+                other.syllabusState == syllabusState) &&
+            (identical(other.syllabusFile, syllabusFile) ||
+                other.syllabusFile == syllabusFile));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, data, syllabusState, syllabusFile);
+
+  /// Create a copy of CoursesPageWidgetItem
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$CoursesPageWidgetItemImplCopyWith<_$CoursesPageWidgetItemImpl>
+      get copyWith => __$$CoursesPageWidgetItemImplCopyWithImpl<
+          _$CoursesPageWidgetItemImpl>(this, _$identity);
+}
+
+abstract class _CoursesPageWidgetItem implements CoursesPageWidgetItem {
+  factory _CoursesPageWidgetItem(
+      {required final RawEnrolledCourse data,
+      final SyllabusState? syllabusState,
+      final File? syllabusFile}) = _$CoursesPageWidgetItemImpl;
+
+  @override
+  RawEnrolledCourse get data;
+  @override
+  SyllabusState? get syllabusState;
+  @override
+  File? get syllabusFile;
+
+  /// Create a copy of CoursesPageWidgetItem
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$CoursesPageWidgetItemImplCopyWith<_$CoursesPageWidgetItemImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$CoursesPageState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(
-            List<RawEnrolledCourse> courses, String? errorMessage)
+            List<CoursesPageWidgetItem> courses, String? errorMessage)
         success,
     required TResult Function(String message) error,
   }) =>
@@ -28,7 +232,8 @@ mixin _$CoursesPageState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<RawEnrolledCourse> courses, String? errorMessage)?
+    TResult? Function(
+            List<CoursesPageWidgetItem> courses, String? errorMessage)?
         success,
     TResult? Function(String message)? error,
   }) =>
@@ -36,7 +241,7 @@ mixin _$CoursesPageState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<RawEnrolledCourse> courses, String? errorMessage)?
+    TResult Function(List<CoursesPageWidgetItem> courses, String? errorMessage)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -110,12 +315,20 @@ class __$$CoursesPageLoadingStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CoursesPageLoadingStateImpl implements CoursesPageLoadingState {
+class _$CoursesPageLoadingStateImpl
+    with DiagnosticableTreeMixin
+    implements CoursesPageLoadingState {
   const _$CoursesPageLoadingStateImpl();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'CoursesPageState.loading()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties..add(DiagnosticsProperty('type', 'CoursesPageState.loading'));
   }
 
   @override
@@ -133,7 +346,7 @@ class _$CoursesPageLoadingStateImpl implements CoursesPageLoadingState {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(
-            List<RawEnrolledCourse> courses, String? errorMessage)
+            List<CoursesPageWidgetItem> courses, String? errorMessage)
         success,
     required TResult Function(String message) error,
   }) {
@@ -144,7 +357,8 @@ class _$CoursesPageLoadingStateImpl implements CoursesPageLoadingState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<RawEnrolledCourse> courses, String? errorMessage)?
+    TResult? Function(
+            List<CoursesPageWidgetItem> courses, String? errorMessage)?
         success,
     TResult? Function(String message)? error,
   }) {
@@ -155,7 +369,7 @@ class _$CoursesPageLoadingStateImpl implements CoursesPageLoadingState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<RawEnrolledCourse> courses, String? errorMessage)?
+    TResult Function(List<CoursesPageWidgetItem> courses, String? errorMessage)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -212,7 +426,7 @@ abstract class _$$CoursesPageSuccessStateImplCopyWith<$Res> {
           $Res Function(_$CoursesPageSuccessStateImpl) then) =
       __$$CoursesPageSuccessStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<RawEnrolledCourse> courses, String? errorMessage});
+  $Res call({List<CoursesPageWidgetItem> courses, String? errorMessage});
 }
 
 /// @nodoc
@@ -236,7 +450,7 @@ class __$$CoursesPageSuccessStateImplCopyWithImpl<$Res>
       courses: null == courses
           ? _value._courses
           : courses // ignore: cast_nullable_to_non_nullable
-              as List<RawEnrolledCourse>,
+              as List<CoursesPageWidgetItem>,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -247,14 +461,16 @@ class __$$CoursesPageSuccessStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CoursesPageSuccessStateImpl implements CoursesPageSuccessState {
+class _$CoursesPageSuccessStateImpl
+    with DiagnosticableTreeMixin
+    implements CoursesPageSuccessState {
   const _$CoursesPageSuccessStateImpl(
-      {required final List<RawEnrolledCourse> courses, this.errorMessage})
+      {required final List<CoursesPageWidgetItem> courses, this.errorMessage})
       : _courses = courses;
 
-  final List<RawEnrolledCourse> _courses;
+  final List<CoursesPageWidgetItem> _courses;
   @override
-  List<RawEnrolledCourse> get courses {
+  List<CoursesPageWidgetItem> get courses {
     if (_courses is EqualUnmodifiableListView) return _courses;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_courses);
@@ -264,8 +480,17 @@ class _$CoursesPageSuccessStateImpl implements CoursesPageSuccessState {
   final String? errorMessage;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'CoursesPageState.success(courses: $courses, errorMessage: $errorMessage)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CoursesPageState.success'))
+      ..add(DiagnosticsProperty('courses', courses))
+      ..add(DiagnosticsProperty('errorMessage', errorMessage));
   }
 
   @override
@@ -296,7 +521,7 @@ class _$CoursesPageSuccessStateImpl implements CoursesPageSuccessState {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(
-            List<RawEnrolledCourse> courses, String? errorMessage)
+            List<CoursesPageWidgetItem> courses, String? errorMessage)
         success,
     required TResult Function(String message) error,
   }) {
@@ -307,7 +532,8 @@ class _$CoursesPageSuccessStateImpl implements CoursesPageSuccessState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<RawEnrolledCourse> courses, String? errorMessage)?
+    TResult? Function(
+            List<CoursesPageWidgetItem> courses, String? errorMessage)?
         success,
     TResult? Function(String message)? error,
   }) {
@@ -318,7 +544,7 @@ class _$CoursesPageSuccessStateImpl implements CoursesPageSuccessState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<RawEnrolledCourse> courses, String? errorMessage)?
+    TResult Function(List<CoursesPageWidgetItem> courses, String? errorMessage)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -366,10 +592,10 @@ class _$CoursesPageSuccessStateImpl implements CoursesPageSuccessState {
 
 abstract class CoursesPageSuccessState implements CoursesPageState {
   const factory CoursesPageSuccessState(
-      {required final List<RawEnrolledCourse> courses,
+      {required final List<CoursesPageWidgetItem> courses,
       final String? errorMessage}) = _$CoursesPageSuccessStateImpl;
 
-  List<RawEnrolledCourse> get courses;
+  List<CoursesPageWidgetItem> get courses;
   String? get errorMessage;
 
   /// Create a copy of CoursesPageState
@@ -415,15 +641,25 @@ class __$$CoursesPageErrorStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CoursesPageErrorStateImpl implements CoursesPageErrorState {
+class _$CoursesPageErrorStateImpl
+    with DiagnosticableTreeMixin
+    implements CoursesPageErrorState {
   const _$CoursesPageErrorStateImpl(this.message);
 
   @override
   final String message;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'CoursesPageState.error(message: $message)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CoursesPageState.error'))
+      ..add(DiagnosticsProperty('message', message));
   }
 
   @override
@@ -451,7 +687,7 @@ class _$CoursesPageErrorStateImpl implements CoursesPageErrorState {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(
-            List<RawEnrolledCourse> courses, String? errorMessage)
+            List<CoursesPageWidgetItem> courses, String? errorMessage)
         success,
     required TResult Function(String message) error,
   }) {
@@ -462,7 +698,8 @@ class _$CoursesPageErrorStateImpl implements CoursesPageErrorState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(List<RawEnrolledCourse> courses, String? errorMessage)?
+    TResult? Function(
+            List<CoursesPageWidgetItem> courses, String? errorMessage)?
         success,
     TResult? Function(String message)? error,
   }) {
@@ -473,7 +710,7 @@ class _$CoursesPageErrorStateImpl implements CoursesPageErrorState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<RawEnrolledCourse> courses, String? errorMessage)?
+    TResult Function(List<CoursesPageWidgetItem> courses, String? errorMessage)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
