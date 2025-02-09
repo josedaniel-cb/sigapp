@@ -39,8 +39,6 @@ abstract class $SemesterContextCopyWith<$Res> {
       {bool isLast,
       List<SemesterScheduleSemesterMetadata> availableSemesters,
       SemesterScheduleSemesterMetadata defaultSemester});
-
-  $SemesterScheduleSemesterMetadataCopyWith<$Res> get defaultSemester;
 }
 
 /// @nodoc
@@ -77,17 +75,6 @@ class _$SemesterContextCopyWithImpl<$Res, $Val extends SemesterContext>
               as SemesterScheduleSemesterMetadata,
     ) as $Val);
   }
-
-  /// Create a copy of SemesterContext
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $SemesterScheduleSemesterMetadataCopyWith<$Res> get defaultSemester {
-    return $SemesterScheduleSemesterMetadataCopyWith<$Res>(
-        _value.defaultSemester, (value) {
-      return _then(_value.copyWith(defaultSemester: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -102,9 +89,6 @@ abstract class _$$SemesterContextImplCopyWith<$Res>
       {bool isLast,
       List<SemesterScheduleSemesterMetadata> availableSemesters,
       SemesterScheduleSemesterMetadata defaultSemester});
-
-  @override
-  $SemesterScheduleSemesterMetadataCopyWith<$Res> get defaultSemester;
 }
 
 /// @nodoc

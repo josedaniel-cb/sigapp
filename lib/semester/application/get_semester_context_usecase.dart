@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:sigapp/courses/domain/repositories/courses_repository.dart';
 import 'package:sigapp/semester/domain/value-objects/semester_context.dart';
 import 'package:sigapp/student/application/usecases/get_academic_report_usecase.dart';
 import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
@@ -6,8 +7,10 @@ import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
 @lazySingleton
 class GetSemesterContextUsecase {
   final GetAcademicReportUsecase _getAcademicReportUsecase;
+  final CoursesRepository _coursesRepository;
 
-  GetSemesterContextUsecase(this._getAcademicReportUsecase);
+  GetSemesterContextUsecase(
+      this._getAcademicReportUsecase, this._coursesRepository);
 
   SemesterContext? _value;
 
@@ -16,49 +19,72 @@ class GetSemesterContextUsecase {
       return _value!;
     }
 
+    // Fetch
     final academicReport = await _getAcademicReportUsecase.execute();
-    final firstSemesterId = academicReport.enrollmentSemesterId;
-    final lastSemesterId = academicReport.lastSemesterId;
+    final firstSemester = SemesterScheduleSemesterMetadata.buildFromId(
+        academicReport.enrollmentSemesterId);
+    var lastSemester = academicReport.lastSemesterId != null
+        ? SemesterScheduleSemesterMetadata.buildFromId(
+            academicReport.lastSemesterId!)
+        : null;
 
-    final isLastSemesterIdKnown = lastSemesterId != null;
+    // Try to deduce the last semester id from the student's schedule
+    final currentSemester = SemesterScheduleSemesterMetadata.buildFromId(
+        academicReport.currentSemesterId);
+    if (await _calculateIsCurrentSemesterTheLastOne(currentSemester)) {
+      lastSemester = currentSemester;
+    }
 
-    var defaultSemesterId = '';
+    // Calculate default semester and available semesters
+    final isLastSemesterIdKnown = lastSemester != null;
+    SemesterScheduleSemesterMetadata defaultSemester;
     var rangeLastSemesterId = '';
     if (isLastSemesterIdKnown) {
-      defaultSemesterId = lastSemesterId;
-      rangeLastSemesterId = lastSemesterId;
+      defaultSemester = lastSemester;
+      rangeLastSemesterId = lastSemester.id;
     } else {
-      defaultSemesterId = firstSemesterId;
+      defaultSemester = firstSemester;
       rangeLastSemesterId = academicReport.currentSemesterId;
     }
 
     _value = SemesterContext(
       isLast: isLastSemesterIdKnown,
-      defaultSemester:
-          SemesterScheduleSemesterMetadata.buildFromId(defaultSemesterId),
+      defaultSemester: defaultSemester,
       availableSemesters:
-          _buildSemesterRange(firstSemesterId, rangeLastSemesterId)
-              .map((id) => SemesterScheduleSemesterMetadata.buildFromId(id))
-              .toList(),
+          _buildSemesterRange(firstSemester.id, rangeLastSemesterId),
     );
 
     return execute();
   }
 
-  List<String> _buildSemesterRange(
+  List<SemesterScheduleSemesterMetadata> _buildSemesterRange(
       String firstSemesterId, String lastSemesterId) {
-    List<String> semesters = [];
-    int firstYear = int.parse(firstSemesterId.substring(0, 4));
-    int lastYear = int.parse(lastSemesterId.substring(0, 4));
-    int firstSemesterNumber = int.parse(firstSemesterId.substring(4)); // 0 to 2
-    int lastSemesterNumber = int.parse(lastSemesterId.substring(4)); // 0 to 2
-    for (int year = firstYear; year <= lastYear; year++) {
-      int start = (year == firstYear) ? firstSemesterNumber : 0;
-      int end = (year == lastYear) ? lastSemesterNumber : 2;
+    List<SemesterScheduleSemesterMetadata> semesters = [];
+    final firstSemester =
+        SemesterScheduleSemesterMetadata.buildFromId(firstSemesterId);
+    final lastSemester =
+        SemesterScheduleSemesterMetadata.buildFromId(lastSemesterId);
+    for (int year = firstSemester.year; year <= lastSemester.year; year++) {
+      int start = (year == firstSemester.year) ? firstSemester.period : 0;
+      int end = (year == lastSemester.year) ? lastSemester.period : 2;
       for (int semester = start; semester <= end; semester++) {
-        semesters.add('$year$semester');
+        semesters.add(
+            SemesterScheduleSemesterMetadata.buildFromId('$year$semester'));
       }
     }
     return semesters;
+  }
+
+  Future<bool> _calculateIsCurrentSemesterTheLastOne(
+      SemesterScheduleSemesterMetadata currentSemester) async {
+    final result = await Future.wait([
+      _coursesRepository.getEnrolledCourses(currentSemester.id),
+      _coursesRepository.getEnrolledCourses('${currentSemester.year}1'),
+      _coursesRepository.getEnrolledCourses('${currentSemester.year}1'),
+    ]);
+    if (result[0].isNotEmpty && result[1].isEmpty && result[2].isEmpty) {
+      return true;
+    }
+    return false;
   }
 }

@@ -45,7 +45,6 @@ abstract class $SemesterScheduleCopyWith<$Res> {
       List<WeeklyScheduleEvent> weeklyEvents});
 
   $AcademicReportCopyWith<$Res> get studentAcademicReport;
-  $SemesterScheduleSemesterMetadataCopyWith<$Res> get semester;
 }
 
 /// @nodoc
@@ -97,17 +96,6 @@ class _$SemesterScheduleCopyWithImpl<$Res, $Val extends SemesterSchedule>
       return _then(_value.copyWith(studentAcademicReport: value) as $Val);
     });
   }
-
-  /// Create a copy of SemesterSchedule
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $SemesterScheduleSemesterMetadataCopyWith<$Res> get semester {
-    return $SemesterScheduleSemesterMetadataCopyWith<$Res>(_value.semester,
-        (value) {
-      return _then(_value.copyWith(semester: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -126,8 +114,6 @@ abstract class _$$SemesterScheduleImplCopyWith<$Res>
 
   @override
   $AcademicReportCopyWith<$Res> get studentAcademicReport;
-  @override
-  $SemesterScheduleSemesterMetadataCopyWith<$Res> get semester;
 }
 
 /// @nodoc
@@ -261,201 +247,4 @@ abstract class _SemesterSchedule implements SemesterSchedule {
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SemesterScheduleImplCopyWith<_$SemesterScheduleImpl> get copyWith =>
       throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-mixin _$SemesterScheduleSemesterMetadata {
-  String get id =>
-      throw _privateConstructorUsedError; // YYYYX where X is from 0 to 2
-  String get name => throw _privateConstructorUsedError;
-  String get year => throw _privateConstructorUsedError;
-  String get period => throw _privateConstructorUsedError;
-
-  /// Create a copy of SemesterScheduleSemesterMetadata
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $SemesterScheduleSemesterMetadataCopyWith<SemesterScheduleSemesterMetadata>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $SemesterScheduleSemesterMetadataCopyWith<$Res> {
-  factory $SemesterScheduleSemesterMetadataCopyWith(
-          SemesterScheduleSemesterMetadata value,
-          $Res Function(SemesterScheduleSemesterMetadata) then) =
-      _$SemesterScheduleSemesterMetadataCopyWithImpl<$Res,
-          SemesterScheduleSemesterMetadata>;
-  @useResult
-  $Res call({String id, String name, String year, String period});
-}
-
-/// @nodoc
-class _$SemesterScheduleSemesterMetadataCopyWithImpl<$Res,
-        $Val extends SemesterScheduleSemesterMetadata>
-    implements $SemesterScheduleSemesterMetadataCopyWith<$Res> {
-  _$SemesterScheduleSemesterMetadataCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of SemesterScheduleSemesterMetadata
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? year = null,
-    Object? period = null,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      year: null == year
-          ? _value.year
-          : year // ignore: cast_nullable_to_non_nullable
-              as String,
-      period: null == period
-          ? _value.period
-          : period // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$SemesterScheduleSemesterMetadataImplCopyWith<$Res>
-    implements $SemesterScheduleSemesterMetadataCopyWith<$Res> {
-  factory _$$SemesterScheduleSemesterMetadataImplCopyWith(
-          _$SemesterScheduleSemesterMetadataImpl value,
-          $Res Function(_$SemesterScheduleSemesterMetadataImpl) then) =
-      __$$SemesterScheduleSemesterMetadataImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String id, String name, String year, String period});
-}
-
-/// @nodoc
-class __$$SemesterScheduleSemesterMetadataImplCopyWithImpl<$Res>
-    extends _$SemesterScheduleSemesterMetadataCopyWithImpl<$Res,
-        _$SemesterScheduleSemesterMetadataImpl>
-    implements _$$SemesterScheduleSemesterMetadataImplCopyWith<$Res> {
-  __$$SemesterScheduleSemesterMetadataImplCopyWithImpl(
-      _$SemesterScheduleSemesterMetadataImpl _value,
-      $Res Function(_$SemesterScheduleSemesterMetadataImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of SemesterScheduleSemesterMetadata
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? name = null,
-    Object? year = null,
-    Object? period = null,
-  }) {
-    return _then(_$SemesterScheduleSemesterMetadataImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      year: null == year
-          ? _value.year
-          : year // ignore: cast_nullable_to_non_nullable
-              as String,
-      period: null == period
-          ? _value.period
-          : period // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$SemesterScheduleSemesterMetadataImpl
-    implements _SemesterScheduleSemesterMetadata {
-  _$SemesterScheduleSemesterMetadataImpl(
-      {required this.id,
-      required this.name,
-      required this.year,
-      required this.period});
-
-  @override
-  final String id;
-// YYYYX where X is from 0 to 2
-  @override
-  final String name;
-  @override
-  final String year;
-  @override
-  final String period;
-
-  @override
-  String toString() {
-    return 'SemesterScheduleSemesterMetadata(id: $id, name: $name, year: $year, period: $period)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SemesterScheduleSemesterMetadataImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.year, year) || other.year == year) &&
-            (identical(other.period, period) || other.period == period));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, id, name, year, period);
-
-  /// Create a copy of SemesterScheduleSemesterMetadata
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SemesterScheduleSemesterMetadataImplCopyWith<
-          _$SemesterScheduleSemesterMetadataImpl>
-      get copyWith => __$$SemesterScheduleSemesterMetadataImplCopyWithImpl<
-          _$SemesterScheduleSemesterMetadataImpl>(this, _$identity);
-}
-
-abstract class _SemesterScheduleSemesterMetadata
-    implements SemesterScheduleSemesterMetadata {
-  factory _SemesterScheduleSemesterMetadata(
-      {required final String id,
-      required final String name,
-      required final String year,
-      required final String period}) = _$SemesterScheduleSemesterMetadataImpl;
-
-  @override
-  String get id; // YYYYX where X is from 0 to 2
-  @override
-  String get name;
-  @override
-  String get year;
-  @override
-  String get period;
-
-  /// Create a copy of SemesterScheduleSemesterMetadata
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SemesterScheduleSemesterMetadataImplCopyWith<
-          _$SemesterScheduleSemesterMetadataImpl>
-      get copyWith => throw _privateConstructorUsedError;
 }

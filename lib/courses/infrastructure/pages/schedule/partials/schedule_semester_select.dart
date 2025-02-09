@@ -27,7 +27,7 @@ class ScheduleSemesterSelect extends StatelessWidget {
     final Map<String, List<SemesterScheduleSemesterMetadata>> groupedByYear =
         {};
     for (var semester in semesterList) {
-      groupedByYear.putIfAbsent(semester.year, () => []).add(semester);
+      groupedByYear.putIfAbsent('${semester.year}', () => []).add(semester);
     }
 
     // Convert map to list of widgets
