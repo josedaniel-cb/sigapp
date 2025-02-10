@@ -58,6 +58,8 @@ import 'package:sigapp/courses/domain/repositories/schedule_repository.dart'
     as _i974;
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart'
     as _i525;
+import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses_cubit.dart'
+    as _i391;
 import 'package:sigapp/courses/infrastructure/pages/schedule/partials/export_to_calendar_cubit.dart'
     as _i993;
 import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_cubit.dart'
@@ -140,6 +142,8 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i771.GetAcademicReportUsecase>(),
               gh<_i986.CoursesRepository>(),
             ));
+    gh.singleton<_i525.CoursesPageCubit>(
+        () => _i525.CoursesPageCubit(gh<_i320.GetSemesterContextUsecase>()));
     gh.factory<_i993.ExportToCalendarCubit>(
         () => _i993.ExportToCalendarCubit(gh<_i315.GetClassScheduleUsecase>()));
     gh.lazySingleton<_i562.GetDefaultClassScheduleUsecase>(
@@ -148,6 +152,11 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i320.GetSemesterContextUsecase>(),
               gh<_i315.GetClassScheduleUsecase>(),
             ));
+    gh.singleton<_i391.EnrolledCoursesTabCubit>(
+        () => _i391.EnrolledCoursesTabCubit(
+              gh<_i650.GetEnrolledCoursesUsecase>(),
+              gh<_i445.GetSyllabusFileUsecase>(),
+            ));
     gh.factory<_i151.StudentPageViewCubit>(
         () => _i151.StudentPageViewCubit(gh<_i771.GetAcademicReportUsecase>()));
     gh.singleton<_i583.GoRouter>(
@@ -155,11 +164,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i575.ScheduleCubit>(() => _i575.ScheduleCubit(
           gh<_i562.GetDefaultClassScheduleUsecase>(),
           gh<_i315.GetClassScheduleUsecase>(),
-        ));
-    gh.singleton<_i525.CoursesPageCubit>(() => _i525.CoursesPageCubit(
-          gh<_i650.GetEnrolledCoursesUsecase>(),
-          gh<_i320.GetSemesterContextUsecase>(),
-          gh<_i445.GetSyllabusFileUsecase>(),
         ));
     gh.singleton<_i528.NavigationService>(
         () => _i561.NavigationServiceImpl(gh<_i583.GoRouter>()));

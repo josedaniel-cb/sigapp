@@ -10,7 +10,7 @@ import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:sigapp/courses/infrastructure/pages/schedule/partials/export_to_calendar.dart';
 import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_cubit.dart';
-import 'package:sigapp/courses/infrastructure/pages/schedule/partials/schedule_semester_select.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/partials/schedule_semester_select.dart';
 import 'package:sigapp/courses/infrastructure/pages/schedule/partials/weekly_schedule.dart';
 import 'package:sigapp/core/widgets/error_state.dart';
 import 'package:sigapp/core/widgets/loading_state.dart';
@@ -327,7 +327,8 @@ class SchedulePageState extends State<SchedulePage> {
               _cubit.changeSemester(semester);
               Navigator.pop(context);
             },
-            schedule: state.schedule,
+            semesterList: [...state.schedule.semesterList],
+            selectedSemester: state.schedule.semester,
           ),
         );
       },

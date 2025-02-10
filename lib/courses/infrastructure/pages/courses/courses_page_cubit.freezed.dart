@@ -15,216 +15,12 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
-mixin _$CoursesPageWidgetItem {
-  RawEnrolledCourse get data => throw _privateConstructorUsedError;
-  SyllabusState? get syllabusState => throw _privateConstructorUsedError;
-  File? get syllabusFile => throw _privateConstructorUsedError;
-
-  /// Create a copy of CoursesPageWidgetItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $CoursesPageWidgetItemCopyWith<CoursesPageWidgetItem> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $CoursesPageWidgetItemCopyWith<$Res> {
-  factory $CoursesPageWidgetItemCopyWith(CoursesPageWidgetItem value,
-          $Res Function(CoursesPageWidgetItem) then) =
-      _$CoursesPageWidgetItemCopyWithImpl<$Res, CoursesPageWidgetItem>;
-  @useResult
-  $Res call(
-      {RawEnrolledCourse data,
-      SyllabusState? syllabusState,
-      File? syllabusFile});
-
-  $RawEnrolledCourseCopyWith<$Res> get data;
-}
-
-/// @nodoc
-class _$CoursesPageWidgetItemCopyWithImpl<$Res,
-        $Val extends CoursesPageWidgetItem>
-    implements $CoursesPageWidgetItemCopyWith<$Res> {
-  _$CoursesPageWidgetItemCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of CoursesPageWidgetItem
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? data = null,
-    Object? syllabusState = freezed,
-    Object? syllabusFile = freezed,
-  }) {
-    return _then(_value.copyWith(
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as RawEnrolledCourse,
-      syllabusState: freezed == syllabusState
-          ? _value.syllabusState
-          : syllabusState // ignore: cast_nullable_to_non_nullable
-              as SyllabusState?,
-      syllabusFile: freezed == syllabusFile
-          ? _value.syllabusFile
-          : syllabusFile // ignore: cast_nullable_to_non_nullable
-              as File?,
-    ) as $Val);
-  }
-
-  /// Create a copy of CoursesPageWidgetItem
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $RawEnrolledCourseCopyWith<$Res> get data {
-    return $RawEnrolledCourseCopyWith<$Res>(_value.data, (value) {
-      return _then(_value.copyWith(data: value) as $Val);
-    });
-  }
-}
-
-/// @nodoc
-abstract class _$$CoursesPageWidgetItemImplCopyWith<$Res>
-    implements $CoursesPageWidgetItemCopyWith<$Res> {
-  factory _$$CoursesPageWidgetItemImplCopyWith(
-          _$CoursesPageWidgetItemImpl value,
-          $Res Function(_$CoursesPageWidgetItemImpl) then) =
-      __$$CoursesPageWidgetItemImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {RawEnrolledCourse data,
-      SyllabusState? syllabusState,
-      File? syllabusFile});
-
-  @override
-  $RawEnrolledCourseCopyWith<$Res> get data;
-}
-
-/// @nodoc
-class __$$CoursesPageWidgetItemImplCopyWithImpl<$Res>
-    extends _$CoursesPageWidgetItemCopyWithImpl<$Res,
-        _$CoursesPageWidgetItemImpl>
-    implements _$$CoursesPageWidgetItemImplCopyWith<$Res> {
-  __$$CoursesPageWidgetItemImplCopyWithImpl(_$CoursesPageWidgetItemImpl _value,
-      $Res Function(_$CoursesPageWidgetItemImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of CoursesPageWidgetItem
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? data = null,
-    Object? syllabusState = freezed,
-    Object? syllabusFile = freezed,
-  }) {
-    return _then(_$CoursesPageWidgetItemImpl(
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as RawEnrolledCourse,
-      syllabusState: freezed == syllabusState
-          ? _value.syllabusState
-          : syllabusState // ignore: cast_nullable_to_non_nullable
-              as SyllabusState?,
-      syllabusFile: freezed == syllabusFile
-          ? _value.syllabusFile
-          : syllabusFile // ignore: cast_nullable_to_non_nullable
-              as File?,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$CoursesPageWidgetItemImpl
-    with DiagnosticableTreeMixin
-    implements _CoursesPageWidgetItem {
-  _$CoursesPageWidgetItemImpl(
-      {required this.data, this.syllabusState, this.syllabusFile});
-
-  @override
-  final RawEnrolledCourse data;
-  @override
-  final SyllabusState? syllabusState;
-  @override
-  final File? syllabusFile;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CoursesPageWidgetItem(data: $data, syllabusState: $syllabusState, syllabusFile: $syllabusFile)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'CoursesPageWidgetItem'))
-      ..add(DiagnosticsProperty('data', data))
-      ..add(DiagnosticsProperty('syllabusState', syllabusState))
-      ..add(DiagnosticsProperty('syllabusFile', syllabusFile));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$CoursesPageWidgetItemImpl &&
-            (identical(other.data, data) || other.data == data) &&
-            (identical(other.syllabusState, syllabusState) ||
-                other.syllabusState == syllabusState) &&
-            (identical(other.syllabusFile, syllabusFile) ||
-                other.syllabusFile == syllabusFile));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, data, syllabusState, syllabusFile);
-
-  /// Create a copy of CoursesPageWidgetItem
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$CoursesPageWidgetItemImplCopyWith<_$CoursesPageWidgetItemImpl>
-      get copyWith => __$$CoursesPageWidgetItemImplCopyWithImpl<
-          _$CoursesPageWidgetItemImpl>(this, _$identity);
-}
-
-abstract class _CoursesPageWidgetItem implements CoursesPageWidgetItem {
-  factory _CoursesPageWidgetItem(
-      {required final RawEnrolledCourse data,
-      final SyllabusState? syllabusState,
-      final File? syllabusFile}) = _$CoursesPageWidgetItemImpl;
-
-  @override
-  RawEnrolledCourse get data;
-  @override
-  SyllabusState? get syllabusState;
-  @override
-  File? get syllabusFile;
-
-  /// Create a copy of CoursesPageWidgetItem
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$CoursesPageWidgetItemImplCopyWith<_$CoursesPageWidgetItemImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
 mixin _$CoursesPageState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(
-            List<CoursesPageWidgetItem> courses, String? errorMessage)
+    required TResult Function(SemesterContext semesterContext,
+            SemesterScheduleSemesterMetadata selectedSemester)
         success,
     required TResult Function(String message) error,
   }) =>
@@ -232,8 +28,8 @@ mixin _$CoursesPageState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(
-            List<CoursesPageWidgetItem> courses, String? errorMessage)?
+    TResult? Function(SemesterContext semesterContext,
+            SemesterScheduleSemesterMetadata selectedSemester)?
         success,
     TResult? Function(String message)? error,
   }) =>
@@ -241,7 +37,8 @@ mixin _$CoursesPageState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<CoursesPageWidgetItem> courses, String? errorMessage)?
+    TResult Function(SemesterContext semesterContext,
+            SemesterScheduleSemesterMetadata selectedSemester)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -345,8 +142,8 @@ class _$CoursesPageLoadingStateImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(
-            List<CoursesPageWidgetItem> courses, String? errorMessage)
+    required TResult Function(SemesterContext semesterContext,
+            SemesterScheduleSemesterMetadata selectedSemester)
         success,
     required TResult Function(String message) error,
   }) {
@@ -357,8 +154,8 @@ class _$CoursesPageLoadingStateImpl
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(
-            List<CoursesPageWidgetItem> courses, String? errorMessage)?
+    TResult? Function(SemesterContext semesterContext,
+            SemesterScheduleSemesterMetadata selectedSemester)?
         success,
     TResult? Function(String message)? error,
   }) {
@@ -369,7 +166,8 @@ class _$CoursesPageLoadingStateImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<CoursesPageWidgetItem> courses, String? errorMessage)?
+    TResult Function(SemesterContext semesterContext,
+            SemesterScheduleSemesterMetadata selectedSemester)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -426,7 +224,11 @@ abstract class _$$CoursesPageSuccessStateImplCopyWith<$Res> {
           $Res Function(_$CoursesPageSuccessStateImpl) then) =
       __$$CoursesPageSuccessStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<CoursesPageWidgetItem> courses, String? errorMessage});
+  $Res call(
+      {SemesterContext semesterContext,
+      SemesterScheduleSemesterMetadata selectedSemester});
+
+  $SemesterContextCopyWith<$Res> get semesterContext;
 }
 
 /// @nodoc
@@ -443,19 +245,29 @@ class __$$CoursesPageSuccessStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? courses = null,
-    Object? errorMessage = freezed,
+    Object? semesterContext = null,
+    Object? selectedSemester = null,
   }) {
     return _then(_$CoursesPageSuccessStateImpl(
-      courses: null == courses
-          ? _value._courses
-          : courses // ignore: cast_nullable_to_non_nullable
-              as List<CoursesPageWidgetItem>,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
+      semesterContext: null == semesterContext
+          ? _value.semesterContext
+          : semesterContext // ignore: cast_nullable_to_non_nullable
+              as SemesterContext,
+      selectedSemester: null == selectedSemester
+          ? _value.selectedSemester
+          : selectedSemester // ignore: cast_nullable_to_non_nullable
+              as SemesterScheduleSemesterMetadata,
     ));
+  }
+
+  /// Create a copy of CoursesPageState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $SemesterContextCopyWith<$Res> get semesterContext {
+    return $SemesterContextCopyWith<$Res>(_value.semesterContext, (value) {
+      return _then(_value.copyWith(semesterContext: value));
+    });
   }
 }
 
@@ -465,23 +277,16 @@ class _$CoursesPageSuccessStateImpl
     with DiagnosticableTreeMixin
     implements CoursesPageSuccessState {
   const _$CoursesPageSuccessStateImpl(
-      {required final List<CoursesPageWidgetItem> courses, this.errorMessage})
-      : _courses = courses;
-
-  final List<CoursesPageWidgetItem> _courses;
-  @override
-  List<CoursesPageWidgetItem> get courses {
-    if (_courses is EqualUnmodifiableListView) return _courses;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_courses);
-  }
+      {required this.semesterContext, required this.selectedSemester});
 
   @override
-  final String? errorMessage;
+  final SemesterContext semesterContext;
+  @override
+  final SemesterScheduleSemesterMetadata selectedSemester;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CoursesPageState.success(courses: $courses, errorMessage: $errorMessage)';
+    return 'CoursesPageState.success(semesterContext: $semesterContext, selectedSemester: $selectedSemester)';
   }
 
   @override
@@ -489,8 +294,8 @@ class _$CoursesPageSuccessStateImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'CoursesPageState.success'))
-      ..add(DiagnosticsProperty('courses', courses))
-      ..add(DiagnosticsProperty('errorMessage', errorMessage));
+      ..add(DiagnosticsProperty('semesterContext', semesterContext))
+      ..add(DiagnosticsProperty('selectedSemester', selectedSemester));
   }
 
   @override
@@ -498,14 +303,15 @@ class _$CoursesPageSuccessStateImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CoursesPageSuccessStateImpl &&
-            const DeepCollectionEquality().equals(other._courses, _courses) &&
-            (identical(other.errorMessage, errorMessage) ||
-                other.errorMessage == errorMessage));
+            (identical(other.semesterContext, semesterContext) ||
+                other.semesterContext == semesterContext) &&
+            (identical(other.selectedSemester, selectedSemester) ||
+                other.selectedSemester == selectedSemester));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_courses), errorMessage);
+  int get hashCode =>
+      Object.hash(runtimeType, semesterContext, selectedSemester);
 
   /// Create a copy of CoursesPageState
   /// with the given fields replaced by the non-null parameter values.
@@ -520,37 +326,38 @@ class _$CoursesPageSuccessStateImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(
-            List<CoursesPageWidgetItem> courses, String? errorMessage)
+    required TResult Function(SemesterContext semesterContext,
+            SemesterScheduleSemesterMetadata selectedSemester)
         success,
     required TResult Function(String message) error,
   }) {
-    return success(courses, errorMessage);
+    return success(semesterContext, selectedSemester);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(
-            List<CoursesPageWidgetItem> courses, String? errorMessage)?
+    TResult? Function(SemesterContext semesterContext,
+            SemesterScheduleSemesterMetadata selectedSemester)?
         success,
     TResult? Function(String message)? error,
   }) {
-    return success?.call(courses, errorMessage);
+    return success?.call(semesterContext, selectedSemester);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<CoursesPageWidgetItem> courses, String? errorMessage)?
+    TResult Function(SemesterContext semesterContext,
+            SemesterScheduleSemesterMetadata selectedSemester)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(courses, errorMessage);
+      return success(semesterContext, selectedSemester);
     }
     return orElse();
   }
@@ -592,11 +399,12 @@ class _$CoursesPageSuccessStateImpl
 
 abstract class CoursesPageSuccessState implements CoursesPageState {
   const factory CoursesPageSuccessState(
-      {required final List<CoursesPageWidgetItem> courses,
-      final String? errorMessage}) = _$CoursesPageSuccessStateImpl;
+          {required final SemesterContext semesterContext,
+          required final SemesterScheduleSemesterMetadata selectedSemester}) =
+      _$CoursesPageSuccessStateImpl;
 
-  List<CoursesPageWidgetItem> get courses;
-  String? get errorMessage;
+  SemesterContext get semesterContext;
+  SemesterScheduleSemesterMetadata get selectedSemester;
 
   /// Create a copy of CoursesPageState
   /// with the given fields replaced by the non-null parameter values.
@@ -686,8 +494,8 @@ class _$CoursesPageErrorStateImpl
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
-    required TResult Function(
-            List<CoursesPageWidgetItem> courses, String? errorMessage)
+    required TResult Function(SemesterContext semesterContext,
+            SemesterScheduleSemesterMetadata selectedSemester)
         success,
     required TResult Function(String message) error,
   }) {
@@ -698,8 +506,8 @@ class _$CoursesPageErrorStateImpl
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(
-            List<CoursesPageWidgetItem> courses, String? errorMessage)?
+    TResult? Function(SemesterContext semesterContext,
+            SemesterScheduleSemesterMetadata selectedSemester)?
         success,
     TResult? Function(String message)? error,
   }) {
@@ -710,7 +518,8 @@ class _$CoursesPageErrorStateImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(List<CoursesPageWidgetItem> courses, String? errorMessage)?
+    TResult Function(SemesterContext semesterContext,
+            SemesterScheduleSemesterMetadata selectedSemester)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),

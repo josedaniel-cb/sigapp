@@ -4,17 +4,21 @@ import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
 class ScheduleSemesterSelect extends StatelessWidget {
   const ScheduleSemesterSelect({
     super.key,
-    required this.schedule,
+    required this.semesterList,
+    required this.selectedSemester,
     required this.onSemesterSelected,
   });
 
-  final SemesterSchedule schedule;
+  // final SemesterSchedule schedule;
+  final List<SemesterScheduleSemesterMetadata> semesterList;
+  final SemesterScheduleSemesterMetadata selectedSemester;
+
   final void Function(SemesterScheduleSemesterMetadata semester)
       onSemesterSelected;
 
   @override
   Widget build(BuildContext context) {
-    final semesterList = [...schedule.semesterList]
+    final semesterList = [...this.semesterList]
       ..sort((a, b) => b.id.compareTo(a.id));
 
     if (semesterList.isEmpty) {
@@ -39,7 +43,7 @@ class ScheduleSemesterSelect extends StatelessWidget {
         );
       }
       groupedWidgets.addAll(semesters.map((semester) {
-        final enabled = schedule.semester.id != semester.id;
+        final enabled = selectedSemester.id != semester.id;
         return Center(
           child: ListTile(
             title: Text(

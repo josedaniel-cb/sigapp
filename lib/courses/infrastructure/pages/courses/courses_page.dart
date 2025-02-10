@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sigapp/core/injection/get_it.dart';
 import 'package:sigapp/core/widgets/error_state.dart';
+import 'package:sigapp/core/widgets/loading_state.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
-import 'package:open_filex/open_filex.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/partials/schedule_semester_select.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses_cubit.dart';
 
 class CoursesPageWidget extends StatefulWidget {
   const CoursesPageWidget({super.key});
@@ -15,11 +18,13 @@ class CoursesPageWidget extends StatefulWidget {
 class _CoursesPageWidgetState extends State<CoursesPageWidget>
     with TickerProviderStateMixin {
   late final TabController _tabController;
+  late final CoursesPageCubit _cubit;
 
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
-    BlocProvider.of<CoursesPageCubit>(context).init();
+    _cubit = BlocProvider.of<CoursesPageCubit>(context);
+    _cubit.init();
     super.initState();
   }
 
@@ -33,115 +38,47 @@ class _CoursesPageWidgetState extends State<CoursesPageWidget>
   Widget build(BuildContext context) {
     return BlocBuilder<CoursesPageCubit, CoursesPageState>(
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Cursos'),
-            bottom: TabBar(
-              controller: _tabController,
-              tabs: const [
-                Tab(icon: Icon(Icons.book), text: 'Cursos'),
-                Tab(icon: Icon(Icons.schedule), text: 'Horario'),
-              ],
-            ),
+        return state.map(
+          loading: (_) => const LoadingStateWidget(),
+          error: (state) => ErrorStateWidget(
+            message: state.message,
+            onRetry: () => _cubit.init(),
           ),
-          body: TabBarView(
-            controller: _tabController,
-            children: [
-              state.map(
-                loading: (_) => Skeletonizer.zone(child: _buildLoadingState()),
-                error: (state) => ErrorStateWidget(
-                  message: state.message,
-                  onRetry: () =>
-                      BlocProvider.of<CoursesPageCubit>(context).init(),
-                ),
-                success: (state) => _buildSuccessState(state),
-              ),
-              _buildHorariosTab(),
-            ],
-          ),
+          success: _buildSuccessState,
         );
       },
-    );
-  }
-
-  Widget _buildLoadingState() {
-    return Skeletonizer.zone(
-      child: ListView.builder(
-        itemCount: 4,
-        padding: const EdgeInsets.all(16),
-        itemBuilder: (context, i) {
-          return Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Bone.text(width: MediaQuery.of(context).size.width * 0.7),
-                  SizedBox(height: 8),
-                  Bone.text(width: MediaQuery.of(context).size.width * 0.8),
-                  SizedBox(height: 8),
-                  Bone.text(width: MediaQuery.of(context).size.width * 0.2),
-                  SizedBox(height: 32),
-                ],
-              )
-            ],
-          );
-        },
-      ),
     );
   }
 
   Widget _buildSuccessState(CoursesPageSuccessState state) {
-    return ListView.builder(
-      itemCount: state.courses.length,
-      itemBuilder: (context, index) {
-        final course = state.courses[index];
-        return ListTile(
-          title: Text(course.data.courseName),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      appBar: AppBar(
+        title: TextButton(
+          onPressed: () {
+            _showModalBottomSheet(state);
+          },
+          child: Row(
             children: [
-              Text('Grupo ${course.data.group}'
-                  ' - Sección ${course.data.section}'),
-              if (course.syllabusState != null)
-                (() {
-                  switch (course.syllabusState!) {
-                    case SyllabusState.loading:
-                      return TextButton.icon(
-                        icon: SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(strokeWidth: 3)),
-                        label: Text('Syllabus'),
-                        onPressed: null,
-                      );
-                    case SyllabusState.available:
-                      return TextButton.icon(
-                        icon: Icon(Icons.book_outlined),
-                        label: Text('Syllabus'),
-                        onPressed: () {
-                          OpenFilex.open(course.syllabusFile!.path);
-                        },
-                      );
-                    case SyllabusState.error:
-                      return Text('Error al descargar syllabus');
-                    case SyllabusState.notFound:
-                      return TextButton.icon(
-                        icon: Icon(Icons.book_outlined),
-                        label: Text('Syllabus'),
-                        onPressed: null,
-                      );
-                  }
-                })()
-              else
-                TextButton.icon(
-                    icon: Icon(Icons.book_outlined),
-                    label: Text('Syllabus'),
-                    onPressed: null),
+              Text(state.selectedSemester.name),
+              const Icon(Icons.arrow_drop_down),
             ],
           ),
-        );
-      },
+        ),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: const [
+            Tab(icon: Icon(Icons.book), text: 'Cursos'),
+            Tab(icon: Icon(Icons.schedule), text: 'Horario'),
+          ],
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          EnrolledCoursesTabWrapperWidget(),
+          _buildHorariosTab(),
+        ],
+      ),
     );
   }
 
@@ -156,6 +93,64 @@ class _CoursesPageWidgetState extends State<CoursesPageWidget>
               style: TextStyle(fontSize: 18, color: Colors.grey)),
         ],
       ),
+    );
+  }
+
+  void _showModalBottomSheet(CoursesPageSuccessState state) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height / 2,
+          child: ScheduleSemesterSelect(
+            onSemesterSelected: (semester) {
+              _cubit.changeSemester(semester);
+              Navigator.pop(context);
+            },
+            semesterList: [...state.semesterContext.availableSemesters],
+            selectedSemester: state.selectedSemester,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class EnrolledCoursesTabWrapperWidget extends StatefulWidget {
+  const EnrolledCoursesTabWrapperWidget({super.key});
+
+  @override
+  State<EnrolledCoursesTabWrapperWidget> createState() =>
+      _EnrolledCoursesTabWrapperWidgetState();
+}
+
+class _EnrolledCoursesTabWrapperWidgetState
+    extends State<EnrolledCoursesTabWrapperWidget>
+    with AutomaticKeepAliveClientMixin {
+  final _cubit = getIt<EnrolledCoursesTabCubit>();
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return BlocConsumer<CoursesPageCubit, CoursesPageState>(
+      builder: (context, state) {
+        return BlocProvider.value(
+          value: _cubit,
+          child: EnrolledCoursesTabWidget(
+              semester: (state as CoursesPageSuccessState).selectedSemester),
+        );
+      },
+      listener: (context, state) {
+        state.maybeWhen(
+          success: (semesterContext, selectedSemester) {
+            _cubit.fetch(selectedSemester);
+          },
+          orElse: () {},
+        );
+      },
     );
   }
 }
