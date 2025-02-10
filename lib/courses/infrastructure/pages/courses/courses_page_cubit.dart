@@ -13,15 +13,6 @@ part 'courses_page_cubit.freezed.dart';
 
 enum SyllabusState { loading, available, error, notFound }
 
-// class CoursesPageWidgetItem {
-//   final RawEnrolledCourse data;
-//   final SyllabusState? syllabusState;
-//   final File? syllabusFile;
-
-//   CoursesPageWidgetItem(
-//       {required this.data, this.syllabusState, this.syllabusFile});
-// }
-
 @freezed
 class CoursesPageWidgetItem with _$CoursesPageWidgetItem {
   factory CoursesPageWidgetItem({
@@ -117,7 +108,7 @@ class CoursesPageCubit extends Cubit<CoursesPageState> {
     }
   }
 
-  markErrorMessagesAsRead() {
+  void markErrorMessagesAsRead() {
     if (state is CoursesPageSuccessState) {
       emit((state as CoursesPageSuccessState).copyWith(errorMessage: null));
     }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigapp/core/widgets/error_state.dart';
-import 'package:sigapp/core/widgets/loading_state.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -13,26 +12,53 @@ class CoursesPageWidget extends StatefulWidget {
   State<CoursesPageWidget> createState() => _CoursesPageWidgetState();
 }
 
-class _CoursesPageWidgetState extends State<CoursesPageWidget> {
+class _CoursesPageWidgetState extends State<CoursesPageWidget>
+    with TickerProviderStateMixin {
+  late final TabController _tabController;
+
   @override
   void initState() {
+    _tabController = TabController(length: 2, vsync: this);
     BlocProvider.of<CoursesPageCubit>(context).init();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CoursesPageCubit, CoursesPageState>(
       builder: (context, state) {
-        return state.map(
-          loading: (_) => Skeletonizer.zone(
-            child: _buildLoadingState(),
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Cursos'),
+            bottom: TabBar(
+              controller: _tabController,
+              tabs: const [
+                Tab(icon: Icon(Icons.book), text: 'Cursos'),
+                Tab(icon: Icon(Icons.schedule), text: 'Horario'),
+              ],
+            ),
           ),
-          error: (state) => ErrorStateWidget(
-            message: state.message,
-            onRetry: () => BlocProvider.of<CoursesPageCubit>(context).init(),
+          body: TabBarView(
+            controller: _tabController,
+            children: [
+              state.map(
+                loading: (_) => Skeletonizer.zone(child: _buildLoadingState()),
+                error: (state) => ErrorStateWidget(
+                  message: state.message,
+                  onRetry: () =>
+                      BlocProvider.of<CoursesPageCubit>(context).init(),
+                ),
+                success: (state) => _buildSuccessState(state),
+              ),
+              _buildHorariosTab(),
+            ],
           ),
-          success: (state) => _buildSuccessState(state),
         );
       },
     );
@@ -55,7 +81,7 @@ class _CoursesPageWidgetState extends State<CoursesPageWidget> {
                   Bone.text(width: MediaQuery.of(context).size.width * 0.8),
                   SizedBox(height: 8),
                   Bone.text(width: MediaQuery.of(context).size.width * 0.2),
-                  SizedBox(height: 16 * 2),
+                  SizedBox(height: 32),
                 ],
               )
             ],
@@ -75,23 +101,17 @@ class _CoursesPageWidgetState extends State<CoursesPageWidget> {
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Text(course.courseCode),
-              // Text(course.teacher),
-              Text(
-                'Grupo ${course.data.group}'
-                ' - '
-                'Sección ${course.data.section}',
-              ),
+              Text('Grupo ${course.data.group}'
+                  ' - Sección ${course.data.section}'),
               if (course.syllabusState != null)
                 (() {
-                  switch (course.syllabusState) {
+                  switch (course.syllabusState!) {
                     case SyllabusState.loading:
                       return TextButton.icon(
                         icon: SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(strokeWidth: 3),
-                        ),
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 3)),
                         label: Text('Syllabus'),
                         onPressed: null,
                       );
@@ -111,20 +131,31 @@ class _CoursesPageWidgetState extends State<CoursesPageWidget> {
                         label: Text('Syllabus'),
                         onPressed: null,
                       );
-                    default:
-                      return Container();
                   }
                 })()
               else
                 TextButton.icon(
-                  icon: Icon(Icons.book_outlined),
-                  label: Text('Syllabus'),
-                  onPressed: null,
-                ),
+                    icon: Icon(Icons.book_outlined),
+                    label: Text('Syllabus'),
+                    onPressed: null),
             ],
           ),
         );
       },
+    );
+  }
+
+  Widget _buildHorariosTab() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.schedule, size: 80, color: Colors.grey),
+          SizedBox(height: 16),
+          Text("Aquí se mostrarán los horarios",
+              style: TextStyle(fontSize: 18, color: Colors.grey)),
+        ],
+      ),
     );
   }
 }

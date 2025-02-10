@@ -79,43 +79,44 @@ class HomeStateReadyStateStatefulWidgetState
 
     return BlocListener<HomePageCubit, HomePageState>(
       child: Scaffold(
-        appBar: AppBar(
-          title: (() {
-            switch (widget.state.selectedTabIndex) {
-              case 0:
-                return Text(
-                  'Sigapp',
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                );
-              case 1:
-                return Text('Horario');
-              case 2:
-                return Text('Carrera');
-              case 3:
-                return Text('Estudiante');
-              default:
-                return Container();
-            }
-          })(),
-          actions: [
-            PopupMenuButton<String>(
-              onSelected: (value) {
-                if (value == 'logout') {
-                  cubit.logout();
-                }
-              },
-              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                PopupMenuItem<String>(
-                  value: 'logout',
-                  child: Text('Cerrar sesión'),
-                ),
-              ],
-              icon: Icon(Icons.more_vert),
-            ),
-          ],
-        ),
+        // appBar: AppBar(
+        //   title: (() {
+        //     switch (widget.state.selectedTabIndex) {
+        //       case 0:
+        //         return Text(
+        //           'Sigapp',
+        //           style: TextStyle(fontWeight: FontWeight.w500),
+        //         );
+        //       case 1:
+        //         return Text('Horario');
+        //       case 2:
+        //         return Text('Carrera');
+        //       case 3:
+        //         return Text('Estudiante');
+        //       default:
+        //         return Container();
+        //     }
+        //   })(),
+        //   actions: [
+        //     PopupMenuButton<String>(
+        //       onSelected: (value) {
+        //         if (value == 'logout') {
+        //           cubit.logout();
+        //         }
+        //       },
+        //       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        //         PopupMenuItem<String>(
+        //           value: 'logout',
+        //           child: Text('Cerrar sesión'),
+        //         ),
+        //       ],
+        //       icon: Icon(Icons.more_vert),
+        //     ),
+        //   ],
+        // ),
         body: PageView(
           controller: _pageController,
+          physics: NeverScrollableScrollPhysics(), // Locks the swipe
           onPageChanged: (index) => cubit.changeTab(index),
           children: <Widget>[
             BlocProvider(
