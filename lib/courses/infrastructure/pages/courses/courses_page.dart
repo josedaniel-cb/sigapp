@@ -7,6 +7,8 @@ import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.d
 import 'package:sigapp/courses/infrastructure/pages/courses/partials/schedule_semester_select.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses_cubit.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_cubit.dart';
 
 class CoursesPageWidget extends StatefulWidget {
   const CoursesPageWidget({super.key});
@@ -54,7 +56,6 @@ class _CoursesPageWidgetState extends State<CoursesPageWidget>
     return Scaffold(
       appBar: AppBar(
         title: Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('Semestre'),
             TextButton(
@@ -66,7 +67,6 @@ class _CoursesPageWidgetState extends State<CoursesPageWidget>
               },
               child: Row(
                 children: [
-                  // Text('Semestre ${state.selectedSemester.name}'),
                   Text(state.selectedSemester.name),
                   const Icon(Icons.arrow_drop_down, size: 20),
                 ],
@@ -86,21 +86,7 @@ class _CoursesPageWidgetState extends State<CoursesPageWidget>
         controller: _tabController,
         children: [
           EnrolledCoursesTabWrapperWidget(),
-          _buildHorariosTab(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHorariosTab() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.schedule, size: 80, color: Colors.grey),
-          SizedBox(height: 16),
-          Text("Aquí se mostrarán los horarios",
-              style: TextStyle(fontSize: 18, color: Colors.grey)),
+          ScheduleTabWrapperWidget(),
         ],
       ),
     );
@@ -153,6 +139,38 @@ class _EnrolledCoursesTabWrapperWidgetState
         return BlocProvider.value(
           value: _cubit,
           child: EnrolledCoursesTabWidget(),
+        );
+      },
+    );
+  }
+}
+
+class ScheduleTabWrapperWidget extends StatefulWidget {
+  const ScheduleTabWrapperWidget({super.key});
+
+  @override
+  State<ScheduleTabWrapperWidget> createState() =>
+      _ScheduleTabWrapperWidgetState();
+}
+
+class _ScheduleTabWrapperWidgetState extends State<ScheduleTabWrapperWidget>
+    with AutomaticKeepAliveClientMixin {
+  final _cubit = getIt<ScheduleTabCubit>();
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return BlocBuilder<CoursesPageCubit, CoursesPageState>(
+      builder: (context, state) {
+        if (state is CoursesPageSuccessState) {
+          _cubit.fetch(state.selectedSemester);
+        }
+        return BlocProvider.value(
+          value: _cubit,
+          child: ScheduleTabWidget(),
         );
       },
     );

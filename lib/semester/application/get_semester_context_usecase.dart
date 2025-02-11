@@ -28,11 +28,13 @@ class GetSemesterContextUsecase {
             academicReport.lastSemesterId!)
         : null;
 
-    // Try to deduce the last semester id from the student's schedule
-    final currentSemester = SemesterScheduleSemesterMetadata.buildFromId(
-        academicReport.currentSemesterId);
-    if (await _calculateIsCurrentSemesterTheLastOne(currentSemester)) {
-      lastSemester = currentSemester;
+    if (lastSemester == null) {
+      // Try to deduce the last semester id from the student's schedule
+      final currentSemester = SemesterScheduleSemesterMetadata.buildFromId(
+          academicReport.currentSemesterId);
+      if (await _calculateIsCurrentSemesterTheLastOne(currentSemester)) {
+        lastSemester = currentSemester;
+      }
     }
 
     // Calculate default semester and available semesters

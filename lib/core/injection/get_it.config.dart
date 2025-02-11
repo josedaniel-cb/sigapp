@@ -60,6 +60,8 @@ import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.d
     as _i525;
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses_cubit.dart'
     as _i391;
+import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_cubit.dart'
+    as _i466;
 import 'package:sigapp/courses/infrastructure/pages/schedule/partials/export_to_calendar_cubit.dart'
     as _i993;
 import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_cubit.dart'
@@ -142,6 +144,10 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i771.GetAcademicReportUsecase>(),
               gh<_i986.CoursesRepository>(),
             ));
+    gh.singleton<_i466.ScheduleTabCubit>(() => _i466.ScheduleTabCubit(
+          gh<_i315.GetClassScheduleUsecase>(),
+          gh<_i771.GetAcademicReportUsecase>(),
+        ));
     gh.singleton<_i525.CoursesPageCubit>(
         () => _i525.CoursesPageCubit(gh<_i320.GetSemesterContextUsecase>()));
     gh.factory<_i993.ExportToCalendarCubit>(
