@@ -7,9 +7,7 @@ import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class EnrolledCoursesTabWidget extends StatefulWidget {
-  const EnrolledCoursesTabWidget({super.key, required this.semester});
-
-  final SemesterScheduleSemesterMetadata semester;
+  const EnrolledCoursesTabWidget({super.key});
 
   @override
   State<EnrolledCoursesTabWidget> createState() =>
@@ -23,7 +21,7 @@ class _EnrolledCoursesTabWidgetState extends State<EnrolledCoursesTabWidget>
   @override
   void initState() {
     _cubit = BlocProvider.of<EnrolledCoursesTabCubit>(context);
-    _cubit.fetch(widget.semester);
+    // _cubit.fetch(widget.semester);
     super.initState();
   }
 
@@ -35,7 +33,7 @@ class _EnrolledCoursesTabWidgetState extends State<EnrolledCoursesTabWidget>
           loading: (_) => _buildSkeleton(),
           error: (state) => ErrorStateWidget(
             message: state.message,
-            onRetry: () => _cubit.fetch(widget.semester),
+            onRetry: () => _cubit.retry(),
           ),
           success: (state) => _buildSuccessState(state),
         );
@@ -76,6 +74,7 @@ class _EnrolledCoursesTabWidgetState extends State<EnrolledCoursesTabWidget>
     }
 
     return ListView.builder(
+      padding: EdgeInsets.only(top: 8),
       itemCount: state.courses.length,
       itemBuilder: (context, index) {
         final course = state.courses[index];

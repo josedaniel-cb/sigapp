@@ -43,7 +43,10 @@ class EnrolledCoursesTabCubit extends Cubit<EnrolledCoursesTabState> {
       this._getEnrolledCoursesUsecase, this._getSyllabusFileUsecase)
       : super(EnrolledCoursesTabState.loading());
 
+  SemesterScheduleSemesterMetadata? selectedSemester;
+
   Future<void> fetch(SemesterScheduleSemesterMetadata semester) async {
+    selectedSemester = semester;
     emit(EnrolledCoursesTabState.loading());
     try {
       final courses = await _getEnrolledCoursesUsecase.execute(semester.id);
@@ -56,6 +59,10 @@ class EnrolledCoursesTabCubit extends Cubit<EnrolledCoursesTabState> {
     } catch (e) {
       emit(EnrolledCoursesTabState.error(e.toString()));
     }
+  }
+
+  void retry() {
+    fetch(selectedSemester!);
   }
 
   Future<void> _fetchSyllabuses() async {

@@ -53,16 +53,26 @@ class _CoursesPageWidgetState extends State<CoursesPageWidget>
   Widget _buildSuccessState(CoursesPageSuccessState state) {
     return Scaffold(
       appBar: AppBar(
-        title: TextButton(
-          onPressed: () {
-            _showModalBottomSheet(state);
-          },
-          child: Row(
-            children: [
-              Text(state.selectedSemester.name),
-              const Icon(Icons.arrow_drop_down),
-            ],
-          ),
+        title: Row(
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Semestre'),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: () {
+                _showModalBottomSheet(state);
+              },
+              child: Row(
+                children: [
+                  // Text('Semestre ${state.selectedSemester.name}'),
+                  Text(state.selectedSemester.name),
+                  const Icon(Icons.arrow_drop_down, size: 20),
+                ],
+              ),
+            ),
+          ],
         ),
         bottom: TabBar(
           controller: _tabController,
@@ -135,20 +145,14 @@ class _EnrolledCoursesTabWrapperWidgetState
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocConsumer<CoursesPageCubit, CoursesPageState>(
+    return BlocBuilder<CoursesPageCubit, CoursesPageState>(
       builder: (context, state) {
+        if (state is CoursesPageSuccessState) {
+          _cubit.fetch(state.selectedSemester);
+        }
         return BlocProvider.value(
           value: _cubit,
-          child: EnrolledCoursesTabWidget(
-              semester: (state as CoursesPageSuccessState).selectedSemester),
-        );
-      },
-      listener: (context, state) {
-        state.maybeWhen(
-          success: (semesterContext, selectedSemester) {
-            _cubit.fetch(selectedSemester);
-          },
-          orElse: () {},
+          child: EnrolledCoursesTabWidget(),
         );
       },
     );
