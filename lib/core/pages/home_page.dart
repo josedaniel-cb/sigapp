@@ -5,8 +5,8 @@ import 'package:sigapp/core/pages/home_page_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/career/career_page.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
-import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_cubit.dart';
-import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_page.dart';
+import 'package:sigapp/core/not_used/schedule_page/schedule_cubit.dart';
+import 'package:sigapp/core/not_used/schedule_page/schedule_page.dart';
 import 'package:sigapp/student/infrastructure/pages/student_cubit.dart';
 import 'package:sigapp/student/infrastructure/pages/student_page_view.dart';
 
@@ -79,41 +79,6 @@ class HomeStateReadyStateStatefulWidgetState
 
     return BlocListener<HomePageCubit, HomePageState>(
       child: Scaffold(
-        // appBar: AppBar(
-        //   title: (() {
-        //     switch (widget.state.selectedTabIndex) {
-        //       case 0:
-        //         return Text(
-        //           'Sigapp',
-        //           style: TextStyle(fontWeight: FontWeight.w500),
-        //         );
-        //       case 1:
-        //         return Text('Horario');
-        //       case 2:
-        //         return Text('Carrera');
-        //       case 3:
-        //         return Text('Estudiante');
-        //       default:
-        //         return Container();
-        //     }
-        //   })(),
-        //   actions: [
-        //     PopupMenuButton<String>(
-        //       onSelected: (value) {
-        //         if (value == 'logout') {
-        //           cubit.logout();
-        //         }
-        //       },
-        //       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-        //         PopupMenuItem<String>(
-        //           value: 'logout',
-        //           child: Text('Cerrar sesión'),
-        //         ),
-        //       ],
-        //       icon: Icon(Icons.more_vert),
-        //     ),
-        //   ],
-        // ),
         body: PageView(
           controller: _pageController,
           physics: NeverScrollableScrollPhysics(), // Locks the swipe
@@ -125,10 +90,10 @@ class HomeStateReadyStateStatefulWidgetState
                   // semesterContext: widget.state.semesterContext,
                   ),
             ),
-            BlocProvider<ScheduleCubit>(
-              create: (_) => getIt<ScheduleCubit>(),
-              child: SchedulePage(),
-            ),
+            // BlocProvider<ScheduleCubit>(
+            //   create: (_) => getIt<ScheduleCubit>(),
+            //   child: SchedulePage(),
+            // ),
             CareerPage(),
             BlocProvider<StudentPageViewCubit>(
               create: (_) => getIt<StudentPageViewCubit>(),
@@ -139,13 +104,13 @@ class HomeStateReadyStateStatefulWidgetState
         bottomNavigationBar: NavigationBar(
           destinations: const <Widget>[
             NavigationDestination(
-              icon: Icon(Icons.book),
-              label: 'Cursos',
+              icon: Icon(Icons.assignment_rounded),
+              label: 'Semestre',
             ),
-            NavigationDestination(
-              icon: Icon(Icons.calendar_today),
-              label: 'Horario',
-            ),
+            // NavigationDestination(
+            //   icon: Icon(Icons.calendar_today),
+            //   label: 'Horario',
+            // ),
             NavigationDestination(
               icon: Icon(Icons.school),
               label: 'Carrera',

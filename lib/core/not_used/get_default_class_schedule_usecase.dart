@@ -4,6 +4,7 @@ import 'package:sigapp/student/application/usecases/get_academic_report_usecase.
 import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.dart';
 import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
 
+// TODO: REMOVE
 @lazySingleton
 class GetDefaultClassScheduleUsecase {
   final GetAcademicReportUsecase _getAcademicReportUsecase;

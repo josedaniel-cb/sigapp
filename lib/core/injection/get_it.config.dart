@@ -39,11 +39,15 @@ import 'package:sigapp/auth/infrastructure/services/session_lifecycle_service.da
 import 'package:sigapp/core/http/regeva_client.dart' as _i929;
 import 'package:sigapp/core/http/siga_client.dart' as _i476;
 import 'package:sigapp/core/injection/register_module.dart' as _i799;
+import 'package:sigapp/core/not_used/get_default_class_schedule_usecase.dart'
+    as _i459;
+import 'package:sigapp/core/not_used/schedule_page/partials/export_to_calendar_cubit.dart'
+    as _i557;
+import 'package:sigapp/core/not_used/schedule_page/schedule_cubit.dart'
+    as _i863;
 import 'package:sigapp/core/pages/home_page_cubit.dart' as _i65;
 import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.dart'
     as _i315;
-import 'package:sigapp/courses/application/usecases/get_default_class_schedule_usecase.dart'
-    as _i562;
 import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase.dart'
     as _i650;
 import 'package:sigapp/courses/application/usecases/get_syllabus_file_usecase.dart'
@@ -62,10 +66,6 @@ import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_course
     as _i391;
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_cubit.dart'
     as _i466;
-import 'package:sigapp/courses/infrastructure/pages/schedule/partials/export_to_calendar_cubit.dart'
-    as _i993;
-import 'package:sigapp/courses/infrastructure/pages/schedule/schedule_cubit.dart'
-    as _i575;
 import 'package:sigapp/courses/infrastructure/repositories/courses_repository.dart'
     as _i892;
 import 'package:sigapp/courses/infrastructure/repositories/local_syllabus_repository.dart'
@@ -150,10 +150,10 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.singleton<_i525.CoursesPageCubit>(
         () => _i525.CoursesPageCubit(gh<_i320.GetSemesterContextUsecase>()));
-    gh.factory<_i993.ExportToCalendarCubit>(
-        () => _i993.ExportToCalendarCubit(gh<_i315.GetClassScheduleUsecase>()));
-    gh.lazySingleton<_i562.GetDefaultClassScheduleUsecase>(
-        () => _i562.GetDefaultClassScheduleUsecase(
+    gh.factory<_i557.ExportToCalendarCubit>(
+        () => _i557.ExportToCalendarCubit(gh<_i315.GetClassScheduleUsecase>()));
+    gh.lazySingleton<_i459.GetDefaultClassScheduleUsecase>(
+        () => _i459.GetDefaultClassScheduleUsecase(
               gh<_i771.GetAcademicReportUsecase>(),
               gh<_i320.GetSemesterContextUsecase>(),
               gh<_i315.GetClassScheduleUsecase>(),
@@ -167,8 +167,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i151.StudentPageViewCubit(gh<_i771.GetAcademicReportUsecase>()));
     gh.singleton<_i583.GoRouter>(
         () => registerModule.router(gh<_i193.GetStoredCredentialsUseCase>()));
-    gh.factory<_i575.ScheduleCubit>(() => _i575.ScheduleCubit(
-          gh<_i562.GetDefaultClassScheduleUsecase>(),
+    gh.factory<_i863.ScheduleCubit>(() => _i863.ScheduleCubit(
+          gh<_i459.GetDefaultClassScheduleUsecase>(),
           gh<_i315.GetClassScheduleUsecase>(),
         ));
     gh.singleton<_i528.NavigationService>(

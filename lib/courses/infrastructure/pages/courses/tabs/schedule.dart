@@ -9,7 +9,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:sigapp/core/widgets/error_state.dart';
 import 'package:sigapp/core/widgets/loading_state.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_cubit.dart';
-import 'package:sigapp/courses/infrastructure/pages/schedule/partials/weekly_schedule.dart';
+import 'package:sigapp/core/not_used/schedule_page/partials/weekly_schedule.dart';
 
 class ScheduleTabWidget extends StatefulWidget {
   const ScheduleTabWidget({super.key});

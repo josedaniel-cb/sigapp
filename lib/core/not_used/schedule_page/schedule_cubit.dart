@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.dart';
-import 'package:sigapp/courses/application/usecases/get_default_class_schedule_usecase.dart';
+import 'package:sigapp/core/not_used/get_default_class_schedule_usecase.dart';
 import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
 
 part 'schedule_cubit.freezed.dart';
