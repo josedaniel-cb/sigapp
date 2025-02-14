@@ -60,6 +60,8 @@ import 'package:sigapp/courses/domain/repositories/regeva_repository.dart'
     as _i348;
 import 'package:sigapp/courses/domain/repositories/schedule_repository.dart'
     as _i974;
+import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart'
+    as _i215;
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart'
     as _i525;
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses_cubit.dart'
@@ -133,6 +135,8 @@ extension GetItInjectableX on _i174.GetIt {
             gh<_i1010.SharedPreferencesAuthRepository>()));
     gh.lazySingleton<_i650.GetEnrolledCoursesUsecase>(
         () => _i650.GetEnrolledCoursesUsecase(gh<_i986.CoursesRepository>()));
+    gh.singleton<_i391.EnrolledCoursesTabCubit>(() =>
+        _i391.EnrolledCoursesTabCubit(gh<_i650.GetEnrolledCoursesUsecase>()));
     gh.lazySingleton<_i445.GetSyllabusFileUsecase>(
         () => _i445.GetSyllabusFileUsecase(
               gh<_i348.RegevaRepository>(),
@@ -148,6 +152,8 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i315.GetClassScheduleUsecase>(),
           gh<_i771.GetAcademicReportUsecase>(),
         ));
+    gh.factory<_i215.CourseDetailCubit>(
+        () => _i215.CourseDetailCubit(gh<_i445.GetSyllabusFileUsecase>()));
     gh.singleton<_i525.CoursesPageCubit>(
         () => _i525.CoursesPageCubit(gh<_i320.GetSemesterContextUsecase>()));
     gh.factory<_i557.ExportToCalendarCubit>(
@@ -157,11 +163,6 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i771.GetAcademicReportUsecase>(),
               gh<_i320.GetSemesterContextUsecase>(),
               gh<_i315.GetClassScheduleUsecase>(),
-            ));
-    gh.singleton<_i391.EnrolledCoursesTabCubit>(
-        () => _i391.EnrolledCoursesTabCubit(
-              gh<_i650.GetEnrolledCoursesUsecase>(),
-              gh<_i445.GetSyllabusFileUsecase>(),
             ));
     gh.factory<_i151.StudentPageViewCubit>(
         () => _i151.StudentPageViewCubit(gh<_i771.GetAcademicReportUsecase>()));

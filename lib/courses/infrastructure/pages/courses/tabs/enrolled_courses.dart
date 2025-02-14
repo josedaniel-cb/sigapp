@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sigapp/core/injection/get_it.dart';
 import 'package:sigapp/core/widgets/error_state.dart';
-import 'package:open_filex/open_filex.dart';
+import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/partials/course_item.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses_cubit.dart';
-import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class EnrolledCoursesTabWidget extends StatefulWidget {
@@ -69,59 +70,25 @@ class _EnrolledCoursesTabWidgetState extends State<EnrolledCoursesTabWidget>
   }
 
   Widget _buildSuccessState(EnrolledCoursesTabSuccessState state) {
-    if (state.courses.isEmpty) {
+    final courses = state.courses;
+
+    if (courses.isEmpty) {
       return _buildEmpty();
     }
 
     return ListView.builder(
-      padding: EdgeInsets.only(top: 8),
-      itemCount: state.courses.length,
+      padding: const EdgeInsets.only(top: 16),
+      itemCount: courses.length,
       itemBuilder: (context, index) {
-        final course = state.courses[index];
-        return ListTile(
-          title: Text(course.data.courseName),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Grupo ${course.data.group}'
-                  ' - Sección ${course.data.section}'),
-              if (course.syllabusState != null)
-                (() {
-                  switch (course.syllabusState!) {
-                    case SyllabusState.loading:
-                      return TextButton.icon(
-                        icon: SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(strokeWidth: 3)),
-                        label: Text('Syllabus'),
-                        onPressed: null,
-                      );
-                    case SyllabusState.available:
-                      return TextButton.icon(
-                        icon: Icon(Icons.book_outlined),
-                        label: Text('Syllabus'),
-                        onPressed: () {
-                          OpenFilex.open(course.syllabusFile!.path);
-                        },
-                      );
-                    case SyllabusState.error:
-                      return Text('Error al descargar syllabus');
-                    case SyllabusState.notFound:
-                      return TextButton.icon(
-                        icon: Icon(Icons.book_outlined),
-                        label: Text('Syllabus'),
-                        onPressed: null,
-                      );
-                  }
-                })()
-              else
-                TextButton.icon(
-                    icon: Icon(Icons.book_outlined),
-                    label: Text('Syllabus'),
-                    onPressed: null),
-            ],
-          ),
+        final course = courses[index];
+
+        return BlocProvider(
+          create: (_) {
+            final cubit = getIt<CourseDetailCubit>();
+            cubit.loadSyllabus(course.regevaScheduledCourseId);
+            return cubit;
+          },
+          child: CourseItemWidget(course: course),
         );
       },
     );
