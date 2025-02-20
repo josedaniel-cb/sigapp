@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/widgets/course_avatar.dart';
-import 'package:sigapp/student/domain/entities/raw_enrolled_course.dart';
+import 'package:sigapp/student/domain/entities/enrolled_course_data.dart';
 
 class CourseItemWidget extends StatelessWidget {
-  final RawEnrolledCourse course;
+  final EnrolledCourseData course;
 
   const CourseItemWidget({super.key, required this.course});
 

@@ -5,8 +5,6 @@ import 'package:sigapp/core/pages/home_page_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/career/career_page.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
-import 'package:sigapp/core/not_used/schedule_page/schedule_cubit.dart';
-import 'package:sigapp/core/not_used/schedule_page/schedule_page.dart';
 import 'package:sigapp/student/infrastructure/pages/student_cubit.dart';
 import 'package:sigapp/student/infrastructure/pages/student_page_view.dart';
 

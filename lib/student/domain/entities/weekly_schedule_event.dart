@@ -1,8 +1,6 @@
-import 'dart:ui';
-
 class WeeklyScheduleEvent {
   final String id;
-  final String title;
+  final String courseName;
 
   /// 1 = Monday, 2 = Tuesday, ..., 7 = Sunday
   final int weekday;
@@ -19,18 +17,18 @@ class WeeklyScheduleEvent {
   /// 0-59 representing the minute of the hour
   final int endMinute;
 
-  final Color color;
+  // final int color;
   final String location;
 
   WeeklyScheduleEvent({
     required this.id,
-    required this.title,
+    required this.courseName,
     required this.weekday,
     required this.startHour,
     required this.startMinute,
     required this.endHour,
     required this.endMinute,
-    required this.color,
+    // required this.color,
     required this.location,
   });
 }

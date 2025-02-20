@@ -3,7 +3,7 @@ import 'package:sigapp/core/http/siga_client.dart';
 import 'package:sigapp/core/utils/date_utils.dart';
 import 'package:sigapp/courses/domain/repositories/courses_repository.dart';
 import 'package:sigapp/student/domain/entities/raw_course_requirement.dart';
-import 'package:sigapp/student/domain/entities/raw_enrolled_course.dart';
+import 'package:sigapp/student/domain/entities/enrolled_course_data.dart';
 import 'package:sigapp/student/infrastructure/models/get_course_requirements.dart';
 import 'package:sigapp/student/infrastructure/models/get_enrolled_courses.dart';
 import 'package:html/parser.dart' as htmlParser;
@@ -39,7 +39,7 @@ class CoursesRepositoryImpl implements CoursesRepository {
   // Payload (form data):
   // semestre=20212
   @override
-  Future<List<RawEnrolledCourse>> getEnrolledCourses(String semesterId) async {
+  Future<List<EnrolledCourseData>> getEnrolledCourses(String semesterId) async {
     final response = await _sigaClient.http.post(
       '/Academico/ListarCursosInscritos',
       data: {'semestre': semesterId},
@@ -49,7 +49,7 @@ class CoursesRepositoryImpl implements CoursesRepository {
     );
     return models
         .map(
-          (model) => RawEnrolledCourse(
+          (model) => EnrolledCourseData(
             courseCode: model.CodCurso,
             courseName: model.Curso,
             courseType: CourseType.fromValue(model.TipoCurso),

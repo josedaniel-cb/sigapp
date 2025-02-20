@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sigapp/core/injection/get_it.dart';
 import 'package:sigapp/core/widgets/error_state.dart';
 import 'package:sigapp/core/widgets/loading_state.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/partials/schedule_semester_select.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_cubit.dart';
 
 class CoursesPageWidget extends StatefulWidget {
   const CoursesPageWidget({super.key});
@@ -85,8 +82,14 @@ class _CoursesPageWidgetState extends State<CoursesPageWidget>
       body: TabBarView(
         controller: _tabController,
         children: [
-          EnrolledCoursesTabWrapperWidget(),
-          ScheduleTabWrapperWidget(),
+          _EnrolledCoursesTabWrapperWidget(
+            enrolledCourses: state.enrolledCourses,
+            onRetry: () => _cubit.retryFetchEnrolledCourses(),
+          ),
+          _ScheduleTabWrapperWidget(
+            coursesPageSuccessState: state,
+            onRetry: () => _cubit.retryFetchEnrolledCourses(),
+          ),
         ],
       ),
     );
@@ -112,67 +115,59 @@ class _CoursesPageWidgetState extends State<CoursesPageWidget>
   }
 }
 
-class EnrolledCoursesTabWrapperWidget extends StatefulWidget {
-  const EnrolledCoursesTabWrapperWidget({super.key});
+class _EnrolledCoursesTabWrapperWidget extends StatefulWidget {
+  const _EnrolledCoursesTabWrapperWidget(
+      {required this.enrolledCourses, required this.onRetry});
+
+  final EnrolledCoursesState enrolledCourses;
+  final void Function() onRetry;
 
   @override
-  State<EnrolledCoursesTabWrapperWidget> createState() =>
+  State<_EnrolledCoursesTabWrapperWidget> createState() =>
       _EnrolledCoursesTabWrapperWidgetState();
 }
 
 class _EnrolledCoursesTabWrapperWidgetState
-    extends State<EnrolledCoursesTabWrapperWidget>
+    extends State<_EnrolledCoursesTabWrapperWidget>
     with AutomaticKeepAliveClientMixin {
-  final _cubit = getIt<EnrolledCoursesTabCubit>();
-
   @override
   bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocBuilder<CoursesPageCubit, CoursesPageState>(
-      builder: (context, state) {
-        if (state is CoursesPageSuccessState) {
-          _cubit.fetch(state.selectedSemester);
-        }
-        return BlocProvider.value(
-          value: _cubit,
-          child: EnrolledCoursesTabWidget(),
-        );
-      },
+    return EnrolledCoursesTabWidget(
+      enrolledCourses: widget.enrolledCourses,
+      onRetry: widget.onRetry,
     );
   }
 }
 
-class ScheduleTabWrapperWidget extends StatefulWidget {
-  const ScheduleTabWrapperWidget({super.key});
+class _ScheduleTabWrapperWidget extends StatefulWidget {
+  const _ScheduleTabWrapperWidget(
+      {required this.coursesPageSuccessState, required this.onRetry});
+
+  final CoursesPageSuccessState coursesPageSuccessState;
+  final void Function() onRetry;
 
   @override
-  State<ScheduleTabWrapperWidget> createState() =>
+  State<_ScheduleTabWrapperWidget> createState() =>
       _ScheduleTabWrapperWidgetState();
 }
 
-class _ScheduleTabWrapperWidgetState extends State<ScheduleTabWrapperWidget>
+class _ScheduleTabWrapperWidgetState extends State<_ScheduleTabWrapperWidget>
     with AutomaticKeepAliveClientMixin {
-  final _cubit = getIt<ScheduleTabCubit>();
-
   @override
   bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocBuilder<CoursesPageCubit, CoursesPageState>(
-      builder: (context, state) {
-        if (state is CoursesPageSuccessState) {
-          _cubit.fetch(state.selectedSemester);
-        }
-        return BlocProvider.value(
-          value: _cubit,
-          child: ScheduleTabWidget(),
-        );
-      },
+    return ScheduleTabWidget(
+      enrolledCoursesState: widget.coursesPageSuccessState.enrolledCourses,
+      academicReport: widget.coursesPageSuccessState.academicReport,
+      selectedSemester: widget.coursesPageSuccessState.selectedSemester,
+      onRetry: widget.onRetry,
     );
   }
 }

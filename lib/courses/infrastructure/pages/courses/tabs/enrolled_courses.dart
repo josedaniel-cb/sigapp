@@ -3,42 +3,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigapp/core/injection/get_it.dart';
 import 'package:sigapp/core/widgets/error_state.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/partials/course_item.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses_cubit.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class EnrolledCoursesTabWidget extends StatefulWidget {
-  const EnrolledCoursesTabWidget({super.key});
+class EnrolledCoursesTabWidget extends StatelessWidget {
+  const EnrolledCoursesTabWidget(
+      {super.key, required this.enrolledCourses, required this.onRetry});
 
-  @override
-  State<EnrolledCoursesTabWidget> createState() =>
-      _EnrolledCoursesTabWidgetState();
-}
-
-class _EnrolledCoursesTabWidgetState extends State<EnrolledCoursesTabWidget>
-    with TickerProviderStateMixin {
-  late final EnrolledCoursesTabCubit _cubit;
-
-  @override
-  void initState() {
-    _cubit = BlocProvider.of<EnrolledCoursesTabCubit>(context);
-    // _cubit.fetch(widget.semester);
-    super.initState();
-  }
+  final EnrolledCoursesState enrolledCourses;
+  final void Function() onRetry;
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EnrolledCoursesTabCubit, EnrolledCoursesTabState>(
-      builder: (context, state) {
-        return state.map(
-          loading: (_) => _buildSkeleton(),
-          error: (state) => ErrorStateWidget(
-            message: state.message,
-            onRetry: () => _cubit.retry(),
-          ),
-          success: (state) => _buildSuccessState(state),
-        );
-      },
+    return enrolledCourses.map(
+      loading: (_) => _buildSkeleton(),
+      error: (state) => ErrorStateWidget(
+        message: state.message,
+        onRetry: onRetry,
+      ),
+      success: (state) => _buildSuccessState(state),
     );
   }
 
@@ -69,8 +53,8 @@ class _EnrolledCoursesTabWidgetState extends State<EnrolledCoursesTabWidget>
     );
   }
 
-  Widget _buildSuccessState(EnrolledCoursesTabSuccessState state) {
-    final courses = state.courses;
+  Widget _buildSuccessState(EnrolledCoursesSuccessState state) {
+    final courses = state.value;
 
     if (courses.isEmpty) {
       return _buildEmpty();
@@ -85,10 +69,10 @@ class _EnrolledCoursesTabWidgetState extends State<EnrolledCoursesTabWidget>
         return BlocProvider(
           create: (_) {
             final cubit = getIt<CourseDetailCubit>();
-            cubit.loadSyllabus(course.regevaScheduledCourseId);
+            cubit.loadSyllabus(course.data.regevaScheduledCourseId);
             return cubit;
           },
-          child: CourseItemWidget(course: course),
+          child: CourseItemWidget(course: course.data),
         );
       },
     );

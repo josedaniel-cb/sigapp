@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 
-part 'raw_enrolled_course.freezed.dart';
+part 'enrolled_course_data.freezed.dart';
 
 /// ```json
 /// {
@@ -179,8 +179,8 @@ part 'raw_enrolled_course.freezed.dart';
 /// }
 /// ```
 @freezed
-class RawEnrolledCourse with _$RawEnrolledCourse {
-  const factory RawEnrolledCourse({
+class EnrolledCourseData with _$EnrolledCourseData {
+  const factory EnrolledCourseData({
     // required String? Acta,
 
     // required String? Activo,
@@ -232,7 +232,7 @@ class RawEnrolledCourse with _$RawEnrolledCourse {
 
     // required String TipoCurso,
     required CourseType? courseType,
-  }) = _RawEnrolledCourse;
+  }) = _EnrolledCourseData;
 }
 
 enum CourseType {

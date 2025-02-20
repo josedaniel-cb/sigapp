@@ -1,8 +1,8 @@
 import 'package:sigapp/student/domain/entities/raw_course_requirement.dart';
-import 'package:sigapp/student/domain/entities/raw_enrolled_course.dart';
+import 'package:sigapp/student/domain/entities/enrolled_course_data.dart';
 
 abstract class CoursesRepository {
-  Future<List<RawEnrolledCourse>> getEnrolledCourses(String semesterId);
+  Future<List<EnrolledCourseData>> getEnrolledCourses(String semesterId);
   Future<List<RawCourseRequirement>> getCourseRequirements(String courseCode);
   Future<List<String>> getStudentCodeAndRegevaTokens();
 }

@@ -43,8 +43,6 @@ import 'package:sigapp/core/not_used/get_default_class_schedule_usecase.dart'
     as _i459;
 import 'package:sigapp/core/not_used/schedule_page/partials/export_to_calendar_cubit.dart'
     as _i557;
-import 'package:sigapp/core/not_used/schedule_page/schedule_cubit.dart'
-    as _i863;
 import 'package:sigapp/core/pages/home_page_cubit.dart' as _i65;
 import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.dart'
     as _i315;
@@ -60,14 +58,13 @@ import 'package:sigapp/courses/domain/repositories/regeva_repository.dart'
     as _i348;
 import 'package:sigapp/courses/domain/repositories/schedule_repository.dart'
     as _i974;
+import 'package:sigapp/courses/domain/services/course_service.dart' as _i906;
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart'
     as _i215;
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart'
     as _i525;
-import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses_cubit.dart'
-    as _i391;
-import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_cubit.dart'
-    as _i466;
+import 'package:sigapp/courses/infrastructure/pages/courses/partials/schedule_share_button_cubit.dart'
+    as _i786;
 import 'package:sigapp/courses/infrastructure/repositories/courses_repository.dart'
     as _i892;
 import 'package:sigapp/courses/infrastructure/repositories/local_syllabus_repository.dart'
@@ -103,6 +100,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.prefs,
       preResolve: true,
     );
+    gh.singleton<_i906.CourseService>(() => _i906.CourseService());
+    gh.singleton<_i786.ScheduleShareButtonCubit>(
+        () => _i786.ScheduleShareButtonCubit());
     gh.singleton<_i929.RegevaClient>(
         () => _i929.RegevaClient(gh<_i460.SharedPreferences>()));
     gh.singleton<_i476.SigaClient>(
@@ -133,29 +133,24 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i193.GetStoredCredentialsUseCase>(() =>
         _i193.GetStoredCredentialsUseCase(
             gh<_i1010.SharedPreferencesAuthRepository>()));
-    gh.lazySingleton<_i650.GetEnrolledCoursesUsecase>(
-        () => _i650.GetEnrolledCoursesUsecase(gh<_i986.CoursesRepository>()));
-    gh.singleton<_i391.EnrolledCoursesTabCubit>(() =>
-        _i391.EnrolledCoursesTabCubit(gh<_i650.GetEnrolledCoursesUsecase>()));
     gh.lazySingleton<_i445.GetSyllabusFileUsecase>(
         () => _i445.GetSyllabusFileUsecase(
               gh<_i348.RegevaRepository>(),
               gh<_i986.CoursesRepository>(),
               gh<_i504.LocalSyllabusRepository>(),
             ));
+    gh.lazySingleton<_i650.GetEnrolledCoursesUsecase>(
+        () => _i650.GetEnrolledCoursesUsecase(
+              gh<_i986.CoursesRepository>(),
+              gh<_i315.GetClassScheduleUsecase>(),
+            ));
     gh.lazySingleton<_i320.GetSemesterContextUsecase>(
         () => _i320.GetSemesterContextUsecase(
               gh<_i771.GetAcademicReportUsecase>(),
               gh<_i986.CoursesRepository>(),
             ));
-    gh.singleton<_i466.ScheduleTabCubit>(() => _i466.ScheduleTabCubit(
-          gh<_i315.GetClassScheduleUsecase>(),
-          gh<_i771.GetAcademicReportUsecase>(),
-        ));
     gh.factory<_i215.CourseDetailCubit>(
         () => _i215.CourseDetailCubit(gh<_i445.GetSyllabusFileUsecase>()));
-    gh.singleton<_i525.CoursesPageCubit>(
-        () => _i525.CoursesPageCubit(gh<_i320.GetSemesterContextUsecase>()));
     gh.factory<_i557.ExportToCalendarCubit>(
         () => _i557.ExportToCalendarCubit(gh<_i315.GetClassScheduleUsecase>()));
     gh.lazySingleton<_i459.GetDefaultClassScheduleUsecase>(
@@ -168,9 +163,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i151.StudentPageViewCubit(gh<_i771.GetAcademicReportUsecase>()));
     gh.singleton<_i583.GoRouter>(
         () => registerModule.router(gh<_i193.GetStoredCredentialsUseCase>()));
-    gh.factory<_i863.ScheduleCubit>(() => _i863.ScheduleCubit(
-          gh<_i459.GetDefaultClassScheduleUsecase>(),
-          gh<_i315.GetClassScheduleUsecase>(),
+    gh.singleton<_i525.CoursesPageCubit>(() => _i525.CoursesPageCubit(
+          gh<_i320.GetSemesterContextUsecase>(),
+          gh<_i650.GetEnrolledCoursesUsecase>(),
+          gh<_i771.GetAcademicReportUsecase>(),
         ));
     gh.singleton<_i528.NavigationService>(
         () => _i561.NavigationServiceImpl(gh<_i583.GoRouter>()));

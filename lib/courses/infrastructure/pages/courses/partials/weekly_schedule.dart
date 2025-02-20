@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:sigapp/student/domain/entities/weekly_schedule_event.dart';
+import 'package:sigapp/student/domain/value_objects/enrolled_course.dart';
 
-class WeeklySchedule extends StatefulWidget {
-  final List<WeeklyScheduleEvent> events;
+class WeeklyScheduleWidgetItem {
+  final WeeklyScheduleEvent data;
+  final Color color;
+
+  WeeklyScheduleWidgetItem({required this.data, required this.color});
+}
+
+class WeeklyScheduleWidget extends StatefulWidget {
+  late final List<WeeklyScheduleWidgetItem> events;
   final String? bottomRightText;
   final String? bottomLeftText;
   final String? topRightText;
@@ -12,9 +20,9 @@ class WeeklySchedule extends StatefulWidget {
   final bool disableScroll;
   final double fontSize;
 
-  const WeeklySchedule({
+  WeeklyScheduleWidget({
     super.key,
-    required this.events,
+    required List<EnrolledCourse> courses,
     this.fontSize = 12.0,
     this.disableScroll = false,
     this.bottomRightText,
@@ -23,13 +31,42 @@ class WeeklySchedule extends StatefulWidget {
     this.topLeftText,
     this.hourWidth = 50.0,
     this.rowHeight = 75.0,
-  });
+  }) {
+    events = courses.indexed
+        .map(
+          (indexed) => indexed.$2.scheduleEvents.map(
+            (event) => WeeklyScheduleWidgetItem(
+              data: event,
+              color: colorList.elementAtOrNull(indexed.$1 % colorList.length) ??
+                  Colors.grey,
+            ),
+          ),
+        )
+        .expand((e) => e)
+        .toList();
+  }
 
   @override
-  State<WeeklySchedule> createState() => _WeeklyScheduleState();
+  State<WeeklyScheduleWidget> createState() => _WeeklyScheduleWidgetState();
 }
 
-class _WeeklyScheduleState extends State<WeeklySchedule> {
+final colorList = [
+  Colors.red,
+  Colors.blue,
+  Colors.green,
+  Colors.yellow,
+  Colors.purple,
+  Colors.orange,
+  Colors.pink,
+  Colors.teal,
+  Colors.indigo,
+  Colors.cyan,
+  Colors.brown,
+  Colors.lime,
+  Colors.amber,
+];
+
+class _WeeklyScheduleWidgetState extends State<WeeklyScheduleWidget> {
   var startHour = 0;
   var endHour = 0;
 
@@ -38,14 +75,11 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
       startHour = 8;
       endHour = 18;
     } else {
-      // widget.events.forEach((event) {
-      //   print(event.id);
-      // });
       startHour = widget.events
-          .map((event) => event.startHour)
+          .map((event) => event.data.startHour)
           .reduce((a, b) => a < b ? a : b);
       endHour = widget.events
-              .map((event) => event.endHour)
+              .map((event) => event.data.endHour)
               .reduce((a, b) => a > b ? a : b) +
           1;
     }
@@ -62,7 +96,7 @@ class _WeeklyScheduleState extends State<WeeklySchedule> {
     _calculateHourRange();
 
     List<int> daysWithEvents = List.generate(7, (index) => index + 1)
-        .where((day) => widget.events.any((event) => event.weekday == day))
+        .where((day) => widget.events.any((event) => event.data.weekday == day))
         .toList();
 
     return LayoutBuilder(builder: (context, constraints) {
@@ -201,7 +235,7 @@ class DayHeader extends StatelessWidget {
 }
 
 class Body extends StatelessWidget {
-  final List<WeeklyScheduleEvent> events;
+  final List<WeeklyScheduleWidgetItem> events;
   final List<int> daysWithEvents;
   final int startHour;
   final int endHour;
@@ -236,7 +270,8 @@ class Body extends StatelessWidget {
         ),
         ...events
             .where((event) =>
-                event.startHour >= startHour && event.endHour <= endHour)
+                event.data.startHour >= startHour &&
+                event.data.endHour <= endHour)
             .map((event) => EventWidget(
                   event: event,
                   constraints: constraints,
@@ -293,16 +328,16 @@ class Grid extends StatelessWidget {
                         border: Border(
                           left: dayIndex == 0
                               ? BorderSide(
-                                  color: Colors.grey.withOpacity(0.5),
+                                  color: Colors.grey.withValues(alpha: 0.5),
                                 )
                               : BorderSide.none,
                           right: dayIndex != daysWithEvents.length - 1
                               ? BorderSide(
-                                  color: Colors.grey.withOpacity(0.5),
+                                  color: Colors.grey.withValues(alpha: 0.5),
                                 )
                               : BorderSide.none,
                           bottom: BorderSide(
-                            color: Colors.grey.withOpacity(0.5),
+                            color: Colors.grey.withValues(alpha: 0.5),
                           ),
                         ),
                       ),
@@ -392,7 +427,7 @@ class HourLabel extends StatelessWidget {
 }
 
 class EventWidget extends StatelessWidget {
-  final WeeklyScheduleEvent event;
+  final WeeklyScheduleWidgetItem event;
   final BoxConstraints constraints;
   final List<int> daysWithEvents;
   final int startHour;
@@ -414,9 +449,9 @@ class EventWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double calculateLuminance(Color color) {
-      final double r = color.red / 255;
-      final double g = color.green / 255;
-      final double b = color.blue / 255;
+      final double r = color.r / 255;
+      final double g = color.g / 255;
+      final double b = color.b / 255;
       return 0.299 * r + 0.287 * g + 0.114 * b;
     }
 
@@ -426,16 +461,17 @@ class EventWidget extends StatelessWidget {
           : Colors.white;
     }
 
-    final top = (event.startHour - startHour) * rowHeight +
-        (event.startMinute / 60) * rowHeight;
+    final top = (event.data.startHour - startHour) * rowHeight +
+        (event.data.startMinute / 60) * rowHeight;
     final gridWidth =
         (constraints.maxWidth - hourWidth) / daysWithEvents.length;
     final littleMarginForSides = gridWidth * 0.05;
     final width = gridWidth - littleMarginForSides;
-    final dayIndex = daysWithEvents.indexOf(event.weekday);
+    final dayIndex = daysWithEvents.indexOf(event.data.weekday);
     final left = hourWidth + dayIndex * gridWidth;
-    final height = ((event.endHour - event.startHour) * rowHeight +
-            ((event.endMinute - event.startMinute) / 60) * rowHeight) -
+    final height = ((event.data.endHour - event.data.startHour) * rowHeight +
+            ((event.data.endMinute - event.data.startMinute) / 60) *
+                rowHeight) -
         littleMarginForSides;
 
     final titleFontSize = fontSize;
@@ -489,7 +525,7 @@ class EventWidget extends StatelessWidget {
                 height: availableHeightForTitle,
                 width: availableWidth,
                 child: Text(
-                  event.title,
+                  event.data.courseName,
                   style: TextStyle(
                     color: textColor,
                     fontSize: titleFontSize,
@@ -506,7 +542,7 @@ class EventWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        event.location,
+                        event.data.location,
                         style: TextStyle(
                           color: textColor,
                           fontSize: captionFontSize,
@@ -516,7 +552,7 @@ class EventWidget extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        _formatEventDuration(event),
+                        _formatEventDuration(event.data),
                         style: TextStyle(
                           color: textColor,
                           fontSize: captionFontSize,

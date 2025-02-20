@@ -1,14 +1,30 @@
 import 'package:injectable/injectable.dart';
+import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.dart';
 import 'package:sigapp/courses/domain/repositories/courses_repository.dart';
-import 'package:sigapp/student/domain/entities/raw_enrolled_course.dart';
+import 'package:sigapp/student/domain/value_objects/enrolled_course.dart';
 
 @lazySingleton
 class GetEnrolledCoursesUsecase {
   final CoursesRepository _coursesRepository;
+  final GetClassScheduleUsecase _getClassScheduleUsecase;
 
-  GetEnrolledCoursesUsecase(this._coursesRepository);
+  GetEnrolledCoursesUsecase(
+      this._coursesRepository, this._getClassScheduleUsecase);
 
-  Future<List<RawEnrolledCourse>> execute(String semesterId) async {
-    return await _coursesRepository.getEnrolledCourses(semesterId);
+  Future<List<EnrolledCourse>> execute(String semesterId) async {
+    final enrolledCoursesData =
+        await _coursesRepository.getEnrolledCourses(semesterId);
+    final scheduleEvents = await _getClassScheduleUsecase.execute(semesterId);
+
+    final enrolledCourses = enrolledCoursesData
+        .map((data) => EnrolledCourse(
+              data: data,
+              scheduleEvents: scheduleEvents
+                  .where((event) => event.courseName == data.courseName)
+                  .toList(),
+            ))
+        .toList();
+
+    return enrolledCourses;
   }
 }

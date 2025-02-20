@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/student/domain/entities/weekly_schedule_event.dart';
 import 'package:sigapp/courses/domain/repositories/schedule_repository.dart';
@@ -9,6 +8,7 @@ class GetClassScheduleUsecase {
   static const String _eventsIdsPrefix = 'SIGAPP';
 
   final ScheduleRepository _scheduleRepository;
+  // final CourseService _courseService;
 
   GetClassScheduleUsecase(this._scheduleRepository);
 
@@ -20,28 +20,29 @@ class GetClassScheduleUsecase {
 
   List<WeeklyScheduleEvent> _processClassSchedule(
       List<RawClassSchedule> schedule) {
-    Map<String, Color> courseColorMap = {};
-    List<WeeklyScheduleEvent> weeklyScheduleEvents = [];
-    List<Color> colorPalette = [
-      Colors.purple,
-      Colors.green,
-      Colors.orange,
-      Colors.blue,
-      Colors.yellow,
-      Colors.red,
-      Colors.cyan,
-      Colors.teal,
-      Colors.indigo,
-      Colors.pink,
-    ];
+    // Map<String, Color> courseColorMap = {};
 
-    Color assignColorToCourse(String courseName) {
-      if (!courseColorMap.containsKey(courseName)) {
-        courseColorMap[courseName] =
-            colorPalette[courseColorMap.length % colorPalette.length];
-      }
-      return courseColorMap[courseName]!;
-    }
+    List<WeeklyScheduleEvent> weeklyScheduleEvents = [];
+    // List<Color> colorPalette = [
+    //   Colors.purple,
+    //   Colors.green,
+    //   Colors.orange,
+    //   Colors.blue,
+    //   Colors.yellow,
+    //   Colors.red,
+    //   Colors.cyan,
+    //   Colors.teal,
+    //   Colors.indigo,
+    //   Colors.pink,
+    // ];
+
+    // Color assignColorToCourse(String courseName) {
+    //   if (!courseColorMap.containsKey(courseName)) {
+    //     courseColorMap[courseName] =
+    //         colorPalette[courseColorMap.length % colorPalette.length];
+    //   }
+    //   return courseColorMap[courseName]!;
+    // }
 
     DateTime calculateEventDateTime(DateTime baseTime, int targetWeekday) {
       DateTime currentDate = DateTime.now();
@@ -98,23 +99,23 @@ class GetClassScheduleUsecase {
         final weekday = dayAndName[1];
 
         final parts = classInfo.split(' ? ');
-        final className = parts[0];
+        final courseName = parts[0];
         final classLocation = parts[1];
 
         final eventStart = calculateEventDateTime(classStartTime, weekday);
         final eventEnd = calculateEventDateTime(classEndTime, weekday);
 
         final id =
-            '$_eventsIdsPrefix-[$className]-${eventStart.toString().substring(0, 16)}-${eventEnd.toString().substring(0, 16)}';
+            '$_eventsIdsPrefix-[$courseName]-${eventStart.toString().substring(0, 16)}-${eventEnd.toString().substring(0, 16)}';
         weeklyScheduleEvents.add(WeeklyScheduleEvent(
           id: id,
-          title: className,
+          courseName: courseName,
           weekday: weekday,
           startHour: eventStart.hour,
           startMinute: eventStart.minute,
           endHour: eventEnd.hour,
           endMinute: eventEnd.minute,
-          color: assignColorToCourse(classInfo),
+          // color: _courseService.getBackgroundColor(courseName),
           location: classLocation,
         ));
       }

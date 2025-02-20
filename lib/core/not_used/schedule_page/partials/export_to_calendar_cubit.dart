@@ -117,7 +117,7 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
       final event = Event(
         successState.selectedCalendar.id,
         eventId: weeklyEvent.id,
-        title: weeklyEvent.title,
+        title: weeklyEvent.courseName,
         start: TZDateTime.from(start, local),
         end: TZDateTime.from(end, local),
         location: weeklyEvent.location,
