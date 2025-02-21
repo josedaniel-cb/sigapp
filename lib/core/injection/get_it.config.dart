@@ -15,6 +15,8 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 import 'package:sigapp/auth/application/managers/authentication_manager.dart'
     as _i767;
+import 'package:sigapp/auth/application/usecases/ensure_no_pending_survey_usecase.dart'
+    as _i755;
 import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.dart'
     as _i193;
 import 'package:sigapp/auth/application/usecases/keep_session_alive_usecase.dart'
@@ -144,6 +146,11 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i986.CoursesRepository>(),
               gh<_i315.GetClassScheduleUsecase>(),
             ));
+    gh.factory<_i755.EnsureNoPendingSurveyUseCase>(
+        () => _i755.EnsureNoPendingSurveyUseCase(
+              gh<_i10.AuthRepository>(),
+              gh<_i679.SessionLifecycleService>(),
+            ));
     gh.lazySingleton<_i320.GetSemesterContextUsecase>(
         () => _i320.GetSemesterContextUsecase(
               gh<_i771.GetAcademicReportUsecase>(),
@@ -185,15 +192,16 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i193.GetStoredCredentialsUseCase>(),
           gh<_i365.SignInUseCase>(),
         ));
+    gh.singleton<_i65.HomePageCubit>(
+        () => _i65.HomePageCubit(gh<_i48.SignOutUseCase>()));
     gh.singleton<_i767.AuthenticationManager>(() => _i767.AuthenticationManager(
           gh<_i679.SessionLifecycleService>(),
           gh<_i193.GetStoredCredentialsUseCase>(),
           gh<_i48.SignOutUseCase>(),
           gh<_i908.KeepSessionAliveUsecase>(),
           gh<_i365.SignInUseCase>(),
+          gh<_i755.EnsureNoPendingSurveyUseCase>(),
         ));
-    gh.singleton<_i65.HomePageCubit>(
-        () => _i65.HomePageCubit(gh<_i48.SignOutUseCase>()));
     return this;
   }
 }

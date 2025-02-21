@@ -14,7 +14,7 @@ class SignOutUseCase {
   SignOutUseCase(this._sharedPreferencesAuthRepository, this._navigationService,
       this._authRepository, this._regevaRepository);
 
-  Future<void> execute() async {
+  Future<void> execute([String? message]) async {
     // required for refreshing navigation
     await _sharedPreferencesAuthRepository.removePassword();
 
@@ -23,6 +23,6 @@ class SignOutUseCase {
     await _regevaRepository.disposeCookies();
 
     // ui navigation
-    _navigationService.refreshNavigation();
+    _navigationService.refreshNavigation(message);
   }
 }

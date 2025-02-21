@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/auth/domain/services/navigation_service.dart';
+import 'package:toastification/toastification.dart';
 
 @Singleton(as: NavigationService)
 class NavigationServiceImpl implements NavigationService {
@@ -9,7 +11,14 @@ class NavigationServiceImpl implements NavigationService {
   NavigationServiceImpl(this._router);
 
   @override
-  void refreshNavigation() {
+  void refreshNavigation([String? message]) {
+    if (message != null) {
+      toastification.show(
+        title: Text(message),
+        type: ToastificationType.error,
+        autoCloseDuration: const Duration(seconds: 8),
+      );
+    }
     _router.refresh();
   }
 }

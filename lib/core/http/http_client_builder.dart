@@ -109,7 +109,7 @@ class HttpClientBuilder {
 
   void _printRequest(RequestOptions options) {
     if (kDebugMode) {
-      print('📡⬆️ [Request] $_id: ${options.method} ${options.uri}');
+      print('[📡] ⬆️ $_id: ${options.method} ${options.uri}');
       print('Headers: ${json.encode(options.headers)}');
       try {
         print('Data: ${json.encode(options.data)}');
@@ -122,7 +122,7 @@ class HttpClientBuilder {
   void _printResponse(Response<dynamic> response, String emoji) {
     if (kDebugMode) {
       print(
-          '📡⬇️$emoji [Response] $_id: ${response.requestOptions.method} ${response.requestOptions.uri} ${response.statusCode}');
+          '[📡] ⬇️$emoji $_id: ${response.requestOptions.method} ${response.requestOptions.uri} ${response.statusCode}');
       print('Headers: ${json.encode(response.headers.map)}');
       try {
         print('Data: ${json.encode(response.data)}');

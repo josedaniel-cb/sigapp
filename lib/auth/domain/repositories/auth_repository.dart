@@ -4,4 +4,5 @@ abstract class AuthRepository {
   Future<ApiResponse> login(String username, String password);
   Future<ApiResponse> keepSession();
   Future<void> disposeCookies();
+  Future<ApiResponse> checkSurvey();
 }

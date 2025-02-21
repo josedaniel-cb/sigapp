@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:sigapp/auth/application/usecases/ensure_no_pending_survey_usecase.dart';
 import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.dart';
 import 'package:sigapp/auth/application/usecases/keep_session_alive_usecase.dart';
 import 'package:sigapp/auth/application/usecases/sign_in_usecase.dart';
@@ -19,6 +20,7 @@ class AuthenticationManager {
   final SignOutUseCase _signOutUseCase;
   final KeepSessionAliveUsecase _keepSessionAliveUsecase;
   final SignInUseCase _signInUseCase;
+  final EnsureNoPendingSurveyUseCase _ensureNoPendingSurveyUseCase;
   Completer<void>? _refreshSessionCompleter;
 
   AuthenticationManager(
@@ -26,19 +28,57 @@ class AuthenticationManager {
       this._getStoredCredentialsUseCase,
       this._signOutUseCase,
       this._keepSessionAliveUsecase,
-      this._signInUseCase) {
-    _sessionService.setup(
-      completeSessionRefresh: completeSessionRefresh,
-      excludedRequests: [
-        ApiPathAndMethod(SigaClient.forceSignOutRedirectionLocation, 'POST'),
-        ApiPathAndMethod(SigaClient.signInPath, 'POST'),
-        ApiPathAndMethod(SigaClient.keepSessionPath, 'POST'),
+      this._signInUseCase,
+      this._ensureNoPendingSurveyUseCase) {
+    // First
+    _sessionService.configureSurveyAssertionInterceptors(
+      ensureNoPendingSurvey: (response) async {
+        if (_sessionService.evaluateIsSurveyAvailable(response)) {
+          try {
+            await _ensureNoPendingSurveyUseCase.execute(response);
+            if (kDebugMode) {
+              print('[🧢] No pending survey');
+            }
+          } catch (e, s) {
+            if (kDebugMode) {
+              print('[🧢] Pending survey found, execute sign out');
+              print(e);
+              print(s);
+            }
+            _signOutUseCase.execute(e.toString());
+            rethrow;
+          }
+        }
+      },
+    );
+
+    // Second
+    _sessionService.configureSessionInterceptors(
+      awaitOngoingSessionRefresh: completeSessionRefresh,
+      excludedEndpointsFromRefresh: [
+        ApiPathAndMethod(
+          ApiMethod.post,
+          SigaClient.forceSignOutRedirectionLocation,
+        ),
+        ApiPathAndMethod(
+          ApiMethod.post,
+          SigaClient.signInPath,
+        ),
+        ApiPathAndMethod(
+          ApiMethod.post,
+          SigaClient.keepSessionPath,
+        ),
+        ApiPathAndMethod(
+          ApiMethod.get,
+          SigaClient.surveyPath,
+        ),
       ],
       onSessionExpired: () {
         _signOutUseCase.execute();
       },
     );
 
+    // try {
     // Schedule
     Timer.periodic(_sessionTimeoutDuration, (timer) {
       _keepSessionAlive();
@@ -46,6 +86,13 @@ class AuthenticationManager {
 
     // Run
     _keepSessionAlive();
+    // } catch (e, s) {
+    //   if (kDebugMode) {
+    //     print(e);
+    //     print(s);
+    //   }
+    //   _signOutUseCase.execute(e.toString());
+    // }
   }
 
   Future<void> _keepSessionAlive() async {
@@ -57,32 +104,33 @@ class AuthenticationManager {
 
     _refreshSessionCompleter = Completer<void>();
     try {
-      final keepSessionResponse = await _keepSessionAliveUsecase.execute();
+      // final keepSessionResponse = await _keepSessionAliveUsecase.execute();
+      await _keepSessionAliveUsecase.execute();
 
-      final sessionHasExpired = _sessionService.evaluateSessionExpiration(
-        headers: keepSessionResponse.headers,
-        statusCode: keepSessionResponse.statusCode,
-      );
+      // final sessionHasExpired = _sessionService.evaluateSessionExpiration(
+      //   headers: keepSessionResponse.headers,
+      //   statusCode: keepSessionResponse.statusCode,
+      // );
       // If the session has expired, sign in again
-      if (sessionHasExpired) {
-        // Login
-        final successfulSignIn = await _signInUseCase.execute(
-          storedCredentials.username!,
-          storedCredentials.password!,
-        );
-        if (!successfulSignIn) {
-          throw Exception('Error refreshing session');
-        }
-        if (kDebugMode) {
-          print('[🧢] Session refreshed');
-        }
-      } else {
-        if (kDebugMode) {
-          print('[🧢] Session is still alive');
-        }
+      // if (sessionHasExpired) {
+      // Login
+      final successfulSignIn = await _signInUseCase.execute(
+        storedCredentials.username!,
+        storedCredentials.password!,
+      );
+      if (!successfulSignIn) {
+        throw Exception('Error refreshing session');
       }
+      if (kDebugMode) {
+        print('[🧢] Session refreshed');
+      }
+      // } else {
+      //   if (kDebugMode) {
+      //     print('[🧢] Session is still alive');
+      //   }
+      // }
       _refreshSessionCompleter!.complete();
-    } on Exception catch (e, s) {
+    } catch (e, s) {
       if (kDebugMode) {
         print('[🧢] Error refreshing session: $e');
         print(s);

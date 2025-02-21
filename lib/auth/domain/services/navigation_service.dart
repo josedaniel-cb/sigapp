@@ -1,3 +1,3 @@
 abstract class NavigationService {
-  void refreshNavigation();
+  void refreshNavigation([String? message]);
 }

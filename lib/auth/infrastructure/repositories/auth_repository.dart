@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:sigapp/auth/domain/value-objects/api_path_and_method.dart';
 import 'package:sigapp/core/http/siga_client.dart';
 import 'package:sigapp/auth/domain/repositories/auth_repository.dart';
 import 'package:sigapp/auth/domain/value-objects/api_response.dart';
@@ -34,7 +35,14 @@ class AuthRepositoryImpl implements AuthRepository {
     );
     final statusCode = response.statusCode;
     if (statusCode == null) throw Exception('Status code is null');
-    return ApiResponse(statusCode: statusCode, headers: response.headers.map);
+    return ApiResponse(
+      statusCode: statusCode,
+      headers: response.headers.map,
+      pathAndMethod: ApiPathAndMethod(
+        ApiMethod.fromString(response.requestOptions.method),
+        response.requestOptions.path,
+      ),
+    );
   }
 
   @override
@@ -47,11 +55,38 @@ class AuthRepositoryImpl implements AuthRepository {
     );
     final statusCode = response.statusCode;
     if (statusCode == null) throw Exception('Status code is null');
-    return ApiResponse(statusCode: statusCode, headers: response.headers.map);
+    return ApiResponse(
+      statusCode: statusCode,
+      headers: response.headers.map,
+      pathAndMethod: ApiPathAndMethod(
+        ApiMethod.fromString(response.requestOptions.method),
+        response.requestOptions.path,
+      ),
+    );
   }
 
   @override
   Future<void> disposeCookies() async {
     await _sigaClient.cookieManager.clearAllCookies();
+  }
+
+  @override
+  Future<ApiResponse> checkSurvey() async {
+    final response = await _sigaClient.http.get(
+      SigaClient.surveyPath,
+      options: Options(
+        validateStatus: (status) => true,
+      ),
+    );
+    final statusCode = response.statusCode;
+    if (statusCode == null) throw Exception('Status code is null');
+    return ApiResponse(
+      statusCode: statusCode,
+      headers: response.headers.map,
+      pathAndMethod: ApiPathAndMethod(
+        ApiMethod.fromString(response.requestOptions.method),
+        response.requestOptions.path,
+      ),
+    );
   }
 }

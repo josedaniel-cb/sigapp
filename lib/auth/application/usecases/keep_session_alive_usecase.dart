@@ -9,6 +9,7 @@ class KeepSessionAliveUsecase {
   KeepSessionAliveUsecase(this._authRepository);
 
   Future<ApiResponse> execute() async {
-    return await _authRepository.keepSession();
+    final response = await _authRepository.keepSession();
+    return response;
   }
 }

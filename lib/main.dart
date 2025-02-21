@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sigapp/core/injection/get_it.dart';
+import 'package:toastification/toastification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,8 +19,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: getIt<GoRouter>(),
+    return ToastificationWrapper(
+      child: MaterialApp.router(
+        routerConfig: getIt<GoRouter>(),
+      ),
     );
   }
 }
