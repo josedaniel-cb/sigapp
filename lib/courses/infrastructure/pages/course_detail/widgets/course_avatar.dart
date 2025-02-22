@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sigapp/core/injection/get_it.dart';
+import 'package:sigapp/core/widgets/avatar.dart';
 import 'package:sigapp/courses/domain/services/course_service.dart';
 
 class CourseAvatarWidget extends StatelessWidget {
@@ -21,24 +22,9 @@ class CourseAvatarWidget extends StatelessWidget {
     final backgroundColor =
         Color(_courseService.getBackgroundColor(courseName));
 
-    return Container(
-      width: 48,
-      height: 48,
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        shape: BoxShape.circle,
-      ),
-      child: Center(
-        child: Text(
-          initials,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w500,
-            fontSize: 8 * 2,
-          ),
-        ),
-      ),
+    return AvatarWidget(
+      content: initials,
+      backgroundColor: backgroundColor,
     );
   }
 }

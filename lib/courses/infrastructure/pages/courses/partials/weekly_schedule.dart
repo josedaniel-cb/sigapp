@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sigapp/core/utils/ui_utils.dart';
 import 'package:sigapp/student/domain/entities/weekly_schedule_event.dart';
 import 'package:sigapp/student/domain/value_objects/enrolled_course.dart';
 
@@ -448,19 +449,6 @@ class EventWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double calculateLuminance(Color color) {
-      final double r = color.r / 255;
-      final double g = color.g / 255;
-      final double b = color.b / 255;
-      return 0.299 * r + 0.287 * g + 0.114 * b;
-    }
-
-    Color chooseTextColor(Color backgroundColor) {
-      return calculateLuminance(backgroundColor) > 0.5
-          ? Colors.black
-          : Colors.white;
-    }
-
     final top = (event.data.startHour - startHour) * rowHeight +
         (event.data.startMinute / 60) * rowHeight;
     final gridWidth =
@@ -500,7 +488,7 @@ class EventWidget extends StatelessWidget {
 
     final availableWidth = width - (horizontalPadding * 2);
 
-    final textColor = chooseTextColor(event.color);
+    final textColor = UIUtils.getTextColorForBackground(event.color);
 
     return Positioned(
       top: top,
