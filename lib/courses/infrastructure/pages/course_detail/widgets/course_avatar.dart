@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sigapp/core/injection/get_it.dart';
-import 'package:sigapp/core/widgets/avatar.dart';
+import 'package:sigapp/core/widgets/initials_avatar.dart';
 import 'package:sigapp/courses/domain/services/course_service.dart';
 
 class CourseAvatarWidget extends StatelessWidget {
@@ -22,7 +22,7 @@ class CourseAvatarWidget extends StatelessWidget {
     final backgroundColor =
         Color(_courseService.getBackgroundColor(courseName));
 
-    return AvatarWidget(
+    return InitialsAvatarWidget(
       content: initials,
       backgroundColor: backgroundColor,
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sigapp/core/utils/ui_utils.dart';
 
-class AvatarWidget extends StatelessWidget {
-  const AvatarWidget({
+class InitialsAvatarWidget extends StatelessWidget {
+  const InitialsAvatarWidget({
     super.key,
     required this.content,
     required this.backgroundColor,
