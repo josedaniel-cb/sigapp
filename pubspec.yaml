@@ -69,7 +69,8 @@ dependencies:
 
   mime: ^2.0.0
 
-  open_filex: ^4.6.0
+  # open_filex: ^4.6.0
+  open_file: ^3.5.10
 
   skeletonizer: ^1.4.3
 
