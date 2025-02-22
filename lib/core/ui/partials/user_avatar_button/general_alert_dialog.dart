@@ -73,6 +73,22 @@ class GeneralAvatarDialog extends StatelessWidget {
                         ),
                       ),
                     Divider(),
+                    _buildLinkListTile(
+                      context,
+                      title: 'SIGA web',
+                      url: 'https://academico.unp.edu.pe/',
+                    ),
+                    _buildLinkListTile(
+                      context,
+                      title: 'Reporte pagos',
+                      url: 'http://pagos.unp.edu.pe/ReportePagos/',
+                    ),
+                    _buildLinkListTile(
+                      context,
+                      title: 'Recuperar contraseña',
+                      url: 'https://academico.unp.edu.pe/Cuenta/ResetPassword',
+                    ),
+                    Divider(),
                     ListTile(
                       leading: Icon(Icons.logout),
                       title: Text('Cerrar sesión'),
@@ -85,16 +101,33 @@ class GeneralAvatarDialog extends StatelessWidget {
                 ),
               ),
             ),
-            GestureDetector(
-              onTap: () => _launchUrl(context,
-                  'https://josedaniel-cb.github.io/sigapp-privacy-policy/'),
-              child: Text(
-                'Política de privacidad',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ),
+            _buildFooter(context),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildLinkListTile(
+    BuildContext context, {
+    required String title,
+    required String url,
+  }) {
+    return ListTile(
+      trailing: Icon(Icons.open_in_browser),
+      title: Text(title),
+      leading: Icon(Icons.abc, color: Colors.transparent),
+      onTap: () => _launchUrl(context, url),
+    );
+  }
+
+  GestureDetector _buildFooter(BuildContext context) {
+    return GestureDetector(
+      onTap: () => _launchUrl(
+          context, 'https://josedaniel-cb.github.io/sigapp-privacy-policy/'),
+      child: Text(
+        'Política de privacidad',
+        style: Theme.of(context).textTheme.bodySmall,
       ),
     );
   }
