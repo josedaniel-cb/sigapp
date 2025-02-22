@@ -66,7 +66,7 @@ import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_
     as _i215;
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart'
     as _i525;
-import 'package:sigapp/courses/infrastructure/pages/courses/partials/schedule_share_button_cubit.dart'
+import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_tab/schedule_share_button_cubit.dart'
     as _i786;
 import 'package:sigapp/courses/infrastructure/repositories/courses_repository.dart'
     as _i892;

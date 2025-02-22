@@ -4,8 +4,8 @@ import 'package:sigapp/core/ui/widgets/error_state.dart';
 import 'package:sigapp/core/ui/widgets/loading_state.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/partials/schedule_semester_select.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses_tab.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_tab.dart';
 
 class CoursesPageWidget extends StatefulWidget {
   const CoursesPageWidget({super.key, required this.appBarTrailing});

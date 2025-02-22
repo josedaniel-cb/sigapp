@@ -5,7 +5,7 @@ import 'package:sigapp/core/ui/utils/colors_utils.dart';
 import 'package:sigapp/core/ui/widgets/error_state.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/partials/course_item.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses_tab/course_item.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class EnrolledCoursesTabWidget extends StatelessWidget {
