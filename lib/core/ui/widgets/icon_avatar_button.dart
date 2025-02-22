@@ -15,7 +15,7 @@ class IconAvatarButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textColor = ColorsUtils.getTextColorForBackground(backgroundColor);
+    final textColor = ColorsUtils.getTextColor(backgroundColor);
 
     return Ink(
       decoration: ShapeDecoration(

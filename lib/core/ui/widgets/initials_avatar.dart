@@ -39,7 +39,7 @@ class InitialsAvatarWidget extends StatelessWidget {
           content,
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: ColorsUtils.getTextColorForBackground(backgroundColor),
+            color: ColorsUtils.getTextColor(backgroundColor),
             fontWeight: FontWeight.w500,
             fontSize: diameter * (1 / 2),
           ),

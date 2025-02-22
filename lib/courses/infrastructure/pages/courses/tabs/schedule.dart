@@ -50,9 +50,7 @@ class ScheduleTabWidget extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         child: Stack(
           children: [
-            WeeklyScheduleWidget(
-              courses: enrolledCourses,
-            ),
+            WeeklyScheduleWidget(courses: enrolledCourses),
           ],
         ),
       ),

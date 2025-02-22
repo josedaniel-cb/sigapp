@@ -49,11 +49,19 @@ class ScheduleSemesterSelect extends StatelessWidget {
             title: Text(
               semester.name,
               textAlign: TextAlign.center,
+              style: !enabled
+                  ? TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.bold,
+                    )
+                  : null,
             ),
-            onTap: () {
-              onSemesterSelected(semester);
-            },
-            enabled: enabled,
+            onTap: enabled
+                ? () {
+                    onSemesterSelected(semester);
+                  }
+                : null,
+            // enabled: enabled,
           ),
         );
       }).toList());

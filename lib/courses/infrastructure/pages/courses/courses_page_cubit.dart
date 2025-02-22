@@ -77,6 +77,7 @@ class CoursesPageCubit extends Cubit<CoursesPageState> {
     state.mapOrNull(
       success: (state) {
         final nextState = state.copyWith(
+          selectedSemester: semester,
           enrolledCourses: EnrolledCoursesState.loading(),
         ) as CoursesPageSuccessState;
         emit(nextState);

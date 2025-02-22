@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigapp/core/injection/get_it.dart';
+import 'package:sigapp/core/ui/utils/colors_utils.dart';
 import 'package:sigapp/core/ui/widgets/error_state.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
@@ -72,7 +73,10 @@ class EnrolledCoursesTabWidget extends StatelessWidget {
             cubit.loadSyllabus(course.data.regevaScheduledCourseId);
             return cubit;
           },
-          child: CourseItemWidget(course: course.data),
+          child: CourseItemWidget(
+            course: course.data,
+            color: ColorsUtils.getColorByIndex(index),
+          ),
         );
       },
     );

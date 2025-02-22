@@ -7,24 +7,20 @@ class CourseAvatarWidget extends StatelessWidget {
   CourseAvatarWidget({
     super.key,
     required this.courseName,
-    required this.courseCode,
+    required this.color,
   });
 
   final String courseName;
-
-  final String courseCode;
+  final Color color;
 
   final _courseService = getIt<CourseService>();
 
   @override
   Widget build(BuildContext context) {
     final initials = _courseService.extractInitials(courseName);
-    final backgroundColor =
-        Color(_courseService.getBackgroundColor(courseName));
-
     return InitialsAvatarWidget(
       content: initials,
-      backgroundColor: backgroundColor,
+      backgroundColor: color,
     );
   }
 }

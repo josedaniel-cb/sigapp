@@ -38,8 +38,7 @@ class WeeklyScheduleWidget extends StatefulWidget {
           (indexed) => indexed.$2.scheduleEvents.map(
             (event) => WeeklyScheduleWidgetItem(
               data: event,
-              color: colorList.elementAtOrNull(indexed.$1 % colorList.length) ??
-                  Colors.grey,
+              color: ColorsUtils.getColorByIndex(indexed.$1),
             ),
           ),
         )
@@ -50,22 +49,6 @@ class WeeklyScheduleWidget extends StatefulWidget {
   @override
   State<WeeklyScheduleWidget> createState() => _WeeklyScheduleWidgetState();
 }
-
-final colorList = [
-  Colors.red,
-  Colors.blue,
-  Colors.green,
-  Colors.yellow,
-  Colors.purple,
-  Colors.orange,
-  Colors.pink,
-  Colors.teal,
-  Colors.indigo,
-  Colors.cyan,
-  Colors.brown,
-  Colors.lime,
-  Colors.amber,
-];
 
 class _WeeklyScheduleWidgetState extends State<WeeklyScheduleWidget> {
   var startHour = 0;
@@ -488,7 +471,7 @@ class EventWidget extends StatelessWidget {
 
     final availableWidth = width - (horizontalPadding * 2);
 
-    final textColor = ColorsUtils.getTextColorForBackground(event.color);
+    final textColor = ColorsUtils.getTextColor(event.color);
 
     return Positioned(
       top: top,
