@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sigapp/core/ui/ui_utils.dart';
+import 'package:sigapp/core/ui/utils/colors_utils.dart';
 
 class InitialsAvatarWidget extends StatelessWidget {
   const InitialsAvatarWidget({
@@ -27,7 +27,7 @@ class InitialsAvatarWidget extends StatelessWidget {
           content,
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: UIUtils.getTextColorForBackground(backgroundColor),
+            color: ColorsUtils.getTextColorForBackground(backgroundColor),
             fontWeight: FontWeight.w500,
             fontSize: diameter * (1 / 2),
           ),

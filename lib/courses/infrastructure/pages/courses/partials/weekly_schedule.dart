@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sigapp/core/ui/ui_utils.dart';
+import 'package:sigapp/core/ui/utils/colors_utils.dart';
 import 'package:sigapp/student/domain/entities/weekly_schedule_event.dart';
 import 'package:sigapp/student/domain/value_objects/enrolled_course.dart';
 
@@ -488,7 +488,7 @@ class EventWidget extends StatelessWidget {
 
     final availableWidth = width - (horizontalPadding * 2);
 
-    final textColor = UIUtils.getTextColorForBackground(event.color);
+    final textColor = ColorsUtils.getTextColorForBackground(event.color);
 
     return Positioned(
       top: top,

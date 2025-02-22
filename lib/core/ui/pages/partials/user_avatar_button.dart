@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sigapp/core/ui/ui_utils.dart';
+import 'package:sigapp/core/ui/utils/colors_utils.dart';
 import 'package:sigapp/core/ui/widgets/brand_text.dart';
 
 class UserAvatarButtonWidget extends StatelessWidget {
@@ -13,7 +13,7 @@ class UserAvatarButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final backgroundColor = Theme.of(context).primaryColor;
-    final textColor = UIUtils.getTextColorForBackground(backgroundColor);
+    final textColor = ColorsUtils.getTextColorForBackground(backgroundColor);
     return Ink(
       decoration: ShapeDecoration(
         color: backgroundColor,

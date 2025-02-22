@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class UIUtils {
-  UIUtils._();
+class ColorsUtils {
+  ColorsUtils._();
 
   static Color getTextColorForBackground(Color backgroundColor) {
     double calculateLuminance(Color color) {

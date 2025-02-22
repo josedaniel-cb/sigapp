@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sigapp/core/ui/brand_colors.dart';
+import 'package:sigapp/core/ui/theme/brand_theme.dart';
 
 class BrandTextWidget extends StatelessWidget {
   const BrandTextWidget({
