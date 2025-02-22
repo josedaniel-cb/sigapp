@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/courses/application/usecases/get_syllabus_file_usecase.dart';
+import 'package:sigapp/student/domain/entities/enrolled_course_data.dart';
 
 part 'course_detail_cubit.freezed.dart';
 
@@ -17,38 +18,41 @@ class CourseDetailSyllabusState with _$CourseDetailSyllabusState {
 
 @freezed
 class CourseDetailState with _$CourseDetailState {
-  const factory CourseDetailState({
+  const factory CourseDetailState.empty() = CourseDetailEmptyState;
+  const factory CourseDetailState.ready({
+    required EnrolledCourseData course,
     required CourseDetailSyllabusState syllabus,
-  }) = _CourseDetailState;
+  }) = CourseDetailReadyState;
 }
 
 @injectable
 class CourseDetailCubit extends Cubit<CourseDetailState> {
   final GetSyllabusFileUsecase _getSyllabusFileUsecase;
-
   CourseDetailCubit(this._getSyllabusFileUsecase)
-      : super(const CourseDetailState(
-          syllabus: CourseDetailSyllabusState.initial(),
-        ));
+      : super(const CourseDetailState.empty());
 
-  Future<void> loadSyllabus(String regevaScheduledCourseId) async {
-    emit(const CourseDetailState(
+  Future<void> loadSyllabus({
+    required EnrolledCourseData course,
+    required String regevaScheduledCourseId,
+  }) async {
+    emit(CourseDetailState.ready(
+      course: course,
       syllabus: CourseDetailSyllabusState.loading(),
     ));
     try {
       final file =
           await _getSyllabusFileUsecase.execute(regevaScheduledCourseId);
       if (file == null) {
-        emit(const CourseDetailState(
+        emit((state as CourseDetailReadyState).copyWith(
           syllabus: CourseDetailSyllabusState.notFound(),
         ));
       } else {
-        emit(CourseDetailState(
+        emit((state as CourseDetailReadyState).copyWith(
           syllabus: CourseDetailSyllabusState.loaded(file),
         ));
       }
     } catch (e) {
-      emit(const CourseDetailState(
+      emit((state as CourseDetailReadyState).copyWith(
         syllabus:
             CourseDetailSyllabusState.error('Error al descargar syllabus'),
       ));

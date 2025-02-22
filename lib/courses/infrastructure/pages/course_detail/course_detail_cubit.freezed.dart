@@ -784,12 +784,49 @@ abstract class _Error implements CourseDetailSyllabusState {
 
 /// @nodoc
 mixin _$CourseDetailState {
-  CourseDetailSyllabusState get syllabus => throw _privateConstructorUsedError;
-
-  /// Create a copy of CourseDetailState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $CourseDetailStateCopyWith<CourseDetailState> get copyWith =>
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() empty,
+    required TResult Function(
+            EnrolledCourseData course, CourseDetailSyllabusState syllabus)
+        ready,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? empty,
+    TResult? Function(
+            EnrolledCourseData course, CourseDetailSyllabusState syllabus)?
+        ready,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? empty,
+    TResult Function(
+            EnrolledCourseData course, CourseDetailSyllabusState syllabus)?
+        ready,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CourseDetailEmptyState value) empty,
+    required TResult Function(CourseDetailReadyState value) ready,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CourseDetailEmptyState value)? empty,
+    TResult? Function(CourseDetailReadyState value)? ready,
+  }) =>
+      throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CourseDetailEmptyState value)? empty,
+    TResult Function(CourseDetailReadyState value)? ready,
+    required TResult orElse(),
+  }) =>
       throw _privateConstructorUsedError;
 }
 
@@ -798,10 +835,6 @@ abstract class $CourseDetailStateCopyWith<$Res> {
   factory $CourseDetailStateCopyWith(
           CourseDetailState value, $Res Function(CourseDetailState) then) =
       _$CourseDetailStateCopyWithImpl<$Res, CourseDetailState>;
-  @useResult
-  $Res call({CourseDetailSyllabusState syllabus});
-
-  $CourseDetailSyllabusStateCopyWith<$Res> get syllabus;
 }
 
 /// @nodoc
@@ -816,17 +849,172 @@ class _$CourseDetailStateCopyWithImpl<$Res, $Val extends CourseDetailState>
 
   /// Create a copy of CourseDetailState
   /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+abstract class _$$CourseDetailEmptyStateImplCopyWith<$Res> {
+  factory _$$CourseDetailEmptyStateImplCopyWith(
+          _$CourseDetailEmptyStateImpl value,
+          $Res Function(_$CourseDetailEmptyStateImpl) then) =
+      __$$CourseDetailEmptyStateImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$CourseDetailEmptyStateImplCopyWithImpl<$Res>
+    extends _$CourseDetailStateCopyWithImpl<$Res, _$CourseDetailEmptyStateImpl>
+    implements _$$CourseDetailEmptyStateImplCopyWith<$Res> {
+  __$$CourseDetailEmptyStateImplCopyWithImpl(
+      _$CourseDetailEmptyStateImpl _value,
+      $Res Function(_$CourseDetailEmptyStateImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CourseDetailState
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$CourseDetailEmptyStateImpl implements CourseDetailEmptyState {
+  const _$CourseDetailEmptyStateImpl();
+
+  @override
+  String toString() {
+    return 'CourseDetailState.empty()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$CourseDetailEmptyStateImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() empty,
+    required TResult Function(
+            EnrolledCourseData course, CourseDetailSyllabusState syllabus)
+        ready,
+  }) {
+    return empty();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? empty,
+    TResult? Function(
+            EnrolledCourseData course, CourseDetailSyllabusState syllabus)?
+        ready,
+  }) {
+    return empty?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? empty,
+    TResult Function(
+            EnrolledCourseData course, CourseDetailSyllabusState syllabus)?
+        ready,
+    required TResult orElse(),
+  }) {
+    if (empty != null) {
+      return empty();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CourseDetailEmptyState value) empty,
+    required TResult Function(CourseDetailReadyState value) ready,
+  }) {
+    return empty(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CourseDetailEmptyState value)? empty,
+    TResult? Function(CourseDetailReadyState value)? ready,
+  }) {
+    return empty?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CourseDetailEmptyState value)? empty,
+    TResult Function(CourseDetailReadyState value)? ready,
+    required TResult orElse(),
+  }) {
+    if (empty != null) {
+      return empty(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CourseDetailEmptyState implements CourseDetailState {
+  const factory CourseDetailEmptyState() = _$CourseDetailEmptyStateImpl;
+}
+
+/// @nodoc
+abstract class _$$CourseDetailReadyStateImplCopyWith<$Res> {
+  factory _$$CourseDetailReadyStateImplCopyWith(
+          _$CourseDetailReadyStateImpl value,
+          $Res Function(_$CourseDetailReadyStateImpl) then) =
+      __$$CourseDetailReadyStateImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({EnrolledCourseData course, CourseDetailSyllabusState syllabus});
+
+  $EnrolledCourseDataCopyWith<$Res> get course;
+  $CourseDetailSyllabusStateCopyWith<$Res> get syllabus;
+}
+
+/// @nodoc
+class __$$CourseDetailReadyStateImplCopyWithImpl<$Res>
+    extends _$CourseDetailStateCopyWithImpl<$Res, _$CourseDetailReadyStateImpl>
+    implements _$$CourseDetailReadyStateImplCopyWith<$Res> {
+  __$$CourseDetailReadyStateImplCopyWithImpl(
+      _$CourseDetailReadyStateImpl _value,
+      $Res Function(_$CourseDetailReadyStateImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of CourseDetailState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? course = null,
     Object? syllabus = null,
   }) {
-    return _then(_value.copyWith(
+    return _then(_$CourseDetailReadyStateImpl(
+      course: null == course
+          ? _value.course
+          : course // ignore: cast_nullable_to_non_nullable
+              as EnrolledCourseData,
       syllabus: null == syllabus
           ? _value.syllabus
           : syllabus // ignore: cast_nullable_to_non_nullable
               as CourseDetailSyllabusState,
-    ) as $Val);
+    ));
+  }
+
+  /// Create a copy of CourseDetailState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $EnrolledCourseDataCopyWith<$Res> get course {
+    return $EnrolledCourseDataCopyWith<$Res>(_value.course, (value) {
+      return _then(_value.copyWith(course: value));
+    });
   }
 
   /// Create a copy of CourseDetailState
@@ -835,96 +1023,130 @@ class _$CourseDetailStateCopyWithImpl<$Res, $Val extends CourseDetailState>
   @pragma('vm:prefer-inline')
   $CourseDetailSyllabusStateCopyWith<$Res> get syllabus {
     return $CourseDetailSyllabusStateCopyWith<$Res>(_value.syllabus, (value) {
-      return _then(_value.copyWith(syllabus: value) as $Val);
+      return _then(_value.copyWith(syllabus: value));
     });
   }
 }
 
 /// @nodoc
-abstract class _$$CourseDetailStateImplCopyWith<$Res>
-    implements $CourseDetailStateCopyWith<$Res> {
-  factory _$$CourseDetailStateImplCopyWith(_$CourseDetailStateImpl value,
-          $Res Function(_$CourseDetailStateImpl) then) =
-      __$$CourseDetailStateImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({CourseDetailSyllabusState syllabus});
+
+class _$CourseDetailReadyStateImpl implements CourseDetailReadyState {
+  const _$CourseDetailReadyStateImpl(
+      {required this.course, required this.syllabus});
 
   @override
-  $CourseDetailSyllabusStateCopyWith<$Res> get syllabus;
-}
-
-/// @nodoc
-class __$$CourseDetailStateImplCopyWithImpl<$Res>
-    extends _$CourseDetailStateCopyWithImpl<$Res, _$CourseDetailStateImpl>
-    implements _$$CourseDetailStateImplCopyWith<$Res> {
-  __$$CourseDetailStateImplCopyWithImpl(_$CourseDetailStateImpl _value,
-      $Res Function(_$CourseDetailStateImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of CourseDetailState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? syllabus = null,
-  }) {
-    return _then(_$CourseDetailStateImpl(
-      syllabus: null == syllabus
-          ? _value.syllabus
-          : syllabus // ignore: cast_nullable_to_non_nullable
-              as CourseDetailSyllabusState,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$CourseDetailStateImpl implements _CourseDetailState {
-  const _$CourseDetailStateImpl({required this.syllabus});
-
+  final EnrolledCourseData course;
   @override
   final CourseDetailSyllabusState syllabus;
 
   @override
   String toString() {
-    return 'CourseDetailState(syllabus: $syllabus)';
+    return 'CourseDetailState.ready(course: $course, syllabus: $syllabus)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CourseDetailStateImpl &&
+            other is _$CourseDetailReadyStateImpl &&
+            (identical(other.course, course) || other.course == course) &&
             (identical(other.syllabus, syllabus) ||
                 other.syllabus == syllabus));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, syllabus);
+  int get hashCode => Object.hash(runtimeType, course, syllabus);
 
   /// Create a copy of CourseDetailState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$CourseDetailStateImplCopyWith<_$CourseDetailStateImpl> get copyWith =>
-      __$$CourseDetailStateImplCopyWithImpl<_$CourseDetailStateImpl>(
-          this, _$identity);
-}
-
-abstract class _CourseDetailState implements CourseDetailState {
-  const factory _CourseDetailState(
-          {required final CourseDetailSyllabusState syllabus}) =
-      _$CourseDetailStateImpl;
+  _$$CourseDetailReadyStateImplCopyWith<_$CourseDetailReadyStateImpl>
+      get copyWith => __$$CourseDetailReadyStateImplCopyWithImpl<
+          _$CourseDetailReadyStateImpl>(this, _$identity);
 
   @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() empty,
+    required TResult Function(
+            EnrolledCourseData course, CourseDetailSyllabusState syllabus)
+        ready,
+  }) {
+    return ready(course, syllabus);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? empty,
+    TResult? Function(
+            EnrolledCourseData course, CourseDetailSyllabusState syllabus)?
+        ready,
+  }) {
+    return ready?.call(course, syllabus);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? empty,
+    TResult Function(
+            EnrolledCourseData course, CourseDetailSyllabusState syllabus)?
+        ready,
+    required TResult orElse(),
+  }) {
+    if (ready != null) {
+      return ready(course, syllabus);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(CourseDetailEmptyState value) empty,
+    required TResult Function(CourseDetailReadyState value) ready,
+  }) {
+    return ready(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(CourseDetailEmptyState value)? empty,
+    TResult? Function(CourseDetailReadyState value)? ready,
+  }) {
+    return ready?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(CourseDetailEmptyState value)? empty,
+    TResult Function(CourseDetailReadyState value)? ready,
+    required TResult orElse(),
+  }) {
+    if (ready != null) {
+      return ready(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class CourseDetailReadyState implements CourseDetailState {
+  const factory CourseDetailReadyState(
+          {required final EnrolledCourseData course,
+          required final CourseDetailSyllabusState syllabus}) =
+      _$CourseDetailReadyStateImpl;
+
+  EnrolledCourseData get course;
   CourseDetailSyllabusState get syllabus;
 
   /// Create a copy of CourseDetailState
   /// with the given fields replaced by the non-null parameter values.
-  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$CourseDetailStateImplCopyWith<_$CourseDetailStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$CourseDetailReadyStateImplCopyWith<_$CourseDetailReadyStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

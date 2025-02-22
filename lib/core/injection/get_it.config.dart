@@ -46,7 +46,7 @@ import 'package:sigapp/core/ui/not_used_pages/get_default_class_schedule_usecase
 import 'package:sigapp/core/ui/not_used_pages/schedule_page/partials/export_to_calendar_cubit.dart'
     as _i977;
 import 'package:sigapp/core/ui/pages/home_page_cubit.dart' as _i235;
-import 'package:sigapp/core/ui/partials/user_avatar_button_cubit.dart' as _i727;
+import 'package:sigapp/core/ui/partials/user_avatar_button_cubit.dart' as _i323;
 import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.dart'
     as _i315;
 import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase.dart'
@@ -67,7 +67,7 @@ import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart'
     as _i525;
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_tab/schedule_share_button_cubit.dart'
-    as _i786;
+    as _i835;
 import 'package:sigapp/courses/infrastructure/repositories/courses_repository.dart'
     as _i892;
 import 'package:sigapp/courses/infrastructure/repositories/local_syllabus_repository.dart'
@@ -104,8 +104,8 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.singleton<_i906.CourseService>(() => _i906.CourseService());
-    gh.singleton<_i786.ScheduleShareButtonCubit>(
-        () => _i786.ScheduleShareButtonCubit());
+    gh.singleton<_i835.ScheduleShareButtonCubit>(
+        () => _i835.ScheduleShareButtonCubit());
     gh.singleton<_i929.RegevaClient>(
         () => _i929.RegevaClient(gh<_i460.SharedPreferences>()));
     gh.singleton<_i476.SigaClient>(
@@ -193,7 +193,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i193.GetStoredCredentialsUseCase>(),
           gh<_i365.SignInUseCase>(),
         ));
-    gh.singleton<_i727.UserAvatarButtonCubit>(() => _i727.UserAvatarButtonCubit(
+    gh.singleton<_i323.UserAvatarButtonCubit>(() => _i323.UserAvatarButtonCubit(
           gh<_i771.GetAcademicReportUsecase>(),
           gh<_i48.SignOutUseCase>(),
         ));

@@ -69,12 +69,14 @@ class EnrolledCoursesTabWidget extends StatelessWidget {
 
         return BlocProvider(
           create: (_) {
-            final cubit = getIt<CourseDetailCubit>();
-            cubit.loadSyllabus(course.data.regevaScheduledCourseId);
-            return cubit;
+            final newCubit = getIt<CourseDetailCubit>();
+            newCubit.loadSyllabus(
+              course: course.data,
+              regevaScheduledCourseId: course.data.regevaScheduledCourseId,
+            );
+            return newCubit;
           },
           child: CourseItemWidget(
-            course: course.data,
             color: ColorsUtils.getColorByIndex(index),
           ),
         );
