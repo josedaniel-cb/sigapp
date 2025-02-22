@@ -60,6 +60,7 @@ class UserAvatarButtonWidget extends StatelessWidget {
     return InitialsAvatarWidget(
       backgroundColor: Theme.of(context).primaryColor,
       content: userFirstNameInitials,
+      enableGradient: true,
       onPressed: () {
         showDialog(
           context: context,

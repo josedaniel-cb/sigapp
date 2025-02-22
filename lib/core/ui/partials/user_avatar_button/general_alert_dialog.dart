@@ -59,6 +59,7 @@ class GeneralAvatarDialog extends StatelessWidget {
                     ListTile(
                       leading: InitialsAvatarWidget(
                         content: userFirstNameInitials,
+                        enableGradient: true,
                         backgroundColor: Theme.of(context).primaryColor,
                       ),
                       title: Text(userFullName),

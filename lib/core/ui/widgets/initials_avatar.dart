@@ -8,12 +8,16 @@ class InitialsAvatarWidget extends StatelessWidget {
     required this.backgroundColor,
     this.diameter = 48,
     this.onPressed,
+    this.enableGradient = false,
+    this.shape = BoxShape.circle,
   });
 
   final String content;
   final Color backgroundColor;
   final double diameter;
   final void Function()? onPressed;
+  final bool enableGradient;
+  final BoxShape shape;
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +34,23 @@ class InitialsAvatarWidget extends StatelessWidget {
     return Container(
       width: diameter,
       height: diameter,
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        shape: BoxShape.circle,
-      ),
+      decoration: enableGradient
+          ? BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  backgroundColor.withValues(alpha: 0.5),
+                  backgroundColor,
+                  backgroundColor.withValues(alpha: 0.7),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              shape: BoxShape.circle,
+            )
+          : BoxDecoration(
+              color: backgroundColor,
+              shape: BoxShape.circle,
+            ),
       child: Center(
         child: Text(
           content,
