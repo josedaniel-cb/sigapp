@@ -18,39 +18,6 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$HomePageState {
   int get selectedTabIndex => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int selectedTabIndex, String? errorMessage)
-        success,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int selectedTabIndex, String? errorMessage)? success,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int selectedTabIndex, String? errorMessage)? success,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(HomePageSuccessState value) success,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(HomePageSuccessState value)? success,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(HomePageSuccessState value)? success,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
 
   /// Create a copy of HomePageState
   /// with the given fields replaced by the non-null parameter values.
@@ -100,22 +67,22 @@ class _$HomePageStateCopyWithImpl<$Res, $Val extends HomePageState>
 }
 
 /// @nodoc
-abstract class _$$HomePageSuccessStateImplCopyWith<$Res>
+abstract class _$$HomePageStateImplCopyWith<$Res>
     implements $HomePageStateCopyWith<$Res> {
-  factory _$$HomePageSuccessStateImplCopyWith(_$HomePageSuccessStateImpl value,
-          $Res Function(_$HomePageSuccessStateImpl) then) =
-      __$$HomePageSuccessStateImplCopyWithImpl<$Res>;
+  factory _$$HomePageStateImplCopyWith(
+          _$HomePageStateImpl value, $Res Function(_$HomePageStateImpl) then) =
+      __$$HomePageStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int selectedTabIndex, String? errorMessage});
 }
 
 /// @nodoc
-class __$$HomePageSuccessStateImplCopyWithImpl<$Res>
-    extends _$HomePageStateCopyWithImpl<$Res, _$HomePageSuccessStateImpl>
-    implements _$$HomePageSuccessStateImplCopyWith<$Res> {
-  __$$HomePageSuccessStateImplCopyWithImpl(_$HomePageSuccessStateImpl _value,
-      $Res Function(_$HomePageSuccessStateImpl) _then)
+class __$$HomePageStateImplCopyWithImpl<$Res>
+    extends _$HomePageStateCopyWithImpl<$Res, _$HomePageStateImpl>
+    implements _$$HomePageStateImplCopyWith<$Res> {
+  __$$HomePageStateImplCopyWithImpl(
+      _$HomePageStateImpl _value, $Res Function(_$HomePageStateImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of HomePageState
@@ -126,7 +93,7 @@ class __$$HomePageSuccessStateImplCopyWithImpl<$Res>
     Object? selectedTabIndex = null,
     Object? errorMessage = freezed,
   }) {
-    return _then(_$HomePageSuccessStateImpl(
+    return _then(_$HomePageStateImpl(
       selectedTabIndex: null == selectedTabIndex
           ? _value.selectedTabIndex
           : selectedTabIndex // ignore: cast_nullable_to_non_nullable
@@ -141,10 +108,10 @@ class __$$HomePageSuccessStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$HomePageSuccessStateImpl
+class _$HomePageStateImpl
     with DiagnosticableTreeMixin
-    implements HomePageSuccessState {
-  const _$HomePageSuccessStateImpl(
+    implements _HomePageState {
+  const _$HomePageStateImpl(
       {required this.selectedTabIndex, this.errorMessage});
 
   @override
@@ -154,14 +121,14 @@ class _$HomePageSuccessStateImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'HomePageState.success(selectedTabIndex: $selectedTabIndex, errorMessage: $errorMessage)';
+    return 'HomePageState(selectedTabIndex: $selectedTabIndex, errorMessage: $errorMessage)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'HomePageState.success'))
+      ..add(DiagnosticsProperty('type', 'HomePageState'))
       ..add(DiagnosticsProperty('selectedTabIndex', selectedTabIndex))
       ..add(DiagnosticsProperty('errorMessage', errorMessage));
   }
@@ -170,7 +137,7 @@ class _$HomePageSuccessStateImpl
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$HomePageSuccessStateImpl &&
+            other is _$HomePageStateImpl &&
             (identical(other.selectedTabIndex, selectedTabIndex) ||
                 other.selectedTabIndex == selectedTabIndex) &&
             (identical(other.errorMessage, errorMessage) ||
@@ -185,73 +152,14 @@ class _$HomePageSuccessStateImpl
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$HomePageSuccessStateImplCopyWith<_$HomePageSuccessStateImpl>
-      get copyWith =>
-          __$$HomePageSuccessStateImplCopyWithImpl<_$HomePageSuccessStateImpl>(
-              this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int selectedTabIndex, String? errorMessage)
-        success,
-  }) {
-    return success(selectedTabIndex, errorMessage);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int selectedTabIndex, String? errorMessage)? success,
-  }) {
-    return success?.call(selectedTabIndex, errorMessage);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int selectedTabIndex, String? errorMessage)? success,
-    required TResult orElse(),
-  }) {
-    if (success != null) {
-      return success(selectedTabIndex, errorMessage);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(HomePageSuccessState value) success,
-  }) {
-    return success(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(HomePageSuccessState value)? success,
-  }) {
-    return success?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(HomePageSuccessState value)? success,
-    required TResult orElse(),
-  }) {
-    if (success != null) {
-      return success(this);
-    }
-    return orElse();
-  }
+  _$$HomePageStateImplCopyWith<_$HomePageStateImpl> get copyWith =>
+      __$$HomePageStateImplCopyWithImpl<_$HomePageStateImpl>(this, _$identity);
 }
 
-abstract class HomePageSuccessState implements HomePageState {
-  const factory HomePageSuccessState(
+abstract class _HomePageState implements HomePageState {
+  const factory _HomePageState(
       {required final int selectedTabIndex,
-      final String? errorMessage}) = _$HomePageSuccessStateImpl;
+      final String? errorMessage}) = _$HomePageStateImpl;
 
   @override
   int get selectedTabIndex;
@@ -262,6 +170,6 @@ abstract class HomePageSuccessState implements HomePageState {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$HomePageSuccessStateImplCopyWith<_$HomePageSuccessStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  _$$HomePageStateImplCopyWith<_$HomePageStateImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

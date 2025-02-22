@@ -42,10 +42,12 @@ import 'package:sigapp/core/http/regeva_client.dart' as _i929;
 import 'package:sigapp/core/http/siga_client.dart' as _i476;
 import 'package:sigapp/core/injection/register_module.dart' as _i799;
 import 'package:sigapp/core/ui/not_used_pages/get_default_class_schedule_usecase.dart'
-    as _i459;
+    as _i702;
 import 'package:sigapp/core/ui/not_used_pages/schedule_page/partials/export_to_calendar_cubit.dart'
-    as _i557;
-import 'package:sigapp/core/ui/pages/home_page_cubit.dart' as _i65;
+    as _i977;
+import 'package:sigapp/core/ui/pages/home_page_cubit.dart' as _i235;
+import 'package:sigapp/core/ui/pages/partials/user_avatar_button_cubit.dart'
+    as _i727;
 import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.dart'
     as _i315;
 import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase.dart'
@@ -158,10 +160,10 @@ extension GetItInjectableX on _i174.GetIt {
             ));
     gh.factory<_i215.CourseDetailCubit>(
         () => _i215.CourseDetailCubit(gh<_i445.GetSyllabusFileUsecase>()));
-    gh.factory<_i557.ExportToCalendarCubit>(
-        () => _i557.ExportToCalendarCubit(gh<_i315.GetClassScheduleUsecase>()));
-    gh.lazySingleton<_i459.GetDefaultClassScheduleUsecase>(
-        () => _i459.GetDefaultClassScheduleUsecase(
+    gh.factory<_i977.ExportToCalendarCubit>(
+        () => _i977.ExportToCalendarCubit(gh<_i315.GetClassScheduleUsecase>()));
+    gh.lazySingleton<_i702.GetDefaultClassScheduleUsecase>(
+        () => _i702.GetDefaultClassScheduleUsecase(
               gh<_i771.GetAcademicReportUsecase>(),
               gh<_i320.GetSemesterContextUsecase>(),
               gh<_i315.GetClassScheduleUsecase>(),
@@ -192,8 +194,12 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i193.GetStoredCredentialsUseCase>(),
           gh<_i365.SignInUseCase>(),
         ));
-    gh.singleton<_i65.HomePageCubit>(
-        () => _i65.HomePageCubit(gh<_i48.SignOutUseCase>()));
+    gh.singleton<_i727.UserAvatarButtonCubit>(() => _i727.UserAvatarButtonCubit(
+          gh<_i771.GetAcademicReportUsecase>(),
+          gh<_i48.SignOutUseCase>(),
+        ));
+    gh.singleton<_i235.HomePageCubit>(
+        () => _i235.HomePageCubit(gh<_i48.SignOutUseCase>()));
     gh.singleton<_i767.AuthenticationManager>(() => _i767.AuthenticationManager(
           gh<_i679.SessionLifecycleService>(),
           gh<_i193.GetStoredCredentialsUseCase>(),

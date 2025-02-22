@@ -8,10 +8,10 @@ part 'home_page_cubit.freezed.dart';
 
 @freezed
 abstract class HomePageState with _$HomePageState {
-  const factory HomePageState.success({
+  const factory HomePageState({
     required int selectedTabIndex,
     String? errorMessage,
-  }) = HomePageSuccessState;
+  }) = _HomePageState;
 }
 
 @singleton
@@ -19,11 +19,10 @@ class HomePageCubit extends Cubit<HomePageState> {
   final SignOutUseCase _signOutUseCase;
 
   HomePageCubit(this._signOutUseCase)
-      : super(const HomePageState.success(selectedTabIndex: 0));
+      : super(const HomePageState(selectedTabIndex: 0));
 
   void changeTab(int index) {
-    if (state is! HomePageSuccessState) return;
-    emit((state as HomePageSuccessState).copyWith(selectedTabIndex: index));
+    emit(state.copyWith(selectedTabIndex: index));
   }
 
   Future<void> logout() async {
@@ -34,12 +33,11 @@ class HomePageCubit extends Cubit<HomePageState> {
         print(e);
         print(s);
       }
-      emit(
-          (state as HomePageSuccessState).copyWith(errorMessage: e.toString()));
+      emit(state.copyWith(errorMessage: e.toString()));
     }
   }
 
   void markErrorAsRead() {
-    emit((state as HomePageSuccessState).copyWith(errorMessage: null));
+    emit(state.copyWith(errorMessage: null));
   }
 }
