@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sigapp/core/utils/ui_utils.dart';
+import 'package:sigapp/core/ui/ui_utils.dart';
 
 class InitialsAvatarWidget extends StatelessWidget {
   const InitialsAvatarWidget({

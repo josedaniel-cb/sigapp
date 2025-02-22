@@ -41,11 +41,11 @@ import 'package:sigapp/auth/infrastructure/services/session_lifecycle_service.da
 import 'package:sigapp/core/http/regeva_client.dart' as _i929;
 import 'package:sigapp/core/http/siga_client.dart' as _i476;
 import 'package:sigapp/core/injection/register_module.dart' as _i799;
-import 'package:sigapp/core/not_used/get_default_class_schedule_usecase.dart'
+import 'package:sigapp/core/ui/not_used/get_default_class_schedule_usecase.dart'
     as _i459;
-import 'package:sigapp/core/not_used/schedule_page/partials/export_to_calendar_cubit.dart'
+import 'package:sigapp/core/ui/not_used/schedule_page/partials/export_to_calendar_cubit.dart'
     as _i557;
-import 'package:sigapp/core/pages/home_page_cubit.dart' as _i65;
+import 'package:sigapp/core/ui/pages/home_page_cubit.dart' as _i65;
 import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.dart'
     as _i315;
 import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase.dart'

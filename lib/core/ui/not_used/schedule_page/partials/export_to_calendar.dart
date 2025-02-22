@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigapp/core/injection/get_it.dart';
-import 'package:sigapp/core/not_used/schedule_page/partials/export_to_calendar_cubit.dart';
+import 'package:sigapp/core/ui/not_used/schedule_page/partials/export_to_calendar_cubit.dart';
 import 'package:sigapp/student/domain/entities/weekly_schedule_event.dart';
 
 class ExportToCalendar extends StatefulWidget {

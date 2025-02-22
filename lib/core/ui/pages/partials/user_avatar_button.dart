@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sigapp/core/utils/ui_utils.dart';
-import 'package:sigapp/core/widgets/brand_text.dart';
+import 'package:sigapp/core/ui/ui_utils.dart';
+import 'package:sigapp/core/ui/widgets/brand_text.dart';
 
 class UserAvatarButtonWidget extends StatelessWidget {
   const UserAvatarButtonWidget({

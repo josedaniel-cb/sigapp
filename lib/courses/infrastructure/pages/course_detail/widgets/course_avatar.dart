@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sigapp/core/injection/get_it.dart';
-import 'package:sigapp/core/widgets/initials_avatar.dart';
+import 'package:sigapp/core/ui/widgets/initials_avatar.dart';
 import 'package:sigapp/courses/domain/services/course_service.dart';
 
 class CourseAvatarWidget extends StatelessWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sigapp/core/utils/ui_utils.dart';
+import 'package:sigapp/core/ui/ui_utils.dart';
 import 'package:sigapp/student/domain/entities/weekly_schedule_event.dart';
 import 'package:sigapp/student/domain/value_objects/enrolled_course.dart';
 

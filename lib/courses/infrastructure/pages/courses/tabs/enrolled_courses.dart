@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigapp/core/injection/get_it.dart';
-import 'package:sigapp/core/widgets/error_state.dart';
+import 'package:sigapp/core/ui/widgets/error_state.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/partials/course_item.dart';
