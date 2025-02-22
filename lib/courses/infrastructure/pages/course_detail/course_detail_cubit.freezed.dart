@@ -788,7 +788,7 @@ mixin _$CourseDetailState {
   TResult when<TResult extends Object?>({
     required TResult Function() empty,
     required TResult Function(
-            EnrolledCourseData course, CourseDetailSyllabusState syllabus)
+            EnrolledCourse course, CourseDetailSyllabusState syllabus)
         ready,
   }) =>
       throw _privateConstructorUsedError;
@@ -796,15 +796,14 @@ mixin _$CourseDetailState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? empty,
     TResult? Function(
-            EnrolledCourseData course, CourseDetailSyllabusState syllabus)?
+            EnrolledCourse course, CourseDetailSyllabusState syllabus)?
         ready,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? empty,
-    TResult Function(
-            EnrolledCourseData course, CourseDetailSyllabusState syllabus)?
+    TResult Function(EnrolledCourse course, CourseDetailSyllabusState syllabus)?
         ready,
     required TResult orElse(),
   }) =>
@@ -897,7 +896,7 @@ class _$CourseDetailEmptyStateImpl implements CourseDetailEmptyState {
   TResult when<TResult extends Object?>({
     required TResult Function() empty,
     required TResult Function(
-            EnrolledCourseData course, CourseDetailSyllabusState syllabus)
+            EnrolledCourse course, CourseDetailSyllabusState syllabus)
         ready,
   }) {
     return empty();
@@ -908,7 +907,7 @@ class _$CourseDetailEmptyStateImpl implements CourseDetailEmptyState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? empty,
     TResult? Function(
-            EnrolledCourseData course, CourseDetailSyllabusState syllabus)?
+            EnrolledCourse course, CourseDetailSyllabusState syllabus)?
         ready,
   }) {
     return empty?.call();
@@ -918,8 +917,7 @@ class _$CourseDetailEmptyStateImpl implements CourseDetailEmptyState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? empty,
-    TResult Function(
-            EnrolledCourseData course, CourseDetailSyllabusState syllabus)?
+    TResult Function(EnrolledCourse course, CourseDetailSyllabusState syllabus)?
         ready,
     required TResult orElse(),
   }) {
@@ -972,9 +970,8 @@ abstract class _$$CourseDetailReadyStateImplCopyWith<$Res> {
           $Res Function(_$CourseDetailReadyStateImpl) then) =
       __$$CourseDetailReadyStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({EnrolledCourseData course, CourseDetailSyllabusState syllabus});
+  $Res call({EnrolledCourse course, CourseDetailSyllabusState syllabus});
 
-  $EnrolledCourseDataCopyWith<$Res> get course;
   $CourseDetailSyllabusStateCopyWith<$Res> get syllabus;
 }
 
@@ -999,22 +996,12 @@ class __$$CourseDetailReadyStateImplCopyWithImpl<$Res>
       course: null == course
           ? _value.course
           : course // ignore: cast_nullable_to_non_nullable
-              as EnrolledCourseData,
+              as EnrolledCourse,
       syllabus: null == syllabus
           ? _value.syllabus
           : syllabus // ignore: cast_nullable_to_non_nullable
               as CourseDetailSyllabusState,
     ));
-  }
-
-  /// Create a copy of CourseDetailState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $EnrolledCourseDataCopyWith<$Res> get course {
-    return $EnrolledCourseDataCopyWith<$Res>(_value.course, (value) {
-      return _then(_value.copyWith(course: value));
-    });
   }
 
   /// Create a copy of CourseDetailState
@@ -1035,7 +1022,7 @@ class _$CourseDetailReadyStateImpl implements CourseDetailReadyState {
       {required this.course, required this.syllabus});
 
   @override
-  final EnrolledCourseData course;
+  final EnrolledCourse course;
   @override
   final CourseDetailSyllabusState syllabus;
 
@@ -1071,7 +1058,7 @@ class _$CourseDetailReadyStateImpl implements CourseDetailReadyState {
   TResult when<TResult extends Object?>({
     required TResult Function() empty,
     required TResult Function(
-            EnrolledCourseData course, CourseDetailSyllabusState syllabus)
+            EnrolledCourse course, CourseDetailSyllabusState syllabus)
         ready,
   }) {
     return ready(course, syllabus);
@@ -1082,7 +1069,7 @@ class _$CourseDetailReadyStateImpl implements CourseDetailReadyState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? empty,
     TResult? Function(
-            EnrolledCourseData course, CourseDetailSyllabusState syllabus)?
+            EnrolledCourse course, CourseDetailSyllabusState syllabus)?
         ready,
   }) {
     return ready?.call(course, syllabus);
@@ -1092,8 +1079,7 @@ class _$CourseDetailReadyStateImpl implements CourseDetailReadyState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? empty,
-    TResult Function(
-            EnrolledCourseData course, CourseDetailSyllabusState syllabus)?
+    TResult Function(EnrolledCourse course, CourseDetailSyllabusState syllabus)?
         ready,
     required TResult orElse(),
   }) {
@@ -1137,11 +1123,11 @@ class _$CourseDetailReadyStateImpl implements CourseDetailReadyState {
 
 abstract class CourseDetailReadyState implements CourseDetailState {
   const factory CourseDetailReadyState(
-          {required final EnrolledCourseData course,
+          {required final EnrolledCourse course,
           required final CourseDetailSyllabusState syllabus}) =
       _$CourseDetailReadyStateImpl;
 
-  EnrolledCourseData get course;
+  EnrolledCourse get course;
   CourseDetailSyllabusState get syllabus;
 
   /// Create a copy of CourseDetailState

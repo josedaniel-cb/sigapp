@@ -35,13 +35,13 @@ class CourseItemWidget extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.only(left: 16, top: 8),
                   child: CourseAvatarWidget(
-                    courseName: state.course.courseName,
+                    courseName: state.course.data.courseName,
                     color: color,
                   ),
                 ),
                 Expanded(
                   child: ListTile(
-                    title: Text(state.course.courseName),
+                    title: Text(state.course.data.courseName),
                     // leading: Expanded(
                     //   child: ,
                     // ),
@@ -50,19 +50,19 @@ class CourseItemWidget extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            state.course.courseType == CourseType.mandatory
+                            state.course.data.courseType == CourseType.mandatory
                                 ? Text('Obligatorio')
                                 : Text('Electivo'),
-                            // Text('Grupo ${state.course.group} - Sección ${state.course.section}'),
+                            // Text('Grupo ${state.course.data.group} - Sección ${state.course.data.section}'),
                             Text(' • '),
                             // Row(
                             //   children: [
-                            //     Text(state.course.credits.toString()),
+                            //     Text(state.course.data.credits.toString()),
                             //     SizedBox(width: 2),
                             //     Icon(Icons.stars, size: 16),
                             //   ],
                             // ),
-                            Text('${state.course.credits} créditos'),
+                            Text('${state.course.data.credits} créditos'),
                           ],
                         ),
                         // _buildSyllabusButton(itemState),

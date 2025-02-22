@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sigapp/core/ui/utils/colors_utils.dart';
+import 'package:sigapp/core/utils/time_utils.dart';
 import 'package:sigapp/student/domain/entities/weekly_schedule_event.dart';
 import 'package:sigapp/student/domain/value_objects/enrolled_course.dart';
 
@@ -523,7 +524,12 @@ class EventWidget extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        _formatEventDuration(event.data),
+                        TimeUtils.formatEventDuration(EventDuration(
+                          startHour: event.data.startHour,
+                          startMinute: event.data.startMinute,
+                          endHour: event.data.endHour,
+                          endMinute: event.data.endMinute,
+                        )),
                         style: TextStyle(
                           color: textColor,
                           fontSize: captionFontSize,
@@ -540,32 +546,5 @@ class EventWidget extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _formatEventDuration(WeeklyScheduleEvent event) {
-    String startHour =
-        (event.startHour > 12 ? event.startHour - 12 : event.startHour)
-            .toString();
-    String endHour =
-        (event.endHour > 12 ? event.endHour - 12 : event.endHour).toString();
-
-    String startPeriod = event.startHour >= 12 ? 'pm' : 'am';
-    String endPeriod = event.endHour >= 12 ? 'pm' : 'am';
-
-    String startMinute = event.startMinute == 0
-        ? ''
-        : ':${event.startMinute.toString().padLeft(2, '0')}';
-    String endMinute = event.endMinute == 0
-        ? ''
-        : ':${event.endMinute.toString().padLeft(2, '0')}';
-
-    String startAmPm = startPeriod == endPeriod ? '' : startPeriod;
-    String endAmPm = endPeriod;
-
-    if (startMinute.isEmpty && endMinute.isEmpty) {
-      return '$startHour$startAmPm - $endHour$endAmPm';
-    } else {
-      return '$startHour$startMinute$startAmPm - $endHour$endMinute$endAmPm';
-    }
   }
 }

@@ -71,7 +71,7 @@ class EnrolledCoursesTabWidget extends StatelessWidget {
           create: (_) {
             final newCubit = getIt<CourseDetailCubit>();
             newCubit.loadSyllabus(
-              course: course.data,
+              course: course,
               regevaScheduledCourseId: course.data.regevaScheduledCourseId,
             );
             return newCubit;

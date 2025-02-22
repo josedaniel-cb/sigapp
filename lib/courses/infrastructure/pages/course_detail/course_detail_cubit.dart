@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/courses/application/usecases/get_syllabus_file_usecase.dart';
-import 'package:sigapp/student/domain/entities/enrolled_course_data.dart';
+import 'package:sigapp/student/domain/value_objects/enrolled_course.dart';
 
 part 'course_detail_cubit.freezed.dart';
 
@@ -20,7 +20,7 @@ class CourseDetailSyllabusState with _$CourseDetailSyllabusState {
 class CourseDetailState with _$CourseDetailState {
   const factory CourseDetailState.empty() = CourseDetailEmptyState;
   const factory CourseDetailState.ready({
-    required EnrolledCourseData course,
+    required EnrolledCourse course,
     required CourseDetailSyllabusState syllabus,
   }) = CourseDetailReadyState;
 }
@@ -32,7 +32,7 @@ class CourseDetailCubit extends Cubit<CourseDetailState> {
       : super(const CourseDetailState.empty());
 
   Future<void> loadSyllabus({
-    required EnrolledCourseData course,
+    required EnrolledCourse course,
     required String regevaScheduledCourseId,
   }) async {
     emit(CourseDetailState.ready(

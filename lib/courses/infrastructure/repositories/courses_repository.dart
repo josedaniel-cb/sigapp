@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/core/http/siga_client.dart';
-import 'package:sigapp/core/utils/date_utils.dart';
+import 'package:sigapp/core/utils/time_utils.dart';
 import 'package:sigapp/courses/domain/repositories/courses_repository.dart';
 import 'package:sigapp/student/domain/entities/raw_course_requirement.dart';
 import 'package:sigapp/student/domain/entities/enrolled_course_data.dart';
@@ -54,7 +54,7 @@ class CoursesRepositoryImpl implements CoursesRepository {
             courseName: model.Curso,
             courseType: CourseType.fromValue(model.TipoCurso),
             credits: model.Creditos,
-            date: DateUtils.parseFormattedDate(model.Fecha),
+            date: TimeUtils.parseFormattedDate(model.Fecha),
             group: model.Grupo.trim(),
             professor: model.Docente,
             section: model.Seccion,
