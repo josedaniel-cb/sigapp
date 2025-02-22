@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigapp/core/widgets/error_state.dart';
 import 'package:sigapp/core/widgets/loading_state.dart';
-import 'package:sigapp/core/widgets/user_avatar.dart';
+import 'package:sigapp/core/pages/partials/user_avatar_button.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/partials/schedule_semester_select.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses.dart';
@@ -76,7 +76,7 @@ class _CoursesPageWidgetState extends State<CoursesPageWidget>
                 ),
               ],
             ),
-            UserAvatarWidget(onPressed: () {}),
+            UserAvatarButtonWidget(),
           ],
         ),
         bottom: TabBar(
