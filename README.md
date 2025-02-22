@@ -1,16 +1,23 @@
-# sigapp
+# SIGApp
 
-A new Flutter project.
+View your academic information now in a native Android interface.
+Aimed at students from the National University of Piura.
 
-## Getting Started
+Improved SIGA user experience:
 
-This project is a starting point for a Flutter application.
+- 📅 Improved Class Schedule Now you can share it!
+- 📕 Study Plan adapted for mobile devices
+- 🧾 Course Bulletin adapted for mobile devices
+- 📈 Academic History with line graph of your weighted average
+- 📋 Easily view your career progress in Academic Report
 
-A few resources to get you started if this is your first Flutter project:
+SIGApp is an independent student project for academic purposes. It has most of the functions of the SIGA website. However, it lacks features like:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Course registration
+- Class Schedule Report
+- Report of Course Report
+- Study Plan Report
+- Verification of Courses
+- Academic History Report
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The app loads the student's user data from the SIGA website of the National University of Piura. Its way of operating is through web scraping, so it totally depends on the web [http://academico.unp.edu.pe/](http://academico.unp.edu.pe/).
