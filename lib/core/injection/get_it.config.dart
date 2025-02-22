@@ -46,8 +46,7 @@ import 'package:sigapp/core/ui/not_used_pages/get_default_class_schedule_usecase
 import 'package:sigapp/core/ui/not_used_pages/schedule_page/partials/export_to_calendar_cubit.dart'
     as _i977;
 import 'package:sigapp/core/ui/pages/home_page_cubit.dart' as _i235;
-import 'package:sigapp/core/ui/pages/partials/user_avatar_button_cubit.dart'
-    as _i727;
+import 'package:sigapp/core/ui/partials/user_avatar_button_cubit.dart' as _i727;
 import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.dart'
     as _i315;
 import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase.dart'
