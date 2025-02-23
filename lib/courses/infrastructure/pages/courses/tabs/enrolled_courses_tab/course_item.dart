@@ -24,7 +24,7 @@ class CourseItemWidget extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => BlocProvider.value(
                     value: cubit,
-                    child: CourseDetailPageWidget(),
+                    child: CourseDetailPageWidget(color: color),
                   ),
                 ),
               );

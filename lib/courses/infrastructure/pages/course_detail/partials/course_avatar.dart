@@ -8,10 +8,12 @@ class CourseAvatarWidget extends StatelessWidget {
     super.key,
     required this.courseName,
     required this.color,
+    this.diameter,
   });
 
   final String courseName;
   final Color color;
+  final double? diameter;
 
   final _courseService = getIt<CourseService>();
 
@@ -21,6 +23,7 @@ class CourseAvatarWidget extends StatelessWidget {
     return InitialsAvatarWidget(
       content: initials,
       backgroundColor: color,
+      diameter: diameter,
     );
   }
 }

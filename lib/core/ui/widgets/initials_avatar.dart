@@ -6,7 +6,7 @@ class InitialsAvatarWidget extends StatelessWidget {
     super.key,
     required this.content,
     required this.backgroundColor,
-    this.diameter = 48,
+    this.diameter,
     this.onPressed,
     this.enableGradient = false,
     this.shape = BoxShape.circle,
@@ -14,7 +14,7 @@ class InitialsAvatarWidget extends StatelessWidget {
 
   final String content;
   final Color backgroundColor;
-  final double diameter;
+  final double? diameter;
   final void Function()? onPressed;
   final bool enableGradient;
   final BoxShape shape;
@@ -31,6 +31,7 @@ class InitialsAvatarWidget extends StatelessWidget {
   }
 
   Container _buildAvatar() {
+    final diameter = this.diameter ?? 48.0;
     return Container(
       width: diameter,
       height: diameter,
@@ -58,7 +59,7 @@ class InitialsAvatarWidget extends StatelessWidget {
           style: TextStyle(
             color: ColorsUtils.getTextColor(backgroundColor),
             fontWeight: FontWeight.w500,
-            fontSize: diameter * (1 / 2),
+            fontSize: diameter * (2 / 5),
           ),
         ),
       ),

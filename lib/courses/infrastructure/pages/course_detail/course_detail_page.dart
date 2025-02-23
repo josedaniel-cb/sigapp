@@ -5,11 +5,14 @@ import 'package:open_file/open_file.dart';
 import 'package:sigapp/core/ui/widgets/loading_indicator_icon.dart';
 import 'package:sigapp/core/utils/time_utils.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart';
+import 'package:sigapp/courses/infrastructure/pages/course_detail/partials/course_avatar.dart';
 import 'package:sigapp/student/domain/entities/enrolled_course_data.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CourseDetailPageWidget extends StatefulWidget {
-  const CourseDetailPageWidget({super.key});
+  const CourseDetailPageWidget({super.key, required this.color});
+
+  final Color color;
 
   @override
   State<CourseDetailPageWidget> createState() => _CourseDetailPageWidgetState();
@@ -31,7 +34,16 @@ class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
             body: ListView(
               children: [
                 Container(
-                  padding: EdgeInsets.only(top: 16, left: 16, right: 16),
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.only(top: 16),
+                  child: CourseAvatarWidget(
+                    courseName: state.course.data.courseName,
+                    color: widget.color,
+                    diameter: MediaQuery.of(context).size.width * 0.25,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 16, left: 16, right: 16),
                   child: Text(
                     state.course.data.courseName,
                     style: Theme.of(context).textTheme.displaySmall,
@@ -69,10 +81,6 @@ class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
                     onTap: () {
                       Clipboard.setData(ClipboardData(
                           text: state.course.data.googleClassroomCode!));
-                      // ScaffoldMessenger.of(context).showSnackBar(
-                      //   SnackBar(
-                      //       content: Text('Código copiado al portapapeles')),
-                      // );
                     },
                   ),
                 ListTile(
@@ -86,7 +94,7 @@ class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
                   ),
                   trailing: state.syllabus.maybeWhen(
                     loading: () => LoadingIndicatorIconWidget(),
-                    loaded: (file) => Icon(Icons.file_open),
+                    loaded: (file) => Icon(Icons.open_in_new),
                     notFound: () => Icon(Icons.refresh),
                     error: (_) => Icon(Icons.info),
                     orElse: () => null,

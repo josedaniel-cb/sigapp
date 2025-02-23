@@ -73,22 +73,29 @@ class GeneralAvatarDialog extends StatelessWidget {
                         ),
                       ),
                     Divider(),
-                    _buildLinkListTile(
-                      context,
-                      title: 'SIGA web',
-                      url: 'https://academico.unp.edu.pe/',
+                    // _buildLinkListTile(
+                    //   context,
+                    //   title: 'SIGA web',
+                    //   url: 'https://academico.unp.edu.pe/',
+                    // ),
+                    // _buildLinkListTile(
+                    //   context,
+                    //   title: 'Reporte pagos',
+                    //   url: 'http://pagos.unp.edu.pe/ReportePagos/',
+                    // ),
+                    // _buildLinkListTile(
+                    //   context,
+                    //   title: 'Recuperar contraseña',
+                    //   url: 'https://academico.unp.edu.pe/Cuenta/ResetPassword',
+                    // ),
+                    // Divider(),
+                    ListTile(
+                      leading: Icon(Icons.info),
+                      title: Text('Acerca de'),
+                      onTap: () {
+                        onSignOut();
+                      },
                     ),
-                    _buildLinkListTile(
-                      context,
-                      title: 'Reporte pagos',
-                      url: 'http://pagos.unp.edu.pe/ReportePagos/',
-                    ),
-                    _buildLinkListTile(
-                      context,
-                      title: 'Recuperar contraseña',
-                      url: 'https://academico.unp.edu.pe/Cuenta/ResetPassword',
-                    ),
-                    Divider(),
                     ListTile(
                       leading: Icon(Icons.logout),
                       title: Text('Cerrar sesión'),

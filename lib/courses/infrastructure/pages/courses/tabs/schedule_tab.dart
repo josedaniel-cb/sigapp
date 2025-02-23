@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigapp/core/injection/get_it.dart';
 import 'package:sigapp/core/ui/widgets/error_state.dart';
 import 'package:sigapp/core/ui/widgets/loading_state.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/partials/empty_courses.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses_tab.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_tab/weekly_schedule.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_tab/schedule_share_button.dart';
@@ -41,7 +43,7 @@ class ScheduleTabWidget extends StatelessWidget {
     final enrolledCourses = state.value;
 
     if (enrolledCourses.isEmpty) {
-      return _buildEmpty();
+      return EmptyCoursesWidget();
     }
 
     return Scaffold(
@@ -61,22 +63,6 @@ class ScheduleTabWidget extends StatelessWidget {
           selectedSemester: selectedSemester,
           academicReport: academicReport,
         ),
-      ),
-    );
-  }
-
-  Widget _buildEmpty() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.schedule, size: 80, color: Colors.grey),
-          SizedBox(height: 16),
-          Text(
-            "No tienes cursos inscritos este semestre",
-            style: TextStyle(fontSize: 18, color: Colors.grey),
-          ),
-        ],
       ),
     );
   }

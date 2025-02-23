@@ -5,6 +5,7 @@ import 'package:sigapp/core/ui/utils/colors_utils.dart';
 import 'package:sigapp/core/ui/widgets/error_state.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/partials/empty_courses.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses_tab/course_item.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -58,7 +59,7 @@ class EnrolledCoursesTabWidget extends StatelessWidget {
     final courses = state.value;
 
     if (courses.isEmpty) {
-      return _buildEmpty();
+      return EmptyCoursesWidget();
     }
 
     return ListView.builder(
@@ -81,22 +82,6 @@ class EnrolledCoursesTabWidget extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildEmpty() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.book, size: 80, color: Colors.grey),
-          SizedBox(height: 16),
-          Text(
-            "No tienes cursos inscritos este semestre",
-            style: TextStyle(fontSize: 18, color: Colors.grey),
-          ),
-        ],
-      ),
     );
   }
 }
