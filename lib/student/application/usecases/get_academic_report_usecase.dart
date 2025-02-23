@@ -6,15 +6,10 @@ import 'package:sigapp/student/domain/repositories/student_repository.dart';
 @lazySingleton
 class GetAcademicReportUsecase {
   final StudentRepository _studentRepository;
-  AcademicReport? _academicReport;
 
   GetAcademicReportUsecase(this._studentRepository);
 
   Future<AcademicReport> execute() async {
-    if (_academicReport != null) {
-      return _academicReport!;
-    }
-
     final academicReportModel =
         await _studentRepository.getAcademicReport().then(
               (value) => value.copyWith(
@@ -28,7 +23,7 @@ class GetAcademicReportUsecase {
 
     final studentInfoParts = academicReportModel.studentName.split(' - ');
     studentInfoParts.replaceRange(1, 2, studentInfoParts[1].split(', '));
-    _academicReport = AcademicReport(
+    return AcademicReport(
       faculty: academicReportModel.faculty,
       school: sessionStudentInfoModel.schoolName,
       firstName: studentInfoParts[2],
@@ -55,7 +50,5 @@ class GetAcademicReportUsecase {
       currentSemesterId: SemesterScheduleSemesterMetadata.getIdFromName(
           sessionStudentInfoModel.currentSemesterName),
     );
-
-    return _academicReport!;
   }
 }

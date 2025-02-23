@@ -69,10 +69,10 @@ class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
                     onTap: () {
                       Clipboard.setData(ClipboardData(
                           text: state.course.data.googleClassroomCode!));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content: Text('Código copiado al portapapeles')),
-                      );
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //   SnackBar(
+                      //       content: Text('Código copiado al portapapeles')),
+                      // );
                     },
                   ),
                 ListTile(
