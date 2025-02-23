@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:sigapp/core/ui/widgets/brand_text.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_tab/weekly_schedule.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_tab/schedule_share_button_cubit.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
@@ -91,12 +92,20 @@ class _ScheduleShareButtonWidgetState extends State<ScheduleShareButtonWidget> {
           width: pixelsToDIP(context, 1920),
           child: WeeklyScheduleWidget(
             courses: widget.enrolledCourses,
-            topLeftText: 'Semestre ${widget.selectedSemester.name}',
-            topRightText: 'Sigapp',
-            bottomLeftText:
-                '${widget.academicReport.firstName} ${widget.academicReport.lastName}',
-            bottomRightText:
-                'Promoción ${widget.academicReport.cohort}, ${widget.academicReport.school}',
+            topLeft: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                BrandTextWidget(),
+                Text(
+                  'Horario ${widget.selectedSemester.name}',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+              ],
+            ),
+            bottomLeft: Text(
+                '${widget.academicReport.firstName} ${widget.academicReport.lastName}'),
+            bottomRight: Text(
+                '${widget.academicReport.school} - Promoción ${widget.academicReport.cohort}'),
             disableScroll: true,
             fontSize: pixelsToDIP(context, 40),
             hourWidth: pixelsToDIP(context, 200),

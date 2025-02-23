@@ -28,7 +28,7 @@ class SemesterScheduleSemesterMetadata {
   final int year;
   final int period; // 0, 1 or 2
 
-  SemesterScheduleSemesterMetadata({
+  SemesterScheduleSemesterMetadata._({
     required this.id,
     required this.name,
     required this.year,
@@ -39,7 +39,7 @@ class SemesterScheduleSemesterMetadata {
     final year = int.parse(id.substring(0, 4));
     final period = int.parse(id.substring(4));
     final name = '$year-$period';
-    return SemesterScheduleSemesterMetadata(
+    return SemesterScheduleSemesterMetadata._(
       id: id,
       name: name,
       year: year,

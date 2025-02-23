@@ -13,10 +13,10 @@ class WeeklyScheduleWidgetItem {
 
 class WeeklyScheduleWidget extends StatefulWidget {
   late final List<WeeklyScheduleWidgetItem> events;
-  final String? bottomRightText;
-  final String? bottomLeftText;
-  final String? topRightText;
-  final String? topLeftText;
+  final Widget? bottomRight;
+  final Widget? bottomLeft;
+  final Widget? topRight;
+  final Widget? topLeft;
   final double hourWidth;
   final double rowHeight;
   final bool disableScroll;
@@ -27,10 +27,10 @@ class WeeklyScheduleWidget extends StatefulWidget {
     required List<EnrolledCourse> courses,
     this.fontSize = 12.0,
     this.disableScroll = false,
-    this.bottomRightText,
-    this.bottomLeftText,
-    this.topRightText,
-    this.topLeftText,
+    this.bottomRight,
+    this.bottomLeft,
+    this.topRight,
+    this.topLeft,
     this.hourWidth = 50.0,
     this.rowHeight = 75.0,
   }) {
@@ -90,14 +90,10 @@ class _WeeklyScheduleWidgetState extends State<WeeklyScheduleWidget> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (widget.topRightText != null || widget.topLeftText != null)
+            if (widget.topRight != null || widget.topLeft != null)
               TextInfo(
-                leftText: widget.topLeftText != null
-                    ? Text(widget.topLeftText!)
-                    : null,
-                rightText: widget.topRightText != null
-                    ? Text(widget.topRightText!)
-                    : null,
+                leftText: widget.topLeft,
+                rightText: widget.topRight,
               ),
             Row(
               children: [
@@ -133,14 +129,10 @@ class _WeeklyScheduleWidgetState extends State<WeeklyScheduleWidget> {
                       ),
                     ),
                   ),
-            if (widget.bottomRightText != null || widget.bottomLeftText != null)
+            if (widget.bottomRight != null || widget.bottomLeft != null)
               TextInfo(
-                leftText: widget.bottomRightText != null
-                    ? Text(widget.bottomRightText!)
-                    : null,
-                rightText: widget.bottomLeftText != null
-                    ? Text(widget.bottomLeftText!)
-                    : null,
+                leftText: widget.bottomRight,
+                rightText: widget.bottomLeft,
               ),
           ],
         ),
