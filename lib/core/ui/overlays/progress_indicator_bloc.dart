@@ -13,11 +13,11 @@ class ProgressIndicatorBloc extends Cubit<ProgressIndicatorState> {
 
   Future<void> show() async {
     emit(ProgressIndicatorVisible());
-    await Future.delayed(Duration(milliseconds: 100));
+    // await Future.delayed(Duration(milliseconds: 100));
   }
 
   Future<void> hide() async {
     emit(ProgressIndicatorHidden());
-    await Future.delayed(Duration(milliseconds: 100));
+    // await Future.delayed(Duration(milliseconds: 100));
   }
 }

@@ -34,7 +34,8 @@ abstract class CoursesPageState with _$CoursesPageState {
   const factory CoursesPageState.error(String message) = CoursesPageErrorState;
 }
 
-@singleton
+// @singleton
+@injectable
 class CoursesPageCubit extends Cubit<CoursesPageState> {
   final GetAcademicReportUsecase _getAcademicReportUsecase;
   final GetSemesterContextUsecase _getSemesterContextUsecase;
@@ -45,6 +46,7 @@ class CoursesPageCubit extends Cubit<CoursesPageState> {
       : super(CoursesPageState.loading());
 
   Future<void> init() async {
+    emit(CoursesPageState.loading());
     try {
       final academicReport = await _getAcademicReportUsecase.execute();
       final semesterContext = await _getSemesterContextUsecase.execute();

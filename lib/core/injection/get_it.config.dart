@@ -179,7 +179,7 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i151.StudentPageViewCubit(gh<_i771.GetAcademicReportUsecase>()));
     gh.singleton<_i583.GoRouter>(
         () => registerModule.router(gh<_i193.GetStoredCredentialsUseCase>()));
-    gh.singleton<_i525.CoursesPageCubit>(() => _i525.CoursesPageCubit(
+    gh.factory<_i525.CoursesPageCubit>(() => _i525.CoursesPageCubit(
           gh<_i320.GetSemesterContextUsecase>(),
           gh<_i650.GetEnrolledCoursesUsecase>(),
           gh<_i771.GetAcademicReportUsecase>(),
