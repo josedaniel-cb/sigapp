@@ -10,20 +10,21 @@ class UserAvatarButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = getIt<UserAvatarButtonCubit>();
-    return BlocBuilder<UserAvatarButtonCubit, UserAvatarButtonState>(
-      bloc: cubit,
-      builder: (context, state) {
-        return state.map(
-          empty: (_) {
-            cubit.init();
-            return _buildCircularProgressIndicator();
-          },
-          loading: (_) => _buildCircularProgressIndicator(),
-          success: (s) => _build(context, s),
-          error: (s) => _build(context, s),
-        );
-      },
+    return BlocProvider.value(
+      value: getIt<UserAvatarButtonCubit>(),
+      child: BlocBuilder<UserAvatarButtonCubit, UserAvatarButtonState>(
+        builder: (context, state) {
+          return state.map(
+            empty: (_) {
+              BlocProvider.of<UserAvatarButtonCubit>(context).init();
+              return _buildCircularProgressIndicator();
+            },
+            loading: (_) => _buildCircularProgressIndicator(),
+            success: (s) => _build(context, s),
+            error: (s) => _build(context, s),
+          );
+        },
+      ),
     );
   }
 
@@ -57,6 +58,8 @@ class UserAvatarButtonWidget extends StatelessWidget {
       },
     );
 
+    final cubit = BlocProvider.of<UserAvatarButtonCubit>(context);
+
     return InitialsAvatarWidget(
       backgroundColor: Theme.of(context).primaryColor,
       content: userFirstNameInitials,
@@ -72,6 +75,7 @@ class UserAvatarButtonWidget extends StatelessWidget {
               errorMessage: errorMessage,
               onSignOut: () {
                 Navigator.of(context).pop();
+                cubit.signOut();
               },
             );
           },

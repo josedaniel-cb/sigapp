@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigapp/core/injection/get_it.dart';
 import 'package:sigapp/core/ui/pages/home_page_cubit.dart';
 import 'package:sigapp/core/ui/partials/user_avatar_button.dart';
+import 'package:sigapp/core/ui/partials/user_avatar_button_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/career/career_page.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
