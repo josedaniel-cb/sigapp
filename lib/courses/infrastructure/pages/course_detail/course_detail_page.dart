@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
+import 'package:sigapp/core/ui/widgets/loading_indicator_icon.dart';
 import 'package:sigapp/core/utils/time_utils.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart';
 import 'package:sigapp/student/domain/entities/enrolled_course_data.dart';
@@ -51,34 +52,28 @@ class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
                 ),
                 if (state.course.data.url.trim().isNotEmpty)
                   ListTile(
-                    title: Text('Enlace'),
-                    // subtitle: Text(state.course.data.url),
-                    trailing: TextButton(
-                      onPressed: () {
-                        launchUrl(
-                          Uri.parse(state.course.data.url),
-                          mode: LaunchMode.externalApplication,
-                        );
-                      },
-                      child: Text('Abrir'),
-                    ),
+                    title: Text('Abrir enlace'),
+                    trailing: Icon(Icons.open_in_browser),
+                    onTap: () {
+                      launchUrl(
+                        Uri.parse(state.course.data.url),
+                        mode: LaunchMode.externalApplication,
+                      );
+                    },
                   ),
                 if (state.course.data.googleClassroomCode != null)
                   ListTile(
                     title: Text('Código Classroom'),
                     subtitle: Text(state.course.data.googleClassroomCode!),
-                    trailing: TextButton.icon(
-                      onPressed: () {
-                        Clipboard.setData(ClipboardData(
-                            text: state.course.data.googleClassroomCode!));
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text('Código copiado al portapapeles')),
-                        );
-                      },
-                      icon: Icon(Icons.copy),
-                      label: Text('Copiar'),
-                    ),
+                    trailing: Icon(Icons.copy),
+                    onTap: () {
+                      Clipboard.setData(ClipboardData(
+                          text: state.course.data.googleClassroomCode!));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text('Código copiado al portapapeles')),
+                      );
+                    },
                   ),
                 ListTile(
                   title: Text('Syllabus'),
@@ -89,25 +84,38 @@ class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
                     notFound: (_) => Text('No disponible'),
                     error: (_) => Text('Error al descargar'),
                   ),
-                  trailing: state.syllabus.map(
-                    initial: (_) => null,
-                    loading: (_) => CircularProgressIndicator(),
-                    loaded: (state) => FilledButton.icon(
-                      onPressed: () => OpenFile.open(state.syllabusFile.path),
-                      // icon: Icon(Icons.book),
-                      label: Text('Abrir'),
-                    ),
-                    notFound: (_) => TextButton.icon(
-                      onPressed: () => cubit.fetchSyllabus(),
-                      icon: Icon(Icons.refresh),
-                      label: Text('Refrescar'),
-                    ),
-                    error: (_) => TextButton.icon(
-                      onPressed: () => cubit.fetchSyllabus(),
-                      icon: Icon(Icons.refresh),
-                      label: Text('Reintentar'),
-                    ),
+                  trailing: state.syllabus.maybeWhen(
+                    loading: () => LoadingIndicatorIconWidget(),
+                    loaded: (file) => Icon(Icons.file_open),
+                    notFound: () => Icon(Icons.refresh),
+                    error: (_) => Icon(Icons.info),
+                    orElse: () => null,
                   ),
+                  onTap: () {
+                    state.syllabus.maybeWhen(
+                      loaded: (file) => OpenFile.open(file.path),
+                      notFound: () {
+                        cubit.fetchSyllabus(forceDownload: true);
+                      },
+                      error: (_) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Reintentando'),
+                          ),
+                        );
+                        cubit.fetchSyllabus(forceDownload: true);
+                      },
+                      orElse: () => null,
+                    );
+                  },
+                  onLongPress: () {
+                    state.syllabus.maybeWhen(
+                      loaded: (_) {
+                        _showPopupMenu(context, cubit);
+                      },
+                      orElse: () => null,
+                    );
+                  },
                 ),
                 Divider(),
                 Container(
@@ -183,6 +191,24 @@ class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
         );
       },
       listener: (context, state) {},
+    );
+  }
+
+  void _showPopupMenu(BuildContext context, CourseDetailCubit cubit) {
+    showMenu(
+      context: context,
+      position: RelativeRect.fill,
+      items: [
+        PopupMenuItem(
+          child: Text('Refrescar'),
+          onTap: () {
+            cubit.fetchSyllabus(forceDownload: true);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Actualizando syllabus...')),
+            );
+          },
+        ),
+      ],
     );
   }
 

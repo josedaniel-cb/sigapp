@@ -26,7 +26,7 @@ class StudentRepositoryImpl implements StudentRepository {
     final currentSemesterId = parts[3];
     final schoolName = parts[1];
     return StudentSessionInfo(
-      currentSemesterId: currentSemesterId,
+      currentSemesterName: currentSemesterId,
       schoolName: schoolName,
     );
   }

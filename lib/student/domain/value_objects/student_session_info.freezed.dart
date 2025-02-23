@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$StudentSessionInfo {
-  String get currentSemesterId => throw _privateConstructorUsedError;
+  String get currentSemesterName => throw _privateConstructorUsedError;
   String get schoolName => throw _privateConstructorUsedError;
 
   /// Create a copy of StudentSessionInfo
@@ -32,7 +32,7 @@ abstract class $StudentSessionInfoCopyWith<$Res> {
           StudentSessionInfo value, $Res Function(StudentSessionInfo) then) =
       _$StudentSessionInfoCopyWithImpl<$Res, StudentSessionInfo>;
   @useResult
-  $Res call({String currentSemesterId, String schoolName});
+  $Res call({String currentSemesterName, String schoolName});
 }
 
 /// @nodoc
@@ -50,13 +50,13 @@ class _$StudentSessionInfoCopyWithImpl<$Res, $Val extends StudentSessionInfo>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentSemesterId = null,
+    Object? currentSemesterName = null,
     Object? schoolName = null,
   }) {
     return _then(_value.copyWith(
-      currentSemesterId: null == currentSemesterId
-          ? _value.currentSemesterId
-          : currentSemesterId // ignore: cast_nullable_to_non_nullable
+      currentSemesterName: null == currentSemesterName
+          ? _value.currentSemesterName
+          : currentSemesterName // ignore: cast_nullable_to_non_nullable
               as String,
       schoolName: null == schoolName
           ? _value.schoolName
@@ -74,7 +74,7 @@ abstract class _$$StudentSessionInfoImplCopyWith<$Res>
       __$$StudentSessionInfoImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String currentSemesterId, String schoolName});
+  $Res call({String currentSemesterName, String schoolName});
 }
 
 /// @nodoc
@@ -90,13 +90,13 @@ class __$$StudentSessionInfoImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? currentSemesterId = null,
+    Object? currentSemesterName = null,
     Object? schoolName = null,
   }) {
     return _then(_$StudentSessionInfoImpl(
-      currentSemesterId: null == currentSemesterId
-          ? _value.currentSemesterId
-          : currentSemesterId // ignore: cast_nullable_to_non_nullable
+      currentSemesterName: null == currentSemesterName
+          ? _value.currentSemesterName
+          : currentSemesterName // ignore: cast_nullable_to_non_nullable
               as String,
       schoolName: null == schoolName
           ? _value.schoolName
@@ -110,16 +110,16 @@ class __$$StudentSessionInfoImplCopyWithImpl<$Res>
 
 class _$StudentSessionInfoImpl implements _StudentSessionInfo {
   _$StudentSessionInfoImpl(
-      {required this.currentSemesterId, required this.schoolName});
+      {required this.currentSemesterName, required this.schoolName});
 
   @override
-  final String currentSemesterId;
+  final String currentSemesterName;
   @override
   final String schoolName;
 
   @override
   String toString() {
-    return 'StudentSessionInfo(currentSemesterId: $currentSemesterId, schoolName: $schoolName)';
+    return 'StudentSessionInfo(currentSemesterName: $currentSemesterName, schoolName: $schoolName)';
   }
 
   @override
@@ -127,14 +127,14 @@ class _$StudentSessionInfoImpl implements _StudentSessionInfo {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$StudentSessionInfoImpl &&
-            (identical(other.currentSemesterId, currentSemesterId) ||
-                other.currentSemesterId == currentSemesterId) &&
+            (identical(other.currentSemesterName, currentSemesterName) ||
+                other.currentSemesterName == currentSemesterName) &&
             (identical(other.schoolName, schoolName) ||
                 other.schoolName == schoolName));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, currentSemesterId, schoolName);
+  int get hashCode => Object.hash(runtimeType, currentSemesterName, schoolName);
 
   /// Create a copy of StudentSessionInfo
   /// with the given fields replaced by the non-null parameter values.
@@ -148,11 +148,11 @@ class _$StudentSessionInfoImpl implements _StudentSessionInfo {
 
 abstract class _StudentSessionInfo implements StudentSessionInfo {
   factory _StudentSessionInfo(
-      {required final String currentSemesterId,
+      {required final String currentSemesterName,
       required final String schoolName}) = _$StudentSessionInfoImpl;
 
   @override
-  String get currentSemesterId;
+  String get currentSemesterName;
   @override
   String get schoolName;
 

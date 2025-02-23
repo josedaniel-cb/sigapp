@@ -16,10 +16,14 @@ class GetSyllabusFileUsecase {
   GetSyllabusFileUsecase(this._regevaRepository, this._coursesRepository,
       this._localSyllabusRepository);
 
-  Future<File?> execute(String scheduledCourseId) async {
-    // Try to get the syllabus file from the local repository
-    var cached = await _localSyllabusRepository.get(scheduledCourseId);
-    if (cached != null) return cached;
+  Future<File?> execute(String scheduledCourseId, {bool? forceDownload}) async {
+    File? cached;
+
+    if (forceDownload != true) {
+      // Try to get the syllabus file from the local repository
+      cached = await _localSyllabusRepository.get(scheduledCourseId);
+      if (cached != null) return cached;
+    }
 
     // If the file is not cached, download it
     final downloadedFile = await _downloadFile(scheduledCourseId);

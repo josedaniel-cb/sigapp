@@ -28,14 +28,14 @@ class GetSemesterContextUsecase {
             academicReport.lastSemesterId!)
         : null;
 
-    if (lastSemester == null) {
-      // Try to deduce the last semester id from the student's schedule
-      final currentSemester = SemesterScheduleSemesterMetadata.buildFromId(
-          academicReport.currentSemesterId);
-      if (await _calculateIsCurrentSemesterTheLastOne(currentSemester)) {
-        lastSemester = currentSemester;
-      }
-    }
+    // if (lastSemester == null) {
+    //   // Try to deduce the last semester id from the student's schedule
+    //   final currentSemester = SemesterScheduleSemesterMetadata.buildFromId(
+    //       academicReport.currentSemesterId);
+    //   if (await _calculateIsCurrentSemesterTheLastOne(currentSemester)) {
+    //     lastSemester = currentSemester;
+    //   }
+    // }
 
     // Calculate default semester and available semesters
     final isLastSemesterIdKnown = lastSemester != null;
@@ -66,27 +66,29 @@ class GetSemesterContextUsecase {
         SemesterScheduleSemesterMetadata.buildFromId(firstSemesterId);
     final lastSemester =
         SemesterScheduleSemesterMetadata.buildFromId(lastSemesterId);
-    for (int year = firstSemester.year; year <= lastSemester.year; year++) {
-      int start = (year == firstSemester.year) ? firstSemester.period : 0;
-      int end = (year == lastSemester.year) ? lastSemester.period : 2;
-      for (int semester = start; semester <= end; semester++) {
+    for (var year = firstSemester.year; year <= lastSemester.year; year++) {
+      var startPeriod = (year == firstSemester.year) ? firstSemester.period : 0;
+      var endPeriod = (year == lastSemester.year) ? lastSemester.period : 2;
+      for (var yearPeriod = startPeriod;
+          yearPeriod <= endPeriod;
+          yearPeriod++) {
         semesters.add(
-            SemesterScheduleSemesterMetadata.buildFromId('$year$semester'));
+            SemesterScheduleSemesterMetadata.buildFromId('$year$yearPeriod'));
       }
     }
     return semesters;
   }
 
-  Future<bool> _calculateIsCurrentSemesterTheLastOne(
-      SemesterScheduleSemesterMetadata currentSemester) async {
-    final result = await Future.wait([
-      _coursesRepository.getEnrolledCourses(currentSemester.id),
-      _coursesRepository.getEnrolledCourses('${currentSemester.year}1'),
-      _coursesRepository.getEnrolledCourses('${currentSemester.year}1'),
-    ]);
-    if (result[0].isNotEmpty && result[1].isEmpty && result[2].isEmpty) {
-      return true;
-    }
-    return false;
-  }
+  // Future<bool> _calculateIsCurrentSemesterTheLastOne(
+  //     SemesterScheduleSemesterMetadata currentSemester) async {
+  //   final result = await Future.wait([
+  //     _coursesRepository.getEnrolledCourses(currentSemester.id),
+  //     _coursesRepository.getEnrolledCourses('${currentSemester.year}1'),
+  //     _coursesRepository.getEnrolledCourses('${currentSemester.year}1'),
+  //   ]);
+  //   if (result[0].isNotEmpty && result[1].isEmpty && result[2].isEmpty) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
 }

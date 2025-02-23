@@ -44,7 +44,7 @@ class CourseDetailCubit extends Cubit<CourseDetailState> {
     await fetchSyllabus();
   }
 
-  Future<void> fetchSyllabus() async {
+  Future<void> fetchSyllabus({bool? forceDownload}) async {
     if (state is! CourseDetailReadyState) return;
 
     emit(
@@ -56,8 +56,10 @@ class CourseDetailCubit extends Cubit<CourseDetailState> {
     final regevaScheduledCourseId =
         (state as CourseDetailReadyState).regevaScheduledCourseId;
     try {
-      final file =
-          await _getSyllabusFileUsecase.execute(regevaScheduledCourseId);
+      final file = await _getSyllabusFileUsecase.execute(
+        regevaScheduledCourseId,
+        forceDownload: forceDownload,
+      );
       if (file == null) {
         emit((state as CourseDetailReadyState).copyWith(
           syllabus: CourseDetailSyllabusState.notFound(),

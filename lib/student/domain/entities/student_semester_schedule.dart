@@ -47,6 +47,11 @@ class SemesterScheduleSemesterMetadata {
     );
   }
 
+  static String getIdFromName(String name) {
+    final parts = name.split('-');
+    return '${parts[0]}${parts[1]}';
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
