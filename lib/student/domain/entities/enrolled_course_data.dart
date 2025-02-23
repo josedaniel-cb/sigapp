@@ -182,6 +182,7 @@ part 'enrolled_course_data.freezed.dart';
 class EnrolledCourseData with _$EnrolledCourseData {
   const factory EnrolledCourseData({
     // required String? Acta,
+    required String? googleClassroomCode,
 
     // required String? Activo,
 

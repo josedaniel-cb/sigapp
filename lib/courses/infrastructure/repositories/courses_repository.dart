@@ -50,6 +50,7 @@ class CoursesRepositoryImpl implements CoursesRepository {
     return models
         .map(
           (model) => EnrolledCourseData(
+            googleClassroomCode: model.Acta?.trim(),
             courseCode: model.CodCurso,
             courseName: model.Curso,
             courseType: CourseType.fromValue(model.TipoCurso),

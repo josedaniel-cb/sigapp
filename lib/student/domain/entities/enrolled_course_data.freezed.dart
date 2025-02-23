@@ -17,7 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$EnrolledCourseData {
 // required String? Acta,
-// required String? Activo,
+  String? get googleClassroomCode =>
+      throw _privateConstructorUsedError; // required String? Activo,
 // required String Aula,
   String get url =>
       throw _privateConstructorUsedError; // required int CeroEnActa,
@@ -60,7 +61,8 @@ abstract class $EnrolledCourseDataCopyWith<$Res> {
       _$EnrolledCourseDataCopyWithImpl<$Res, EnrolledCourseData>;
   @useResult
   $Res call(
-      {String url,
+      {String? googleClassroomCode,
+      String url,
       String courseCode,
       int credits,
       String courseName,
@@ -87,6 +89,7 @@ class _$EnrolledCourseDataCopyWithImpl<$Res, $Val extends EnrolledCourseData>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? googleClassroomCode = freezed,
     Object? url = null,
     Object? courseCode = null,
     Object? credits = null,
@@ -99,6 +102,10 @@ class _$EnrolledCourseDataCopyWithImpl<$Res, $Val extends EnrolledCourseData>
     Object? courseType = freezed,
   }) {
     return _then(_value.copyWith(
+      googleClassroomCode: freezed == googleClassroomCode
+          ? _value.googleClassroomCode
+          : googleClassroomCode // ignore: cast_nullable_to_non_nullable
+              as String?,
       url: null == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
@@ -152,7 +159,8 @@ abstract class _$$EnrolledCourseDataImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String url,
+      {String? googleClassroomCode,
+      String url,
       String courseCode,
       int credits,
       String courseName,
@@ -177,6 +185,7 @@ class __$$EnrolledCourseDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? googleClassroomCode = freezed,
     Object? url = null,
     Object? courseCode = null,
     Object? credits = null,
@@ -189,6 +198,10 @@ class __$$EnrolledCourseDataImplCopyWithImpl<$Res>
     Object? courseType = freezed,
   }) {
     return _then(_$EnrolledCourseDataImpl(
+      googleClassroomCode: freezed == googleClassroomCode
+          ? _value.googleClassroomCode
+          : googleClassroomCode // ignore: cast_nullable_to_non_nullable
+              as String?,
       url: null == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
@@ -239,7 +252,8 @@ class _$EnrolledCourseDataImpl
     with DiagnosticableTreeMixin
     implements _EnrolledCourseData {
   const _$EnrolledCourseDataImpl(
-      {required this.url,
+      {required this.googleClassroomCode,
+      required this.url,
       required this.courseCode,
       required this.credits,
       required this.courseName,
@@ -251,6 +265,8 @@ class _$EnrolledCourseDataImpl
       required this.courseType});
 
 // required String? Acta,
+  @override
+  final String? googleClassroomCode;
 // required String? Activo,
 // required String Aula,
   @override
@@ -294,7 +310,7 @@ class _$EnrolledCourseDataImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EnrolledCourseData(url: $url, courseCode: $courseCode, credits: $credits, courseName: $courseName, professor: $professor, date: $date, group: $group, regevaScheduledCourseId: $regevaScheduledCourseId, section: $section, courseType: $courseType)';
+    return 'EnrolledCourseData(googleClassroomCode: $googleClassroomCode, url: $url, courseCode: $courseCode, credits: $credits, courseName: $courseName, professor: $professor, date: $date, group: $group, regevaScheduledCourseId: $regevaScheduledCourseId, section: $section, courseType: $courseType)';
   }
 
   @override
@@ -302,6 +318,7 @@ class _$EnrolledCourseDataImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'EnrolledCourseData'))
+      ..add(DiagnosticsProperty('googleClassroomCode', googleClassroomCode))
       ..add(DiagnosticsProperty('url', url))
       ..add(DiagnosticsProperty('courseCode', courseCode))
       ..add(DiagnosticsProperty('credits', credits))
@@ -320,6 +337,8 @@ class _$EnrolledCourseDataImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$EnrolledCourseDataImpl &&
+            (identical(other.googleClassroomCode, googleClassroomCode) ||
+                other.googleClassroomCode == googleClassroomCode) &&
             (identical(other.url, url) || other.url == url) &&
             (identical(other.courseCode, courseCode) ||
                 other.courseCode == courseCode) &&
@@ -341,6 +360,7 @@ class _$EnrolledCourseDataImpl
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      googleClassroomCode,
       url,
       courseCode,
       credits,
@@ -364,7 +384,8 @@ class _$EnrolledCourseDataImpl
 
 abstract class _EnrolledCourseData implements EnrolledCourseData {
   const factory _EnrolledCourseData(
-      {required final String url,
+      {required final String? googleClassroomCode,
+      required final String url,
       required final String courseCode,
       required final int credits,
       required final String courseName,
@@ -376,7 +397,8 @@ abstract class _EnrolledCourseData implements EnrolledCourseData {
       required final CourseType? courseType}) = _$EnrolledCourseDataImpl;
 
 // required String? Acta,
-// required String? Activo,
+  @override
+  String? get googleClassroomCode; // required String? Activo,
 // required String Aula,
   @override
   String get url; // required int CeroEnActa,

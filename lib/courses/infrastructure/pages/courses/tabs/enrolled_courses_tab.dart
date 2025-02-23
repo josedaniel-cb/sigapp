@@ -70,7 +70,7 @@ class EnrolledCoursesTabWidget extends StatelessWidget {
         return BlocProvider(
           create: (_) {
             final newCubit = getIt<CourseDetailCubit>();
-            newCubit.loadSyllabus(
+            newCubit.init(
               course: course,
               regevaScheduledCourseId: course.data.regevaScheduledCourseId,
             );

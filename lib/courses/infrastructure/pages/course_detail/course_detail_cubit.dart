@@ -21,6 +21,7 @@ class CourseDetailState with _$CourseDetailState {
   const factory CourseDetailState.empty() = CourseDetailEmptyState;
   const factory CourseDetailState.ready({
     required EnrolledCourse course,
+    required String regevaScheduledCourseId,
     required CourseDetailSyllabusState syllabus,
   }) = CourseDetailReadyState;
 }
@@ -31,14 +32,29 @@ class CourseDetailCubit extends Cubit<CourseDetailState> {
   CourseDetailCubit(this._getSyllabusFileUsecase)
       : super(const CourseDetailState.empty());
 
-  Future<void> loadSyllabus({
+  Future<void> init({
     required EnrolledCourse course,
     required String regevaScheduledCourseId,
   }) async {
     emit(CourseDetailState.ready(
       course: course,
-      syllabus: CourseDetailSyllabusState.loading(),
+      regevaScheduledCourseId: regevaScheduledCourseId,
+      syllabus: CourseDetailSyllabusState.initial(),
     ));
+    await fetchSyllabus();
+  }
+
+  Future<void> fetchSyllabus() async {
+    if (state is! CourseDetailReadyState) return;
+
+    emit(
+      (state as CourseDetailReadyState).copyWith(
+        syllabus: CourseDetailSyllabusState.loading(),
+      ),
+    );
+
+    final regevaScheduledCourseId =
+        (state as CourseDetailReadyState).regevaScheduledCourseId;
     try {
       final file =
           await _getSyllabusFileUsecase.execute(regevaScheduledCourseId);

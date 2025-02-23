@@ -49,12 +49,10 @@ class TimeUtils {
     return daysInSpanish[day - 1];
   }
 
-  // Duration eventDurationToNativeString(EventDuration duration) {
-  //   return Duration(
-  //     hours: duration.endHour - duration.startHour,
-  //     minutes: duration.endMinute - duration.startMinute,
-  //   );
-  // }
+  static String formatDate(DateTime date) {
+    final DateFormat formatter = DateFormat('dd/MM/yyyy');
+    return formatter.format(date);
+  }
 }
 
 class EventDuration {

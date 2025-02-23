@@ -77,8 +77,8 @@ class CourseItemWidget extends StatelessWidget {
                                   child:
                                       CircularProgressIndicator(strokeWidth: 2),
                                 ),
-                                SizedBox(width: 2),
-                                Text('Syllabus'),
+                                SizedBox(width: 3),
+                                Text('Verificando syllabus'),
                               ],
                             ),
                           ),
