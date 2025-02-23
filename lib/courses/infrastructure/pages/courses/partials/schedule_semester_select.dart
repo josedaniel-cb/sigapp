@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
 
-class ScheduleSemesterSelect extends StatelessWidget {
+class ScheduleSemesterSelect extends StatefulWidget {
   const ScheduleSemesterSelect({
     super.key,
     required this.semesterList,
@@ -9,17 +9,40 @@ class ScheduleSemesterSelect extends StatelessWidget {
     required this.onSemesterSelected,
   });
 
-  // final SemesterSchedule schedule;
   final List<SemesterScheduleSemesterMetadata> semesterList;
   final SemesterScheduleSemesterMetadata selectedSemester;
-
   final void Function(SemesterScheduleSemesterMetadata semester)
       onSemesterSelected;
 
   @override
+  State<ScheduleSemesterSelect> createState() => _ScheduleSemesterSelectState();
+}
+
+class _ScheduleSemesterSelectState extends State<ScheduleSemesterSelect> {
+  // Semesters GlobalKeys map
+  final Map<String, GlobalKey> _keysById = {};
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // After rendering, scroll to the selected semester
+      final key = _keysById[widget.selectedSemester.id];
+      if (key != null && key.currentContext != null) {
+        Scrollable.ensureVisible(
+          key.currentContext!,
+          alignment: 0.5, // 0.0 = top, 0.5 = center, 1.0 = bottom
+          duration: const Duration(milliseconds: 200),
+        );
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final semesterList = [...this.semesterList]
-      ..sort((a, b) => b.id.compareTo(a.id));
+    final semesterList = [...widget.semesterList]
+      ..sort((a, b) => a.id.compareTo(b.id));
 
     if (semesterList.isEmpty) {
       return const Center(
@@ -27,44 +50,45 @@ class ScheduleSemesterSelect extends StatelessWidget {
       );
     }
 
-    // Group semesters by year
+    // Group per year
     final Map<String, List<SemesterScheduleSemesterMetadata>> groupedByYear =
         {};
     for (var semester in semesterList) {
       groupedByYear.putIfAbsent('${semester.year}', () => []).add(semester);
     }
 
-    // Convert map to list of widgets
     List<Widget> groupedWidgets = [];
     groupedByYear.forEach((year, semesters) {
       if (groupedWidgets.isNotEmpty) {
-        groupedWidgets.add(
-          const Divider(),
-        );
+        groupedWidgets.add(const Divider());
       }
       groupedWidgets.addAll(semesters.map((semester) {
-        final enabled = selectedSemester.id != semester.id;
+        // Creates a GlobalKey for each semester
+        final key = GlobalKey();
+        _keysById[semester.id] = key;
+
+        final isSelected = semester.id == widget.selectedSemester.id;
         return Center(
           child: ListTile(
+            key: key, // Assign the GlobalKey to the ListTile
             title: Text(
               semester.name,
               textAlign: TextAlign.center,
-              style: !enabled
+              style: isSelected
                   ? TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.bold,
                     )
                   : null,
             ),
-            onTap: enabled
-                ? () {
-                    onSemesterSelected(semester);
-                  }
-                : null,
-            // enabled: enabled,
+            onTap: isSelected
+                ? null
+                : () {
+                    widget.onSemesterSelected(semester);
+                  },
           ),
         );
-      }).toList());
+      }));
     });
 
     return ListView(
