@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sigapp/core/ui/app.dart';
+import 'package:sigapp/core/infrastructure/ui/app.dart';
 import 'package:sigapp/core/injection/get_it.dart';
 
 void main() async {

@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/core/domain/service/app_loading_service.dart';
-import 'package:sigapp/core/ui/overlays/progress_indicator_bloc.dart';
+import 'package:sigapp/core/domain/service/progress_indicator_service.dart';
+import 'package:sigapp/core/infrastructure/ui/overlays/progress_indicator_bloc.dart';
 
 @Singleton(as: ProgressIndicatorService)
 class ProgressIndicatorServiceImpl extends ProgressIndicatorService {

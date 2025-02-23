@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sigapp/core/ui/widgets/error_state.dart';
-import 'package:sigapp/core/ui/widgets/loading_state.dart';
+import 'package:sigapp/core/infrastructure/ui/widgets/error_state.dart';
+import 'package:sigapp/core/infrastructure/ui/widgets/loading_state.dart';
 import 'package:sigapp/student/infrastructure/pages/student_cubit.dart';
 
 class StudentPageView extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sigapp/core/ui/widgets/brand_text.dart';
-import 'package:sigapp/core/ui/widgets/initials_avatar.dart';
+import 'package:sigapp/core/infrastructure/ui/widgets/brand_text.dart';
+import 'package:sigapp/core/infrastructure/ui/widgets/initials_avatar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class GeneralAvatarDialog extends StatelessWidget {

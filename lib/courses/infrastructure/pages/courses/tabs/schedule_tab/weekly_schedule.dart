@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sigapp/core/ui/utils/colors_utils.dart';
-import 'package:sigapp/core/utils/time_utils.dart';
+import 'package:sigapp/core/infrastructure/ui/utils/colors_utils.dart';
+import 'package:sigapp/core/infrastructure/utils/time_utils.dart';
 import 'package:sigapp/student/domain/entities/weekly_schedule_event.dart';
 import 'package:sigapp/student/domain/value_objects/enrolled_course.dart';
 

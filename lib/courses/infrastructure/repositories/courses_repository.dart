@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/core/http/siga_client.dart';
-import 'package:sigapp/core/utils/time_utils.dart';
+import 'package:sigapp/core/infrastructure/http/siga_client.dart';
+import 'package:sigapp/core/infrastructure/utils/time_utils.dart';
 import 'package:sigapp/courses/domain/repositories/courses_repository.dart';
 import 'package:sigapp/student/domain/entities/raw_course_requirement.dart';
 import 'package:sigapp/student/domain/entities/enrolled_course_data.dart';

@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/core/http/regeva_client.dart';
+import 'package:sigapp/core/infrastructure/http/regeva_client.dart';
 import 'package:sigapp/courses/application/exceptions/regeva_authentication_exception.dart';
 import 'package:sigapp/courses/domain/repositories/regeva_repository.dart';
 import 'package:sigapp/courses/domain/value-objects/syllabus_download_data.dart';

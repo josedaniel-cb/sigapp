@@ -7,7 +7,7 @@ import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.
 import 'package:sigapp/auth/application/usecases/keep_session_alive_usecase.dart';
 import 'package:sigapp/auth/application/usecases/sign_in_usecase.dart';
 import 'package:sigapp/auth/application/usecases/sign_out_usecase.dart';
-import 'package:sigapp/core/http/siga_client.dart';
+import 'package:sigapp/core/infrastructure/http/siga_client.dart';
 import 'package:sigapp/auth/domain/services/session_lifecycle_service.dart';
 import 'package:sigapp/auth/domain/value-objects/api_path_and_method.dart';
 

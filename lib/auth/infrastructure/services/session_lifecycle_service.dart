@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/auth/domain/value-objects/api_response.dart';
-import 'package:sigapp/core/http/siga_client.dart';
+import 'package:sigapp/core/infrastructure/http/siga_client.dart';
 import 'package:sigapp/auth/domain/services/session_lifecycle_service.dart';
 import 'package:sigapp/auth/domain/value-objects/api_path_and_method.dart';
 

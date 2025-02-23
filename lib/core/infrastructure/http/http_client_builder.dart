@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sigapp/core/http/cookie_manager.dart';
+import 'package:sigapp/core/infrastructure/http/cookie_manager.dart';
 
 class HttpClientBuilder {
   final Dio _dio = Dio();

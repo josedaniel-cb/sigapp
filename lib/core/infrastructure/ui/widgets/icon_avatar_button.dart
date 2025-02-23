@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sigapp/core/ui/utils/colors_utils.dart';
+import 'package:sigapp/core/infrastructure/ui/utils/colors_utils.dart';
 
 class IconAvatarButtonWidget extends StatelessWidget {
   const IconAvatarButtonWidget({

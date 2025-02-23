@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:sigapp/core/ui/widgets/brand_text.dart';
+import 'package:sigapp/core/infrastructure/ui/widgets/brand_text.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_tab/weekly_schedule.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_tab/schedule_share_button_cubit.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
