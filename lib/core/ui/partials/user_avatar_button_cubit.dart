@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/auth/application/usecases/sign_out_usecase.dart';
-import 'package:sigapp/student/application/usecases/get_academic_report_usecase.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
+import 'package:sigapp/student/domain/services/student_info_service.dart';
 
 part 'user_avatar_button_cubit.freezed.dart';
 
@@ -22,10 +22,10 @@ class UserAvatarButtonState with _$UserAvatarButtonState {
 
 @singleton
 class UserAvatarButtonCubit extends Cubit<UserAvatarButtonState> {
-  final GetAcademicReportUsecase _getAcademicReportUsecase;
+  final SessionInfoService _sessionInfoService;
   final SignOutUseCase _signOutUseCase;
 
-  UserAvatarButtonCubit(this._getAcademicReportUsecase, this._signOutUseCase)
+  UserAvatarButtonCubit(this._sessionInfoService, this._signOutUseCase)
       : super(UserAvatarButtonState.initial());
 
   void init() async {
@@ -33,8 +33,8 @@ class UserAvatarButtonCubit extends Cubit<UserAvatarButtonState> {
       return;
     }
     try {
-      final result = await _getAcademicReportUsecase.execute();
-      emit(UserAvatarButtonState.success(data: result));
+      final result = await _sessionInfoService.getSessionInfo();
+      emit(UserAvatarButtonState.success(data: result.academicReport));
     } catch (e, s) {
       if (kDebugMode) {
         print(e);

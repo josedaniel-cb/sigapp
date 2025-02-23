@@ -4,6 +4,7 @@ import 'package:sigapp/auth/domain/repositories/shared_preferences_auth_reposito
 import 'package:sigapp/auth/domain/services/navigation_service.dart';
 import 'package:sigapp/core/domain/service/app_loading_service.dart';
 import 'package:sigapp/courses/domain/repositories/regeva_repository.dart';
+import 'package:sigapp/student/domain/services/student_info_service.dart';
 
 @injectable
 class SignOutUseCase {
@@ -12,13 +13,15 @@ class SignOutUseCase {
   final AuthRepository _authRepository;
   final RegevaRepository _regevaRepository;
   final ProgressIndicatorService _progressIndicatorService;
+  final SessionInfoService _sessionInfoService;
 
   SignOutUseCase(
       this._sharedPreferencesAuthRepository,
       this._navigationService,
       this._authRepository,
       this._regevaRepository,
-      this._progressIndicatorService);
+      this._progressIndicatorService,
+      this._sessionInfoService);
 
   Future<void> execute([String? message]) async {
     await _progressIndicatorService.show();
@@ -39,5 +42,8 @@ class SignOutUseCase {
 
     // ui navigation
     _navigationService.refreshNavigation(message);
+
+    // clear
+    _sessionInfoService.clearSessionInfo();
   }
 }

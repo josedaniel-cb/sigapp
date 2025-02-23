@@ -8,6 +8,7 @@ import 'package:sigapp/semester/domain/value-objects/semester_context.dart';
 import 'package:sigapp/student/application/usecases/get_academic_report_usecase.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
 import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
+import 'package:sigapp/student/domain/services/student_info_service.dart';
 import 'package:sigapp/student/domain/value_objects/enrolled_course.dart';
 
 part 'courses_page_cubit.freezed.dart';
@@ -37,23 +38,20 @@ abstract class CoursesPageState with _$CoursesPageState {
 // @singleton
 @injectable
 class CoursesPageCubit extends Cubit<CoursesPageState> {
-  final GetAcademicReportUsecase _getAcademicReportUsecase;
-  final GetSemesterContextUsecase _getSemesterContextUsecase;
+  final SessionInfoService _sessionInfoService;
   final GetEnrolledCoursesUsecase _getEnrolledCoursesUsecase;
 
-  CoursesPageCubit(this._getSemesterContextUsecase,
-      this._getEnrolledCoursesUsecase, this._getAcademicReportUsecase)
+  CoursesPageCubit(this._getEnrolledCoursesUsecase, this._sessionInfoService)
       : super(CoursesPageState.loading());
 
   Future<void> init() async {
     emit(CoursesPageState.loading());
     try {
-      final academicReport = await _getAcademicReportUsecase.execute();
-      final semesterContext = await _getSemesterContextUsecase.execute();
+      final sessionInfo = await _sessionInfoService.getSessionInfo();
       final nextState = CoursesPageState.success(
-        academicReport: academicReport,
-        semesterContext: semesterContext,
-        selectedSemester: semesterContext.defaultSemester,
+        academicReport: sessionInfo.academicReport,
+        semesterContext: sessionInfo.semesterContext,
+        selectedSemester: sessionInfo.semesterContext.defaultSemester,
         enrolledCourses: const EnrolledCoursesState.loading(),
       ) as CoursesPageSuccessState;
       emit(nextState);

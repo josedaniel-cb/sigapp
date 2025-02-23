@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/student/application/usecases/get_academic_report_usecase.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
+import 'package:sigapp/student/domain/services/student_info_service.dart';
 
 part 'student_cubit.freezed.dart';
 
@@ -18,17 +19,17 @@ abstract class StudentPageViewState with _$StudentPageViewState {
 
 @injectable
 class StudentPageViewCubit extends Cubit<StudentPageViewState> {
-  final GetAcademicReportUsecase _getAcademicReportUsecase;
+  final SessionInfoService _sessionInfoService;
 
   StudentPageViewCubit(
-    this._getAcademicReportUsecase,
+    this._sessionInfoService,
   ) : super(const StudentPageViewState.loading());
 
   Future<void> setup() async {
     emit(const StudentPageViewState.loading());
     try {
-      final result = await _getAcademicReportUsecase.execute();
-      emit(StudentPageViewState.success(result));
+      final sessionInfo = await _sessionInfoService.getSessionInfo();
+      emit(StudentPageViewState.success(sessionInfo.academicReport));
     } catch (e, s) {
       if (kDebugMode) {
         print(e);
