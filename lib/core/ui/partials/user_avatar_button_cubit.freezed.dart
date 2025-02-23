@@ -18,32 +18,33 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$UserAvatarButtonState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() empty,
+    required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(AcademicReport data) success,
+    required TResult Function(AcademicReport data, String? errorMessage)
+        success,
     required TResult Function(dynamic error) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? empty,
+    TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(AcademicReport data)? success,
+    TResult? Function(AcademicReport data, String? errorMessage)? success,
     TResult? Function(dynamic error)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? empty,
+    TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(AcademicReport data)? success,
+    TResult Function(AcademicReport data, String? errorMessage)? success,
     TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_UserAvatarButtonEmptyState value) empty,
+    required TResult Function(_UserAvatarButtonInitialState value) initial,
     required TResult Function(_UserAvatarButtonLoadingState value) loading,
     required TResult Function(_UserAvatarButtonSuccessState value) success,
     required TResult Function(_UserAvatarButtonErrorState value) error,
@@ -51,7 +52,7 @@ mixin _$UserAvatarButtonState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_UserAvatarButtonEmptyState value)? empty,
+    TResult? Function(_UserAvatarButtonInitialState value)? initial,
     TResult? Function(_UserAvatarButtonLoadingState value)? loading,
     TResult? Function(_UserAvatarButtonSuccessState value)? success,
     TResult? Function(_UserAvatarButtonErrorState value)? error,
@@ -59,7 +60,7 @@ mixin _$UserAvatarButtonState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_UserAvatarButtonEmptyState value)? empty,
+    TResult Function(_UserAvatarButtonInitialState value)? initial,
     TResult Function(_UserAvatarButtonLoadingState value)? loading,
     TResult Function(_UserAvatarButtonSuccessState value)? success,
     TResult Function(_UserAvatarButtonErrorState value)? error,
@@ -91,21 +92,21 @@ class _$UserAvatarButtonStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$UserAvatarButtonEmptyStateImplCopyWith<$Res> {
-  factory _$$UserAvatarButtonEmptyStateImplCopyWith(
-          _$UserAvatarButtonEmptyStateImpl value,
-          $Res Function(_$UserAvatarButtonEmptyStateImpl) then) =
-      __$$UserAvatarButtonEmptyStateImplCopyWithImpl<$Res>;
+abstract class _$$UserAvatarButtonInitialStateImplCopyWith<$Res> {
+  factory _$$UserAvatarButtonInitialStateImplCopyWith(
+          _$UserAvatarButtonInitialStateImpl value,
+          $Res Function(_$UserAvatarButtonInitialStateImpl) then) =
+      __$$UserAvatarButtonInitialStateImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$UserAvatarButtonEmptyStateImplCopyWithImpl<$Res>
+class __$$UserAvatarButtonInitialStateImplCopyWithImpl<$Res>
     extends _$UserAvatarButtonStateCopyWithImpl<$Res,
-        _$UserAvatarButtonEmptyStateImpl>
-    implements _$$UserAvatarButtonEmptyStateImplCopyWith<$Res> {
-  __$$UserAvatarButtonEmptyStateImplCopyWithImpl(
-      _$UserAvatarButtonEmptyStateImpl _value,
-      $Res Function(_$UserAvatarButtonEmptyStateImpl) _then)
+        _$UserAvatarButtonInitialStateImpl>
+    implements _$$UserAvatarButtonInitialStateImplCopyWith<$Res> {
+  __$$UserAvatarButtonInitialStateImplCopyWithImpl(
+      _$UserAvatarButtonInitialStateImpl _value,
+      $Res Function(_$UserAvatarButtonInitialStateImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of UserAvatarButtonState
@@ -114,27 +115,28 @@ class __$$UserAvatarButtonEmptyStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UserAvatarButtonEmptyStateImpl
+class _$UserAvatarButtonInitialStateImpl
     with DiagnosticableTreeMixin
-    implements _UserAvatarButtonEmptyState {
-  _$UserAvatarButtonEmptyStateImpl();
+    implements _UserAvatarButtonInitialState {
+  _$UserAvatarButtonInitialStateImpl();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserAvatarButtonState.empty()';
+    return 'UserAvatarButtonState.initial()';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'UserAvatarButtonState.empty'));
+    properties
+      ..add(DiagnosticsProperty('type', 'UserAvatarButtonState.initial'));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$UserAvatarButtonEmptyStateImpl);
+            other is _$UserAvatarButtonInitialStateImpl);
   }
 
   @override
@@ -143,36 +145,37 @@ class _$UserAvatarButtonEmptyStateImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() empty,
+    required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(AcademicReport data) success,
+    required TResult Function(AcademicReport data, String? errorMessage)
+        success,
     required TResult Function(dynamic error) error,
   }) {
-    return empty();
+    return initial();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? empty,
+    TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(AcademicReport data)? success,
+    TResult? Function(AcademicReport data, String? errorMessage)? success,
     TResult? Function(dynamic error)? error,
   }) {
-    return empty?.call();
+    return initial?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? empty,
+    TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(AcademicReport data)? success,
+    TResult Function(AcademicReport data, String? errorMessage)? success,
     TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) {
-    if (empty != null) {
-      return empty();
+    if (initial != null) {
+      return initial();
     }
     return orElse();
   }
@@ -180,43 +183,43 @@ class _$UserAvatarButtonEmptyStateImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_UserAvatarButtonEmptyState value) empty,
+    required TResult Function(_UserAvatarButtonInitialState value) initial,
     required TResult Function(_UserAvatarButtonLoadingState value) loading,
     required TResult Function(_UserAvatarButtonSuccessState value) success,
     required TResult Function(_UserAvatarButtonErrorState value) error,
   }) {
-    return empty(this);
+    return initial(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_UserAvatarButtonEmptyState value)? empty,
+    TResult? Function(_UserAvatarButtonInitialState value)? initial,
     TResult? Function(_UserAvatarButtonLoadingState value)? loading,
     TResult? Function(_UserAvatarButtonSuccessState value)? success,
     TResult? Function(_UserAvatarButtonErrorState value)? error,
   }) {
-    return empty?.call(this);
+    return initial?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_UserAvatarButtonEmptyState value)? empty,
+    TResult Function(_UserAvatarButtonInitialState value)? initial,
     TResult Function(_UserAvatarButtonLoadingState value)? loading,
     TResult Function(_UserAvatarButtonSuccessState value)? success,
     TResult Function(_UserAvatarButtonErrorState value)? error,
     required TResult orElse(),
   }) {
-    if (empty != null) {
-      return empty(this);
+    if (initial != null) {
+      return initial(this);
     }
     return orElse();
   }
 }
 
-abstract class _UserAvatarButtonEmptyState implements UserAvatarButtonState {
-  factory _UserAvatarButtonEmptyState() = _$UserAvatarButtonEmptyStateImpl;
+abstract class _UserAvatarButtonInitialState implements UserAvatarButtonState {
+  factory _UserAvatarButtonInitialState() = _$UserAvatarButtonInitialStateImpl;
 }
 
 /// @nodoc
@@ -273,9 +276,10 @@ class _$UserAvatarButtonLoadingStateImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() empty,
+    required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(AcademicReport data) success,
+    required TResult Function(AcademicReport data, String? errorMessage)
+        success,
     required TResult Function(dynamic error) error,
   }) {
     return loading();
@@ -284,9 +288,9 @@ class _$UserAvatarButtonLoadingStateImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? empty,
+    TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(AcademicReport data)? success,
+    TResult? Function(AcademicReport data, String? errorMessage)? success,
     TResult? Function(dynamic error)? error,
   }) {
     return loading?.call();
@@ -295,9 +299,9 @@ class _$UserAvatarButtonLoadingStateImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? empty,
+    TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(AcademicReport data)? success,
+    TResult Function(AcademicReport data, String? errorMessage)? success,
     TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) {
@@ -310,7 +314,7 @@ class _$UserAvatarButtonLoadingStateImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_UserAvatarButtonEmptyState value) empty,
+    required TResult Function(_UserAvatarButtonInitialState value) initial,
     required TResult Function(_UserAvatarButtonLoadingState value) loading,
     required TResult Function(_UserAvatarButtonSuccessState value) success,
     required TResult Function(_UserAvatarButtonErrorState value) error,
@@ -321,7 +325,7 @@ class _$UserAvatarButtonLoadingStateImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_UserAvatarButtonEmptyState value)? empty,
+    TResult? Function(_UserAvatarButtonInitialState value)? initial,
     TResult? Function(_UserAvatarButtonLoadingState value)? loading,
     TResult? Function(_UserAvatarButtonSuccessState value)? success,
     TResult? Function(_UserAvatarButtonErrorState value)? error,
@@ -332,7 +336,7 @@ class _$UserAvatarButtonLoadingStateImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_UserAvatarButtonEmptyState value)? empty,
+    TResult Function(_UserAvatarButtonInitialState value)? initial,
     TResult Function(_UserAvatarButtonLoadingState value)? loading,
     TResult Function(_UserAvatarButtonSuccessState value)? success,
     TResult Function(_UserAvatarButtonErrorState value)? error,
@@ -356,7 +360,7 @@ abstract class _$$UserAvatarButtonSuccessStateImplCopyWith<$Res> {
           $Res Function(_$UserAvatarButtonSuccessStateImpl) then) =
       __$$UserAvatarButtonSuccessStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({AcademicReport data});
+  $Res call({AcademicReport data, String? errorMessage});
 
   $AcademicReportCopyWith<$Res> get data;
 }
@@ -377,12 +381,17 @@ class __$$UserAvatarButtonSuccessStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? data = null,
+    Object? errorMessage = freezed,
   }) {
     return _then(_$UserAvatarButtonSuccessStateImpl(
-      null == data
+      data: null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as AcademicReport,
+      errorMessage: freezed == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 
@@ -402,14 +411,16 @@ class __$$UserAvatarButtonSuccessStateImplCopyWithImpl<$Res>
 class _$UserAvatarButtonSuccessStateImpl
     with DiagnosticableTreeMixin
     implements _UserAvatarButtonSuccessState {
-  _$UserAvatarButtonSuccessStateImpl(this.data);
+  _$UserAvatarButtonSuccessStateImpl({required this.data, this.errorMessage});
 
   @override
   final AcademicReport data;
+  @override
+  final String? errorMessage;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserAvatarButtonState.success(data: $data)';
+    return 'UserAvatarButtonState.success(data: $data, errorMessage: $errorMessage)';
   }
 
   @override
@@ -417,7 +428,8 @@ class _$UserAvatarButtonSuccessStateImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'UserAvatarButtonState.success'))
-      ..add(DiagnosticsProperty('data', data));
+      ..add(DiagnosticsProperty('data', data))
+      ..add(DiagnosticsProperty('errorMessage', errorMessage));
   }
 
   @override
@@ -425,11 +437,13 @@ class _$UserAvatarButtonSuccessStateImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UserAvatarButtonSuccessStateImpl &&
-            (identical(other.data, data) || other.data == data));
+            (identical(other.data, data) || other.data == data) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, data);
+  int get hashCode => Object.hash(runtimeType, data, errorMessage);
 
   /// Create a copy of UserAvatarButtonState
   /// with the given fields replaced by the non-null parameter values.
@@ -444,36 +458,37 @@ class _$UserAvatarButtonSuccessStateImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() empty,
+    required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(AcademicReport data) success,
+    required TResult Function(AcademicReport data, String? errorMessage)
+        success,
     required TResult Function(dynamic error) error,
   }) {
-    return success(data);
+    return success(data, errorMessage);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? empty,
+    TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(AcademicReport data)? success,
+    TResult? Function(AcademicReport data, String? errorMessage)? success,
     TResult? Function(dynamic error)? error,
   }) {
-    return success?.call(data);
+    return success?.call(data, errorMessage);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? empty,
+    TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(AcademicReport data)? success,
+    TResult Function(AcademicReport data, String? errorMessage)? success,
     TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(data);
+      return success(data, errorMessage);
     }
     return orElse();
   }
@@ -481,7 +496,7 @@ class _$UserAvatarButtonSuccessStateImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_UserAvatarButtonEmptyState value) empty,
+    required TResult Function(_UserAvatarButtonInitialState value) initial,
     required TResult Function(_UserAvatarButtonLoadingState value) loading,
     required TResult Function(_UserAvatarButtonSuccessState value) success,
     required TResult Function(_UserAvatarButtonErrorState value) error,
@@ -492,7 +507,7 @@ class _$UserAvatarButtonSuccessStateImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_UserAvatarButtonEmptyState value)? empty,
+    TResult? Function(_UserAvatarButtonInitialState value)? initial,
     TResult? Function(_UserAvatarButtonLoadingState value)? loading,
     TResult? Function(_UserAvatarButtonSuccessState value)? success,
     TResult? Function(_UserAvatarButtonErrorState value)? error,
@@ -503,7 +518,7 @@ class _$UserAvatarButtonSuccessStateImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_UserAvatarButtonEmptyState value)? empty,
+    TResult Function(_UserAvatarButtonInitialState value)? initial,
     TResult Function(_UserAvatarButtonLoadingState value)? loading,
     TResult Function(_UserAvatarButtonSuccessState value)? success,
     TResult Function(_UserAvatarButtonErrorState value)? error,
@@ -517,10 +532,12 @@ class _$UserAvatarButtonSuccessStateImpl
 }
 
 abstract class _UserAvatarButtonSuccessState implements UserAvatarButtonState {
-  factory _UserAvatarButtonSuccessState(final AcademicReport data) =
-      _$UserAvatarButtonSuccessStateImpl;
+  factory _UserAvatarButtonSuccessState(
+      {required final AcademicReport data,
+      final String? errorMessage}) = _$UserAvatarButtonSuccessStateImpl;
 
   AcademicReport get data;
+  String? get errorMessage;
 
   /// Create a copy of UserAvatarButtonState
   /// with the given fields replaced by the non-null parameter values.
@@ -613,9 +630,10 @@ class _$UserAvatarButtonErrorStateImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() empty,
+    required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(AcademicReport data) success,
+    required TResult Function(AcademicReport data, String? errorMessage)
+        success,
     required TResult Function(dynamic error) error,
   }) {
     return error(this.error);
@@ -624,9 +642,9 @@ class _$UserAvatarButtonErrorStateImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? empty,
+    TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(AcademicReport data)? success,
+    TResult? Function(AcademicReport data, String? errorMessage)? success,
     TResult? Function(dynamic error)? error,
   }) {
     return error?.call(this.error);
@@ -635,9 +653,9 @@ class _$UserAvatarButtonErrorStateImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? empty,
+    TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(AcademicReport data)? success,
+    TResult Function(AcademicReport data, String? errorMessage)? success,
     TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) {
@@ -650,7 +668,7 @@ class _$UserAvatarButtonErrorStateImpl
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(_UserAvatarButtonEmptyState value) empty,
+    required TResult Function(_UserAvatarButtonInitialState value) initial,
     required TResult Function(_UserAvatarButtonLoadingState value) loading,
     required TResult Function(_UserAvatarButtonSuccessState value) success,
     required TResult Function(_UserAvatarButtonErrorState value) error,
@@ -661,7 +679,7 @@ class _$UserAvatarButtonErrorStateImpl
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_UserAvatarButtonEmptyState value)? empty,
+    TResult? Function(_UserAvatarButtonInitialState value)? initial,
     TResult? Function(_UserAvatarButtonLoadingState value)? loading,
     TResult? Function(_UserAvatarButtonSuccessState value)? success,
     TResult? Function(_UserAvatarButtonErrorState value)? error,
@@ -672,7 +690,7 @@ class _$UserAvatarButtonErrorStateImpl
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(_UserAvatarButtonEmptyState value)? empty,
+    TResult Function(_UserAvatarButtonInitialState value)? initial,
     TResult Function(_UserAvatarButtonLoadingState value)? loading,
     TResult Function(_UserAvatarButtonSuccessState value)? success,
     TResult Function(_UserAvatarButtonErrorState value)? error,

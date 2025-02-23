@@ -15,7 +15,7 @@ class UserAvatarButtonWidget extends StatelessWidget {
       child: BlocBuilder<UserAvatarButtonCubit, UserAvatarButtonState>(
         builder: (context, state) {
           return state.map(
-            empty: (_) {
+            initial: (_) {
               BlocProvider.of<UserAvatarButtonCubit>(context).init();
               return _buildCircularProgressIndicator();
             },
@@ -50,6 +50,7 @@ class UserAvatarButtonWidget extends StatelessWidget {
             .join();
         userFullName = '${state.data.firstName} ${state.data.lastName}';
         userId = state.data.code;
+        errorMessage = state.errorMessage;
       },
       error: (state) {
         if (state.error != null) {
