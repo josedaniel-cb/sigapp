@@ -130,7 +130,7 @@ class _ScheduleShareButtonWidgetState extends State<ScheduleShareButtonWidget> {
 
       // Updated to use shareXFiles for sharing files
       final result = await Share.shareXFiles([XFile(imagePath.path)],
-          text: 'Check out this image!');
+          text: 'Mi horario ${widget.selectedSemester.name}');
 
       // Handling the result of sharing
       if (result.status == ShareResultStatus.success) {

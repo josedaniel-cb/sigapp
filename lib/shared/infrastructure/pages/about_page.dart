@@ -17,7 +17,7 @@ class AboutPageWidget extends StatelessWidget {
       body: ListView(children: [
         ListTile(
           title: GestureDetector(
-            onDoubleTap: () {
+            onLongPress: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => const EasterEggPageWidget(),
