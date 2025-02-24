@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sigapp/core/infrastructure/ui/utils/share_utils.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/brand_text.dart';
+import 'package:sigapp/core/infrastructure/ui/widgets/empty_icon.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/initials_avatar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -75,6 +77,24 @@ class GeneralAvatarDialog extends StatelessWidget {
                       ),
                     Divider(),
                     ListTile(
+                      leading: Icon(Icons.share),
+                      title: Text('Compartir'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+
+                        ShareUtils.shareAssetsFile(
+                          context,
+                          assetPath: 'assets/share.png',
+                          mimeType: 'image/png',
+                          name: 'share.png',
+                          text:
+                              'Unepino, descarga la app del SIGA (no oficial) desde el siguiente enlace: '
+                              '${'https://play.google.com/store/apps/details?id=com.josedanielcb.sigapp'}\n'
+                              '👌\tBon appetit',
+                        );
+                      },
+                    ),
+                    ListTile(
                       leading: Icon(Icons.info),
                       title: Text('Acerca de'),
                       onTap: () {
@@ -82,6 +102,7 @@ class GeneralAvatarDialog extends StatelessWidget {
                         GoRouter.of(context).push('/about');
                       },
                     ),
+                    Divider(),
                     ListTile(
                       leading: Icon(Icons.logout),
                       title: Text('Cerrar sesión'),

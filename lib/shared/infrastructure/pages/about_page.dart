@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/brand_text.dart';
+import 'package:sigapp/shared/infrastructure/pages/easter_egg_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AboutPageWidget extends StatelessWidget {
@@ -13,8 +14,17 @@ class AboutPageWidget extends StatelessWidget {
       appBar: AppBar(title: const Text('Acerca de')),
       body: ListView(children: [
         ListTile(
-          title: BrandTextWidget(
-            fontSize: Theme.of(context).textTheme.headlineLarge?.fontSize,
+          title: GestureDetector(
+            onDoubleTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const EasterEggPageWidget(),
+                ),
+              );
+            },
+            child: BrandTextWidget(
+              fontSize: Theme.of(context).textTheme.headlineLarge?.fontSize,
+            ),
           ),
           // subtitle: Text('Universidad Nacional de Piura'),
         ),
