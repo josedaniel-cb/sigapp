@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sigapp/core/infrastructure/ui/links.dart';
+import 'package:sigapp/core/infrastructure/ui/utils/mail_utils.dart';
 import 'package:sigapp/core/infrastructure/ui/utils/share_utils.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/brand_text.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/empty_icon.dart';
@@ -89,13 +91,26 @@ class GeneralAvatarDialog extends StatelessWidget {
                           name: 'share.png',
                           text:
                               'Unepino, descarga la app del SIGA (no oficial) desde el siguiente enlace: '
-                              '${'https://play.google.com/store/apps/details?id=com.josedanielcb.sigapp'}\n'
+                              '${Links.playStoreUrl}\n'
                               '👌\tBon appetit',
                         );
                       },
                     ),
                     ListTile(
-                      leading: Icon(Icons.info),
+                      leading: Icon(Icons.bug_report),
+                      title: Text('Reportar un problema'),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        MailUtils.launchEmail(
+                          context,
+                          email: Links.contactEmail,
+                          subject: 'Hola! Quiero reportar un error',
+                          body: '(agrega capturas de pantalla)',
+                        );
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.info_outline),
                       title: Text('Acerca de'),
                       onTap: () {
                         Navigator.of(context).pop();

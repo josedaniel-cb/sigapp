@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:sigapp/core/infrastructure/ui/links.dart';
+import 'package:sigapp/core/infrastructure/ui/utils/mail_utils.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/brand_text.dart';
 import 'package:sigapp/shared/infrastructure/pages/easter_egg_page.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -39,9 +41,9 @@ class AboutPageWidget extends StatelessWidget {
           title: Text('¿Eres desarrollador?'),
           subtitle: Text('Conviértete contribuyente'),
           onTap: () {
-            _launchEmail(
+            MailUtils.launchEmail(
               context,
-              email: 'jose.daniel.calle.brice@gmail.com',
+              email: Links.contactEmail,
               subject: 'Hola! Quiero contribuir al proyecto',
             );
           },
@@ -98,39 +100,6 @@ class AboutPageWidget extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('No se pudo abrir el enlace'),
-        ),
-      );
-    }
-  }
-
-  void _launchEmail(
-    BuildContext context, {
-    required String email,
-    required String subject,
-  }) async {
-    // iOS: you need to ios/Runner/Info.plist
-    final emailUri = Uri(
-      scheme: 'mailto',
-      path: email,
-      queryParameters: {
-        'subject': subject,
-        // 'body': 'Hola, este es un mensaje prellenado.',
-      },
-    );
-
-    try {
-      await launchUrl(
-        emailUri,
-        mode: LaunchMode.externalApplication,
-      );
-    } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Ocurrió un error al abrir el correo'),
         ),
       );
     }
