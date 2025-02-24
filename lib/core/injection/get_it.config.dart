@@ -38,20 +38,10 @@ import 'package:sigapp/auth/infrastructure/services/navigation_service.dart'
     as _i561;
 import 'package:sigapp/auth/infrastructure/services/session_lifecycle_service.dart'
     as _i649;
-import 'package:sigapp/core/domain/service/progress_indicator_service.dart'
-    as _i378;
 import 'package:sigapp/core/infrastructure/http/regeva_client.dart' as _i986;
 import 'package:sigapp/core/infrastructure/http/siga_client.dart' as _i857;
-import 'package:sigapp/core/infrastructure/services/progress_indicator_service.dart'
-    as _i35;
 import 'package:sigapp/core/infrastructure/ui/not_used_pages/schedule_page/partials/export_to_calendar_cubit.dart'
     as _i893;
-import 'package:sigapp/core/infrastructure/ui/overlays/progress_indicator_bloc.dart'
-    as _i133;
-import 'package:sigapp/core/infrastructure/ui/pages/home_page_cubit.dart'
-    as _i82;
-import 'package:sigapp/core/infrastructure/ui/partials/user_avatar_button_cubit.dart'
-    as _i617;
 import 'package:sigapp/core/injection/register_module.dart' as _i799;
 import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.dart'
     as _i315;
@@ -84,6 +74,16 @@ import 'package:sigapp/courses/infrastructure/repositories/schedule_repository.d
     as _i637;
 import 'package:sigapp/semester/application/get_semester_context_usecase.dart'
     as _i320;
+import 'package:sigapp/shared/domain/service/progress_indicator_service.dart'
+    as _i151;
+import 'package:sigapp/shared/infrastructure/overlays/progress_indicator_bloc.dart'
+    as _i675;
+import 'package:sigapp/shared/infrastructure/pages/home_page_cubit.dart'
+    as _i722;
+import 'package:sigapp/shared/infrastructure/partials/user_avatar_button_cubit.dart'
+    as _i259;
+import 'package:sigapp/shared/infrastructure/services/progress_indicator_service.dart'
+    as _i856;
 import 'package:sigapp/student/application/usecases/get_academic_report_usecase.dart'
     as _i771;
 import 'package:sigapp/student/domain/repositories/student_repository.dart'
@@ -116,18 +116,18 @@ extension GetItInjectableX on _i174.GetIt {
       () => registerModule.prefs,
       preResolve: true,
     );
-    gh.singleton<_i133.ProgressIndicatorBloc>(
-        () => _i133.ProgressIndicatorBloc());
+    gh.singleton<_i675.ProgressIndicatorBloc>(
+        () => _i675.ProgressIndicatorBloc());
     gh.lazySingleton<_i320.GetSemesterContextUsecase>(
         () => _i320.GetSemesterContextUsecase());
     gh.singleton<_i986.RegevaClient>(
         () => _i986.RegevaClient(gh<_i460.SharedPreferences>()));
     gh.singleton<_i857.SigaClient>(
         () => _i857.SigaClient(gh<_i460.SharedPreferences>()));
+    gh.singleton<_i151.ProgressIndicatorService>(() =>
+        _i856.ProgressIndicatorServiceImpl(gh<_i675.ProgressIndicatorBloc>()));
     gh.singleton<_i504.LocalSyllabusRepository>(
         () => _i717.LocalSyllabusRepositoryImpl());
-    gh.singleton<_i378.ProgressIndicatorService>(() =>
-        _i35.ProgressIndicatorServiceImpl(gh<_i133.ProgressIndicatorBloc>()));
     gh.singleton<_i1010.SharedPreferencesAuthRepository>(() =>
         _i247.SharedPreferencesAuthRepositoryImpl(
             gh<_i460.SharedPreferences>()));
@@ -191,12 +191,12 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i528.NavigationService>(),
           gh<_i10.AuthRepository>(),
           gh<_i348.RegevaRepository>(),
-          gh<_i378.ProgressIndicatorService>(),
+          gh<_i151.ProgressIndicatorService>(),
           gh<_i469.SessionInfoService>(),
         ));
-    gh.singleton<_i82.HomePageCubit>(
-        () => _i82.HomePageCubit(gh<_i48.SignOutUseCase>()));
-    gh.singleton<_i617.UserAvatarButtonCubit>(() => _i617.UserAvatarButtonCubit(
+    gh.singleton<_i722.HomePageCubit>(
+        () => _i722.HomePageCubit(gh<_i48.SignOutUseCase>()));
+    gh.singleton<_i259.UserAvatarButtonCubit>(() => _i259.UserAvatarButtonCubit(
           gh<_i469.SessionInfoService>(),
           gh<_i48.SignOutUseCase>(),
         ));

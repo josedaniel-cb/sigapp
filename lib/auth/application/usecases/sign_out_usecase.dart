@@ -2,7 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:sigapp/auth/domain/repositories/auth_repository.dart';
 import 'package:sigapp/auth/domain/repositories/shared_preferences_auth_repository.dart';
 import 'package:sigapp/auth/domain/services/navigation_service.dart';
-import 'package:sigapp/core/domain/service/progress_indicator_service.dart';
+import 'package:sigapp/shared/domain/service/progress_indicator_service.dart';
 import 'package:sigapp/courses/domain/repositories/regeva_repository.dart';
 import 'package:sigapp/student/domain/services/student_info_service.dart';
 

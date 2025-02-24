@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigapp/core/injection/get_it.dart';
-import 'package:sigapp/core/infrastructure/ui/partials/user_avatar_button/general_alert_dialog.dart';
-import 'package:sigapp/core/infrastructure/ui/partials/user_avatar_button_cubit.dart';
+import 'package:sigapp/shared/infrastructure/partials/user_avatar_button/general_alert_dialog.dart';
+import 'package:sigapp/shared/infrastructure/partials/user_avatar_button_cubit.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/initials_avatar.dart';
 
 class UserAvatarButtonWidget extends StatelessWidget {

@@ -5,8 +5,8 @@ import 'package:sigapp/core/injection/get_it.dart';
 import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.dart';
 import 'package:sigapp/auth/infrastructure/pages/login_cubit.dart';
 import 'package:sigapp/auth/infrastructure/pages/login_page.dart';
-import 'package:sigapp/core/infrastructure/ui/pages/home_page.dart';
-import 'package:sigapp/core/infrastructure/ui/pages/home_page_cubit.dart';
+import 'package:sigapp/shared/infrastructure/pages/home_page.dart';
+import 'package:sigapp/shared/infrastructure/pages/home_page_cubit.dart';
 
 class RouterBuilder {
   static GoRouter build(
