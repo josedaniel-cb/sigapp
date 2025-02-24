@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sigapp/core/infrastructure/navigation/router.dart';
+import 'package:sigapp/core/infrastructure/ui/router.dart';
 import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.dart';
 
 @module

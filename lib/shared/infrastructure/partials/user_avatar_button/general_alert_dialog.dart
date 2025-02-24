@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/brand_text.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/initials_avatar.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -73,27 +74,12 @@ class GeneralAvatarDialog extends StatelessWidget {
                         ),
                       ),
                     Divider(),
-                    // _buildLinkListTile(
-                    //   context,
-                    //   title: 'SIGA web',
-                    //   url: 'https://academico.unp.edu.pe/',
-                    // ),
-                    // _buildLinkListTile(
-                    //   context,
-                    //   title: 'Reporte pagos',
-                    //   url: 'http://pagos.unp.edu.pe/ReportePagos/',
-                    // ),
-                    // _buildLinkListTile(
-                    //   context,
-                    //   title: 'Recuperar contraseña',
-                    //   url: 'https://academico.unp.edu.pe/Cuenta/ResetPassword',
-                    // ),
-                    // Divider(),
                     ListTile(
                       leading: Icon(Icons.info),
                       title: Text('Acerca de'),
                       onTap: () {
-                        onSignOut();
+                        Navigator.of(context).pop();
+                        GoRouter.of(context).push('/about');
                       },
                     ),
                     ListTile(
@@ -112,19 +98,6 @@ class GeneralAvatarDialog extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildLinkListTile(
-    BuildContext context, {
-    required String title,
-    required String url,
-  }) {
-    return ListTile(
-      trailing: Icon(Icons.open_in_browser),
-      title: Text(title),
-      leading: Icon(Icons.abc, color: Colors.transparent),
-      onTap: () => _launchUrl(context, url),
     );
   }
 

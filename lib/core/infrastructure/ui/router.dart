@@ -5,6 +5,7 @@ import 'package:sigapp/core/injection/get_it.dart';
 import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.dart';
 import 'package:sigapp/auth/infrastructure/pages/login_cubit.dart';
 import 'package:sigapp/auth/infrastructure/pages/login_page.dart';
+import 'package:sigapp/shared/infrastructure/pages/about_page.dart';
 import 'package:sigapp/shared/infrastructure/pages/home_page.dart';
 import 'package:sigapp/shared/infrastructure/pages/home_page_cubit.dart';
 
@@ -30,6 +31,10 @@ class RouterBuilder {
             create: (context) => getIt<HomePageCubit>(),
             child: const HomePageWidget(),
           ),
+        ),
+        GoRoute(
+          path: '/about',
+          builder: (context, state) => const AboutPageWidget(),
         ),
       ],
       redirect: (context, state) async {
