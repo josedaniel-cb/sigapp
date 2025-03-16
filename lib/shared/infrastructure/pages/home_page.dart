@@ -34,7 +34,9 @@ class HomePageWidgetState extends State<HomePageWidget>
           body: PageView(
             controller: _pageController,
             physics: NeverScrollableScrollPhysics(), // Locks the swipe
-            onPageChanged: (index) => cubit.changeTab(index),
+            // onPageChanged: (index) {
+            //   cubit.changeTab(index);
+            // },
             children: <Widget>[
               BlocProvider(
                 create: (_) => getIt<CoursesPageCubit>(),
@@ -69,13 +71,16 @@ class HomePageWidgetState extends State<HomePageWidget>
               ),
             ],
             selectedIndex: state.selectedTabIndex,
-            onDestinationSelected: (index) => cubit.changeTab(index),
+            onDestinationSelected: (index) {
+              cubit.changeTab(index);
+            },
           ),
         );
       },
       listener: (context, state) {
         if (_pageController.hasClients &&
             _pageController.page != state.selectedTabIndex) {
+          // final pageNumber = state.selectedTabIndex + 1;
           _pageController.animateToPage(
             state.selectedTabIndex,
             curve: Curves.easeOut,
