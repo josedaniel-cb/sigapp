@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/core/infrastructure/http/siga_client.dart';
 import 'package:sigapp/courses/domain/repositories/schedule_repository.dart';
-import 'package:sigapp/student/domain/value_objects/raw_class_schedule.dart';
-import 'package:sigapp/student/infrastructure/models/get_class_schedule.dart';
+import 'package:sigapp/courses/domain/value-objects/raw_class_schedule.dart';
+import 'package:sigapp/courses/infrastructure/models/get_class_schedule.dart';
 
 @LazySingleton(as: ScheduleRepository)
 class ScheduleRepositoryImpl implements ScheduleRepository {

@@ -3,9 +3,9 @@ import 'package:sigapp/core/infrastructure/http/siga_client.dart';
 import 'package:sigapp/core/infrastructure/utils/time_utils.dart';
 import 'package:sigapp/courses/domain/repositories/courses_repository.dart';
 import 'package:sigapp/student/domain/entities/raw_course_requirement.dart';
-import 'package:sigapp/student/domain/entities/enrolled_course_data.dart';
+import 'package:sigapp/courses/domain/entities/enrolled_course_data.dart';
 import 'package:sigapp/student/infrastructure/models/get_course_requirements.dart';
-import 'package:sigapp/student/infrastructure/models/get_enrolled_courses.dart';
+import 'package:sigapp/courses/infrastructure/models/get_enrolled_courses.dart';
 import 'package:html/parser.dart' as htmlParser;
 
 @LazySingleton(as: CoursesRepository)

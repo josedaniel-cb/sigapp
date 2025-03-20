@@ -4,7 +4,7 @@ import 'package:open_file/open_file.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_page.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/partials/course_avatar.dart';
-import 'package:sigapp/student/domain/entities/enrolled_course_data.dart';
+import 'package:sigapp/courses/domain/entities/enrolled_course_data.dart';
 
 class CourseItemWidget extends StatelessWidget {
   final Color color;

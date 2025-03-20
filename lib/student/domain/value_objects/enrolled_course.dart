@@ -1,4 +1,4 @@
-import 'package:sigapp/student/domain/entities/enrolled_course_data.dart';
+import 'package:sigapp/courses/domain/entities/enrolled_course_data.dart';
 import 'package:sigapp/student/domain/entities/weekly_schedule_event.dart';
 
 class EnrolledCourse {
