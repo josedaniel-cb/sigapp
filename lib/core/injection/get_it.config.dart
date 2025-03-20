@@ -58,6 +58,8 @@ import 'package:sigapp/courses/domain/repositories/regeva_repository.dart'
 import 'package:sigapp/courses/domain/repositories/schedule_repository.dart'
     as _i974;
 import 'package:sigapp/courses/domain/services/course_service.dart' as _i906;
+import 'package:sigapp/courses/infrastructure/pages/career/career_page_cubit.dart'
+    as _i112;
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart'
     as _i215;
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart'
@@ -109,13 +111,13 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final registerModule = _$RegisterModule();
-    gh.singleton<_i906.CourseService>(() => _i906.CourseService());
-    gh.singleton<_i835.ScheduleShareButtonCubit>(
-        () => _i835.ScheduleShareButtonCubit());
     await gh.singletonAsync<_i460.SharedPreferences>(
       () => registerModule.prefs,
       preResolve: true,
     );
+    gh.singleton<_i906.CourseService>(() => _i906.CourseService());
+    gh.singleton<_i835.ScheduleShareButtonCubit>(
+        () => _i835.ScheduleShareButtonCubit());
     gh.singleton<_i675.ProgressIndicatorBloc>(
         () => _i675.ProgressIndicatorBloc());
     gh.lazySingleton<_i320.GetSemesterContextUsecase>(
@@ -182,6 +184,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i893.ExportToCalendarCubit(gh<_i315.GetClassScheduleUsecase>()));
     gh.singleton<_i528.NavigationService>(
         () => _i561.NavigationServiceImpl(gh<_i583.GoRouter>()));
+    gh.factory<_i112.CareerPageCubit>(() => _i112.CareerPageCubit(
+          gh<_i650.GetEnrolledCoursesUsecase>(),
+          gh<_i469.SessionInfoService>(),
+        ));
     gh.factory<_i525.CoursesPageCubit>(() => _i525.CoursesPageCubit(
           gh<_i650.GetEnrolledCoursesUsecase>(),
           gh<_i469.SessionInfoService>(),

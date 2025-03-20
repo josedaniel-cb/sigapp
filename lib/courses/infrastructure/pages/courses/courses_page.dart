@@ -6,11 +6,13 @@ import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.d
 import 'package:sigapp/courses/infrastructure/pages/courses/partials/schedule_semester_select.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses_tab.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_tab.dart';
+import 'package:sigapp/shared/infrastructure/partials/user_avatar_button.dart';
 
 class CoursesPageWidget extends StatefulWidget {
-  const CoursesPageWidget({super.key, required this.appBarTrailing});
+  // const CoursesPageWidget({super.key, required this.appBarTrailing});
+  const CoursesPageWidget({super.key});
 
-  final Widget appBarTrailing;
+  // final Widget appBarTrailing;
 
   @override
   State<CoursesPageWidget> createState() => _CoursesPageWidgetState();
@@ -77,7 +79,8 @@ class _CoursesPageWidgetState extends State<CoursesPageWidget>
                 ),
               ],
             ),
-            widget.appBarTrailing,
+            // widget.appBarTrailing,
+            UserAvatarButtonWidget(),
           ],
         ),
         bottom: TabBar(

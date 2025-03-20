@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigapp/core/injection/get_it.dart';
+import 'package:sigapp/courses/infrastructure/pages/career/career_page_cubit.dart';
 import 'package:sigapp/shared/infrastructure/pages/home_page_cubit.dart';
-import 'package:sigapp/shared/infrastructure/partials/user_avatar_button.dart';
+// import 'package:sigapp/shared/infrastructure/partials/user_avatar_button.dart';
 import 'package:sigapp/courses/infrastructure/pages/career/career_page.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
@@ -41,10 +42,13 @@ class HomePageWidgetState extends State<HomePageWidget>
               BlocProvider(
                 create: (_) => getIt<CoursesPageCubit>(),
                 child: CoursesPageWidget(
-                  appBarTrailing: UserAvatarButtonWidget(),
-                ),
+                    // appBarTrailing: UserAvatarButtonWidget(),
+                    ),
               ),
-              CareerPage(),
+              BlocProvider<CareerPageCubit>(
+                create: (_) => getIt<CareerPageCubit>(),
+                child: CareerPageView(),
+              ),
               BlocProvider<StudentPageViewCubit>(
                 create: (_) => getIt<StudentPageViewCubit>(),
                 child: StudentPageView(),

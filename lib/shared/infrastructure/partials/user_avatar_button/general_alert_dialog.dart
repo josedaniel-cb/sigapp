@@ -4,7 +4,6 @@ import 'package:sigapp/core/infrastructure/ui/links.dart';
 import 'package:sigapp/core/infrastructure/ui/utils/mail_utils.dart';
 import 'package:sigapp/core/infrastructure/ui/utils/share_utils.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/brand_text.dart';
-import 'package:sigapp/core/infrastructure/ui/widgets/empty_icon.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/initials_avatar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
