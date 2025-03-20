@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
+import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
-import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
 import 'package:sigapp/student/domain/repositories/student_repository.dart';
 
 @lazySingleton
@@ -47,8 +47,9 @@ class GetAcademicReportUsecase {
           academicReportModel.mandatoryCreditsOfPassedCourses,
       electiveCreditsOfPassedCourses:
           academicReportModel.electiveCreditsOfPassedCourses,
-      currentSemesterId: SemesterScheduleSemesterMetadata.getIdFromName(
-          sessionStudentInfoModel.currentSemesterName),
+      currentSemesterId: ScheduledTermIdentifier.buildFromName(
+              sessionStudentInfoModel.currentSemesterName)
+          .name,
     );
   }
 }

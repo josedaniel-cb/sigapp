@@ -6,7 +6,7 @@ part 'program_curriculum_course.freezed.dart';
 
 @unfreezed
 class ProgramCurriculumCourse with _$ProgramCurriculumCourse {
-  const factory ProgramCurriculumCourse({
+  factory ProgramCurriculumCourse({
     // required String ciclo,
     // required String codCurso,
     required String courseCode,
@@ -21,8 +21,8 @@ class ProgramCurriculumCourse with _$ProgramCurriculumCourse {
     // required int horasTeoria,
     required int theoryHours,
     // required int nroCiclo,
-    required int periodNumber,
+    required int termNumber,
     // required String resumenRequisitos,
-    required List<ProgramCurriculumCourse> requirements,
+    required List<String> requirementCourseCodes,
   }) = _ProgramCurriculumCourse;
 }

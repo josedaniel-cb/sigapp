@@ -1,15 +1,10 @@
-import 'package:injectable/injectable.dart';
 import 'package:sigapp/core/infrastructure/http/siga_client.dart';
-import 'package:sigapp/core/infrastructure/utils/time_utils.dart';
+import 'package:sigapp/courses/domain/entities/academic_history_term.dart';
 import 'package:sigapp/courses/domain/entities/course_type.dart';
 import 'package:sigapp/courses/domain/entities/program_curriculum_course.dart';
-import 'package:sigapp/courses/domain/repositories/courses_repository.dart';
+import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
+import 'package:sigapp/courses/infrastructure/models/get_academic_history_term.dart';
 import 'package:sigapp/courses/infrastructure/models/get_program_curriculum_course.dart';
-import 'package:sigapp/student/application/usecases/get_academic_report_usecase.dart';
-import 'package:sigapp/student/domain/entities/raw_course_requirement.dart';
-import 'package:sigapp/courses/domain/entities/enrolled_course_data.dart';
-import 'package:sigapp/student/infrastructure/models/get_course_requirements.dart';
-import 'package:sigapp/courses/infrastructure/models/get_enrolled_courses.dart';
 import 'package:html/parser.dart' as htmlParser;
 
 // @LazySingleton(as: ProgramCurriculumRepository)
@@ -76,56 +71,132 @@ class ProgramCurriculumRepositoryImpl {
     final entities = models
         .map(
           (model) => ProgramCurriculumCourse(
-            courseCode: model.codCurso,
-            credits: model.creditos,
-            courseName: model.descripCurso,
-            courseType: CourseType.fromValue(model.flagTipoCurso),
-            practiceHours: model.horasPractica,
-            theoryHours: model.horasTeoria,
-            periodNumber: model.nroCiclo,
-            requirements: [],
-          ),
+              courseCode: model.codCurso,
+              credits: model.creditos,
+              courseName: model.descripCurso,
+              courseType: CourseType.fromValue(model.flagTipoCurso),
+              practiceHours: model.horasPractica,
+              theoryHours: model.horasTeoria,
+              termNumber: model.nroCiclo,
+              requirementCourseCodes: model.resumenRequisitos == '---'
+                  ? []
+                  : model.resumenRequisitos.split(' - ').toList()),
         )
         .toList();
-    final courseCodeMap = {for (var e in entities) e.courseCode: e};
-    for (var i = 0; i < entities.length; i++) {
-      final entity = entities[i];
-      final model = models[i];
-      if (model.resumenRequisitos == '---') continue;
-      final requirementCourseCodes = model.resumenRequisitos.split(' - ');
-      entity.requirements = requirementCourseCodes
-          .map((code) => courseCodeMap[code])
-          // TODO: Verify missing requirements case
-          .whereType<ProgramCurriculumCourse>()
-          .toList();
-    }
+
+    // Courses
+    // todo: IMPLEMENT REQUIREMENTS AT DOMAIN LAYER
+    // final courseCodeMap = {for (var e in entities) e.courseCode: e};
+    // for (var i = 0; i < entities.length; i++) {
+    //   final entity = entities[i];
+    //   final model = models[i];
+    //   if (model.resumenRequisitos == '---') continue;
+    //   final requirementCourseCodes = model.resumenRequisitos.split(' - ');
+    //   entity.requirements = requirementCourseCodes
+    //       .map((code) => courseCodeMap[code])
+    //       // TODO: Verify missing requirements case
+    //       .whereType<ProgramCurriculumCourse>()
+    //       .toList();
+    // }
+
+    // Terms
+    // todo: IMPLEMENT TERMS AT DOMAIN LAYER
+
     return entities;
   }
 
   // @override
-  // Future<List<String>> getStudentCodeAndRegevaTokens() async {
-  //   final response1 = await _sigaClient.http.get('/Academico/Boletin');
-  //   final pageSource = response1.data as String;
+  Future<List<AcademicHistoryTerm>> getAcademicHistory() async {
+    // Fetch
+    final response =
+        await _sigaClient.http.get('/Academico/HistorialAcademico');
+    final pageSource = response.data as String;
+    final html = htmlParser.parse(pageSource);
 
-  //   // Get tokens
-  //   final regex = RegExp(r'token1=(.*?)&amp;token2=(.*?)&amp;ip=');
-  //   final match = regex.firstMatch(pageSource);
+    // Build
+    final termLabels = html
+        .querySelectorAll('h4')
+        .map((e) => e.text.trim().split(' ').last)
+        .toList();
+    final terms = html.querySelectorAll('.k-grid.k-widget').map((e) {
+      final tables = e.querySelectorAll('table');
+      final creditsAndGPAData = tables.first
+          .querySelectorAll('tr')
+          .map((e) =>
+              e.querySelectorAll('td').map((e) => e.text.trim()).toList())
+          .toList();
+      final coursesData = tables.last
+          .querySelectorAll('tbody tr')
+          .map((tr) =>
+              tr.querySelectorAll('td').map((e) => e.text.trim()).toList())
+          .toList();
+      return {
+        'termLabel': termLabels.removeAt(0),
+        'PPS': creditsAndGPAData[0][1],
+        'PPSAprob': creditsAndGPAData[0][3],
+        'PPA': creditsAndGPAData[0][5],
+        'PPAApr': creditsAndGPAData[0][7],
+        'CreOblLlev': creditsAndGPAData[0][9],
+        'CreElLlev': creditsAndGPAData[1][1],
+        'CreOblApr': creditsAndGPAData[1][3],
+        'CreEleApr': creditsAndGPAData[1][5],
+        'CreOblConv': creditsAndGPAData[1][7],
+        'CredEleConv': creditsAndGPAData[1][9],
+        'TotalCredOblLlev': creditsAndGPAData[2][1],
+        'TotalCredElLlev': creditsAndGPAData[2][3],
+        'TotalCredOblAprob': creditsAndGPAData[2][5],
+        'TotalCredElAprob': creditsAndGPAData[2][7],
+        'TotalCredOblConv': creditsAndGPAData[2][9],
+        'courses': coursesData
+            .map((tds) => {
+                  'courseCode': tds[0],
+                  'courseName': tds[1],
+                  'courseType': tds[2],
+                  'credits': tds[3],
+                  'grade': tds[4],
+                })
+            .toList(),
+      };
+    }).toList();
+    final models = terms
+        .map((term) => GetAcademicHistoryTermModel.fromJson(term))
+        .toList();
 
-  //   if (match == null) {
-  //     throw Exception('Regeva tokens not found');
-  //   }
-  //   final token1 = match.group(1);
-  //   if (token1 == null) throw Exception('Token1 not found');
-  //   final token2 = match.group(2);
-  //   if (token2 == null) throw Exception('Token2 not found');
+    // Parse
+    final entities = models
+        .map(
+          (model) => AcademicHistoryTerm(
+            term: ScheduledTermIdentifier.buildFromName(model.termLabel),
+            termWeightedAverage: int.parse(model.PPS),
+            termWeightedAveragePassed: int.parse(model.PPSAprob),
+            cumulativeWeightedAverage: int.parse(model.PPA),
+            cumulativeWeightedAveragePassed: int.parse(model.PPAApr),
+            mandatoryCreditsTaken: int.parse(model.CreOblLlev),
+            electiveCreditsTaken: int.parse(model.CreElLlev),
+            mandatoryCreditsPassed: int.parse(model.CreOblApr),
+            electiveCreditsPassed: int.parse(model.CreEleApr),
+            mandatoryCreditsValidated: int.parse(model.CreOblConv),
+            electiveCreditsValidated: int.parse(model.CredEleConv),
+            totalMandatoryCreditsTaken: int.parse(model.TotalCredOblLlev),
+            totalElectiveCreditsTaken: int.parse(model.TotalCredElLlev),
+            totalMandatoryCreditsPassed: int.parse(model.TotalCredOblAprob),
+            totalElectiveCreditsPassed: int.parse(model.TotalCredElAprob),
+            totalMandatoryCreditsValidated: int.parse(model.TotalCredOblConv),
+            courses: model.courses
+                .map(
+                  (course) => AcademicHistoryCourse(
+                    courseCode: course.courseCode,
+                    courseName: course.courseName,
+                    courseType: CourseType.fromValue(course.courseType),
+                    credits: int.parse(course.credits),
+                    grade: int.parse(course.grade),
+                  ),
+                )
+                .toList(),
+          ),
+        )
+        .toList();
 
-  //   // Get student code
-  //   final html = htmlParser.parse(pageSource);
-  //   final parts =
-  //       html.querySelectorAll('dd').map((e) => e.text.trim()).toList();
-  //   final studentCode = parts[0].split(' - ')[0];
-  //   if (studentCode.isEmpty) throw Exception('Student code not found');
-
-  //   return [studentCode, token1, token2];
-  // }
+    return entities;
+  }
 }

@@ -17,9 +17,9 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SemesterContext {
   bool get isLast => throw _privateConstructorUsedError;
-  List<SemesterScheduleSemesterMetadata> get availableSemesters =>
+  List<ScheduledTermIdentifier> get availableSemesters =>
       throw _privateConstructorUsedError;
-  SemesterScheduleSemesterMetadata get defaultSemester =>
+  ScheduledTermIdentifier get defaultSemester =>
       throw _privateConstructorUsedError;
 
   /// Create a copy of SemesterContext
@@ -37,8 +37,8 @@ abstract class $SemesterContextCopyWith<$Res> {
   @useResult
   $Res call(
       {bool isLast,
-      List<SemesterScheduleSemesterMetadata> availableSemesters,
-      SemesterScheduleSemesterMetadata defaultSemester});
+      List<ScheduledTermIdentifier> availableSemesters,
+      ScheduledTermIdentifier defaultSemester});
 }
 
 /// @nodoc
@@ -68,11 +68,11 @@ class _$SemesterContextCopyWithImpl<$Res, $Val extends SemesterContext>
       availableSemesters: null == availableSemesters
           ? _value.availableSemesters
           : availableSemesters // ignore: cast_nullable_to_non_nullable
-              as List<SemesterScheduleSemesterMetadata>,
+              as List<ScheduledTermIdentifier>,
       defaultSemester: null == defaultSemester
           ? _value.defaultSemester
           : defaultSemester // ignore: cast_nullable_to_non_nullable
-              as SemesterScheduleSemesterMetadata,
+              as ScheduledTermIdentifier,
     ) as $Val);
   }
 }
@@ -87,8 +87,8 @@ abstract class _$$SemesterContextImplCopyWith<$Res>
   @useResult
   $Res call(
       {bool isLast,
-      List<SemesterScheduleSemesterMetadata> availableSemesters,
-      SemesterScheduleSemesterMetadata defaultSemester});
+      List<ScheduledTermIdentifier> availableSemesters,
+      ScheduledTermIdentifier defaultSemester});
 }
 
 /// @nodoc
@@ -116,11 +116,11 @@ class __$$SemesterContextImplCopyWithImpl<$Res>
       availableSemesters: null == availableSemesters
           ? _value._availableSemesters
           : availableSemesters // ignore: cast_nullable_to_non_nullable
-              as List<SemesterScheduleSemesterMetadata>,
+              as List<ScheduledTermIdentifier>,
       defaultSemester: null == defaultSemester
           ? _value.defaultSemester
           : defaultSemester // ignore: cast_nullable_to_non_nullable
-              as SemesterScheduleSemesterMetadata,
+              as ScheduledTermIdentifier,
     ));
   }
 }
@@ -130,15 +130,15 @@ class __$$SemesterContextImplCopyWithImpl<$Res>
 class _$SemesterContextImpl implements _SemesterContext {
   _$SemesterContextImpl(
       {required this.isLast,
-      required final List<SemesterScheduleSemesterMetadata> availableSemesters,
+      required final List<ScheduledTermIdentifier> availableSemesters,
       required this.defaultSemester})
       : _availableSemesters = availableSemesters;
 
   @override
   final bool isLast;
-  final List<SemesterScheduleSemesterMetadata> _availableSemesters;
+  final List<ScheduledTermIdentifier> _availableSemesters;
   @override
-  List<SemesterScheduleSemesterMetadata> get availableSemesters {
+  List<ScheduledTermIdentifier> get availableSemesters {
     if (_availableSemesters is EqualUnmodifiableListView)
       return _availableSemesters;
     // ignore: implicit_dynamic_type
@@ -146,7 +146,7 @@ class _$SemesterContextImpl implements _SemesterContext {
   }
 
   @override
-  final SemesterScheduleSemesterMetadata defaultSemester;
+  final ScheduledTermIdentifier defaultSemester;
 
   @override
   String toString() {
@@ -184,17 +184,17 @@ class _$SemesterContextImpl implements _SemesterContext {
 
 abstract class _SemesterContext implements SemesterContext {
   factory _SemesterContext(
-      {required final bool isLast,
-      required final List<SemesterScheduleSemesterMetadata> availableSemesters,
-      required final SemesterScheduleSemesterMetadata
-          defaultSemester}) = _$SemesterContextImpl;
+          {required final bool isLast,
+          required final List<ScheduledTermIdentifier> availableSemesters,
+          required final ScheduledTermIdentifier defaultSemester}) =
+      _$SemesterContextImpl;
 
   @override
   bool get isLast;
   @override
-  List<SemesterScheduleSemesterMetadata> get availableSemesters;
+  List<ScheduledTermIdentifier> get availableSemesters;
   @override
-  SemesterScheduleSemesterMetadata get defaultSemester;
+  ScheduledTermIdentifier get defaultSemester;
 
   /// Create a copy of SemesterContext
   /// with the given fields replaced by the non-null parameter values.

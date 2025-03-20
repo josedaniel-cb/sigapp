@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
+import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
 import 'package:sigapp/semester/domain/value-objects/semester_context.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
-import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
 
 @lazySingleton
 class GetSemesterContextUsecase {
@@ -9,16 +9,15 @@ class GetSemesterContextUsecase {
 
   Future<SemesterContext> execute(AcademicReport academicReport) async {
     // Fetch
-    final firstSemester = SemesterScheduleSemesterMetadata.buildFromId(
+    final firstSemester = ScheduledTermIdentifier.buildFromId(
         academicReport.enrollmentSemesterId);
     var lastSemester = academicReport.lastSemesterId != null
-        ? SemesterScheduleSemesterMetadata.buildFromId(
-            academicReport.lastSemesterId!)
+        ? ScheduledTermIdentifier.buildFromId(academicReport.lastSemesterId!)
         : null;
 
     // Calculate default semester and available semesters
     final isLastSemesterIdKnown = lastSemester != null;
-    SemesterScheduleSemesterMetadata defaultSemester;
+    ScheduledTermIdentifier defaultSemester;
     var rangeLastSemesterId = '';
     if (isLastSemesterIdKnown) {
       defaultSemester = lastSemester;
@@ -36,21 +35,18 @@ class GetSemesterContextUsecase {
     );
   }
 
-  List<SemesterScheduleSemesterMetadata> _buildSemesterRange(
+  List<ScheduledTermIdentifier> _buildSemesterRange(
       String firstSemesterId, String lastSemesterId) {
-    List<SemesterScheduleSemesterMetadata> semesters = [];
-    final firstSemester =
-        SemesterScheduleSemesterMetadata.buildFromId(firstSemesterId);
-    final lastSemester =
-        SemesterScheduleSemesterMetadata.buildFromId(lastSemesterId);
+    List<ScheduledTermIdentifier> semesters = [];
+    final firstSemester = ScheduledTermIdentifier.buildFromId(firstSemesterId);
+    final lastSemester = ScheduledTermIdentifier.buildFromId(lastSemesterId);
     for (var year = firstSemester.year; year <= lastSemester.year; year++) {
       var startPeriod = (year == firstSemester.year) ? firstSemester.period : 0;
       var endPeriod = (year == lastSemester.year) ? lastSemester.period : 2;
       for (var yearPeriod = startPeriod;
           yearPeriod <= endPeriod;
           yearPeriod++) {
-        semesters.add(
-            SemesterScheduleSemesterMetadata.buildFromId('$year$yearPeriod'));
+        semesters.add(ScheduledTermIdentifier.buildFromId('$year$yearPeriod'));
       }
     }
     return semesters;

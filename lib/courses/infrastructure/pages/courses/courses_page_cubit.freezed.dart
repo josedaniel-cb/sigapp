@@ -548,7 +548,7 @@ mixin _$CoursesPageState {
     required TResult Function(
             AcademicReport academicReport,
             SemesterContext semesterContext,
-            SemesterScheduleSemesterMetadata selectedSemester,
+            ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)
         success,
     required TResult Function(String message) error,
@@ -560,7 +560,7 @@ mixin _$CoursesPageState {
     TResult? Function(
             AcademicReport academicReport,
             SemesterContext semesterContext,
-            SemesterScheduleSemesterMetadata selectedSemester,
+            ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)?
         success,
     TResult? Function(String message)? error,
@@ -572,7 +572,7 @@ mixin _$CoursesPageState {
     TResult Function(
             AcademicReport academicReport,
             SemesterContext semesterContext,
-            SemesterScheduleSemesterMetadata selectedSemester,
+            ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)?
         success,
     TResult Function(String message)? error,
@@ -680,7 +680,7 @@ class _$CoursesPageLoadingStateImpl
     required TResult Function(
             AcademicReport academicReport,
             SemesterContext semesterContext,
-            SemesterScheduleSemesterMetadata selectedSemester,
+            ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)
         success,
     required TResult Function(String message) error,
@@ -695,7 +695,7 @@ class _$CoursesPageLoadingStateImpl
     TResult? Function(
             AcademicReport academicReport,
             SemesterContext semesterContext,
-            SemesterScheduleSemesterMetadata selectedSemester,
+            ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)?
         success,
     TResult? Function(String message)? error,
@@ -710,7 +710,7 @@ class _$CoursesPageLoadingStateImpl
     TResult Function(
             AcademicReport academicReport,
             SemesterContext semesterContext,
-            SemesterScheduleSemesterMetadata selectedSemester,
+            ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)?
         success,
     TResult Function(String message)? error,
@@ -771,7 +771,7 @@ abstract class _$$CoursesPageSuccessStateImplCopyWith<$Res> {
   $Res call(
       {AcademicReport academicReport,
       SemesterContext semesterContext,
-      SemesterScheduleSemesterMetadata selectedSemester,
+      ScheduledTermIdentifier selectedSemester,
       EnrolledCoursesState enrolledCourses});
 
   $AcademicReportCopyWith<$Res> get academicReport;
@@ -810,7 +810,7 @@ class __$$CoursesPageSuccessStateImplCopyWithImpl<$Res>
       selectedSemester: null == selectedSemester
           ? _value.selectedSemester
           : selectedSemester // ignore: cast_nullable_to_non_nullable
-              as SemesterScheduleSemesterMetadata,
+              as ScheduledTermIdentifier,
       enrolledCourses: null == enrolledCourses
           ? _value.enrolledCourses
           : enrolledCourses // ignore: cast_nullable_to_non_nullable
@@ -865,7 +865,7 @@ class _$CoursesPageSuccessStateImpl
   @override
   final SemesterContext semesterContext;
   @override
-  final SemesterScheduleSemesterMetadata selectedSemester;
+  final ScheduledTermIdentifier selectedSemester;
   @override
   final EnrolledCoursesState enrolledCourses;
 
@@ -920,7 +920,7 @@ class _$CoursesPageSuccessStateImpl
     required TResult Function(
             AcademicReport academicReport,
             SemesterContext semesterContext,
-            SemesterScheduleSemesterMetadata selectedSemester,
+            ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)
         success,
     required TResult Function(String message) error,
@@ -936,7 +936,7 @@ class _$CoursesPageSuccessStateImpl
     TResult? Function(
             AcademicReport academicReport,
             SemesterContext semesterContext,
-            SemesterScheduleSemesterMetadata selectedSemester,
+            ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)?
         success,
     TResult? Function(String message)? error,
@@ -952,7 +952,7 @@ class _$CoursesPageSuccessStateImpl
     TResult Function(
             AcademicReport academicReport,
             SemesterContext semesterContext,
-            SemesterScheduleSemesterMetadata selectedSemester,
+            ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)?
         success,
     TResult Function(String message)? error,
@@ -1004,13 +1004,13 @@ abstract class CoursesPageSuccessState implements CoursesPageState {
   const factory CoursesPageSuccessState(
           {required final AcademicReport academicReport,
           required final SemesterContext semesterContext,
-          required final SemesterScheduleSemesterMetadata selectedSemester,
+          required final ScheduledTermIdentifier selectedSemester,
           required final EnrolledCoursesState enrolledCourses}) =
       _$CoursesPageSuccessStateImpl;
 
   AcademicReport get academicReport;
   SemesterContext get semesterContext;
-  SemesterScheduleSemesterMetadata get selectedSemester;
+  ScheduledTermIdentifier get selectedSemester;
   EnrolledCoursesState get enrolledCourses;
 
   /// Create a copy of CoursesPageState
@@ -1104,7 +1104,7 @@ class _$CoursesPageErrorStateImpl
     required TResult Function(
             AcademicReport academicReport,
             SemesterContext semesterContext,
-            SemesterScheduleSemesterMetadata selectedSemester,
+            ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)
         success,
     required TResult Function(String message) error,
@@ -1119,7 +1119,7 @@ class _$CoursesPageErrorStateImpl
     TResult? Function(
             AcademicReport academicReport,
             SemesterContext semesterContext,
-            SemesterScheduleSemesterMetadata selectedSemester,
+            ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)?
         success,
     TResult? Function(String message)? error,
@@ -1134,7 +1134,7 @@ class _$CoursesPageErrorStateImpl
     TResult Function(
             AcademicReport academicReport,
             SemesterContext semesterContext,
-            SemesterScheduleSemesterMetadata selectedSemester,
+            ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)?
         success,
     TResult Function(String message)? error,

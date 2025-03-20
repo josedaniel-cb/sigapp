@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sigapp/student/domain/entities/student_semester_schedule.dart';
+import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
 
 class ScheduleSemesterSelect extends StatefulWidget {
   const ScheduleSemesterSelect({
@@ -9,10 +9,9 @@ class ScheduleSemesterSelect extends StatefulWidget {
     required this.onSemesterSelected,
   });
 
-  final List<SemesterScheduleSemesterMetadata> semesterList;
-  final SemesterScheduleSemesterMetadata selectedSemester;
-  final void Function(SemesterScheduleSemesterMetadata semester)
-      onSemesterSelected;
+  final List<ScheduledTermIdentifier> semesterList;
+  final ScheduledTermIdentifier selectedSemester;
+  final void Function(ScheduledTermIdentifier semester) onSemesterSelected;
 
   @override
   State<ScheduleSemesterSelect> createState() => _ScheduleSemesterSelectState();
@@ -51,8 +50,7 @@ class _ScheduleSemesterSelectState extends State<ScheduleSemesterSelect> {
     }
 
     // Group per year
-    final Map<String, List<SemesterScheduleSemesterMetadata>> groupedByYear =
-        {};
+    final Map<String, List<ScheduledTermIdentifier>> groupedByYear = {};
     for (var semester in semesterList) {
       groupedByYear.putIfAbsent('${semester.year}', () => []).add(semester);
     }

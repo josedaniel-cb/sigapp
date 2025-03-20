@@ -18,10 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$SemesterSchedule {
   AcademicReport get studentAcademicReport =>
       throw _privateConstructorUsedError;
-  List<SemesterScheduleSemesterMetadata> get semesterList =>
+  List<ScheduledTermIdentifier> get semesterList =>
       throw _privateConstructorUsedError;
-  SemesterScheduleSemesterMetadata get semester =>
-      throw _privateConstructorUsedError;
+  ScheduledTermIdentifier get semester => throw _privateConstructorUsedError;
   List<WeeklyScheduleEvent> get weeklyEvents =>
       throw _privateConstructorUsedError;
 
@@ -40,8 +39,8 @@ abstract class $SemesterScheduleCopyWith<$Res> {
   @useResult
   $Res call(
       {AcademicReport studentAcademicReport,
-      List<SemesterScheduleSemesterMetadata> semesterList,
-      SemesterScheduleSemesterMetadata semester,
+      List<ScheduledTermIdentifier> semesterList,
+      ScheduledTermIdentifier semester,
       List<WeeklyScheduleEvent> weeklyEvents});
 
   $AcademicReportCopyWith<$Res> get studentAcademicReport;
@@ -75,11 +74,11 @@ class _$SemesterScheduleCopyWithImpl<$Res, $Val extends SemesterSchedule>
       semesterList: null == semesterList
           ? _value.semesterList
           : semesterList // ignore: cast_nullable_to_non_nullable
-              as List<SemesterScheduleSemesterMetadata>,
+              as List<ScheduledTermIdentifier>,
       semester: null == semester
           ? _value.semester
           : semester // ignore: cast_nullable_to_non_nullable
-              as SemesterScheduleSemesterMetadata,
+              as ScheduledTermIdentifier,
       weeklyEvents: null == weeklyEvents
           ? _value.weeklyEvents
           : weeklyEvents // ignore: cast_nullable_to_non_nullable
@@ -108,8 +107,8 @@ abstract class _$$SemesterScheduleImplCopyWith<$Res>
   @useResult
   $Res call(
       {AcademicReport studentAcademicReport,
-      List<SemesterScheduleSemesterMetadata> semesterList,
-      SemesterScheduleSemesterMetadata semester,
+      List<ScheduledTermIdentifier> semesterList,
+      ScheduledTermIdentifier semester,
       List<WeeklyScheduleEvent> weeklyEvents});
 
   @override
@@ -142,11 +141,11 @@ class __$$SemesterScheduleImplCopyWithImpl<$Res>
       semesterList: null == semesterList
           ? _value._semesterList
           : semesterList // ignore: cast_nullable_to_non_nullable
-              as List<SemesterScheduleSemesterMetadata>,
+              as List<ScheduledTermIdentifier>,
       semester: null == semester
           ? _value.semester
           : semester // ignore: cast_nullable_to_non_nullable
-              as SemesterScheduleSemesterMetadata,
+              as ScheduledTermIdentifier,
       weeklyEvents: null == weeklyEvents
           ? _value._weeklyEvents
           : weeklyEvents // ignore: cast_nullable_to_non_nullable
@@ -160,7 +159,7 @@ class __$$SemesterScheduleImplCopyWithImpl<$Res>
 class _$SemesterScheduleImpl implements _SemesterSchedule {
   _$SemesterScheduleImpl(
       {required this.studentAcademicReport,
-      required final List<SemesterScheduleSemesterMetadata> semesterList,
+      required final List<ScheduledTermIdentifier> semesterList,
       required this.semester,
       required final List<WeeklyScheduleEvent> weeklyEvents})
       : _semesterList = semesterList,
@@ -168,16 +167,16 @@ class _$SemesterScheduleImpl implements _SemesterSchedule {
 
   @override
   final AcademicReport studentAcademicReport;
-  final List<SemesterScheduleSemesterMetadata> _semesterList;
+  final List<ScheduledTermIdentifier> _semesterList;
   @override
-  List<SemesterScheduleSemesterMetadata> get semesterList {
+  List<ScheduledTermIdentifier> get semesterList {
     if (_semesterList is EqualUnmodifiableListView) return _semesterList;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_semesterList);
   }
 
   @override
-  final SemesterScheduleSemesterMetadata semester;
+  final ScheduledTermIdentifier semester;
   final List<WeeklyScheduleEvent> _weeklyEvents;
   @override
   List<WeeklyScheduleEvent> get weeklyEvents {
@@ -227,17 +226,17 @@ class _$SemesterScheduleImpl implements _SemesterSchedule {
 abstract class _SemesterSchedule implements SemesterSchedule {
   factory _SemesterSchedule(
           {required final AcademicReport studentAcademicReport,
-          required final List<SemesterScheduleSemesterMetadata> semesterList,
-          required final SemesterScheduleSemesterMetadata semester,
+          required final List<ScheduledTermIdentifier> semesterList,
+          required final ScheduledTermIdentifier semester,
           required final List<WeeklyScheduleEvent> weeklyEvents}) =
       _$SemesterScheduleImpl;
 
   @override
   AcademicReport get studentAcademicReport;
   @override
-  List<SemesterScheduleSemesterMetadata> get semesterList;
+  List<ScheduledTermIdentifier> get semesterList;
   @override
-  SemesterScheduleSemesterMetadata get semester;
+  ScheduledTermIdentifier get semester;
   @override
   List<WeeklyScheduleEvent> get weeklyEvents;
 

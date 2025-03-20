@@ -43,13 +43,13 @@ mixin _$ProgramCurriculumCourse {
       throw _privateConstructorUsedError; // required int horasTeoria,
   set theoryHours(int value) =>
       throw _privateConstructorUsedError; // required int nroCiclo,
-  int get periodNumber =>
+  int get termNumber =>
       throw _privateConstructorUsedError; // required int nroCiclo,
-  set periodNumber(int value) =>
+  set termNumber(int value) =>
       throw _privateConstructorUsedError; // required String resumenRequisitos,
-  List<ProgramCurriculumCourse> get requirements =>
+  List<String> get requirementCourseCodes =>
       throw _privateConstructorUsedError; // required String resumenRequisitos,
-  set requirements(List<ProgramCurriculumCourse> value) =>
+  set requirementCourseCodes(List<String> value) =>
       throw _privateConstructorUsedError;
 
   /// Create a copy of ProgramCurriculumCourse
@@ -72,8 +72,8 @@ abstract class $ProgramCurriculumCourseCopyWith<$Res> {
       CourseType courseType,
       int practiceHours,
       int theoryHours,
-      int periodNumber,
-      List<ProgramCurriculumCourse> requirements});
+      int termNumber,
+      List<String> requirementCourseCodes});
 }
 
 /// @nodoc
@@ -98,8 +98,8 @@ class _$ProgramCurriculumCourseCopyWithImpl<$Res,
     Object? courseType = null,
     Object? practiceHours = null,
     Object? theoryHours = null,
-    Object? periodNumber = null,
-    Object? requirements = null,
+    Object? termNumber = null,
+    Object? requirementCourseCodes = null,
   }) {
     return _then(_value.copyWith(
       courseCode: null == courseCode
@@ -126,14 +126,14 @@ class _$ProgramCurriculumCourseCopyWithImpl<$Res,
           ? _value.theoryHours
           : theoryHours // ignore: cast_nullable_to_non_nullable
               as int,
-      periodNumber: null == periodNumber
-          ? _value.periodNumber
-          : periodNumber // ignore: cast_nullable_to_non_nullable
+      termNumber: null == termNumber
+          ? _value.termNumber
+          : termNumber // ignore: cast_nullable_to_non_nullable
               as int,
-      requirements: null == requirements
-          ? _value.requirements
-          : requirements // ignore: cast_nullable_to_non_nullable
-              as List<ProgramCurriculumCourse>,
+      requirementCourseCodes: null == requirementCourseCodes
+          ? _value.requirementCourseCodes
+          : requirementCourseCodes // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -154,8 +154,8 @@ abstract class _$$ProgramCurriculumCourseImplCopyWith<$Res>
       CourseType courseType,
       int practiceHours,
       int theoryHours,
-      int periodNumber,
-      List<ProgramCurriculumCourse> requirements});
+      int termNumber,
+      List<String> requirementCourseCodes});
 }
 
 /// @nodoc
@@ -179,8 +179,8 @@ class __$$ProgramCurriculumCourseImplCopyWithImpl<$Res>
     Object? courseType = null,
     Object? practiceHours = null,
     Object? theoryHours = null,
-    Object? periodNumber = null,
-    Object? requirements = null,
+    Object? termNumber = null,
+    Object? requirementCourseCodes = null,
   }) {
     return _then(_$ProgramCurriculumCourseImpl(
       courseCode: null == courseCode
@@ -207,14 +207,14 @@ class __$$ProgramCurriculumCourseImplCopyWithImpl<$Res>
           ? _value.theoryHours
           : theoryHours // ignore: cast_nullable_to_non_nullable
               as int,
-      periodNumber: null == periodNumber
-          ? _value.periodNumber
-          : periodNumber // ignore: cast_nullable_to_non_nullable
+      termNumber: null == termNumber
+          ? _value.termNumber
+          : termNumber // ignore: cast_nullable_to_non_nullable
               as int,
-      requirements: null == requirements
-          ? _value.requirements
-          : requirements // ignore: cast_nullable_to_non_nullable
-              as List<ProgramCurriculumCourse>,
+      requirementCourseCodes: null == requirementCourseCodes
+          ? _value.requirementCourseCodes
+          : requirementCourseCodes // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -224,15 +224,15 @@ class __$$ProgramCurriculumCourseImplCopyWithImpl<$Res>
 class _$ProgramCurriculumCourseImpl
     with DiagnosticableTreeMixin
     implements _ProgramCurriculumCourse {
-  const _$ProgramCurriculumCourseImpl(
+  _$ProgramCurriculumCourseImpl(
       {required this.courseCode,
       required this.credits,
       required this.courseName,
       required this.courseType,
       required this.practiceHours,
       required this.theoryHours,
-      required this.periodNumber,
-      required this.requirements});
+      required this.termNumber,
+      required this.requirementCourseCodes});
 
 // required String ciclo,
 // required String codCurso,
@@ -255,14 +255,14 @@ class _$ProgramCurriculumCourseImpl
   int theoryHours;
 // required int nroCiclo,
   @override
-  int periodNumber;
+  int termNumber;
 // required String resumenRequisitos,
   @override
-  List<ProgramCurriculumCourse> requirements;
+  List<String> requirementCourseCodes;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProgramCurriculumCourse(courseCode: $courseCode, credits: $credits, courseName: $courseName, courseType: $courseType, practiceHours: $practiceHours, theoryHours: $theoryHours, periodNumber: $periodNumber, requirements: $requirements)';
+    return 'ProgramCurriculumCourse(courseCode: $courseCode, credits: $credits, courseName: $courseName, courseType: $courseType, practiceHours: $practiceHours, theoryHours: $theoryHours, termNumber: $termNumber, requirementCourseCodes: $requirementCourseCodes)';
   }
 
   @override
@@ -276,8 +276,9 @@ class _$ProgramCurriculumCourseImpl
       ..add(DiagnosticsProperty('courseType', courseType))
       ..add(DiagnosticsProperty('practiceHours', practiceHours))
       ..add(DiagnosticsProperty('theoryHours', theoryHours))
-      ..add(DiagnosticsProperty('periodNumber', periodNumber))
-      ..add(DiagnosticsProperty('requirements', requirements));
+      ..add(DiagnosticsProperty('termNumber', termNumber))
+      ..add(DiagnosticsProperty(
+          'requirementCourseCodes', requirementCourseCodes));
   }
 
   /// Create a copy of ProgramCurriculumCourse
@@ -291,15 +292,15 @@ class _$ProgramCurriculumCourseImpl
 }
 
 abstract class _ProgramCurriculumCourse implements ProgramCurriculumCourse {
-  const factory _ProgramCurriculumCourse(
+  factory _ProgramCurriculumCourse(
           {required String courseCode,
           required int credits,
           required String courseName,
           required CourseType courseType,
           required int practiceHours,
           required int theoryHours,
-          required int periodNumber,
-          required List<ProgramCurriculumCourse> requirements}) =
+          required int termNumber,
+          required List<String> requirementCourseCodes}) =
       _$ProgramCurriculumCourseImpl;
 
 // required String ciclo,
@@ -324,12 +325,11 @@ abstract class _ProgramCurriculumCourse implements ProgramCurriculumCourse {
   int get theoryHours; // required int horasTeoria,
   set theoryHours(int value); // required int nroCiclo,
   @override
-  int get periodNumber; // required int nroCiclo,
-  set periodNumber(int value); // required String resumenRequisitos,
+  int get termNumber; // required int nroCiclo,
+  set termNumber(int value); // required String resumenRequisitos,
   @override
-  List<ProgramCurriculumCourse>
-      get requirements; // required String resumenRequisitos,
-  set requirements(List<ProgramCurriculumCourse> value);
+  List<String> get requirementCourseCodes; // required String resumenRequisitos,
+  set requirementCourseCodes(List<String> value);
 
   /// Create a copy of ProgramCurriculumCourse
   /// with the given fields replaced by the non-null parameter values.
