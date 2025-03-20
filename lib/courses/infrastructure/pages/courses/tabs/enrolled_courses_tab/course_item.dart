@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
+import 'package:sigapp/courses/domain/entities/course_type.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_page.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/partials/course_avatar.dart';

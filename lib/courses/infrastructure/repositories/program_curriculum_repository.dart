@@ -1,7 +1,10 @@
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/core/infrastructure/http/siga_client.dart';
 import 'package:sigapp/core/infrastructure/utils/time_utils.dart';
+import 'package:sigapp/courses/domain/entities/course_type.dart';
+import 'package:sigapp/courses/domain/entities/program_curriculum_course.dart';
 import 'package:sigapp/courses/domain/repositories/courses_repository.dart';
+import 'package:sigapp/courses/infrastructure/models/get_program_curriculum_course.dart';
 import 'package:sigapp/student/application/usecases/get_academic_report_usecase.dart';
 import 'package:sigapp/student/domain/entities/raw_course_requirement.dart';
 import 'package:sigapp/courses/domain/entities/enrolled_course_data.dart';
@@ -60,32 +63,44 @@ class ProgramCurriculumRepositoryImpl {
   /// }
   /// ```
   // @override
-  // Future<List<EnrolledCourseData>> getProgramCurriculum() async {
-  //   final response = await _sigaClient.http.post(
-  //     '/Academico/ListarPlanDeEstudios',
-  //     data: null,
-  //   );
-  //   final models = (response.data['results'] as List).map(
-  //     (json) => GetEnrolledCoursesModel.fromJson(json),
-  //   );
-  //   return models
-  //       .map(
-  //         (model) => EnrolledCourseData(
-  //           googleClassroomCode: model.Acta?.trim(),
-  //           courseCode: model.CodCurso,
-  //           courseName: model.Curso,
-  //           courseType: CourseType.fromValue(model.TipoCurso),
-  //           credits: model.Creditos,
-  //           date: TimeUtils.parseFormattedDate(model.Fecha),
-  //           group: model.Grupo.trim(),
-  //           professor: model.Docente,
-  //           section: model.Seccion,
-  //           url: model.Aula,
-  //           regevaScheduledCourseId: model.ItemProg,
-  //         ),
-  //       )
-  //       .toList();
-  // }
+  Future<List<ProgramCurriculumCourse>> getProgramCurriculum() async {
+    final response = await _sigaClient.http.post(
+      '/Academico/ListarPlanDeEstudios',
+      data: null,
+    );
+    final models = (response.data['results'] as List)
+        .map(
+          (json) => GetProgramCurriculumCourseModel.fromJson(json),
+        )
+        .toList();
+    final entities = models
+        .map(
+          (model) => ProgramCurriculumCourse(
+            courseCode: model.codCurso,
+            credits: model.creditos,
+            courseName: model.descripCurso,
+            courseType: CourseType.fromValue(model.flagTipoCurso),
+            practiceHours: model.horasPractica,
+            theoryHours: model.horasTeoria,
+            periodNumber: model.nroCiclo,
+            requirements: [],
+          ),
+        )
+        .toList();
+    final courseCodeMap = {for (var e in entities) e.courseCode: e};
+    for (var i = 0; i < entities.length; i++) {
+      final entity = entities[i];
+      final model = models[i];
+      if (model.resumenRequisitos == '---') continue;
+      final requirementCourseCodes = model.resumenRequisitos.split(' - ');
+      entity.requirements = requirementCourseCodes
+          .map((code) => courseCodeMap[code])
+          // TODO: Verify missing requirements case
+          .whereType<ProgramCurriculumCourse>()
+          .toList();
+    }
+    return entities;
+  }
 
   // @override
   // Future<List<String>> getStudentCodeAndRegevaTokens() async {

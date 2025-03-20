@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/loading_indicator_icon.dart';
 import 'package:sigapp/core/infrastructure/utils/time_utils.dart';
+import 'package:sigapp/courses/domain/entities/course_type.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/partials/course_avatar.dart';
 import 'package:sigapp/courses/domain/entities/enrolled_course_data.dart';

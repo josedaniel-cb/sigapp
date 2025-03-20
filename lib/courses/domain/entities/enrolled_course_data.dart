@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
+import 'package:sigapp/courses/domain/entities/course_type.dart';
 
 part 'enrolled_course_data.freezed.dart';
 
@@ -234,24 +235,4 @@ class EnrolledCourseData with _$EnrolledCourseData {
     // required String TipoCurso,
     required CourseType? courseType,
   }) = _EnrolledCourseData;
-}
-
-enum CourseType {
-  mandatory('O'),
-  elective('E');
-
-  final String value;
-
-  const CourseType(this.value);
-
-  static CourseType? fromValue(String value) {
-    switch (value) {
-      case 'O':
-        return mandatory;
-      case 'E':
-        return elective;
-      default:
-        return null;
-    }
-  }
 }
