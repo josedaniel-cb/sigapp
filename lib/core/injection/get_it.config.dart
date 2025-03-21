@@ -47,12 +47,16 @@ import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.d
     as _i315;
 import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase.dart'
     as _i650;
+import 'package:sigapp/courses/application/usecases/get_program_curriculum_progress_usecase.dart'
+    as _i504;
 import 'package:sigapp/courses/application/usecases/get_syllabus_file_usecase.dart'
     as _i445;
 import 'package:sigapp/courses/domain/repositories/courses_repository.dart'
     as _i986;
 import 'package:sigapp/courses/domain/repositories/local_syllabus_repository.dart'
     as _i504;
+import 'package:sigapp/courses/domain/repositories/program_curriculum_repository.dart'
+    as _i889;
 import 'package:sigapp/courses/domain/repositories/regeva_repository.dart'
     as _i348;
 import 'package:sigapp/courses/domain/repositories/schedule_repository.dart'
@@ -70,6 +74,8 @@ import 'package:sigapp/courses/infrastructure/repositories/courses_repository.da
     as _i892;
 import 'package:sigapp/courses/infrastructure/repositories/local_syllabus_repository.dart'
     as _i717;
+import 'package:sigapp/courses/infrastructure/repositories/program_curriculum_repository.dart'
+    as _i654;
 import 'package:sigapp/courses/infrastructure/repositories/regeva_repository.dart'
     as _i75;
 import 'package:sigapp/courses/infrastructure/repositories/schedule_repository.dart'
@@ -148,6 +154,8 @@ extension GetItInjectableX on _i174.GetIt {
             gh<_i1010.SharedPreferencesAuthRepository>()));
     gh.lazySingleton<_i974.ScheduleRepository>(
         () => _i637.ScheduleRepositoryImpl(gh<_i857.SigaClient>()));
+    gh.lazySingleton<_i889.ProgramCurriculumRepository>(
+        () => _i654.ProgramCurriculumRepositoryImpl(gh<_i857.SigaClient>()));
     gh.singleton<_i10.AuthRepository>(
         () => _i127.AuthRepositoryImpl(gh<_i857.SigaClient>()));
     gh.lazySingleton<_i445.GetSyllabusFileUsecase>(
@@ -161,6 +169,9 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i10.AuthRepository>(),
               gh<_i679.SessionLifecycleService>(),
             ));
+    gh.lazySingleton<_i504.GetProgramCurriculumProgressUsecase>(() =>
+        _i504.GetProgramCurriculumProgressUsecase(
+            gh<_i889.ProgramCurriculumRepository>()));
     gh.factory<_i215.CourseDetailCubit>(
         () => _i215.CourseDetailCubit(gh<_i445.GetSyllabusFileUsecase>()));
     gh.singleton<_i469.SessionInfoService>(() => _i1002.SessionInfoServiceImpl(

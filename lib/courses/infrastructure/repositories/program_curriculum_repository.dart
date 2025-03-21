@@ -1,15 +1,16 @@
+import 'package:injectable/injectable.dart';
 import 'package:sigapp/core/infrastructure/http/siga_client.dart';
 import 'package:sigapp/courses/domain/entities/academic_history_term.dart';
 import 'package:sigapp/courses/domain/entities/course_type.dart';
-import 'package:sigapp/courses/domain/entities/program_curriculum_course.dart';
 import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
+import 'package:sigapp/courses/domain/repositories/program_curriculum_repository.dart';
+import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.dart';
 import 'package:sigapp/courses/infrastructure/models/get_academic_history_term.dart';
 import 'package:sigapp/courses/infrastructure/models/get_program_curriculum_course.dart';
 import 'package:html/parser.dart' as htmlParser;
 
-// @LazySingleton(as: ProgramCurriculumRepository)
-// class ProgramCurriculumRepositoryImpl implements ProgramCurriculumRepository {
-class ProgramCurriculumRepositoryImpl {
+@LazySingleton(as: ProgramCurriculumRepository)
+class ProgramCurriculumRepositoryImpl implements ProgramCurriculumRepository {
   final SigaClient _sigaClient;
 
   ProgramCurriculumRepositoryImpl(this._sigaClient);
@@ -57,8 +58,8 @@ class ProgramCurriculumRepositoryImpl {
   ///   total: number
   /// }
   /// ```
-  // @override
-  Future<List<ProgramCurriculumCourse>> getProgramCurriculum() async {
+  @override
+  Future<List<ProgramCurriculumCourseInfo>> getProgramCurriculum() async {
     final response = await _sigaClient.http.post(
       '/Academico/ListarPlanDeEstudios',
       data: null,
@@ -70,7 +71,7 @@ class ProgramCurriculumRepositoryImpl {
         .toList();
     final entities = models
         .map(
-          (model) => ProgramCurriculumCourse(
+          (model) => ProgramCurriculumCourseInfo(
               courseCode: model.codCurso,
               credits: model.creditos,
               courseName: model.descripCurso,
@@ -84,28 +85,10 @@ class ProgramCurriculumRepositoryImpl {
         )
         .toList();
 
-    // Courses
-    // todo: IMPLEMENT REQUIREMENTS AT DOMAIN LAYER
-    // final courseCodeMap = {for (var e in entities) e.courseCode: e};
-    // for (var i = 0; i < entities.length; i++) {
-    //   final entity = entities[i];
-    //   final model = models[i];
-    //   if (model.resumenRequisitos == '---') continue;
-    //   final requirementCourseCodes = model.resumenRequisitos.split(' - ');
-    //   entity.requirements = requirementCourseCodes
-    //       .map((code) => courseCodeMap[code])
-    //       // TODO: Verify missing requirements case
-    //       .whereType<ProgramCurriculumCourse>()
-    //       .toList();
-    // }
-
-    // Terms
-    // todo: IMPLEMENT TERMS AT DOMAIN LAYER
-
     return entities;
   }
 
-  // @override
+  @override
   Future<List<AcademicHistoryTerm>> getAcademicHistory() async {
     // Fetch
     final response =
