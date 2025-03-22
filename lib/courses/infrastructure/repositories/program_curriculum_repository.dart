@@ -72,16 +72,16 @@ class ProgramCurriculumRepositoryImpl implements ProgramCurriculumRepository {
     final entities = models
         .map(
           (model) => ProgramCurriculumCourseInfo(
-              courseCode: model.codCurso,
-              credits: model.creditos,
-              courseName: model.descripCurso,
-              courseType: CourseType.fromValue(model.flagTipoCurso),
-              practiceHours: model.horasPractica,
-              theoryHours: model.horasTeoria,
-              termNumber: model.nroCiclo,
-              requirementCourseCodes: model.resumenRequisitos == '---'
+              courseCode: model.CodCurso,
+              credits: model.Creditos,
+              courseName: model.DescripCurso,
+              courseType: CourseType.fromValue(model.FlagTipoCurso),
+              practiceHours: model.HorasPractica,
+              theoryHours: model.HorasTeoria,
+              termNumber: model.NroCiclo,
+              requirementCourseCodes: model.ResumenRequisitos == '---'
                   ? []
-                  : model.resumenRequisitos.split(' - ').toList()),
+                  : model.ResumenRequisitos.split(' - ').toList()),
         )
         .toList();
 
@@ -101,42 +101,55 @@ class ProgramCurriculumRepositoryImpl implements ProgramCurriculumRepository {
         .querySelectorAll('h4')
         .map((e) => e.text.trim().split(' ').last)
         .toList();
-    final terms = html.querySelectorAll('.k-grid.k-widget').map((e) {
-      final tables = e.querySelectorAll('table');
-      final creditsAndGPAData = tables.first
+    final rawTerms = html.querySelectorAll('.k-grid.k-widget');
+    if (termLabels.length != rawTerms.length) {
+      throw Exception('Term labels and terms mismatch');
+    }
+    final terms = rawTerms.asMap().entries.map((entry) {
+      final index = entry.key;
+      final element = entry.value;
+      final tables = element.querySelectorAll('table');
+      List<List<String>>? creditsAndGPAData = tables.first
           .querySelectorAll('tr')
           .map((e) =>
               e.querySelectorAll('td').map((e) => e.text.trim()).toList())
           .toList();
+      if (creditsAndGPAData.isEmpty || creditsAndGPAData[0].isEmpty) {
+        creditsAndGPAData = null;
+      }
       final coursesData = tables.last
           .querySelectorAll('tbody tr')
           .map((tr) =>
               tr.querySelectorAll('td').map((e) => e.text.trim()).toList())
           .toList();
       return {
-        'termLabel': termLabels.removeAt(0),
-        'PPS': creditsAndGPAData[0][1],
-        'PPSAprob': creditsAndGPAData[0][3],
-        'PPA': creditsAndGPAData[0][5],
-        'PPAApr': creditsAndGPAData[0][7],
-        'CreOblLlev': creditsAndGPAData[0][9],
-        'CreElLlev': creditsAndGPAData[1][1],
-        'CreOblApr': creditsAndGPAData[1][3],
-        'CreEleApr': creditsAndGPAData[1][5],
-        'CreOblConv': creditsAndGPAData[1][7],
-        'CredEleConv': creditsAndGPAData[1][9],
-        'TotalCredOblLlev': creditsAndGPAData[2][1],
-        'TotalCredElLlev': creditsAndGPAData[2][3],
-        'TotalCredOblAprob': creditsAndGPAData[2][5],
-        'TotalCredElAprob': creditsAndGPAData[2][7],
-        'TotalCredOblConv': creditsAndGPAData[2][9],
+        'termLabel': termLabels[index],
+        'statistics': creditsAndGPAData != null
+            ? {
+                'PPS': double.parse(creditsAndGPAData[0][1]),
+                'PPSAprob': double.parse(creditsAndGPAData[0][3]),
+                'PPA': double.parse(creditsAndGPAData[0][5]),
+                'PPAApr': double.parse(creditsAndGPAData[0][7]),
+                'CreOblLlev': double.parse(creditsAndGPAData[0][9]),
+                'CreElLlev': double.parse(creditsAndGPAData[1][1]),
+                'CreOblApr': double.parse(creditsAndGPAData[1][3]),
+                'CreEleApr': double.parse(creditsAndGPAData[1][5]),
+                'CreOblConv': double.parse(creditsAndGPAData[1][7]),
+                'CredEleConv': double.parse(creditsAndGPAData[1][9]),
+                'TotalCredOblLlev': double.parse(creditsAndGPAData[2][1]),
+                'TotalCredElLlev': double.parse(creditsAndGPAData[2][3]),
+                'TotalCredOblAprob': double.parse(creditsAndGPAData[2][5]),
+                'TotalCredElAprob': double.parse(creditsAndGPAData[2][7]),
+                'TotalCredOblConv': double.parse(creditsAndGPAData[2][9]),
+              }
+            : null,
         'courses': coursesData
             .map((tds) => {
                   'courseCode': tds[0],
                   'courseName': tds[1],
                   'courseType': tds[2],
-                  'credits': tds[3],
-                  'grade': tds[4],
+                  'credits': int.parse(tds[3]),
+                  'grade': double.parse(tds[4]),
                 })
             .toList(),
       };
@@ -150,29 +163,40 @@ class ProgramCurriculumRepositoryImpl implements ProgramCurriculumRepository {
         .map(
           (model) => AcademicHistoryTerm(
             term: ScheduledTermIdentifier.buildFromName(model.termLabel),
-            termWeightedAverage: int.parse(model.PPS),
-            termWeightedAveragePassed: int.parse(model.PPSAprob),
-            cumulativeWeightedAverage: int.parse(model.PPA),
-            cumulativeWeightedAveragePassed: int.parse(model.PPAApr),
-            mandatoryCreditsTaken: int.parse(model.CreOblLlev),
-            electiveCreditsTaken: int.parse(model.CreElLlev),
-            mandatoryCreditsPassed: int.parse(model.CreOblApr),
-            electiveCreditsPassed: int.parse(model.CreEleApr),
-            mandatoryCreditsValidated: int.parse(model.CreOblConv),
-            electiveCreditsValidated: int.parse(model.CredEleConv),
-            totalMandatoryCreditsTaken: int.parse(model.TotalCredOblLlev),
-            totalElectiveCreditsTaken: int.parse(model.TotalCredElLlev),
-            totalMandatoryCreditsPassed: int.parse(model.TotalCredOblAprob),
-            totalElectiveCreditsPassed: int.parse(model.TotalCredElAprob),
-            totalMandatoryCreditsValidated: int.parse(model.TotalCredOblConv),
+            statistics: model.statistics != null
+                ? AcademicHistoryTermStatistics(
+                    termWeightedAverage: model.statistics!.PPS,
+                    termWeightedAveragePassed: model.statistics!.PPSAprob,
+                    cumulativeWeightedAverage: model.statistics!.PPA,
+                    cumulativeWeightedAveragePassed: model.statistics!.PPAApr,
+                    mandatoryCreditsTaken: model.statistics!.CreOblLlev.toInt(),
+                    electiveCreditsTaken: model.statistics!.CreElLlev.toInt(),
+                    mandatoryCreditsPassed: model.statistics!.CreOblApr.toInt(),
+                    electiveCreditsPassed: model.statistics!.CreEleApr.toInt(),
+                    mandatoryCreditsValidated:
+                        model.statistics!.CreOblConv.toInt(),
+                    electiveCreditsValidated:
+                        model.statistics!.CredEleConv.toInt(),
+                    totalMandatoryCreditsTaken:
+                        model.statistics!.TotalCredOblLlev.toInt(),
+                    totalElectiveCreditsTaken:
+                        model.statistics!.TotalCredElLlev.toInt(),
+                    totalMandatoryCreditsPassed:
+                        model.statistics!.TotalCredOblAprob.toInt(),
+                    totalElectiveCreditsPassed:
+                        model.statistics!.TotalCredElAprob.toInt(),
+                    totalMandatoryCreditsValidated:
+                        model.statistics!.TotalCredOblConv.toInt(),
+                  )
+                : null,
             courses: model.courses
                 .map(
                   (course) => AcademicHistoryCourse(
                     courseCode: course.courseCode,
                     courseName: course.courseName,
                     courseType: CourseType.fromValue(course.courseType),
-                    credits: int.parse(course.credits),
-                    grade: int.parse(course.grade),
+                    credits: course.credits,
+                    grade: course.grade,
                   ),
                 )
                 .toList(),

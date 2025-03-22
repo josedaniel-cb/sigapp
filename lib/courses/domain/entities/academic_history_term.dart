@@ -10,14 +10,22 @@ class AcademicHistoryTerm with _$AcademicHistoryTerm {
   const factory AcademicHistoryTerm({
     // required String termLabel,
     required ScheduledTermIdentifier term,
+    required AcademicHistoryTermStatistics? statistics,
+    required List<AcademicHistoryCourse> courses,
+  }) = _AcademicHistoryTerm;
+}
+
+@freezed
+class AcademicHistoryTermStatistics with _$AcademicHistoryTermStatistics {
+  const factory AcademicHistoryTermStatistics({
     // required String PPS,
-    required int termWeightedAverage,
+    required double termWeightedAverage,
     // required String PPSAprob,
-    required int termWeightedAveragePassed,
+    required double termWeightedAveragePassed,
     // required String PPA,
-    required int cumulativeWeightedAverage,
+    required double cumulativeWeightedAverage,
     // required String PPAApr,
-    required int cumulativeWeightedAveragePassed,
+    required double cumulativeWeightedAveragePassed,
     // required String CreOblLlev,
     required int mandatoryCreditsTaken,
     // required String CreElLlev,
@@ -40,8 +48,7 @@ class AcademicHistoryTerm with _$AcademicHistoryTerm {
     required int totalElectiveCreditsPassed,
     // required String TotalCredOblConv,
     required int totalMandatoryCreditsValidated,
-    required List<AcademicHistoryCourse> courses,
-  }) = _AcademicHistoryTerm;
+  }) = _AcademicHistoryTermStatistics;
 }
 
 @freezed
@@ -51,6 +58,6 @@ class AcademicHistoryCourse with _$AcademicHistoryCourse {
     required String courseName,
     required CourseType courseType,
     required int credits,
-    required int grade,
+    required double grade,
   }) = _AcademicHistoryCourse;
 }

@@ -9,7 +9,7 @@ class GetProgramCurriculumProgressUsecase {
 
   GetProgramCurriculumProgressUsecase(this._programCurriculumRepository);
 
-  Future<ProgramCurriculumProgress> execute(String semesterId) async {
+  Future<ProgramCurriculumProgress> execute() async {
     // Get program curriculum
     final programCurriculum = await _getTermCoursesMap();
 

@@ -10,21 +10,10 @@ _$GetAcademicHistoryTermModelImpl _$$GetAcademicHistoryTermModelImplFromJson(
         Map<String, dynamic> json) =>
     _$GetAcademicHistoryTermModelImpl(
       termLabel: json['termLabel'] as String,
-      PPS: json['PPS'] as String,
-      PPSAprob: json['PPSAprob'] as String,
-      PPA: json['PPA'] as String,
-      PPAApr: json['PPAApr'] as String,
-      CreOblLlev: json['CreOblLlev'] as String,
-      CreElLlev: json['CreElLlev'] as String,
-      CreOblApr: json['CreOblApr'] as String,
-      CreEleApr: json['CreEleApr'] as String,
-      CreOblConv: json['CreOblConv'] as String,
-      CredEleConv: json['CredEleConv'] as String,
-      TotalCredOblLlev: json['TotalCredOblLlev'] as String,
-      TotalCredElLlev: json['TotalCredElLlev'] as String,
-      TotalCredOblAprob: json['TotalCredOblAprob'] as String,
-      TotalCredElAprob: json['TotalCredElAprob'] as String,
-      TotalCredOblConv: json['TotalCredOblConv'] as String,
+      statistics: json['statistics'] == null
+          ? null
+          : GetAcademicHistoryTermStatisticsModel.fromJson(
+              json['statistics'] as Map<String, dynamic>),
       courses: (json['courses'] as List<dynamic>)
           .map((e) =>
               GetAcademicHistoryCourseModel.fromJson(e as Map<String, dynamic>))
@@ -35,6 +24,34 @@ Map<String, dynamic> _$$GetAcademicHistoryTermModelImplToJson(
         _$GetAcademicHistoryTermModelImpl instance) =>
     <String, dynamic>{
       'termLabel': instance.termLabel,
+      'statistics': instance.statistics,
+      'courses': instance.courses,
+    };
+
+_$GetAcademicHistoryTermStatisticsModelImpl
+    _$$GetAcademicHistoryTermStatisticsModelImplFromJson(
+            Map<String, dynamic> json) =>
+        _$GetAcademicHistoryTermStatisticsModelImpl(
+          PPS: (json['PPS'] as num).toDouble(),
+          PPSAprob: (json['PPSAprob'] as num).toDouble(),
+          PPA: (json['PPA'] as num).toDouble(),
+          PPAApr: (json['PPAApr'] as num).toDouble(),
+          CreOblLlev: (json['CreOblLlev'] as num).toDouble(),
+          CreElLlev: (json['CreElLlev'] as num).toDouble(),
+          CreOblApr: (json['CreOblApr'] as num).toDouble(),
+          CreEleApr: (json['CreEleApr'] as num).toDouble(),
+          CreOblConv: (json['CreOblConv'] as num).toDouble(),
+          CredEleConv: (json['CredEleConv'] as num).toDouble(),
+          TotalCredOblLlev: (json['TotalCredOblLlev'] as num).toDouble(),
+          TotalCredElLlev: (json['TotalCredElLlev'] as num).toDouble(),
+          TotalCredOblAprob: (json['TotalCredOblAprob'] as num).toDouble(),
+          TotalCredElAprob: (json['TotalCredElAprob'] as num).toDouble(),
+          TotalCredOblConv: (json['TotalCredOblConv'] as num).toDouble(),
+        );
+
+Map<String, dynamic> _$$GetAcademicHistoryTermStatisticsModelImplToJson(
+        _$GetAcademicHistoryTermStatisticsModelImpl instance) =>
+    <String, dynamic>{
       'PPS': instance.PPS,
       'PPSAprob': instance.PPSAprob,
       'PPA': instance.PPA,
@@ -50,7 +67,6 @@ Map<String, dynamic> _$$GetAcademicHistoryTermModelImplToJson(
       'TotalCredOblAprob': instance.TotalCredOblAprob,
       'TotalCredElAprob': instance.TotalCredElAprob,
       'TotalCredOblConv': instance.TotalCredOblConv,
-      'courses': instance.courses,
     };
 
 _$GetAcademicHistoryCourseModelImpl
@@ -59,8 +75,8 @@ _$GetAcademicHistoryCourseModelImpl
           courseCode: json['courseCode'] as String,
           courseName: json['courseName'] as String,
           courseType: json['courseType'] as String,
-          credits: json['credits'] as String,
-          grade: json['grade'] as String,
+          credits: (json['credits'] as num).toInt(),
+          grade: (json['grade'] as num).toDouble(),
         );
 
 Map<String, dynamic> _$$GetAcademicHistoryCourseModelImplToJson(

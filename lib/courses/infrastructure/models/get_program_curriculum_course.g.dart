@@ -9,27 +9,27 @@ part of 'get_program_curriculum_course.dart';
 _$GetProgramCurriculumCourseModelImpl
     _$$GetProgramCurriculumCourseModelImplFromJson(Map<String, dynamic> json) =>
         _$GetProgramCurriculumCourseModelImpl(
-          ciclo: json['ciclo'] as String,
-          codCurso: json['codCurso'] as String,
-          creditos: (json['creditos'] as num).toInt(),
-          descripCurso: json['descripCurso'] as String,
-          flagTipoCurso: json['flagTipoCurso'] as String,
-          horasPractica: (json['horasPractica'] as num).toInt(),
-          horasTeoria: (json['horasTeoria'] as num).toInt(),
-          nroCiclo: (json['nroCiclo'] as num).toInt(),
-          resumenRequisitos: json['resumenRequisitos'] as String,
+          Ciclo: json['Ciclo'] as String,
+          CodCurso: json['CodCurso'] as String,
+          Creditos: (json['Creditos'] as num).toInt(),
+          DescripCurso: json['DescripCurso'] as String,
+          FlagTipoCurso: json['FlagTipoCurso'] as String,
+          HorasPractica: (json['HorasPractica'] as num).toInt(),
+          HorasTeoria: (json['HorasTeoria'] as num).toInt(),
+          NroCiclo: (json['NroCiclo'] as num).toInt(),
+          ResumenRequisitos: json['ResumenRequisitos'] as String,
         );
 
 Map<String, dynamic> _$$GetProgramCurriculumCourseModelImplToJson(
         _$GetProgramCurriculumCourseModelImpl instance) =>
     <String, dynamic>{
-      'ciclo': instance.ciclo,
-      'codCurso': instance.codCurso,
-      'creditos': instance.creditos,
-      'descripCurso': instance.descripCurso,
-      'flagTipoCurso': instance.flagTipoCurso,
-      'horasPractica': instance.horasPractica,
-      'horasTeoria': instance.horasTeoria,
-      'nroCiclo': instance.nroCiclo,
-      'resumenRequisitos': instance.resumenRequisitos,
+      'Ciclo': instance.Ciclo,
+      'CodCurso': instance.CodCurso,
+      'Creditos': instance.Creditos,
+      'DescripCurso': instance.DescripCurso,
+      'FlagTipoCurso': instance.FlagTipoCurso,
+      'HorasPractica': instance.HorasPractica,
+      'HorasTeoria': instance.HorasTeoria,
+      'NroCiclo': instance.NroCiclo,
+      'ResumenRequisitos': instance.ResumenRequisitos,
     };

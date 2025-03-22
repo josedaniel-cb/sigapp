@@ -1047,15 +1047,15 @@ part 'get_program_curriculum_course.g.dart';
 @freezed
 class GetProgramCurriculumCourseModel with _$GetProgramCurriculumCourseModel {
   const factory GetProgramCurriculumCourseModel({
-    required String ciclo,
-    required String codCurso,
-    required int creditos,
-    required String descripCurso,
-    required String flagTipoCurso,
-    required int horasPractica,
-    required int horasTeoria,
-    required int nroCiclo,
-    required String resumenRequisitos,
+    required String Ciclo,
+    required String CodCurso,
+    required int Creditos,
+    required String DescripCurso,
+    required String FlagTipoCurso,
+    required int HorasPractica,
+    required int HorasTeoria,
+    required int NroCiclo,
+    required String ResumenRequisitos,
   }) = _GetProgramCurriculumCourseModel;
 
   factory GetProgramCurriculumCourseModel.fromJson(Map<String, Object?> json) =>

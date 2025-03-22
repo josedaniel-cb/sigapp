@@ -22,21 +22,8 @@ GetAcademicHistoryTermModel _$GetAcademicHistoryTermModelFromJson(
 /// @nodoc
 mixin _$GetAcademicHistoryTermModel {
   String get termLabel => throw _privateConstructorUsedError;
-  String get PPS => throw _privateConstructorUsedError;
-  String get PPSAprob => throw _privateConstructorUsedError;
-  String get PPA => throw _privateConstructorUsedError;
-  String get PPAApr => throw _privateConstructorUsedError;
-  String get CreOblLlev => throw _privateConstructorUsedError;
-  String get CreElLlev => throw _privateConstructorUsedError;
-  String get CreOblApr => throw _privateConstructorUsedError;
-  String get CreEleApr => throw _privateConstructorUsedError;
-  String get CreOblConv => throw _privateConstructorUsedError;
-  String get CredEleConv => throw _privateConstructorUsedError;
-  String get TotalCredOblLlev => throw _privateConstructorUsedError;
-  String get TotalCredElLlev => throw _privateConstructorUsedError;
-  String get TotalCredOblAprob => throw _privateConstructorUsedError;
-  String get TotalCredElAprob => throw _privateConstructorUsedError;
-  String get TotalCredOblConv => throw _privateConstructorUsedError;
+  GetAcademicHistoryTermStatisticsModel? get statistics =>
+      throw _privateConstructorUsedError;
   List<GetAcademicHistoryCourseModel> get courses =>
       throw _privateConstructorUsedError;
 
@@ -60,22 +47,10 @@ abstract class $GetAcademicHistoryTermModelCopyWith<$Res> {
   @useResult
   $Res call(
       {String termLabel,
-      String PPS,
-      String PPSAprob,
-      String PPA,
-      String PPAApr,
-      String CreOblLlev,
-      String CreElLlev,
-      String CreOblApr,
-      String CreEleApr,
-      String CreOblConv,
-      String CredEleConv,
-      String TotalCredOblLlev,
-      String TotalCredElLlev,
-      String TotalCredOblAprob,
-      String TotalCredElAprob,
-      String TotalCredOblConv,
+      GetAcademicHistoryTermStatisticsModel? statistics,
       List<GetAcademicHistoryCourseModel> courses});
+
+  $GetAcademicHistoryTermStatisticsModelCopyWith<$Res>? get statistics;
 }
 
 /// @nodoc
@@ -95,21 +70,7 @@ class _$GetAcademicHistoryTermModelCopyWithImpl<$Res,
   @override
   $Res call({
     Object? termLabel = null,
-    Object? PPS = null,
-    Object? PPSAprob = null,
-    Object? PPA = null,
-    Object? PPAApr = null,
-    Object? CreOblLlev = null,
-    Object? CreElLlev = null,
-    Object? CreOblApr = null,
-    Object? CreEleApr = null,
-    Object? CreOblConv = null,
-    Object? CredEleConv = null,
-    Object? TotalCredOblLlev = null,
-    Object? TotalCredElLlev = null,
-    Object? TotalCredOblAprob = null,
-    Object? TotalCredElAprob = null,
-    Object? TotalCredOblConv = null,
+    Object? statistics = freezed,
     Object? courses = null,
   }) {
     return _then(_value.copyWith(
@@ -117,71 +78,30 @@ class _$GetAcademicHistoryTermModelCopyWithImpl<$Res,
           ? _value.termLabel
           : termLabel // ignore: cast_nullable_to_non_nullable
               as String,
-      PPS: null == PPS
-          ? _value.PPS
-          : PPS // ignore: cast_nullable_to_non_nullable
-              as String,
-      PPSAprob: null == PPSAprob
-          ? _value.PPSAprob
-          : PPSAprob // ignore: cast_nullable_to_non_nullable
-              as String,
-      PPA: null == PPA
-          ? _value.PPA
-          : PPA // ignore: cast_nullable_to_non_nullable
-              as String,
-      PPAApr: null == PPAApr
-          ? _value.PPAApr
-          : PPAApr // ignore: cast_nullable_to_non_nullable
-              as String,
-      CreOblLlev: null == CreOblLlev
-          ? _value.CreOblLlev
-          : CreOblLlev // ignore: cast_nullable_to_non_nullable
-              as String,
-      CreElLlev: null == CreElLlev
-          ? _value.CreElLlev
-          : CreElLlev // ignore: cast_nullable_to_non_nullable
-              as String,
-      CreOblApr: null == CreOblApr
-          ? _value.CreOblApr
-          : CreOblApr // ignore: cast_nullable_to_non_nullable
-              as String,
-      CreEleApr: null == CreEleApr
-          ? _value.CreEleApr
-          : CreEleApr // ignore: cast_nullable_to_non_nullable
-              as String,
-      CreOblConv: null == CreOblConv
-          ? _value.CreOblConv
-          : CreOblConv // ignore: cast_nullable_to_non_nullable
-              as String,
-      CredEleConv: null == CredEleConv
-          ? _value.CredEleConv
-          : CredEleConv // ignore: cast_nullable_to_non_nullable
-              as String,
-      TotalCredOblLlev: null == TotalCredOblLlev
-          ? _value.TotalCredOblLlev
-          : TotalCredOblLlev // ignore: cast_nullable_to_non_nullable
-              as String,
-      TotalCredElLlev: null == TotalCredElLlev
-          ? _value.TotalCredElLlev
-          : TotalCredElLlev // ignore: cast_nullable_to_non_nullable
-              as String,
-      TotalCredOblAprob: null == TotalCredOblAprob
-          ? _value.TotalCredOblAprob
-          : TotalCredOblAprob // ignore: cast_nullable_to_non_nullable
-              as String,
-      TotalCredElAprob: null == TotalCredElAprob
-          ? _value.TotalCredElAprob
-          : TotalCredElAprob // ignore: cast_nullable_to_non_nullable
-              as String,
-      TotalCredOblConv: null == TotalCredOblConv
-          ? _value.TotalCredOblConv
-          : TotalCredOblConv // ignore: cast_nullable_to_non_nullable
-              as String,
+      statistics: freezed == statistics
+          ? _value.statistics
+          : statistics // ignore: cast_nullable_to_non_nullable
+              as GetAcademicHistoryTermStatisticsModel?,
       courses: null == courses
           ? _value.courses
           : courses // ignore: cast_nullable_to_non_nullable
               as List<GetAcademicHistoryCourseModel>,
     ) as $Val);
+  }
+
+  /// Create a copy of GetAcademicHistoryTermModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $GetAcademicHistoryTermStatisticsModelCopyWith<$Res>? get statistics {
+    if (_value.statistics == null) {
+      return null;
+    }
+
+    return $GetAcademicHistoryTermStatisticsModelCopyWith<$Res>(
+        _value.statistics!, (value) {
+      return _then(_value.copyWith(statistics: value) as $Val);
+    });
   }
 }
 
@@ -196,22 +116,11 @@ abstract class _$$GetAcademicHistoryTermModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {String termLabel,
-      String PPS,
-      String PPSAprob,
-      String PPA,
-      String PPAApr,
-      String CreOblLlev,
-      String CreElLlev,
-      String CreOblApr,
-      String CreEleApr,
-      String CreOblConv,
-      String CredEleConv,
-      String TotalCredOblLlev,
-      String TotalCredElLlev,
-      String TotalCredOblAprob,
-      String TotalCredElAprob,
-      String TotalCredOblConv,
+      GetAcademicHistoryTermStatisticsModel? statistics,
       List<GetAcademicHistoryCourseModel> courses});
+
+  @override
+  $GetAcademicHistoryTermStatisticsModelCopyWith<$Res>? get statistics;
 }
 
 /// @nodoc
@@ -230,21 +139,7 @@ class __$$GetAcademicHistoryTermModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? termLabel = null,
-    Object? PPS = null,
-    Object? PPSAprob = null,
-    Object? PPA = null,
-    Object? PPAApr = null,
-    Object? CreOblLlev = null,
-    Object? CreElLlev = null,
-    Object? CreOblApr = null,
-    Object? CreEleApr = null,
-    Object? CreOblConv = null,
-    Object? CredEleConv = null,
-    Object? TotalCredOblLlev = null,
-    Object? TotalCredElLlev = null,
-    Object? TotalCredOblAprob = null,
-    Object? TotalCredElAprob = null,
-    Object? TotalCredOblConv = null,
+    Object? statistics = freezed,
     Object? courses = null,
   }) {
     return _then(_$GetAcademicHistoryTermModelImpl(
@@ -252,66 +147,10 @@ class __$$GetAcademicHistoryTermModelImplCopyWithImpl<$Res>
           ? _value.termLabel
           : termLabel // ignore: cast_nullable_to_non_nullable
               as String,
-      PPS: null == PPS
-          ? _value.PPS
-          : PPS // ignore: cast_nullable_to_non_nullable
-              as String,
-      PPSAprob: null == PPSAprob
-          ? _value.PPSAprob
-          : PPSAprob // ignore: cast_nullable_to_non_nullable
-              as String,
-      PPA: null == PPA
-          ? _value.PPA
-          : PPA // ignore: cast_nullable_to_non_nullable
-              as String,
-      PPAApr: null == PPAApr
-          ? _value.PPAApr
-          : PPAApr // ignore: cast_nullable_to_non_nullable
-              as String,
-      CreOblLlev: null == CreOblLlev
-          ? _value.CreOblLlev
-          : CreOblLlev // ignore: cast_nullable_to_non_nullable
-              as String,
-      CreElLlev: null == CreElLlev
-          ? _value.CreElLlev
-          : CreElLlev // ignore: cast_nullable_to_non_nullable
-              as String,
-      CreOblApr: null == CreOblApr
-          ? _value.CreOblApr
-          : CreOblApr // ignore: cast_nullable_to_non_nullable
-              as String,
-      CreEleApr: null == CreEleApr
-          ? _value.CreEleApr
-          : CreEleApr // ignore: cast_nullable_to_non_nullable
-              as String,
-      CreOblConv: null == CreOblConv
-          ? _value.CreOblConv
-          : CreOblConv // ignore: cast_nullable_to_non_nullable
-              as String,
-      CredEleConv: null == CredEleConv
-          ? _value.CredEleConv
-          : CredEleConv // ignore: cast_nullable_to_non_nullable
-              as String,
-      TotalCredOblLlev: null == TotalCredOblLlev
-          ? _value.TotalCredOblLlev
-          : TotalCredOblLlev // ignore: cast_nullable_to_non_nullable
-              as String,
-      TotalCredElLlev: null == TotalCredElLlev
-          ? _value.TotalCredElLlev
-          : TotalCredElLlev // ignore: cast_nullable_to_non_nullable
-              as String,
-      TotalCredOblAprob: null == TotalCredOblAprob
-          ? _value.TotalCredOblAprob
-          : TotalCredOblAprob // ignore: cast_nullable_to_non_nullable
-              as String,
-      TotalCredElAprob: null == TotalCredElAprob
-          ? _value.TotalCredElAprob
-          : TotalCredElAprob // ignore: cast_nullable_to_non_nullable
-              as String,
-      TotalCredOblConv: null == TotalCredOblConv
-          ? _value.TotalCredOblConv
-          : TotalCredOblConv // ignore: cast_nullable_to_non_nullable
-              as String,
+      statistics: freezed == statistics
+          ? _value.statistics
+          : statistics // ignore: cast_nullable_to_non_nullable
+              as GetAcademicHistoryTermStatisticsModel?,
       courses: null == courses
           ? _value._courses
           : courses // ignore: cast_nullable_to_non_nullable
@@ -327,7 +166,388 @@ class _$GetAcademicHistoryTermModelImpl
     implements _GetAcademicHistoryTermModel {
   const _$GetAcademicHistoryTermModelImpl(
       {required this.termLabel,
-      required this.PPS,
+      required this.statistics,
+      required final List<GetAcademicHistoryCourseModel> courses})
+      : _courses = courses;
+
+  factory _$GetAcademicHistoryTermModelImpl.fromJson(
+          Map<String, dynamic> json) =>
+      _$$GetAcademicHistoryTermModelImplFromJson(json);
+
+  @override
+  final String termLabel;
+  @override
+  final GetAcademicHistoryTermStatisticsModel? statistics;
+  final List<GetAcademicHistoryCourseModel> _courses;
+  @override
+  List<GetAcademicHistoryCourseModel> get courses {
+    if (_courses is EqualUnmodifiableListView) return _courses;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_courses);
+  }
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'GetAcademicHistoryTermModel(termLabel: $termLabel, statistics: $statistics, courses: $courses)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'GetAcademicHistoryTermModel'))
+      ..add(DiagnosticsProperty('termLabel', termLabel))
+      ..add(DiagnosticsProperty('statistics', statistics))
+      ..add(DiagnosticsProperty('courses', courses));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$GetAcademicHistoryTermModelImpl &&
+            (identical(other.termLabel, termLabel) ||
+                other.termLabel == termLabel) &&
+            (identical(other.statistics, statistics) ||
+                other.statistics == statistics) &&
+            const DeepCollectionEquality().equals(other._courses, _courses));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, termLabel, statistics,
+      const DeepCollectionEquality().hash(_courses));
+
+  /// Create a copy of GetAcademicHistoryTermModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$GetAcademicHistoryTermModelImplCopyWith<_$GetAcademicHistoryTermModelImpl>
+      get copyWith => __$$GetAcademicHistoryTermModelImplCopyWithImpl<
+          _$GetAcademicHistoryTermModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$GetAcademicHistoryTermModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _GetAcademicHistoryTermModel
+    implements GetAcademicHistoryTermModel {
+  const factory _GetAcademicHistoryTermModel(
+          {required final String termLabel,
+          required final GetAcademicHistoryTermStatisticsModel? statistics,
+          required final List<GetAcademicHistoryCourseModel> courses}) =
+      _$GetAcademicHistoryTermModelImpl;
+
+  factory _GetAcademicHistoryTermModel.fromJson(Map<String, dynamic> json) =
+      _$GetAcademicHistoryTermModelImpl.fromJson;
+
+  @override
+  String get termLabel;
+  @override
+  GetAcademicHistoryTermStatisticsModel? get statistics;
+  @override
+  List<GetAcademicHistoryCourseModel> get courses;
+
+  /// Create a copy of GetAcademicHistoryTermModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$GetAcademicHistoryTermModelImplCopyWith<_$GetAcademicHistoryTermModelImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+GetAcademicHistoryTermStatisticsModel
+    _$GetAcademicHistoryTermStatisticsModelFromJson(Map<String, dynamic> json) {
+  return _GetAcademicHistoryTermStatisticsModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$GetAcademicHistoryTermStatisticsModel {
+  double get PPS => throw _privateConstructorUsedError;
+  double get PPSAprob => throw _privateConstructorUsedError;
+  double get PPA => throw _privateConstructorUsedError;
+  double get PPAApr => throw _privateConstructorUsedError;
+  double get CreOblLlev => throw _privateConstructorUsedError;
+  double get CreElLlev => throw _privateConstructorUsedError;
+  double get CreOblApr => throw _privateConstructorUsedError;
+  double get CreEleApr => throw _privateConstructorUsedError;
+  double get CreOblConv => throw _privateConstructorUsedError;
+  double get CredEleConv => throw _privateConstructorUsedError;
+  double get TotalCredOblLlev => throw _privateConstructorUsedError;
+  double get TotalCredElLlev => throw _privateConstructorUsedError;
+  double get TotalCredOblAprob => throw _privateConstructorUsedError;
+  double get TotalCredElAprob => throw _privateConstructorUsedError;
+  double get TotalCredOblConv => throw _privateConstructorUsedError;
+
+  /// Serializes this GetAcademicHistoryTermStatisticsModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of GetAcademicHistoryTermStatisticsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $GetAcademicHistoryTermStatisticsModelCopyWith<
+          GetAcademicHistoryTermStatisticsModel>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $GetAcademicHistoryTermStatisticsModelCopyWith<$Res> {
+  factory $GetAcademicHistoryTermStatisticsModelCopyWith(
+          GetAcademicHistoryTermStatisticsModel value,
+          $Res Function(GetAcademicHistoryTermStatisticsModel) then) =
+      _$GetAcademicHistoryTermStatisticsModelCopyWithImpl<$Res,
+          GetAcademicHistoryTermStatisticsModel>;
+  @useResult
+  $Res call(
+      {double PPS,
+      double PPSAprob,
+      double PPA,
+      double PPAApr,
+      double CreOblLlev,
+      double CreElLlev,
+      double CreOblApr,
+      double CreEleApr,
+      double CreOblConv,
+      double CredEleConv,
+      double TotalCredOblLlev,
+      double TotalCredElLlev,
+      double TotalCredOblAprob,
+      double TotalCredElAprob,
+      double TotalCredOblConv});
+}
+
+/// @nodoc
+class _$GetAcademicHistoryTermStatisticsModelCopyWithImpl<$Res,
+        $Val extends GetAcademicHistoryTermStatisticsModel>
+    implements $GetAcademicHistoryTermStatisticsModelCopyWith<$Res> {
+  _$GetAcademicHistoryTermStatisticsModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of GetAcademicHistoryTermStatisticsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? PPS = null,
+    Object? PPSAprob = null,
+    Object? PPA = null,
+    Object? PPAApr = null,
+    Object? CreOblLlev = null,
+    Object? CreElLlev = null,
+    Object? CreOblApr = null,
+    Object? CreEleApr = null,
+    Object? CreOblConv = null,
+    Object? CredEleConv = null,
+    Object? TotalCredOblLlev = null,
+    Object? TotalCredElLlev = null,
+    Object? TotalCredOblAprob = null,
+    Object? TotalCredElAprob = null,
+    Object? TotalCredOblConv = null,
+  }) {
+    return _then(_value.copyWith(
+      PPS: null == PPS
+          ? _value.PPS
+          : PPS // ignore: cast_nullable_to_non_nullable
+              as double,
+      PPSAprob: null == PPSAprob
+          ? _value.PPSAprob
+          : PPSAprob // ignore: cast_nullable_to_non_nullable
+              as double,
+      PPA: null == PPA
+          ? _value.PPA
+          : PPA // ignore: cast_nullable_to_non_nullable
+              as double,
+      PPAApr: null == PPAApr
+          ? _value.PPAApr
+          : PPAApr // ignore: cast_nullable_to_non_nullable
+              as double,
+      CreOblLlev: null == CreOblLlev
+          ? _value.CreOblLlev
+          : CreOblLlev // ignore: cast_nullable_to_non_nullable
+              as double,
+      CreElLlev: null == CreElLlev
+          ? _value.CreElLlev
+          : CreElLlev // ignore: cast_nullable_to_non_nullable
+              as double,
+      CreOblApr: null == CreOblApr
+          ? _value.CreOblApr
+          : CreOblApr // ignore: cast_nullable_to_non_nullable
+              as double,
+      CreEleApr: null == CreEleApr
+          ? _value.CreEleApr
+          : CreEleApr // ignore: cast_nullable_to_non_nullable
+              as double,
+      CreOblConv: null == CreOblConv
+          ? _value.CreOblConv
+          : CreOblConv // ignore: cast_nullable_to_non_nullable
+              as double,
+      CredEleConv: null == CredEleConv
+          ? _value.CredEleConv
+          : CredEleConv // ignore: cast_nullable_to_non_nullable
+              as double,
+      TotalCredOblLlev: null == TotalCredOblLlev
+          ? _value.TotalCredOblLlev
+          : TotalCredOblLlev // ignore: cast_nullable_to_non_nullable
+              as double,
+      TotalCredElLlev: null == TotalCredElLlev
+          ? _value.TotalCredElLlev
+          : TotalCredElLlev // ignore: cast_nullable_to_non_nullable
+              as double,
+      TotalCredOblAprob: null == TotalCredOblAprob
+          ? _value.TotalCredOblAprob
+          : TotalCredOblAprob // ignore: cast_nullable_to_non_nullable
+              as double,
+      TotalCredElAprob: null == TotalCredElAprob
+          ? _value.TotalCredElAprob
+          : TotalCredElAprob // ignore: cast_nullable_to_non_nullable
+              as double,
+      TotalCredOblConv: null == TotalCredOblConv
+          ? _value.TotalCredOblConv
+          : TotalCredOblConv // ignore: cast_nullable_to_non_nullable
+              as double,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$GetAcademicHistoryTermStatisticsModelImplCopyWith<$Res>
+    implements $GetAcademicHistoryTermStatisticsModelCopyWith<$Res> {
+  factory _$$GetAcademicHistoryTermStatisticsModelImplCopyWith(
+          _$GetAcademicHistoryTermStatisticsModelImpl value,
+          $Res Function(_$GetAcademicHistoryTermStatisticsModelImpl) then) =
+      __$$GetAcademicHistoryTermStatisticsModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {double PPS,
+      double PPSAprob,
+      double PPA,
+      double PPAApr,
+      double CreOblLlev,
+      double CreElLlev,
+      double CreOblApr,
+      double CreEleApr,
+      double CreOblConv,
+      double CredEleConv,
+      double TotalCredOblLlev,
+      double TotalCredElLlev,
+      double TotalCredOblAprob,
+      double TotalCredElAprob,
+      double TotalCredOblConv});
+}
+
+/// @nodoc
+class __$$GetAcademicHistoryTermStatisticsModelImplCopyWithImpl<$Res>
+    extends _$GetAcademicHistoryTermStatisticsModelCopyWithImpl<$Res,
+        _$GetAcademicHistoryTermStatisticsModelImpl>
+    implements _$$GetAcademicHistoryTermStatisticsModelImplCopyWith<$Res> {
+  __$$GetAcademicHistoryTermStatisticsModelImplCopyWithImpl(
+      _$GetAcademicHistoryTermStatisticsModelImpl _value,
+      $Res Function(_$GetAcademicHistoryTermStatisticsModelImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of GetAcademicHistoryTermStatisticsModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? PPS = null,
+    Object? PPSAprob = null,
+    Object? PPA = null,
+    Object? PPAApr = null,
+    Object? CreOblLlev = null,
+    Object? CreElLlev = null,
+    Object? CreOblApr = null,
+    Object? CreEleApr = null,
+    Object? CreOblConv = null,
+    Object? CredEleConv = null,
+    Object? TotalCredOblLlev = null,
+    Object? TotalCredElLlev = null,
+    Object? TotalCredOblAprob = null,
+    Object? TotalCredElAprob = null,
+    Object? TotalCredOblConv = null,
+  }) {
+    return _then(_$GetAcademicHistoryTermStatisticsModelImpl(
+      PPS: null == PPS
+          ? _value.PPS
+          : PPS // ignore: cast_nullable_to_non_nullable
+              as double,
+      PPSAprob: null == PPSAprob
+          ? _value.PPSAprob
+          : PPSAprob // ignore: cast_nullable_to_non_nullable
+              as double,
+      PPA: null == PPA
+          ? _value.PPA
+          : PPA // ignore: cast_nullable_to_non_nullable
+              as double,
+      PPAApr: null == PPAApr
+          ? _value.PPAApr
+          : PPAApr // ignore: cast_nullable_to_non_nullable
+              as double,
+      CreOblLlev: null == CreOblLlev
+          ? _value.CreOblLlev
+          : CreOblLlev // ignore: cast_nullable_to_non_nullable
+              as double,
+      CreElLlev: null == CreElLlev
+          ? _value.CreElLlev
+          : CreElLlev // ignore: cast_nullable_to_non_nullable
+              as double,
+      CreOblApr: null == CreOblApr
+          ? _value.CreOblApr
+          : CreOblApr // ignore: cast_nullable_to_non_nullable
+              as double,
+      CreEleApr: null == CreEleApr
+          ? _value.CreEleApr
+          : CreEleApr // ignore: cast_nullable_to_non_nullable
+              as double,
+      CreOblConv: null == CreOblConv
+          ? _value.CreOblConv
+          : CreOblConv // ignore: cast_nullable_to_non_nullable
+              as double,
+      CredEleConv: null == CredEleConv
+          ? _value.CredEleConv
+          : CredEleConv // ignore: cast_nullable_to_non_nullable
+              as double,
+      TotalCredOblLlev: null == TotalCredOblLlev
+          ? _value.TotalCredOblLlev
+          : TotalCredOblLlev // ignore: cast_nullable_to_non_nullable
+              as double,
+      TotalCredElLlev: null == TotalCredElLlev
+          ? _value.TotalCredElLlev
+          : TotalCredElLlev // ignore: cast_nullable_to_non_nullable
+              as double,
+      TotalCredOblAprob: null == TotalCredOblAprob
+          ? _value.TotalCredOblAprob
+          : TotalCredOblAprob // ignore: cast_nullable_to_non_nullable
+              as double,
+      TotalCredElAprob: null == TotalCredElAprob
+          ? _value.TotalCredElAprob
+          : TotalCredElAprob // ignore: cast_nullable_to_non_nullable
+              as double,
+      TotalCredOblConv: null == TotalCredOblConv
+          ? _value.TotalCredOblConv
+          : TotalCredOblConv // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$GetAcademicHistoryTermStatisticsModelImpl
+    with DiagnosticableTreeMixin
+    implements _GetAcademicHistoryTermStatisticsModel {
+  const _$GetAcademicHistoryTermStatisticsModelImpl(
+      {required this.PPS,
       required this.PPSAprob,
       required this.PPA,
       required this.PPAApr,
@@ -341,65 +561,54 @@ class _$GetAcademicHistoryTermModelImpl
       required this.TotalCredElLlev,
       required this.TotalCredOblAprob,
       required this.TotalCredElAprob,
-      required this.TotalCredOblConv,
-      required final List<GetAcademicHistoryCourseModel> courses})
-      : _courses = courses;
+      required this.TotalCredOblConv});
 
-  factory _$GetAcademicHistoryTermModelImpl.fromJson(
+  factory _$GetAcademicHistoryTermStatisticsModelImpl.fromJson(
           Map<String, dynamic> json) =>
-      _$$GetAcademicHistoryTermModelImplFromJson(json);
+      _$$GetAcademicHistoryTermStatisticsModelImplFromJson(json);
 
   @override
-  final String termLabel;
+  final double PPS;
   @override
-  final String PPS;
+  final double PPSAprob;
   @override
-  final String PPSAprob;
+  final double PPA;
   @override
-  final String PPA;
+  final double PPAApr;
   @override
-  final String PPAApr;
+  final double CreOblLlev;
   @override
-  final String CreOblLlev;
+  final double CreElLlev;
   @override
-  final String CreElLlev;
+  final double CreOblApr;
   @override
-  final String CreOblApr;
+  final double CreEleApr;
   @override
-  final String CreEleApr;
+  final double CreOblConv;
   @override
-  final String CreOblConv;
+  final double CredEleConv;
   @override
-  final String CredEleConv;
+  final double TotalCredOblLlev;
   @override
-  final String TotalCredOblLlev;
+  final double TotalCredElLlev;
   @override
-  final String TotalCredElLlev;
+  final double TotalCredOblAprob;
   @override
-  final String TotalCredOblAprob;
+  final double TotalCredElAprob;
   @override
-  final String TotalCredElAprob;
-  @override
-  final String TotalCredOblConv;
-  final List<GetAcademicHistoryCourseModel> _courses;
-  @override
-  List<GetAcademicHistoryCourseModel> get courses {
-    if (_courses is EqualUnmodifiableListView) return _courses;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_courses);
-  }
+  final double TotalCredOblConv;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'GetAcademicHistoryTermModel(termLabel: $termLabel, PPS: $PPS, PPSAprob: $PPSAprob, PPA: $PPA, PPAApr: $PPAApr, CreOblLlev: $CreOblLlev, CreElLlev: $CreElLlev, CreOblApr: $CreOblApr, CreEleApr: $CreEleApr, CreOblConv: $CreOblConv, CredEleConv: $CredEleConv, TotalCredOblLlev: $TotalCredOblLlev, TotalCredElLlev: $TotalCredElLlev, TotalCredOblAprob: $TotalCredOblAprob, TotalCredElAprob: $TotalCredElAprob, TotalCredOblConv: $TotalCredOblConv, courses: $courses)';
+    return 'GetAcademicHistoryTermStatisticsModel(PPS: $PPS, PPSAprob: $PPSAprob, PPA: $PPA, PPAApr: $PPAApr, CreOblLlev: $CreOblLlev, CreElLlev: $CreElLlev, CreOblApr: $CreOblApr, CreEleApr: $CreEleApr, CreOblConv: $CreOblConv, CredEleConv: $CredEleConv, TotalCredOblLlev: $TotalCredOblLlev, TotalCredElLlev: $TotalCredElLlev, TotalCredOblAprob: $TotalCredOblAprob, TotalCredElAprob: $TotalCredElAprob, TotalCredOblConv: $TotalCredOblConv)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'GetAcademicHistoryTermModel'))
-      ..add(DiagnosticsProperty('termLabel', termLabel))
+      ..add(
+          DiagnosticsProperty('type', 'GetAcademicHistoryTermStatisticsModel'))
       ..add(DiagnosticsProperty('PPS', PPS))
       ..add(DiagnosticsProperty('PPSAprob', PPSAprob))
       ..add(DiagnosticsProperty('PPA', PPA))
@@ -414,17 +623,14 @@ class _$GetAcademicHistoryTermModelImpl
       ..add(DiagnosticsProperty('TotalCredElLlev', TotalCredElLlev))
       ..add(DiagnosticsProperty('TotalCredOblAprob', TotalCredOblAprob))
       ..add(DiagnosticsProperty('TotalCredElAprob', TotalCredElAprob))
-      ..add(DiagnosticsProperty('TotalCredOblConv', TotalCredOblConv))
-      ..add(DiagnosticsProperty('courses', courses));
+      ..add(DiagnosticsProperty('TotalCredOblConv', TotalCredOblConv));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GetAcademicHistoryTermModelImpl &&
-            (identical(other.termLabel, termLabel) ||
-                other.termLabel == termLabel) &&
+            other is _$GetAcademicHistoryTermStatisticsModelImpl &&
             (identical(other.PPS, PPS) || other.PPS == PPS) &&
             (identical(other.PPSAprob, PPSAprob) ||
                 other.PPSAprob == PPSAprob) &&
@@ -451,15 +657,13 @@ class _$GetAcademicHistoryTermModelImpl
             (identical(other.TotalCredElAprob, TotalCredElAprob) ||
                 other.TotalCredElAprob == TotalCredElAprob) &&
             (identical(other.TotalCredOblConv, TotalCredOblConv) ||
-                other.TotalCredOblConv == TotalCredOblConv) &&
-            const DeepCollectionEquality().equals(other._courses, _courses));
+                other.TotalCredOblConv == TotalCredOblConv));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      termLabel,
       PPS,
       PPSAprob,
       PPA,
@@ -474,91 +678,87 @@ class _$GetAcademicHistoryTermModelImpl
       TotalCredElLlev,
       TotalCredOblAprob,
       TotalCredElAprob,
-      TotalCredOblConv,
-      const DeepCollectionEquality().hash(_courses));
+      TotalCredOblConv);
 
-  /// Create a copy of GetAcademicHistoryTermModel
+  /// Create a copy of GetAcademicHistoryTermStatisticsModel
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$GetAcademicHistoryTermModelImplCopyWith<_$GetAcademicHistoryTermModelImpl>
-      get copyWith => __$$GetAcademicHistoryTermModelImplCopyWithImpl<
-          _$GetAcademicHistoryTermModelImpl>(this, _$identity);
+  _$$GetAcademicHistoryTermStatisticsModelImplCopyWith<
+          _$GetAcademicHistoryTermStatisticsModelImpl>
+      get copyWith => __$$GetAcademicHistoryTermStatisticsModelImplCopyWithImpl<
+          _$GetAcademicHistoryTermStatisticsModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$GetAcademicHistoryTermModelImplToJson(
+    return _$$GetAcademicHistoryTermStatisticsModelImplToJson(
       this,
     );
   }
 }
 
-abstract class _GetAcademicHistoryTermModel
-    implements GetAcademicHistoryTermModel {
-  const factory _GetAcademicHistoryTermModel(
-          {required final String termLabel,
-          required final String PPS,
-          required final String PPSAprob,
-          required final String PPA,
-          required final String PPAApr,
-          required final String CreOblLlev,
-          required final String CreElLlev,
-          required final String CreOblApr,
-          required final String CreEleApr,
-          required final String CreOblConv,
-          required final String CredEleConv,
-          required final String TotalCredOblLlev,
-          required final String TotalCredElLlev,
-          required final String TotalCredOblAprob,
-          required final String TotalCredElAprob,
-          required final String TotalCredOblConv,
-          required final List<GetAcademicHistoryCourseModel> courses}) =
-      _$GetAcademicHistoryTermModelImpl;
+abstract class _GetAcademicHistoryTermStatisticsModel
+    implements GetAcademicHistoryTermStatisticsModel {
+  const factory _GetAcademicHistoryTermStatisticsModel(
+          {required final double PPS,
+          required final double PPSAprob,
+          required final double PPA,
+          required final double PPAApr,
+          required final double CreOblLlev,
+          required final double CreElLlev,
+          required final double CreOblApr,
+          required final double CreEleApr,
+          required final double CreOblConv,
+          required final double CredEleConv,
+          required final double TotalCredOblLlev,
+          required final double TotalCredElLlev,
+          required final double TotalCredOblAprob,
+          required final double TotalCredElAprob,
+          required final double TotalCredOblConv}) =
+      _$GetAcademicHistoryTermStatisticsModelImpl;
 
-  factory _GetAcademicHistoryTermModel.fromJson(Map<String, dynamic> json) =
-      _$GetAcademicHistoryTermModelImpl.fromJson;
+  factory _GetAcademicHistoryTermStatisticsModel.fromJson(
+          Map<String, dynamic> json) =
+      _$GetAcademicHistoryTermStatisticsModelImpl.fromJson;
 
   @override
-  String get termLabel;
+  double get PPS;
   @override
-  String get PPS;
+  double get PPSAprob;
   @override
-  String get PPSAprob;
+  double get PPA;
   @override
-  String get PPA;
+  double get PPAApr;
   @override
-  String get PPAApr;
+  double get CreOblLlev;
   @override
-  String get CreOblLlev;
+  double get CreElLlev;
   @override
-  String get CreElLlev;
+  double get CreOblApr;
   @override
-  String get CreOblApr;
+  double get CreEleApr;
   @override
-  String get CreEleApr;
+  double get CreOblConv;
   @override
-  String get CreOblConv;
+  double get CredEleConv;
   @override
-  String get CredEleConv;
+  double get TotalCredOblLlev;
   @override
-  String get TotalCredOblLlev;
+  double get TotalCredElLlev;
   @override
-  String get TotalCredElLlev;
+  double get TotalCredOblAprob;
   @override
-  String get TotalCredOblAprob;
+  double get TotalCredElAprob;
   @override
-  String get TotalCredElAprob;
-  @override
-  String get TotalCredOblConv;
-  @override
-  List<GetAcademicHistoryCourseModel> get courses;
+  double get TotalCredOblConv;
 
-  /// Create a copy of GetAcademicHistoryTermModel
+  /// Create a copy of GetAcademicHistoryTermStatisticsModel
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GetAcademicHistoryTermModelImplCopyWith<_$GetAcademicHistoryTermModelImpl>
+  _$$GetAcademicHistoryTermStatisticsModelImplCopyWith<
+          _$GetAcademicHistoryTermStatisticsModelImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -572,8 +772,8 @@ mixin _$GetAcademicHistoryCourseModel {
   String get courseCode => throw _privateConstructorUsedError;
   String get courseName => throw _privateConstructorUsedError;
   String get courseType => throw _privateConstructorUsedError;
-  String get credits => throw _privateConstructorUsedError;
-  String get grade => throw _privateConstructorUsedError;
+  int get credits => throw _privateConstructorUsedError;
+  double get grade => throw _privateConstructorUsedError;
 
   /// Serializes this GetAcademicHistoryCourseModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -597,8 +797,8 @@ abstract class $GetAcademicHistoryCourseModelCopyWith<$Res> {
       {String courseCode,
       String courseName,
       String courseType,
-      String credits,
-      String grade});
+      int credits,
+      double grade});
 }
 
 /// @nodoc
@@ -639,11 +839,11 @@ class _$GetAcademicHistoryCourseModelCopyWithImpl<$Res,
       credits: null == credits
           ? _value.credits
           : credits // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       grade: null == grade
           ? _value.grade
           : grade // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
     ) as $Val);
   }
 }
@@ -661,8 +861,8 @@ abstract class _$$GetAcademicHistoryCourseModelImplCopyWith<$Res>
       {String courseCode,
       String courseName,
       String courseType,
-      String credits,
-      String grade});
+      int credits,
+      double grade});
 }
 
 /// @nodoc
@@ -702,11 +902,11 @@ class __$$GetAcademicHistoryCourseModelImplCopyWithImpl<$Res>
       credits: null == credits
           ? _value.credits
           : credits // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       grade: null == grade
           ? _value.grade
           : grade // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
     ));
   }
 }
@@ -734,9 +934,9 @@ class _$GetAcademicHistoryCourseModelImpl
   @override
   final String courseType;
   @override
-  final String credits;
+  final int credits;
   @override
-  final String grade;
+  final double grade;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -799,8 +999,8 @@ abstract class _GetAcademicHistoryCourseModel
       {required final String courseCode,
       required final String courseName,
       required final String courseType,
-      required final String credits,
-      required final String grade}) = _$GetAcademicHistoryCourseModelImpl;
+      required final int credits,
+      required final double grade}) = _$GetAcademicHistoryCourseModelImpl;
 
   factory _GetAcademicHistoryCourseModel.fromJson(Map<String, dynamic> json) =
       _$GetAcademicHistoryCourseModelImpl.fromJson;
@@ -812,9 +1012,9 @@ abstract class _GetAcademicHistoryCourseModel
   @override
   String get courseType;
   @override
-  String get credits;
+  int get credits;
   @override
-  String get grade;
+  double get grade;
 
   /// Create a copy of GetAcademicHistoryCourseModel
   /// with the given fields replaced by the non-null parameter values.

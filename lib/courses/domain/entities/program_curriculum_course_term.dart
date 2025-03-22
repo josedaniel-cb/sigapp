@@ -25,14 +25,17 @@ class ProgramCurriculumCourseInfo {
 class ProgramCurriculumCourse {
   final ProgramCurriculumCourseInfo info;
   final List<ProgramCurriculumCourseInfo> requirements;
-  int? lastGrade;
+  double? lastGrade;
 
   ProgramCurriculumCourse({
     required this.info,
     required this.requirements,
   });
 
-  bool get isApproved => lastGrade != null && lastGrade! >= 11;
+  bool? get isApproved {
+    if (lastGrade == null) return null;
+    return lastGrade! >= 11;
+  }
 }
 
 class ProgramCurriculumTerm {

@@ -17,15 +17,231 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$AcademicHistoryTerm {
 // required String termLabel,
-  ScheduledTermIdentifier get term =>
-      throw _privateConstructorUsedError; // required String PPS,
-  int get termWeightedAverage =>
+  ScheduledTermIdentifier get term => throw _privateConstructorUsedError;
+  AcademicHistoryTermStatistics? get statistics =>
+      throw _privateConstructorUsedError;
+  List<AcademicHistoryCourse> get courses => throw _privateConstructorUsedError;
+
+  /// Create a copy of AcademicHistoryTerm
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $AcademicHistoryTermCopyWith<AcademicHistoryTerm> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AcademicHistoryTermCopyWith<$Res> {
+  factory $AcademicHistoryTermCopyWith(
+          AcademicHistoryTerm value, $Res Function(AcademicHistoryTerm) then) =
+      _$AcademicHistoryTermCopyWithImpl<$Res, AcademicHistoryTerm>;
+  @useResult
+  $Res call(
+      {ScheduledTermIdentifier term,
+      AcademicHistoryTermStatistics? statistics,
+      List<AcademicHistoryCourse> courses});
+
+  $AcademicHistoryTermStatisticsCopyWith<$Res>? get statistics;
+}
+
+/// @nodoc
+class _$AcademicHistoryTermCopyWithImpl<$Res, $Val extends AcademicHistoryTerm>
+    implements $AcademicHistoryTermCopyWith<$Res> {
+  _$AcademicHistoryTermCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of AcademicHistoryTerm
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? term = null,
+    Object? statistics = freezed,
+    Object? courses = null,
+  }) {
+    return _then(_value.copyWith(
+      term: null == term
+          ? _value.term
+          : term // ignore: cast_nullable_to_non_nullable
+              as ScheduledTermIdentifier,
+      statistics: freezed == statistics
+          ? _value.statistics
+          : statistics // ignore: cast_nullable_to_non_nullable
+              as AcademicHistoryTermStatistics?,
+      courses: null == courses
+          ? _value.courses
+          : courses // ignore: cast_nullable_to_non_nullable
+              as List<AcademicHistoryCourse>,
+    ) as $Val);
+  }
+
+  /// Create a copy of AcademicHistoryTerm
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AcademicHistoryTermStatisticsCopyWith<$Res>? get statistics {
+    if (_value.statistics == null) {
+      return null;
+    }
+
+    return $AcademicHistoryTermStatisticsCopyWith<$Res>(_value.statistics!,
+        (value) {
+      return _then(_value.copyWith(statistics: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$AcademicHistoryTermImplCopyWith<$Res>
+    implements $AcademicHistoryTermCopyWith<$Res> {
+  factory _$$AcademicHistoryTermImplCopyWith(_$AcademicHistoryTermImpl value,
+          $Res Function(_$AcademicHistoryTermImpl) then) =
+      __$$AcademicHistoryTermImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {ScheduledTermIdentifier term,
+      AcademicHistoryTermStatistics? statistics,
+      List<AcademicHistoryCourse> courses});
+
+  @override
+  $AcademicHistoryTermStatisticsCopyWith<$Res>? get statistics;
+}
+
+/// @nodoc
+class __$$AcademicHistoryTermImplCopyWithImpl<$Res>
+    extends _$AcademicHistoryTermCopyWithImpl<$Res, _$AcademicHistoryTermImpl>
+    implements _$$AcademicHistoryTermImplCopyWith<$Res> {
+  __$$AcademicHistoryTermImplCopyWithImpl(_$AcademicHistoryTermImpl _value,
+      $Res Function(_$AcademicHistoryTermImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of AcademicHistoryTerm
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? term = null,
+    Object? statistics = freezed,
+    Object? courses = null,
+  }) {
+    return _then(_$AcademicHistoryTermImpl(
+      term: null == term
+          ? _value.term
+          : term // ignore: cast_nullable_to_non_nullable
+              as ScheduledTermIdentifier,
+      statistics: freezed == statistics
+          ? _value.statistics
+          : statistics // ignore: cast_nullable_to_non_nullable
+              as AcademicHistoryTermStatistics?,
+      courses: null == courses
+          ? _value._courses
+          : courses // ignore: cast_nullable_to_non_nullable
+              as List<AcademicHistoryCourse>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$AcademicHistoryTermImpl
+    with DiagnosticableTreeMixin
+    implements _AcademicHistoryTerm {
+  const _$AcademicHistoryTermImpl(
+      {required this.term,
+      required this.statistics,
+      required final List<AcademicHistoryCourse> courses})
+      : _courses = courses;
+
+// required String termLabel,
+  @override
+  final ScheduledTermIdentifier term;
+  @override
+  final AcademicHistoryTermStatistics? statistics;
+  final List<AcademicHistoryCourse> _courses;
+  @override
+  List<AcademicHistoryCourse> get courses {
+    if (_courses is EqualUnmodifiableListView) return _courses;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_courses);
+  }
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'AcademicHistoryTerm(term: $term, statistics: $statistics, courses: $courses)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'AcademicHistoryTerm'))
+      ..add(DiagnosticsProperty('term', term))
+      ..add(DiagnosticsProperty('statistics', statistics))
+      ..add(DiagnosticsProperty('courses', courses));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AcademicHistoryTermImpl &&
+            (identical(other.term, term) || other.term == term) &&
+            (identical(other.statistics, statistics) ||
+                other.statistics == statistics) &&
+            const DeepCollectionEquality().equals(other._courses, _courses));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, term, statistics,
+      const DeepCollectionEquality().hash(_courses));
+
+  /// Create a copy of AcademicHistoryTerm
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AcademicHistoryTermImplCopyWith<_$AcademicHistoryTermImpl> get copyWith =>
+      __$$AcademicHistoryTermImplCopyWithImpl<_$AcademicHistoryTermImpl>(
+          this, _$identity);
+}
+
+abstract class _AcademicHistoryTerm implements AcademicHistoryTerm {
+  const factory _AcademicHistoryTerm(
+          {required final ScheduledTermIdentifier term,
+          required final AcademicHistoryTermStatistics? statistics,
+          required final List<AcademicHistoryCourse> courses}) =
+      _$AcademicHistoryTermImpl;
+
+// required String termLabel,
+  @override
+  ScheduledTermIdentifier get term;
+  @override
+  AcademicHistoryTermStatistics? get statistics;
+  @override
+  List<AcademicHistoryCourse> get courses;
+
+  /// Create a copy of AcademicHistoryTerm
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$AcademicHistoryTermImplCopyWith<_$AcademicHistoryTermImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$AcademicHistoryTermStatistics {
+// required String PPS,
+  double get termWeightedAverage =>
       throw _privateConstructorUsedError; // required String PPSAprob,
-  int get termWeightedAveragePassed =>
+  double get termWeightedAveragePassed =>
       throw _privateConstructorUsedError; // required String PPA,
-  int get cumulativeWeightedAverage =>
+  double get cumulativeWeightedAverage =>
       throw _privateConstructorUsedError; // required String PPAApr,
-  int get cumulativeWeightedAveragePassed =>
+  double get cumulativeWeightedAveragePassed =>
       throw _privateConstructorUsedError; // required String CreOblLlev,
   int get mandatoryCreditsTaken =>
       throw _privateConstructorUsedError; // required String CreElLlev,
@@ -48,27 +264,27 @@ mixin _$AcademicHistoryTerm {
   int get totalElectiveCreditsPassed =>
       throw _privateConstructorUsedError; // required String TotalCredOblConv,
   int get totalMandatoryCreditsValidated => throw _privateConstructorUsedError;
-  List<AcademicHistoryCourse> get courses => throw _privateConstructorUsedError;
 
-  /// Create a copy of AcademicHistoryTerm
+  /// Create a copy of AcademicHistoryTermStatistics
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $AcademicHistoryTermCopyWith<AcademicHistoryTerm> get copyWith =>
-      throw _privateConstructorUsedError;
+  $AcademicHistoryTermStatisticsCopyWith<AcademicHistoryTermStatistics>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $AcademicHistoryTermCopyWith<$Res> {
-  factory $AcademicHistoryTermCopyWith(
-          AcademicHistoryTerm value, $Res Function(AcademicHistoryTerm) then) =
-      _$AcademicHistoryTermCopyWithImpl<$Res, AcademicHistoryTerm>;
+abstract class $AcademicHistoryTermStatisticsCopyWith<$Res> {
+  factory $AcademicHistoryTermStatisticsCopyWith(
+          AcademicHistoryTermStatistics value,
+          $Res Function(AcademicHistoryTermStatistics) then) =
+      _$AcademicHistoryTermStatisticsCopyWithImpl<$Res,
+          AcademicHistoryTermStatistics>;
   @useResult
   $Res call(
-      {ScheduledTermIdentifier term,
-      int termWeightedAverage,
-      int termWeightedAveragePassed,
-      int cumulativeWeightedAverage,
-      int cumulativeWeightedAveragePassed,
+      {double termWeightedAverage,
+      double termWeightedAveragePassed,
+      double cumulativeWeightedAverage,
+      double cumulativeWeightedAveragePassed,
       int mandatoryCreditsTaken,
       int electiveCreditsTaken,
       int mandatoryCreditsPassed,
@@ -79,26 +295,25 @@ abstract class $AcademicHistoryTermCopyWith<$Res> {
       int totalElectiveCreditsTaken,
       int totalMandatoryCreditsPassed,
       int totalElectiveCreditsPassed,
-      int totalMandatoryCreditsValidated,
-      List<AcademicHistoryCourse> courses});
+      int totalMandatoryCreditsValidated});
 }
 
 /// @nodoc
-class _$AcademicHistoryTermCopyWithImpl<$Res, $Val extends AcademicHistoryTerm>
-    implements $AcademicHistoryTermCopyWith<$Res> {
-  _$AcademicHistoryTermCopyWithImpl(this._value, this._then);
+class _$AcademicHistoryTermStatisticsCopyWithImpl<$Res,
+        $Val extends AcademicHistoryTermStatistics>
+    implements $AcademicHistoryTermStatisticsCopyWith<$Res> {
+  _$AcademicHistoryTermStatisticsCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of AcademicHistoryTerm
+  /// Create a copy of AcademicHistoryTermStatistics
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? term = null,
     Object? termWeightedAverage = null,
     Object? termWeightedAveragePassed = null,
     Object? cumulativeWeightedAverage = null,
@@ -114,29 +329,24 @@ class _$AcademicHistoryTermCopyWithImpl<$Res, $Val extends AcademicHistoryTerm>
     Object? totalMandatoryCreditsPassed = null,
     Object? totalElectiveCreditsPassed = null,
     Object? totalMandatoryCreditsValidated = null,
-    Object? courses = null,
   }) {
     return _then(_value.copyWith(
-      term: null == term
-          ? _value.term
-          : term // ignore: cast_nullable_to_non_nullable
-              as ScheduledTermIdentifier,
       termWeightedAverage: null == termWeightedAverage
           ? _value.termWeightedAverage
           : termWeightedAverage // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       termWeightedAveragePassed: null == termWeightedAveragePassed
           ? _value.termWeightedAveragePassed
           : termWeightedAveragePassed // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       cumulativeWeightedAverage: null == cumulativeWeightedAverage
           ? _value.cumulativeWeightedAverage
           : cumulativeWeightedAverage // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       cumulativeWeightedAveragePassed: null == cumulativeWeightedAveragePassed
           ? _value.cumulativeWeightedAveragePassed
           : cumulativeWeightedAveragePassed // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       mandatoryCreditsTaken: null == mandatoryCreditsTaken
           ? _value.mandatoryCreditsTaken
           : mandatoryCreditsTaken // ignore: cast_nullable_to_non_nullable
@@ -181,28 +391,24 @@ class _$AcademicHistoryTermCopyWithImpl<$Res, $Val extends AcademicHistoryTerm>
           ? _value.totalMandatoryCreditsValidated
           : totalMandatoryCreditsValidated // ignore: cast_nullable_to_non_nullable
               as int,
-      courses: null == courses
-          ? _value.courses
-          : courses // ignore: cast_nullable_to_non_nullable
-              as List<AcademicHistoryCourse>,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$AcademicHistoryTermImplCopyWith<$Res>
-    implements $AcademicHistoryTermCopyWith<$Res> {
-  factory _$$AcademicHistoryTermImplCopyWith(_$AcademicHistoryTermImpl value,
-          $Res Function(_$AcademicHistoryTermImpl) then) =
-      __$$AcademicHistoryTermImplCopyWithImpl<$Res>;
+abstract class _$$AcademicHistoryTermStatisticsImplCopyWith<$Res>
+    implements $AcademicHistoryTermStatisticsCopyWith<$Res> {
+  factory _$$AcademicHistoryTermStatisticsImplCopyWith(
+          _$AcademicHistoryTermStatisticsImpl value,
+          $Res Function(_$AcademicHistoryTermStatisticsImpl) then) =
+      __$$AcademicHistoryTermStatisticsImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
-      {ScheduledTermIdentifier term,
-      int termWeightedAverage,
-      int termWeightedAveragePassed,
-      int cumulativeWeightedAverage,
-      int cumulativeWeightedAveragePassed,
+      {double termWeightedAverage,
+      double termWeightedAveragePassed,
+      double cumulativeWeightedAverage,
+      double cumulativeWeightedAveragePassed,
       int mandatoryCreditsTaken,
       int electiveCreditsTaken,
       int mandatoryCreditsPassed,
@@ -213,24 +419,24 @@ abstract class _$$AcademicHistoryTermImplCopyWith<$Res>
       int totalElectiveCreditsTaken,
       int totalMandatoryCreditsPassed,
       int totalElectiveCreditsPassed,
-      int totalMandatoryCreditsValidated,
-      List<AcademicHistoryCourse> courses});
+      int totalMandatoryCreditsValidated});
 }
 
 /// @nodoc
-class __$$AcademicHistoryTermImplCopyWithImpl<$Res>
-    extends _$AcademicHistoryTermCopyWithImpl<$Res, _$AcademicHistoryTermImpl>
-    implements _$$AcademicHistoryTermImplCopyWith<$Res> {
-  __$$AcademicHistoryTermImplCopyWithImpl(_$AcademicHistoryTermImpl _value,
-      $Res Function(_$AcademicHistoryTermImpl) _then)
+class __$$AcademicHistoryTermStatisticsImplCopyWithImpl<$Res>
+    extends _$AcademicHistoryTermStatisticsCopyWithImpl<$Res,
+        _$AcademicHistoryTermStatisticsImpl>
+    implements _$$AcademicHistoryTermStatisticsImplCopyWith<$Res> {
+  __$$AcademicHistoryTermStatisticsImplCopyWithImpl(
+      _$AcademicHistoryTermStatisticsImpl _value,
+      $Res Function(_$AcademicHistoryTermStatisticsImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of AcademicHistoryTerm
+  /// Create a copy of AcademicHistoryTermStatistics
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? term = null,
     Object? termWeightedAverage = null,
     Object? termWeightedAveragePassed = null,
     Object? cumulativeWeightedAverage = null,
@@ -246,29 +452,24 @@ class __$$AcademicHistoryTermImplCopyWithImpl<$Res>
     Object? totalMandatoryCreditsPassed = null,
     Object? totalElectiveCreditsPassed = null,
     Object? totalMandatoryCreditsValidated = null,
-    Object? courses = null,
   }) {
-    return _then(_$AcademicHistoryTermImpl(
-      term: null == term
-          ? _value.term
-          : term // ignore: cast_nullable_to_non_nullable
-              as ScheduledTermIdentifier,
+    return _then(_$AcademicHistoryTermStatisticsImpl(
       termWeightedAverage: null == termWeightedAverage
           ? _value.termWeightedAverage
           : termWeightedAverage // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       termWeightedAveragePassed: null == termWeightedAveragePassed
           ? _value.termWeightedAveragePassed
           : termWeightedAveragePassed // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       cumulativeWeightedAverage: null == cumulativeWeightedAverage
           ? _value.cumulativeWeightedAverage
           : cumulativeWeightedAverage // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       cumulativeWeightedAveragePassed: null == cumulativeWeightedAveragePassed
           ? _value.cumulativeWeightedAveragePassed
           : cumulativeWeightedAveragePassed // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       mandatoryCreditsTaken: null == mandatoryCreditsTaken
           ? _value.mandatoryCreditsTaken
           : mandatoryCreditsTaken // ignore: cast_nullable_to_non_nullable
@@ -313,22 +514,17 @@ class __$$AcademicHistoryTermImplCopyWithImpl<$Res>
           ? _value.totalMandatoryCreditsValidated
           : totalMandatoryCreditsValidated // ignore: cast_nullable_to_non_nullable
               as int,
-      courses: null == courses
-          ? _value._courses
-          : courses // ignore: cast_nullable_to_non_nullable
-              as List<AcademicHistoryCourse>,
     ));
   }
 }
 
 /// @nodoc
 
-class _$AcademicHistoryTermImpl
+class _$AcademicHistoryTermStatisticsImpl
     with DiagnosticableTreeMixin
-    implements _AcademicHistoryTerm {
-  const _$AcademicHistoryTermImpl(
-      {required this.term,
-      required this.termWeightedAverage,
+    implements _AcademicHistoryTermStatistics {
+  const _$AcademicHistoryTermStatisticsImpl(
+      {required this.termWeightedAverage,
       required this.termWeightedAveragePassed,
       required this.cumulativeWeightedAverage,
       required this.cumulativeWeightedAveragePassed,
@@ -342,25 +538,20 @@ class _$AcademicHistoryTermImpl
       required this.totalElectiveCreditsTaken,
       required this.totalMandatoryCreditsPassed,
       required this.totalElectiveCreditsPassed,
-      required this.totalMandatoryCreditsValidated,
-      required final List<AcademicHistoryCourse> courses})
-      : _courses = courses;
+      required this.totalMandatoryCreditsValidated});
 
-// required String termLabel,
-  @override
-  final ScheduledTermIdentifier term;
 // required String PPS,
   @override
-  final int termWeightedAverage;
+  final double termWeightedAverage;
 // required String PPSAprob,
   @override
-  final int termWeightedAveragePassed;
+  final double termWeightedAveragePassed;
 // required String PPA,
   @override
-  final int cumulativeWeightedAverage;
+  final double cumulativeWeightedAverage;
 // required String PPAApr,
   @override
-  final int cumulativeWeightedAveragePassed;
+  final double cumulativeWeightedAveragePassed;
 // required String CreOblLlev,
   @override
   final int mandatoryCreditsTaken;
@@ -394,25 +585,17 @@ class _$AcademicHistoryTermImpl
 // required String TotalCredOblConv,
   @override
   final int totalMandatoryCreditsValidated;
-  final List<AcademicHistoryCourse> _courses;
-  @override
-  List<AcademicHistoryCourse> get courses {
-    if (_courses is EqualUnmodifiableListView) return _courses;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_courses);
-  }
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AcademicHistoryTerm(term: $term, termWeightedAverage: $termWeightedAverage, termWeightedAveragePassed: $termWeightedAveragePassed, cumulativeWeightedAverage: $cumulativeWeightedAverage, cumulativeWeightedAveragePassed: $cumulativeWeightedAveragePassed, mandatoryCreditsTaken: $mandatoryCreditsTaken, electiveCreditsTaken: $electiveCreditsTaken, mandatoryCreditsPassed: $mandatoryCreditsPassed, electiveCreditsPassed: $electiveCreditsPassed, mandatoryCreditsValidated: $mandatoryCreditsValidated, electiveCreditsValidated: $electiveCreditsValidated, totalMandatoryCreditsTaken: $totalMandatoryCreditsTaken, totalElectiveCreditsTaken: $totalElectiveCreditsTaken, totalMandatoryCreditsPassed: $totalMandatoryCreditsPassed, totalElectiveCreditsPassed: $totalElectiveCreditsPassed, totalMandatoryCreditsValidated: $totalMandatoryCreditsValidated, courses: $courses)';
+    return 'AcademicHistoryTermStatistics(termWeightedAverage: $termWeightedAverage, termWeightedAveragePassed: $termWeightedAveragePassed, cumulativeWeightedAverage: $cumulativeWeightedAverage, cumulativeWeightedAveragePassed: $cumulativeWeightedAveragePassed, mandatoryCreditsTaken: $mandatoryCreditsTaken, electiveCreditsTaken: $electiveCreditsTaken, mandatoryCreditsPassed: $mandatoryCreditsPassed, electiveCreditsPassed: $electiveCreditsPassed, mandatoryCreditsValidated: $mandatoryCreditsValidated, electiveCreditsValidated: $electiveCreditsValidated, totalMandatoryCreditsTaken: $totalMandatoryCreditsTaken, totalElectiveCreditsTaken: $totalElectiveCreditsTaken, totalMandatoryCreditsPassed: $totalMandatoryCreditsPassed, totalElectiveCreditsPassed: $totalElectiveCreditsPassed, totalMandatoryCreditsValidated: $totalMandatoryCreditsValidated)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'AcademicHistoryTerm'))
-      ..add(DiagnosticsProperty('term', term))
+      ..add(DiagnosticsProperty('type', 'AcademicHistoryTermStatistics'))
       ..add(DiagnosticsProperty('termWeightedAverage', termWeightedAverage))
       ..add(DiagnosticsProperty(
           'termWeightedAveragePassed', termWeightedAveragePassed))
@@ -438,16 +621,14 @@ class _$AcademicHistoryTermImpl
       ..add(DiagnosticsProperty(
           'totalElectiveCreditsPassed', totalElectiveCreditsPassed))
       ..add(DiagnosticsProperty(
-          'totalMandatoryCreditsValidated', totalMandatoryCreditsValidated))
-      ..add(DiagnosticsProperty('courses', courses));
+          'totalMandatoryCreditsValidated', totalMandatoryCreditsValidated));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AcademicHistoryTermImpl &&
-            (identical(other.term, term) || other.term == term) &&
+            other is _$AcademicHistoryTermStatisticsImpl &&
             (identical(other.termWeightedAverage, termWeightedAverage) ||
                 other.termWeightedAverage == termWeightedAverage) &&
             (identical(other.termWeightedAveragePassed, termWeightedAveragePassed) ||
@@ -483,14 +664,12 @@ class _$AcademicHistoryTermImpl
                     totalElectiveCreditsPassed) &&
             (identical(other.totalMandatoryCreditsValidated,
                     totalMandatoryCreditsValidated) ||
-                other.totalMandatoryCreditsValidated == totalMandatoryCreditsValidated) &&
-            const DeepCollectionEquality().equals(other._courses, _courses));
+                other.totalMandatoryCreditsValidated == totalMandatoryCreditsValidated));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      term,
       termWeightedAverage,
       termWeightedAveragePassed,
       cumulativeWeightedAverage,
@@ -505,26 +684,26 @@ class _$AcademicHistoryTermImpl
       totalElectiveCreditsTaken,
       totalMandatoryCreditsPassed,
       totalElectiveCreditsPassed,
-      totalMandatoryCreditsValidated,
-      const DeepCollectionEquality().hash(_courses));
+      totalMandatoryCreditsValidated);
 
-  /// Create a copy of AcademicHistoryTerm
+  /// Create a copy of AcademicHistoryTermStatistics
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$AcademicHistoryTermImplCopyWith<_$AcademicHistoryTermImpl> get copyWith =>
-      __$$AcademicHistoryTermImplCopyWithImpl<_$AcademicHistoryTermImpl>(
-          this, _$identity);
+  _$$AcademicHistoryTermStatisticsImplCopyWith<
+          _$AcademicHistoryTermStatisticsImpl>
+      get copyWith => __$$AcademicHistoryTermStatisticsImplCopyWithImpl<
+          _$AcademicHistoryTermStatisticsImpl>(this, _$identity);
 }
 
-abstract class _AcademicHistoryTerm implements AcademicHistoryTerm {
-  const factory _AcademicHistoryTerm(
-          {required final ScheduledTermIdentifier term,
-          required final int termWeightedAverage,
-          required final int termWeightedAveragePassed,
-          required final int cumulativeWeightedAverage,
-          required final int cumulativeWeightedAveragePassed,
+abstract class _AcademicHistoryTermStatistics
+    implements AcademicHistoryTermStatistics {
+  const factory _AcademicHistoryTermStatistics(
+          {required final double termWeightedAverage,
+          required final double termWeightedAveragePassed,
+          required final double cumulativeWeightedAverage,
+          required final double cumulativeWeightedAveragePassed,
           required final int mandatoryCreditsTaken,
           required final int electiveCreditsTaken,
           required final int mandatoryCreditsPassed,
@@ -535,21 +714,18 @@ abstract class _AcademicHistoryTerm implements AcademicHistoryTerm {
           required final int totalElectiveCreditsTaken,
           required final int totalMandatoryCreditsPassed,
           required final int totalElectiveCreditsPassed,
-          required final int totalMandatoryCreditsValidated,
-          required final List<AcademicHistoryCourse> courses}) =
-      _$AcademicHistoryTermImpl;
+          required final int totalMandatoryCreditsValidated}) =
+      _$AcademicHistoryTermStatisticsImpl;
 
-// required String termLabel,
+// required String PPS,
   @override
-  ScheduledTermIdentifier get term; // required String PPS,
+  double get termWeightedAverage; // required String PPSAprob,
   @override
-  int get termWeightedAverage; // required String PPSAprob,
+  double get termWeightedAveragePassed; // required String PPA,
   @override
-  int get termWeightedAveragePassed; // required String PPA,
+  double get cumulativeWeightedAverage; // required String PPAApr,
   @override
-  int get cumulativeWeightedAverage; // required String PPAApr,
-  @override
-  int get cumulativeWeightedAveragePassed; // required String CreOblLlev,
+  double get cumulativeWeightedAveragePassed; // required String CreOblLlev,
   @override
   int get mandatoryCreditsTaken; // required String CreElLlev,
   @override
@@ -572,15 +748,14 @@ abstract class _AcademicHistoryTerm implements AcademicHistoryTerm {
   int get totalElectiveCreditsPassed; // required String TotalCredOblConv,
   @override
   int get totalMandatoryCreditsValidated;
-  @override
-  List<AcademicHistoryCourse> get courses;
 
-  /// Create a copy of AcademicHistoryTerm
+  /// Create a copy of AcademicHistoryTermStatistics
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AcademicHistoryTermImplCopyWith<_$AcademicHistoryTermImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$AcademicHistoryTermStatisticsImplCopyWith<
+          _$AcademicHistoryTermStatisticsImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -589,7 +764,7 @@ mixin _$AcademicHistoryCourse {
   String get courseName => throw _privateConstructorUsedError;
   CourseType get courseType => throw _privateConstructorUsedError;
   int get credits => throw _privateConstructorUsedError;
-  int get grade => throw _privateConstructorUsedError;
+  double get grade => throw _privateConstructorUsedError;
 
   /// Create a copy of AcademicHistoryCourse
   /// with the given fields replaced by the non-null parameter values.
@@ -609,7 +784,7 @@ abstract class $AcademicHistoryCourseCopyWith<$Res> {
       String courseName,
       CourseType courseType,
       int credits,
-      int grade});
+      double grade});
 }
 
 /// @nodoc
@@ -654,7 +829,7 @@ class _$AcademicHistoryCourseCopyWithImpl<$Res,
       grade: null == grade
           ? _value.grade
           : grade // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
     ) as $Val);
   }
 }
@@ -673,7 +848,7 @@ abstract class _$$AcademicHistoryCourseImplCopyWith<$Res>
       String courseName,
       CourseType courseType,
       int credits,
-      int grade});
+      double grade});
 }
 
 /// @nodoc
@@ -716,7 +891,7 @@ class __$$AcademicHistoryCourseImplCopyWithImpl<$Res>
       grade: null == grade
           ? _value.grade
           : grade // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
     ));
   }
 }
@@ -742,7 +917,7 @@ class _$AcademicHistoryCourseImpl
   @override
   final int credits;
   @override
-  final int grade;
+  final double grade;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
@@ -796,7 +971,7 @@ abstract class _AcademicHistoryCourse implements AcademicHistoryCourse {
       required final String courseName,
       required final CourseType courseType,
       required final int credits,
-      required final int grade}) = _$AcademicHistoryCourseImpl;
+      required final double grade}) = _$AcademicHistoryCourseImpl;
 
   @override
   String get courseCode;
@@ -807,7 +982,7 @@ abstract class _AcademicHistoryCourse implements AcademicHistoryCourse {
   @override
   int get credits;
   @override
-  int get grade;
+  double get grade;
 
   /// Create a copy of AcademicHistoryCourse
   /// with the given fields replaced by the non-null parameter values.

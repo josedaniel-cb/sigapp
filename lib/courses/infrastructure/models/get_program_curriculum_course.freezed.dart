@@ -21,15 +21,15 @@ GetProgramCurriculumCourseModel _$GetProgramCurriculumCourseModelFromJson(
 
 /// @nodoc
 mixin _$GetProgramCurriculumCourseModel {
-  String get ciclo => throw _privateConstructorUsedError;
-  String get codCurso => throw _privateConstructorUsedError;
-  int get creditos => throw _privateConstructorUsedError;
-  String get descripCurso => throw _privateConstructorUsedError;
-  String get flagTipoCurso => throw _privateConstructorUsedError;
-  int get horasPractica => throw _privateConstructorUsedError;
-  int get horasTeoria => throw _privateConstructorUsedError;
-  int get nroCiclo => throw _privateConstructorUsedError;
-  String get resumenRequisitos => throw _privateConstructorUsedError;
+  String get Ciclo => throw _privateConstructorUsedError;
+  String get CodCurso => throw _privateConstructorUsedError;
+  int get Creditos => throw _privateConstructorUsedError;
+  String get DescripCurso => throw _privateConstructorUsedError;
+  String get FlagTipoCurso => throw _privateConstructorUsedError;
+  int get HorasPractica => throw _privateConstructorUsedError;
+  int get HorasTeoria => throw _privateConstructorUsedError;
+  int get NroCiclo => throw _privateConstructorUsedError;
+  String get ResumenRequisitos => throw _privateConstructorUsedError;
 
   /// Serializes this GetProgramCurriculumCourseModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -50,15 +50,15 @@ abstract class $GetProgramCurriculumCourseModelCopyWith<$Res> {
           GetProgramCurriculumCourseModel>;
   @useResult
   $Res call(
-      {String ciclo,
-      String codCurso,
-      int creditos,
-      String descripCurso,
-      String flagTipoCurso,
-      int horasPractica,
-      int horasTeoria,
-      int nroCiclo,
-      String resumenRequisitos});
+      {String Ciclo,
+      String CodCurso,
+      int Creditos,
+      String DescripCurso,
+      String FlagTipoCurso,
+      int HorasPractica,
+      int HorasTeoria,
+      int NroCiclo,
+      String ResumenRequisitos});
 }
 
 /// @nodoc
@@ -77,52 +77,52 @@ class _$GetProgramCurriculumCourseModelCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? ciclo = null,
-    Object? codCurso = null,
-    Object? creditos = null,
-    Object? descripCurso = null,
-    Object? flagTipoCurso = null,
-    Object? horasPractica = null,
-    Object? horasTeoria = null,
-    Object? nroCiclo = null,
-    Object? resumenRequisitos = null,
+    Object? Ciclo = null,
+    Object? CodCurso = null,
+    Object? Creditos = null,
+    Object? DescripCurso = null,
+    Object? FlagTipoCurso = null,
+    Object? HorasPractica = null,
+    Object? HorasTeoria = null,
+    Object? NroCiclo = null,
+    Object? ResumenRequisitos = null,
   }) {
     return _then(_value.copyWith(
-      ciclo: null == ciclo
-          ? _value.ciclo
-          : ciclo // ignore: cast_nullable_to_non_nullable
+      Ciclo: null == Ciclo
+          ? _value.Ciclo
+          : Ciclo // ignore: cast_nullable_to_non_nullable
               as String,
-      codCurso: null == codCurso
-          ? _value.codCurso
-          : codCurso // ignore: cast_nullable_to_non_nullable
+      CodCurso: null == CodCurso
+          ? _value.CodCurso
+          : CodCurso // ignore: cast_nullable_to_non_nullable
               as String,
-      creditos: null == creditos
-          ? _value.creditos
-          : creditos // ignore: cast_nullable_to_non_nullable
+      Creditos: null == Creditos
+          ? _value.Creditos
+          : Creditos // ignore: cast_nullable_to_non_nullable
               as int,
-      descripCurso: null == descripCurso
-          ? _value.descripCurso
-          : descripCurso // ignore: cast_nullable_to_non_nullable
+      DescripCurso: null == DescripCurso
+          ? _value.DescripCurso
+          : DescripCurso // ignore: cast_nullable_to_non_nullable
               as String,
-      flagTipoCurso: null == flagTipoCurso
-          ? _value.flagTipoCurso
-          : flagTipoCurso // ignore: cast_nullable_to_non_nullable
+      FlagTipoCurso: null == FlagTipoCurso
+          ? _value.FlagTipoCurso
+          : FlagTipoCurso // ignore: cast_nullable_to_non_nullable
               as String,
-      horasPractica: null == horasPractica
-          ? _value.horasPractica
-          : horasPractica // ignore: cast_nullable_to_non_nullable
+      HorasPractica: null == HorasPractica
+          ? _value.HorasPractica
+          : HorasPractica // ignore: cast_nullable_to_non_nullable
               as int,
-      horasTeoria: null == horasTeoria
-          ? _value.horasTeoria
-          : horasTeoria // ignore: cast_nullable_to_non_nullable
+      HorasTeoria: null == HorasTeoria
+          ? _value.HorasTeoria
+          : HorasTeoria // ignore: cast_nullable_to_non_nullable
               as int,
-      nroCiclo: null == nroCiclo
-          ? _value.nroCiclo
-          : nroCiclo // ignore: cast_nullable_to_non_nullable
+      NroCiclo: null == NroCiclo
+          ? _value.NroCiclo
+          : NroCiclo // ignore: cast_nullable_to_non_nullable
               as int,
-      resumenRequisitos: null == resumenRequisitos
-          ? _value.resumenRequisitos
-          : resumenRequisitos // ignore: cast_nullable_to_non_nullable
+      ResumenRequisitos: null == ResumenRequisitos
+          ? _value.ResumenRequisitos
+          : ResumenRequisitos // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -138,15 +138,15 @@ abstract class _$$GetProgramCurriculumCourseModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String ciclo,
-      String codCurso,
-      int creditos,
-      String descripCurso,
-      String flagTipoCurso,
-      int horasPractica,
-      int horasTeoria,
-      int nroCiclo,
-      String resumenRequisitos});
+      {String Ciclo,
+      String CodCurso,
+      int Creditos,
+      String DescripCurso,
+      String FlagTipoCurso,
+      int HorasPractica,
+      int HorasTeoria,
+      int NroCiclo,
+      String ResumenRequisitos});
 }
 
 /// @nodoc
@@ -164,52 +164,52 @@ class __$$GetProgramCurriculumCourseModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? ciclo = null,
-    Object? codCurso = null,
-    Object? creditos = null,
-    Object? descripCurso = null,
-    Object? flagTipoCurso = null,
-    Object? horasPractica = null,
-    Object? horasTeoria = null,
-    Object? nroCiclo = null,
-    Object? resumenRequisitos = null,
+    Object? Ciclo = null,
+    Object? CodCurso = null,
+    Object? Creditos = null,
+    Object? DescripCurso = null,
+    Object? FlagTipoCurso = null,
+    Object? HorasPractica = null,
+    Object? HorasTeoria = null,
+    Object? NroCiclo = null,
+    Object? ResumenRequisitos = null,
   }) {
     return _then(_$GetProgramCurriculumCourseModelImpl(
-      ciclo: null == ciclo
-          ? _value.ciclo
-          : ciclo // ignore: cast_nullable_to_non_nullable
+      Ciclo: null == Ciclo
+          ? _value.Ciclo
+          : Ciclo // ignore: cast_nullable_to_non_nullable
               as String,
-      codCurso: null == codCurso
-          ? _value.codCurso
-          : codCurso // ignore: cast_nullable_to_non_nullable
+      CodCurso: null == CodCurso
+          ? _value.CodCurso
+          : CodCurso // ignore: cast_nullable_to_non_nullable
               as String,
-      creditos: null == creditos
-          ? _value.creditos
-          : creditos // ignore: cast_nullable_to_non_nullable
+      Creditos: null == Creditos
+          ? _value.Creditos
+          : Creditos // ignore: cast_nullable_to_non_nullable
               as int,
-      descripCurso: null == descripCurso
-          ? _value.descripCurso
-          : descripCurso // ignore: cast_nullable_to_non_nullable
+      DescripCurso: null == DescripCurso
+          ? _value.DescripCurso
+          : DescripCurso // ignore: cast_nullable_to_non_nullable
               as String,
-      flagTipoCurso: null == flagTipoCurso
-          ? _value.flagTipoCurso
-          : flagTipoCurso // ignore: cast_nullable_to_non_nullable
+      FlagTipoCurso: null == FlagTipoCurso
+          ? _value.FlagTipoCurso
+          : FlagTipoCurso // ignore: cast_nullable_to_non_nullable
               as String,
-      horasPractica: null == horasPractica
-          ? _value.horasPractica
-          : horasPractica // ignore: cast_nullable_to_non_nullable
+      HorasPractica: null == HorasPractica
+          ? _value.HorasPractica
+          : HorasPractica // ignore: cast_nullable_to_non_nullable
               as int,
-      horasTeoria: null == horasTeoria
-          ? _value.horasTeoria
-          : horasTeoria // ignore: cast_nullable_to_non_nullable
+      HorasTeoria: null == HorasTeoria
+          ? _value.HorasTeoria
+          : HorasTeoria // ignore: cast_nullable_to_non_nullable
               as int,
-      nroCiclo: null == nroCiclo
-          ? _value.nroCiclo
-          : nroCiclo // ignore: cast_nullable_to_non_nullable
+      NroCiclo: null == NroCiclo
+          ? _value.NroCiclo
+          : NroCiclo // ignore: cast_nullable_to_non_nullable
               as int,
-      resumenRequisitos: null == resumenRequisitos
-          ? _value.resumenRequisitos
-          : resumenRequisitos // ignore: cast_nullable_to_non_nullable
+      ResumenRequisitos: null == ResumenRequisitos
+          ? _value.ResumenRequisitos
+          : ResumenRequisitos // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -221,42 +221,42 @@ class _$GetProgramCurriculumCourseModelImpl
     with DiagnosticableTreeMixin
     implements _GetProgramCurriculumCourseModel {
   const _$GetProgramCurriculumCourseModelImpl(
-      {required this.ciclo,
-      required this.codCurso,
-      required this.creditos,
-      required this.descripCurso,
-      required this.flagTipoCurso,
-      required this.horasPractica,
-      required this.horasTeoria,
-      required this.nroCiclo,
-      required this.resumenRequisitos});
+      {required this.Ciclo,
+      required this.CodCurso,
+      required this.Creditos,
+      required this.DescripCurso,
+      required this.FlagTipoCurso,
+      required this.HorasPractica,
+      required this.HorasTeoria,
+      required this.NroCiclo,
+      required this.ResumenRequisitos});
 
   factory _$GetProgramCurriculumCourseModelImpl.fromJson(
           Map<String, dynamic> json) =>
       _$$GetProgramCurriculumCourseModelImplFromJson(json);
 
   @override
-  final String ciclo;
+  final String Ciclo;
   @override
-  final String codCurso;
+  final String CodCurso;
   @override
-  final int creditos;
+  final int Creditos;
   @override
-  final String descripCurso;
+  final String DescripCurso;
   @override
-  final String flagTipoCurso;
+  final String FlagTipoCurso;
   @override
-  final int horasPractica;
+  final int HorasPractica;
   @override
-  final int horasTeoria;
+  final int HorasTeoria;
   @override
-  final int nroCiclo;
+  final int NroCiclo;
   @override
-  final String resumenRequisitos;
+  final String ResumenRequisitos;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'GetProgramCurriculumCourseModel(ciclo: $ciclo, codCurso: $codCurso, creditos: $creditos, descripCurso: $descripCurso, flagTipoCurso: $flagTipoCurso, horasPractica: $horasPractica, horasTeoria: $horasTeoria, nroCiclo: $nroCiclo, resumenRequisitos: $resumenRequisitos)';
+    return 'GetProgramCurriculumCourseModel(Ciclo: $Ciclo, CodCurso: $CodCurso, Creditos: $Creditos, DescripCurso: $DescripCurso, FlagTipoCurso: $FlagTipoCurso, HorasPractica: $HorasPractica, HorasTeoria: $HorasTeoria, NroCiclo: $NroCiclo, ResumenRequisitos: $ResumenRequisitos)';
   }
 
   @override
@@ -264,15 +264,15 @@ class _$GetProgramCurriculumCourseModelImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'GetProgramCurriculumCourseModel'))
-      ..add(DiagnosticsProperty('ciclo', ciclo))
-      ..add(DiagnosticsProperty('codCurso', codCurso))
-      ..add(DiagnosticsProperty('creditos', creditos))
-      ..add(DiagnosticsProperty('descripCurso', descripCurso))
-      ..add(DiagnosticsProperty('flagTipoCurso', flagTipoCurso))
-      ..add(DiagnosticsProperty('horasPractica', horasPractica))
-      ..add(DiagnosticsProperty('horasTeoria', horasTeoria))
-      ..add(DiagnosticsProperty('nroCiclo', nroCiclo))
-      ..add(DiagnosticsProperty('resumenRequisitos', resumenRequisitos));
+      ..add(DiagnosticsProperty('Ciclo', Ciclo))
+      ..add(DiagnosticsProperty('CodCurso', CodCurso))
+      ..add(DiagnosticsProperty('Creditos', Creditos))
+      ..add(DiagnosticsProperty('DescripCurso', DescripCurso))
+      ..add(DiagnosticsProperty('FlagTipoCurso', FlagTipoCurso))
+      ..add(DiagnosticsProperty('HorasPractica', HorasPractica))
+      ..add(DiagnosticsProperty('HorasTeoria', HorasTeoria))
+      ..add(DiagnosticsProperty('NroCiclo', NroCiclo))
+      ..add(DiagnosticsProperty('ResumenRequisitos', ResumenRequisitos));
   }
 
   @override
@@ -280,38 +280,38 @@ class _$GetProgramCurriculumCourseModelImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GetProgramCurriculumCourseModelImpl &&
-            (identical(other.ciclo, ciclo) || other.ciclo == ciclo) &&
-            (identical(other.codCurso, codCurso) ||
-                other.codCurso == codCurso) &&
-            (identical(other.creditos, creditos) ||
-                other.creditos == creditos) &&
-            (identical(other.descripCurso, descripCurso) ||
-                other.descripCurso == descripCurso) &&
-            (identical(other.flagTipoCurso, flagTipoCurso) ||
-                other.flagTipoCurso == flagTipoCurso) &&
-            (identical(other.horasPractica, horasPractica) ||
-                other.horasPractica == horasPractica) &&
-            (identical(other.horasTeoria, horasTeoria) ||
-                other.horasTeoria == horasTeoria) &&
-            (identical(other.nroCiclo, nroCiclo) ||
-                other.nroCiclo == nroCiclo) &&
-            (identical(other.resumenRequisitos, resumenRequisitos) ||
-                other.resumenRequisitos == resumenRequisitos));
+            (identical(other.Ciclo, Ciclo) || other.Ciclo == Ciclo) &&
+            (identical(other.CodCurso, CodCurso) ||
+                other.CodCurso == CodCurso) &&
+            (identical(other.Creditos, Creditos) ||
+                other.Creditos == Creditos) &&
+            (identical(other.DescripCurso, DescripCurso) ||
+                other.DescripCurso == DescripCurso) &&
+            (identical(other.FlagTipoCurso, FlagTipoCurso) ||
+                other.FlagTipoCurso == FlagTipoCurso) &&
+            (identical(other.HorasPractica, HorasPractica) ||
+                other.HorasPractica == HorasPractica) &&
+            (identical(other.HorasTeoria, HorasTeoria) ||
+                other.HorasTeoria == HorasTeoria) &&
+            (identical(other.NroCiclo, NroCiclo) ||
+                other.NroCiclo == NroCiclo) &&
+            (identical(other.ResumenRequisitos, ResumenRequisitos) ||
+                other.ResumenRequisitos == ResumenRequisitos));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      ciclo,
-      codCurso,
-      creditos,
-      descripCurso,
-      flagTipoCurso,
-      horasPractica,
-      horasTeoria,
-      nroCiclo,
-      resumenRequisitos);
+      Ciclo,
+      CodCurso,
+      Creditos,
+      DescripCurso,
+      FlagTipoCurso,
+      HorasPractica,
+      HorasTeoria,
+      NroCiclo,
+      ResumenRequisitos);
 
   /// Create a copy of GetProgramCurriculumCourseModel
   /// with the given fields replaced by the non-null parameter values.
@@ -334,38 +334,38 @@ class _$GetProgramCurriculumCourseModelImpl
 abstract class _GetProgramCurriculumCourseModel
     implements GetProgramCurriculumCourseModel {
   const factory _GetProgramCurriculumCourseModel(
-          {required final String ciclo,
-          required final String codCurso,
-          required final int creditos,
-          required final String descripCurso,
-          required final String flagTipoCurso,
-          required final int horasPractica,
-          required final int horasTeoria,
-          required final int nroCiclo,
-          required final String resumenRequisitos}) =
+          {required final String Ciclo,
+          required final String CodCurso,
+          required final int Creditos,
+          required final String DescripCurso,
+          required final String FlagTipoCurso,
+          required final int HorasPractica,
+          required final int HorasTeoria,
+          required final int NroCiclo,
+          required final String ResumenRequisitos}) =
       _$GetProgramCurriculumCourseModelImpl;
 
   factory _GetProgramCurriculumCourseModel.fromJson(Map<String, dynamic> json) =
       _$GetProgramCurriculumCourseModelImpl.fromJson;
 
   @override
-  String get ciclo;
+  String get Ciclo;
   @override
-  String get codCurso;
+  String get CodCurso;
   @override
-  int get creditos;
+  int get Creditos;
   @override
-  String get descripCurso;
+  String get DescripCurso;
   @override
-  String get flagTipoCurso;
+  String get FlagTipoCurso;
   @override
-  int get horasPractica;
+  int get HorasPractica;
   @override
-  int get horasTeoria;
+  int get HorasTeoria;
   @override
-  int get nroCiclo;
+  int get NroCiclo;
   @override
-  String get resumenRequisitos;
+  String get ResumenRequisitos;
 
   /// Create a copy of GetProgramCurriculumCourseModel
   /// with the given fields replaced by the non-null parameter values.

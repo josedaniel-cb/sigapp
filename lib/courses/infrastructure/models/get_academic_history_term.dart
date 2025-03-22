@@ -8,21 +8,7 @@ part 'get_academic_history_term.g.dart';
 class GetAcademicHistoryTermModel with _$GetAcademicHistoryTermModel {
   const factory GetAcademicHistoryTermModel({
     required String termLabel,
-    required String PPS,
-    required String PPSAprob,
-    required String PPA,
-    required String PPAApr,
-    required String CreOblLlev,
-    required String CreElLlev,
-    required String CreOblApr,
-    required String CreEleApr,
-    required String CreOblConv,
-    required String CredEleConv,
-    required String TotalCredOblLlev,
-    required String TotalCredElLlev,
-    required String TotalCredOblAprob,
-    required String TotalCredElAprob,
-    required String TotalCredOblConv,
+    required GetAcademicHistoryTermStatisticsModel? statistics,
     required List<GetAcademicHistoryCourseModel> courses,
   }) = _GetAcademicHistoryTermModel;
 
@@ -31,13 +17,39 @@ class GetAcademicHistoryTermModel with _$GetAcademicHistoryTermModel {
 }
 
 @freezed
+class GetAcademicHistoryTermStatisticsModel
+    with _$GetAcademicHistoryTermStatisticsModel {
+  const factory GetAcademicHistoryTermStatisticsModel({
+    required double PPS,
+    required double PPSAprob,
+    required double PPA,
+    required double PPAApr,
+    required double CreOblLlev,
+    required double CreElLlev,
+    required double CreOblApr,
+    required double CreEleApr,
+    required double CreOblConv,
+    required double CredEleConv,
+    required double TotalCredOblLlev,
+    required double TotalCredElLlev,
+    required double TotalCredOblAprob,
+    required double TotalCredElAprob,
+    required double TotalCredOblConv,
+  }) = _GetAcademicHistoryTermStatisticsModel;
+
+  factory GetAcademicHistoryTermStatisticsModel.fromJson(
+          Map<String, Object?> json) =>
+      _$GetAcademicHistoryTermStatisticsModelFromJson(json);
+}
+
+@freezed
 class GetAcademicHistoryCourseModel with _$GetAcademicHistoryCourseModel {
   const factory GetAcademicHistoryCourseModel({
     required String courseCode,
     required String courseName,
     required String courseType,
-    required String credits,
-    required String grade,
+    required int credits,
+    required double grade,
   }) = _GetAcademicHistoryCourseModel;
 
   factory GetAcademicHistoryCourseModel.fromJson(Map<String, Object?> json) =>

@@ -174,6 +174,8 @@ extension GetItInjectableX on _i174.GetIt {
             gh<_i889.ProgramCurriculumRepository>()));
     gh.factory<_i215.CourseDetailCubit>(
         () => _i215.CourseDetailCubit(gh<_i445.GetSyllabusFileUsecase>()));
+    gh.factory<_i112.CareerPageCubit>(() =>
+        _i112.CareerPageCubit(gh<_i504.GetProgramCurriculumProgressUsecase>()));
     gh.singleton<_i469.SessionInfoService>(() => _i1002.SessionInfoServiceImpl(
           gh<_i771.GetAcademicReportUsecase>(),
           gh<_i320.GetSemesterContextUsecase>(),
@@ -195,10 +197,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i893.ExportToCalendarCubit(gh<_i315.GetClassScheduleUsecase>()));
     gh.singleton<_i528.NavigationService>(
         () => _i561.NavigationServiceImpl(gh<_i583.GoRouter>()));
-    gh.factory<_i112.CareerPageCubit>(() => _i112.CareerPageCubit(
-          gh<_i650.GetEnrolledCoursesUsecase>(),
-          gh<_i469.SessionInfoService>(),
-        ));
     gh.factory<_i525.CoursesPageCubit>(() => _i525.CoursesPageCubit(
           gh<_i650.GetEnrolledCoursesUsecase>(),
           gh<_i469.SessionInfoService>(),
