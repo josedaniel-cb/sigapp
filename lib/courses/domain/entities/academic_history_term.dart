@@ -51,13 +51,20 @@ class AcademicHistoryTermStatistics with _$AcademicHistoryTermStatistics {
   }) = _AcademicHistoryTermStatistics;
 }
 
-@freezed
-class AcademicHistoryCourse with _$AcademicHistoryCourse {
-  const factory AcademicHistoryCourse({
-    required String courseCode,
-    required String courseName,
-    required CourseType courseType,
-    required int credits,
-    required double grade,
-  }) = _AcademicHistoryCourse;
+class AcademicHistoryCourse {
+  final String courseCode;
+  final String courseName;
+  final CourseType courseType;
+  final int credits;
+  final double grade;
+
+  AcademicHistoryCourse({
+    required this.courseCode,
+    required this.courseName,
+    required this.courseType,
+    required this.credits,
+    required this.grade,
+  });
+
+  get isApproved => grade >= 11;
 }
