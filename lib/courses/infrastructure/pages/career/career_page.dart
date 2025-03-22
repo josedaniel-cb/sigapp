@@ -51,11 +51,11 @@ class _CareerPageViewState extends State<CareerPageView>
             controller: _tabController,
             tabs: [
               Tab(
-                icon: Icon(MdiIcons.notebookOutline),
+                icon: Icon(MdiIcons.book),
                 text: 'Plan de estudios',
               ),
               Tab(
-                icon: Icon(MdiIcons.fileChartOutline),
+                icon: Icon(MdiIcons.fileChart),
                 text: 'Historial académico',
               ),
             ],
