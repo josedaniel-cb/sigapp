@@ -31,7 +31,8 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
             children: term.courses.map(
               (course) {
                 return _buildItem(
-                  course,
+                  context,
+                  course: course,
                   onSeePrerequisites: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -51,8 +52,11 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildItem(ProgramCurriculumCourse course,
-      {required VoidCallback onSeePrerequisites}) {
+  Widget _buildItem(
+    BuildContext context, {
+    required ProgramCurriculumCourse course,
+    required VoidCallback onSeePrerequisites,
+  }) {
     Widget buildInfo({
       required String text,
       IconData? icon,
@@ -83,11 +87,9 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
     final items = <Widget>[];
 
     items.add(buildInfo(
-      icon: course.isApproved == true
-          ? Icons.lock_open
-          : course.info.courseType == CourseType.elective
-              ? MdiIcons.leaf
-              : Icons.lock_outline,
+      icon: course.info.courseType == CourseType.mandatory
+          ? MdiIcons.school
+          : MdiIcons.leaf,
       text: course.info.courseType == CourseType.mandatory
           ? 'Obligatorio'
           : 'Electivo',
@@ -97,16 +99,35 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
           ? '1 crédito'
           : '${course.info.credits} créditos',
     ));
-    if (course.requirements.isNotEmpty) {
+    if (course.prerequisites.isNotEmpty) {
       items.add(buildInfo(
         icon: MdiIcons.link,
         text:
-            '${course.requirements.length} requisito${course.requirements.length > 1 ? 's' : ''}',
+            '${course.prerequisites.length} requisito${course.prerequisites.length != 1 ? 's' : ''}',
+      ));
+    } else if (course.info.termNumber != 1) {
+      items.add(buildInfo(
+        icon: MdiIcons.linkOff,
+        text: 'Sin requisitos',
       ));
     }
 
     return ListTile(
-      title: Text('${course.info.courseCode} - ${course.info.courseName}'),
+      leading: (() {
+        final hasPrerequisitesApproved = course.hasPrerequisitesApproved;
+        final primaryColor = Theme.of(context).primaryColor;
+        return Icon(
+          hasPrerequisitesApproved == true
+              ? Icons.lock_open_outlined
+              : Icons.lock_outline,
+          color: hasPrerequisitesApproved == true
+              ? primaryColor
+              : course.prerequisites.isEmpty
+                  ? Colors.transparent
+                  : null,
+        );
+      })(),
+      title: Text(course.info.courseName),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -115,7 +136,10 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
             runSpacing: 4,
             children: join(items, Text('•')),
           ),
-          if (course.requirements.isNotEmpty)
+          if (course.prerequisites.isNotEmpty ||
+              course.getDependentCoursesTree(
+                      programCurriculum: programCurriculum) !=
+                  null)
             TextButton.icon(
               icon: Icon(Icons.link),
               label: Text('Ver cadena de requisitos'),

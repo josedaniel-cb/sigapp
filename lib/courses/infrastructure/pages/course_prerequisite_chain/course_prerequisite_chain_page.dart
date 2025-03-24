@@ -27,21 +27,28 @@ class CoursePrerequisiteChainPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildTree(
-              context,
-              node: prerequisiteCoursesTree,
-              title: 'Requisitos',
-              subtitle:
-                  'Cursos requisito de ${course.info.courseName} (ciclo ${course.info.termRomanNumeral})',
-            ),
-            SizedBox(height: 16),
-            _buildTree(
-              context,
-              node: dependentCoursesTree,
-              title: 'Dependientes',
-              subtitle:
-                  'Cursos que requieren de ${course.info.courseName} (ciclo ${course.info.termRomanNumeral})',
-            ),
+            if (prerequisiteCoursesTree != null)
+              _buildTree(
+                context,
+                node: prerequisiteCoursesTree,
+                title: 'Requisitos',
+                subtitle:
+                    'Cursos requisito de ${course.info.courseName} (ciclo ${course.info.termRomanNumeral})',
+              ),
+            if (prerequisiteCoursesTree != null && dependentCoursesTree != null)
+              SizedBox(height: 16),
+            if (dependentCoursesTree != null)
+              _buildTree(
+                context,
+                node: dependentCoursesTree,
+                title: 'Dependientes',
+                subtitle:
+                    'Cursos que requieren de ${course.info.courseName} (ciclo ${course.info.termRomanNumeral})',
+              ),
+            if (prerequisiteCoursesTree == null && dependentCoursesTree == null)
+              Center(
+                child: Text('No hay cursos relacionados'),
+              ),
           ],
         ),
       ),
@@ -98,7 +105,7 @@ class CoursePrerequisiteChainPage extends StatelessWidget {
     Widget buildChildren() {
       final theme = Theme.of(context);
       final dividerColor = theme.dividerColor;
-      final textTheme = theme.textTheme;
+      // final textTheme = theme.textTheme;
       return Padding(
         padding: const EdgeInsets.only(left: 16),
         child: Container(

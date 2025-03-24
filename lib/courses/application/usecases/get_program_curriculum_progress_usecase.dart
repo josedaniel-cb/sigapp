@@ -38,26 +38,23 @@ class GetProgramCurriculumProgressUsecase {
   }
 
   Future<List<ProgramCurriculumTerm>> _getTermCoursesMap() async {
-    final courses = await _programCurriculumRepository.getProgramCurriculum();
-    final courseCodeMap = {for (var e in courses) e.courseCode: e};
-    final coursesWithPrerequisites = courses
-        .map(
-          (course) => ProgramCurriculumCourse(
-            info: course,
-            requirements: course.requirementCourseCodes
-                .map((code) => courseCodeMap[code])
-                .whereType<ProgramCurriculumCourseInfo>()
-                .toList(),
-          ),
-        )
+    final courseInfos =
+        await _programCurriculumRepository.getProgramCurriculum();
+    final courses = courseInfos
+        .map((info) => ProgramCurriculumCourse(info: info, prerequisites: []))
         .toList();
+    final courseCodeMap = {for (var e in courses) e.info.courseCode: e};
+    for (var course in courses) {
+      course.prerequisites.addAll(course.info.requirementCourseCodes
+          .map((code) => courseCodeMap[code]!));
+    }
     final termNumberMap = <int, List<ProgramCurriculumCourse>>{};
-    for (var courseWithPrerequisites in coursesWithPrerequisites) {
-      final termNumber = courseWithPrerequisites.info.termNumber;
+    for (var course in courses) {
+      final termNumber = course.info.termNumber;
       if (!termNumberMap.containsKey(termNumber)) {
         termNumberMap[termNumber] = [];
       }
-      termNumberMap[termNumber]!.add(courseWithPrerequisites);
+      termNumberMap[termNumber]!.add(course);
     }
     final terms = termNumberMap.entries
         .map(

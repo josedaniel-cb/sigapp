@@ -28,12 +28,12 @@ class ProgramCurriculumCourseInfo {
 
 class ProgramCurriculumCourse {
   final ProgramCurriculumCourseInfo info;
-  final List<ProgramCurriculumCourseInfo> requirements;
+  final List<ProgramCurriculumCourse> prerequisites;
   double? lastGrade;
 
   ProgramCurriculumCourse({
     required this.info,
-    required this.requirements,
+    required this.prerequisites,
   });
 
   bool? get isApproved {
@@ -41,7 +41,13 @@ class ProgramCurriculumCourse {
     return lastGrade! >= 11;
   }
 
-  CourseTreeNode getPrerequisiteCoursesTree({
+  bool? get hasPrerequisitesApproved {
+    return prerequisites.isEmpty
+        ? null
+        : prerequisites.every((req) => req.isApproved == true);
+  }
+
+  CourseTreeNode? getPrerequisiteCoursesTree({
     required List<ProgramCurriculumTerm> programCurriculum,
   }) {
     final visited = <String>{};
@@ -74,10 +80,12 @@ class ProgramCurriculumCourse {
       return CourseTreeNode(course: course, children: children);
     }
 
-    return buildTree(this);
+    final root = buildTree(this);
+    if (root.children.isEmpty) return null;
+    return root;
   }
 
-  CourseTreeNode getDependentCoursesTree({
+  CourseTreeNode? getDependentCoursesTree({
     required List<ProgramCurriculumTerm> programCurriculum,
   }) {
     final visited = <String>{};
@@ -104,7 +112,9 @@ class ProgramCurriculumCourse {
       return CourseTreeNode(course: course, children: children);
     }
 
-    return buildTree(this);
+    final root = buildTree(this);
+    if (root.children.isEmpty) return null;
+    return root;
   }
 }
 
