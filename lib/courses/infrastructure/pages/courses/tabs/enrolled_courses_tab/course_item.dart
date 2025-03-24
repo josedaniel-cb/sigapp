@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:open_file/open_file.dart';
 import 'package:sigapp/courses/domain/entities/course_type.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_page.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/partials/course_avatar.dart';
-import 'package:sigapp/courses/domain/entities/enrolled_course_data.dart';
 
 class CourseItemWidget extends StatelessWidget {
   final Color color;
@@ -43,9 +41,6 @@ class CourseItemWidget extends StatelessWidget {
                 Expanded(
                   child: ListTile(
                     title: Text(state.course.data.courseName),
-                    // leading: Expanded(
-                    //   child: ,
-                    // ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -54,19 +49,10 @@ class CourseItemWidget extends StatelessWidget {
                             state.course.data.courseType == CourseType.mandatory
                                 ? Text('Obligatorio')
                                 : Text('Electivo'),
-                            // Text('Grupo ${state.course.data.group} - Sección ${state.course.data.section}'),
                             Text(' • '),
-                            // Row(
-                            //   children: [
-                            //     Text(state.course.data.credits.toString()),
-                            //     SizedBox(width: 2),
-                            //     Icon(Icons.stars, size: 16),
-                            //   ],
-                            // ),
                             Text('${state.course.data.credits} créditos'),
                           ],
                         ),
-                        // _buildSyllabusButton(itemState),
                         state.syllabus.when(
                           loading: () => Container(
                             margin: const EdgeInsets.only(top: 4),
@@ -83,13 +69,6 @@ class CourseItemWidget extends StatelessWidget {
                               ],
                             ),
                           ),
-                          // loaded: (file) => TextButton.icon(
-                          //   icon: Icon(Icons.list_alt),
-                          //   label: Text('Syllabus disponible'),
-                          //   onPressed: () {
-                          //     OpenFilex.open(file.path);
-                          //   },
-                          // ),
                           loaded: (syllabusFile) => Container(
                             margin: const EdgeInsets.only(top: 4),
                             child: Row(
@@ -118,39 +97,39 @@ class CourseItemWidget extends StatelessWidget {
             ),
           ),
         );
-        if (state is CourseDetailEmptyState) {
-          return Container();
-        }
-        state = state as CourseDetailReadyState;
+        // if (state is CourseDetailEmptyState) {
+        //   return Container();
+        // }
+        // state = state as CourseDetailReadyState;
       },
     );
   }
 
-  Widget _buildSyllabusButton(CourseDetailReadyState state) {
-    return state.syllabus.when(
-      initial: () => TextButton.icon(
-        onPressed: null,
-        icon: Icon(Icons.list),
-        label: Text('Cargar syllabus...'),
-      ),
-      loading: () => TextButton.icon(
-        icon: SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(strokeWidth: 3),
-        ),
-        label: Text('Descargando...'),
-        onPressed: null,
-      ),
-      loaded: (file) => TextButton.icon(
-        icon: Icon(Icons.list_alt),
-        label: Text('Syllabus'),
-        onPressed: () {
-          OpenFile.open(file.path);
-        },
-      ),
-      notFound: () => Text('Syllabus no disponible'),
-      error: (msg) => Text('Error al descargar syllabus'),
-    );
-  }
+  // Widget _buildSyllabusButton(CourseDetailReadyState state) {
+  //   return state.syllabus.when(
+  //     initial: () => TextButton.icon(
+  //       onPressed: null,
+  //       icon: Icon(Icons.list),
+  //       label: Text('Cargar syllabus...'),
+  //     ),
+  //     loading: () => TextButton.icon(
+  //       icon: SizedBox(
+  //         width: 20,
+  //         height: 20,
+  //         child: CircularProgressIndicator(strokeWidth: 3),
+  //       ),
+  //       label: Text('Descargando...'),
+  //       onPressed: null,
+  //     ),
+  //     loaded: (file) => TextButton.icon(
+  //       icon: Icon(Icons.list_alt),
+  //       label: Text('Syllabus'),
+  //       onPressed: () {
+  //         OpenFile.open(file.path);
+  //       },
+  //     ),
+  //     notFound: () => Text('Syllabus no disponible'),
+  //     error: (msg) => Text('Error al descargar syllabus'),
+  //   );
+  // }
 }

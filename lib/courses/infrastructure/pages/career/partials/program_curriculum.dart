@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:sigapp/courses/domain/entities/course_type.dart';
 import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.dart';
+import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/course_prerequisite_chain_page.dart';
 
 class CareerPageProgramCurriculumWidget extends StatelessWidget {
   const CareerPageProgramCurriculumWidget({
@@ -29,7 +30,19 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
             ),
             children: term.courses.map(
               (course) {
-                return _buildItem(course);
+                return _buildItem(
+                  course,
+                  onSeePrerequisites: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CoursePrerequisiteChainPage(
+                          course: course,
+                          programCurriculum: programCurriculum,
+                        ),
+                      ),
+                    );
+                  },
+                );
               },
             ).toList(),
           );
@@ -38,7 +51,8 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildItem(ProgramCurriculumCourse course) {
+  Widget _buildItem(ProgramCurriculumCourse course,
+      {required VoidCallback onSeePrerequisites}) {
     Widget buildInfo({
       required String text,
       IconData? icon,
@@ -69,9 +83,11 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
     final items = <Widget>[];
 
     items.add(buildInfo(
-      icon: course.info.courseType == CourseType.elective
-          ? MdiIcons.leaf
-          : Icons.lock_outline,
+      icon: course.isApproved == true
+          ? Icons.lock_open
+          : course.info.courseType == CourseType.elective
+              ? MdiIcons.leaf
+              : Icons.lock_outline,
       text: course.info.courseType == CourseType.mandatory
           ? 'Obligatorio'
           : 'Electivo',
@@ -103,7 +119,7 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
             TextButton.icon(
               icon: Icon(Icons.link),
               label: Text('Ver cadena de requisitos'),
-              onPressed: () {},
+              onPressed: onSeePrerequisites,
             ),
         ],
       ),

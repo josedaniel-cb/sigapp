@@ -20,6 +20,10 @@ class ProgramCurriculumCourseInfo {
     required this.termNumber,
     required this.requirementCourseCodes,
   });
+
+  String get termRomanNumeral {
+    return _termNumberToRomanNumeral(termNumber);
+  }
 }
 
 class ProgramCurriculumCourse {
@@ -36,6 +40,82 @@ class ProgramCurriculumCourse {
     if (lastGrade == null) return null;
     return lastGrade! >= 11;
   }
+
+  CourseTreeNode getPrerequisiteCoursesTree({
+    required List<ProgramCurriculumTerm> programCurriculum,
+  }) {
+    final visited = <String>{};
+    final allCourses =
+        programCurriculum.expand((term) => term.courses).toList();
+
+    CourseTreeNode buildTree(ProgramCurriculumCourse course) {
+      visited.add(course.info.courseCode);
+
+      final children = <CourseTreeNode>[];
+
+      for (final prerequisiteCode in course.info.requirementCourseCodes) {
+        ProgramCurriculumCourse? prerequisiteCourse;
+        final filteredCourses = allCourses.where(
+          (element) => element.info.courseCode == prerequisiteCode,
+        );
+        if (filteredCourses.isNotEmpty) {
+          prerequisiteCourse = filteredCourses.first;
+        } else {
+          continue;
+        }
+
+        // Avoid infinite recursion
+        if (!visited.contains(prerequisiteCode)) {
+          final childNode = buildTree(prerequisiteCourse);
+          children.add(childNode);
+        }
+      }
+
+      return CourseTreeNode(course: course, children: children);
+    }
+
+    return buildTree(this);
+  }
+
+  CourseTreeNode getDependentCoursesTree({
+    required List<ProgramCurriculumTerm> programCurriculum,
+  }) {
+    final visited = <String>{};
+    final allCourses =
+        programCurriculum.expand((term) => term.courses).toList();
+
+    CourseTreeNode buildTree(ProgramCurriculumCourse course) {
+      visited.add(course.info.courseCode);
+
+      final children = <CourseTreeNode>[];
+
+      // Buscar cursos que dependen de este curso
+      final dependents = allCourses.where(
+        (c) => c.info.requirementCourseCodes.contains(course.info.courseCode),
+      );
+
+      for (final dependentCourse in dependents) {
+        if (!visited.contains(dependentCourse.info.courseCode)) {
+          final childNode = buildTree(dependentCourse);
+          children.add(childNode);
+        }
+      }
+
+      return CourseTreeNode(course: course, children: children);
+    }
+
+    return buildTree(this);
+  }
+}
+
+class CourseTreeNode {
+  final ProgramCurriculumCourse course;
+  final List<CourseTreeNode> children;
+
+  CourseTreeNode({
+    required this.course,
+    required this.children,
+  });
 }
 
 class ProgramCurriculumTerm {
@@ -48,22 +128,26 @@ class ProgramCurriculumTerm {
   });
 
   String get termRomanNumeral {
-    final labelsMap = <int, String>{
-      1: 'I',
-      2: 'II',
-      3: 'III',
-      4: 'IV',
-      5: 'V',
-      6: 'VI',
-      7: 'VII',
-      8: 'VIII',
-      9: 'IX',
-      10: 'X',
-      11: 'XI',
-      12: 'XII',
-    };
-    final label = labelsMap[termNumber];
-    if (label != null) return label;
-    return termNumber.toString();
+    return _termNumberToRomanNumeral(termNumber);
   }
+}
+
+String _termNumberToRomanNumeral(int termNumber) {
+  final labelsMap = <int, String>{
+    1: 'I',
+    2: 'II',
+    3: 'III',
+    4: 'IV',
+    5: 'V',
+    6: 'VI',
+    7: 'VII',
+    8: 'VIII',
+    9: 'IX',
+    10: 'X',
+    11: 'XI',
+    12: 'XII',
+  };
+  final label = labelsMap[termNumber];
+  if (label != null) return label;
+  return termNumber.toString();
 }
