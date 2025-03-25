@@ -54,7 +54,11 @@ class CoursesPageCubit extends Cubit<CoursesPageState> {
       ) as CoursesPageSuccessState;
       emit(nextState);
       _fetchEnrolledCourses(nextState);
-    } catch (e) {
+    } catch (e, s) {
+      if (kDebugMode) {
+        print(e);
+        print(s);
+      }
       emit(CoursesPageState.error(e.toString()));
     }
   }

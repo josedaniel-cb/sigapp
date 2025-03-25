@@ -108,7 +108,7 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CourseSubtitleWidget(items: items),
+          CourseSubtitleWidget(children: items),
           if (course.prerequisites.isNotEmpty ||
               course.getDependentCoursesTree(
                       programCurriculum: programCurriculum) !=

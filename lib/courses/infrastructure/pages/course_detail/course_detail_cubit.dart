@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -69,7 +70,11 @@ class CourseDetailCubit extends Cubit<CourseDetailState> {
           syllabus: CourseDetailSyllabusState.loaded(file),
         ));
       }
-    } catch (e) {
+    } catch (e, s) {
+      if (kDebugMode) {
+        print(e);
+        print(s);
+      }
       emit((state as CourseDetailReadyState).copyWith(
         syllabus:
             CourseDetailSyllabusState.error('Error al descargar syllabus'),

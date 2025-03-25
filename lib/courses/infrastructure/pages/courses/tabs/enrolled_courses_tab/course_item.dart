@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:sigapp/courses/domain/entities/course_type.dart';
+import 'package:sigapp/courses/infrastructure/pages/career/widgets/course_subtitle.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_page.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/partials/course_avatar.dart';
@@ -44,15 +46,27 @@ class CourseItemWidget extends StatelessWidget {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            state.course.data.courseType == CourseType.mandatory
-                                ? Text('Obligatorio')
-                                : Text('Electivo'),
-                            Text(' • '),
-                            Text('${state.course.data.credits} créditos'),
-                          ],
-                        ),
+                        CourseSubtitleWidget(children: [
+                          state.course.data.courseType == CourseType.mandatory
+                              ? CourseSubtitleWidgetItem(
+                                  text: 'Obligatorio',
+                                  icon: Icons.school,
+                                )
+                              : state.course.data.courseType ==
+                                      CourseType.elective
+                                  ? CourseSubtitleWidgetItem(
+                                      text: 'Electivo',
+                                      icon: MdiIcons.leaf,
+                                    )
+                                  : CourseSubtitleWidgetItem(
+                                      text: 'Tipo desconocido',
+                                    ),
+                          CourseSubtitleWidgetItem(
+                            text: state.course.data.credits == 1
+                                ? '1 crédito'
+                                : '${state.course.data.credits} créditos',
+                          ),
+                        ]),
                         state.syllabus.when(
                           loading: () => Container(
                             margin: const EdgeInsets.only(top: 4),

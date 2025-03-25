@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/courses/application/exceptions/regeva_authentication_exception.dart';
 import 'package:sigapp/courses/domain/repositories/courses_repository.dart';
@@ -43,7 +44,11 @@ class GetSyllabusFileUsecase {
     // Try to get the syllabus file
     try {
       return await _regevaRepository.downloadSyllabus(scheduledCourseId);
-    } catch (e) {
+    } catch (e, s) {
+      if (kDebugMode) {
+        print(e);
+        print(s);
+      }
       if (e is! RegevaAuthenticationException) rethrow;
     }
 

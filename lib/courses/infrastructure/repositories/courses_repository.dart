@@ -54,7 +54,7 @@ class CoursesRepositoryImpl implements CoursesRepository {
             googleClassroomCode: model.Acta?.trim(),
             courseCode: model.CodCurso,
             courseName: model.Curso,
-            courseType: CourseType.fromValue(model.TipoCurso),
+            courseType: CourseType.fromValueOrNull(model.TipoCurso),
             credits: model.Creditos,
             date: TimeUtils.parseFormattedDate(model.Fecha),
             group: model.Grupo.trim(),

@@ -117,12 +117,19 @@ class __$$InitialImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$InitialImpl implements _Initial {
+class _$InitialImpl with DiagnosticableTreeMixin implements _Initial {
   const _$InitialImpl();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'CourseDetailSyllabusState.initial()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CourseDetailSyllabusState.initial'));
   }
 
   @override
@@ -240,12 +247,19 @@ class __$$LoadingImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoadingImpl implements _Loading {
+class _$LoadingImpl with DiagnosticableTreeMixin implements _Loading {
   const _$LoadingImpl();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'CourseDetailSyllabusState.loading()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CourseDetailSyllabusState.loading'));
   }
 
   @override
@@ -377,15 +391,23 @@ class __$$LoadedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoadedImpl implements _Loaded {
+class _$LoadedImpl with DiagnosticableTreeMixin implements _Loaded {
   const _$LoadedImpl(this.syllabusFile);
 
   @override
   final File syllabusFile;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'CourseDetailSyllabusState.loaded(syllabusFile: $syllabusFile)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CourseDetailSyllabusState.loaded'))
+      ..add(DiagnosticsProperty('syllabusFile', syllabusFile));
   }
 
   @override
@@ -522,12 +544,19 @@ class __$$NotFoundImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$NotFoundImpl implements _NotFound {
+class _$NotFoundImpl with DiagnosticableTreeMixin implements _NotFound {
   const _$NotFoundImpl();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'CourseDetailSyllabusState.notFound()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CourseDetailSyllabusState.notFound'));
   }
 
   @override
@@ -659,15 +688,23 @@ class __$$ErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ErrorImpl implements _Error {
+class _$ErrorImpl with DiagnosticableTreeMixin implements _Error {
   const _$ErrorImpl(this.message);
 
   @override
   final String message;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'CourseDetailSyllabusState.error(message: $message)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CourseDetailSyllabusState.error'))
+      ..add(DiagnosticsProperty('message', message));
   }
 
   @override
@@ -874,12 +911,20 @@ class __$$CourseDetailEmptyStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CourseDetailEmptyStateImpl implements CourseDetailEmptyState {
+class _$CourseDetailEmptyStateImpl
+    with DiagnosticableTreeMixin
+    implements CourseDetailEmptyState {
   const _$CourseDetailEmptyStateImpl();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'CourseDetailState.empty()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties..add(DiagnosticsProperty('type', 'CourseDetailState.empty'));
   }
 
   @override
@@ -1027,7 +1072,9 @@ class __$$CourseDetailReadyStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CourseDetailReadyStateImpl implements CourseDetailReadyState {
+class _$CourseDetailReadyStateImpl
+    with DiagnosticableTreeMixin
+    implements CourseDetailReadyState {
   const _$CourseDetailReadyStateImpl(
       {required this.course,
       required this.regevaScheduledCourseId,
@@ -1041,8 +1088,19 @@ class _$CourseDetailReadyStateImpl implements CourseDetailReadyState {
   final CourseDetailSyllabusState syllabus;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'CourseDetailState.ready(course: $course, regevaScheduledCourseId: $regevaScheduledCourseId, syllabus: $syllabus)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'CourseDetailState.ready'))
+      ..add(DiagnosticsProperty('course', course))
+      ..add(DiagnosticsProperty(
+          'regevaScheduledCourseId', regevaScheduledCourseId))
+      ..add(DiagnosticsProperty('syllabus', syllabus));
   }
 
   @override

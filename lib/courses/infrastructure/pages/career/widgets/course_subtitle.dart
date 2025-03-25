@@ -8,9 +8,9 @@ class CourseSubtitleWidgetItem {
 }
 
 class CourseSubtitleWidget extends StatelessWidget {
-  const CourseSubtitleWidget({super.key, required this.items});
+  const CourseSubtitleWidget({super.key, required this.children});
 
-  final List<CourseSubtitleWidgetItem> items;
+  final List<CourseSubtitleWidgetItem> children;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class CourseSubtitleWidget extends StatelessWidget {
       spacing: 6,
       runSpacing: 4,
       children: _join(
-          items
+          children
               .map((item) => _buildInfo(
                     text: item.text,
                     icon: item.icon,

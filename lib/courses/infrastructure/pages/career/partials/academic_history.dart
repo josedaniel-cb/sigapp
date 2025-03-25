@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:sigapp/courses/domain/entities/academic_history_term.dart';
 import 'package:sigapp/courses/domain/entities/course_type.dart';
+import 'package:sigapp/courses/infrastructure/pages/career/widgets/course_subtitle.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/partials/empty_courses.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
 
 class CareerPageAcademicHistoryWidget extends StatelessWidget {
@@ -17,6 +19,11 @@ class CareerPageAcademicHistoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (academicHistory.isEmpty) {
+      return EmptyCoursesWidget(
+        message: 'No disponible en este momento',
+      );
+    }
     return ListView(
       children: [
         if (academicHistory.length > 1) _buildChart(context, academicHistory),
@@ -133,29 +140,21 @@ class CareerPageAcademicHistoryWidget extends StatelessWidget {
                     return ListTile(
                       title:
                           Text('${course.courseCode} - ${course.courseName}'),
-                      subtitle: Row(
-                        children: [
-                          Icon((() {
-                            if (course.courseType == CourseType.elective) {
-                              return MdiIcons.leaf;
-                            }
-                            return course.isApproved == true
-                                ? Icons.lock_open
-                                : Icons.lock;
-                          })(), size: 16),
-                          SizedBox(width: 4),
-                          Text((() {
-                            final data = [];
-                            data.add(course.courseType == CourseType.mandatory
-                                ? 'Obligatorio'
-                                : 'Electivo');
-                            data.add(course.credits > 1
-                                ? '${course.credits} créditos'
-                                : '${course.credits} crédito');
-                            return data.join(' • ');
-                          })()),
-                        ],
-                      ),
+                      subtitle: CourseSubtitleWidget(children: [
+                        CourseSubtitleWidgetItem(
+                          icon: course.courseType == CourseType.mandatory
+                              ? MdiIcons.school
+                              : MdiIcons.leaf,
+                          text: course.courseType == CourseType.mandatory
+                              ? 'Obligatorio'
+                              : 'Electivo',
+                        ),
+                        CourseSubtitleWidgetItem(
+                          text: course.credits == 1
+                              ? '1 crédito'
+                              : '${course.credits} créditos',
+                        ),
+                      ]),
                       trailing: Text(
                         course.grade.toStringAsFixed(2),
                         style: TextStyle(
@@ -233,14 +232,15 @@ class CareerPageAcademicHistoryWidget extends StatelessWidget {
       required String normalLabel,
       required String passLabel,
       int? total}) {
+    final totalLabel = total != null ? ' de $total' : '';
     if (normal == pass) {
       return [
-        [normalLabel, '$normal de $total'],
+        [normalLabel, '$normal$totalLabel'],
       ];
     } else {
       return [
-        [normalLabel, '$normal de $total'],
-        [passLabel, '$pass de $total'],
+        [normalLabel, '$normal$totalLabel'],
+        [passLabel, '$pass$totalLabel'],
       ];
     }
   }

@@ -164,7 +164,7 @@ class CoursePrerequisiteChainPage extends StatelessWidget {
           })(),
           // subtitle: Text('Ciclo ${course.info.termRomanNumeral}'),
           subtitle: CourseSubtitleWidget(
-            items: [
+            children: [
               CourseSubtitleWidgetItem(
                 text: 'Ciclo ${course.info.termRomanNumeral}',
                 icon: Icons.book,
