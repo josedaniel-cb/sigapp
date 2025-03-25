@@ -126,6 +126,11 @@ class CourseTreeNode {
     required this.course,
     required this.children,
   });
+
+  int get depth {
+    if (children.isEmpty) return 1;
+    return 1 + children.map((e) => e.depth).reduce((a, b) => a > b ? a : b);
+  }
 }
 
 class ProgramCurriculumTerm {

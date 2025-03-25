@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:sigapp/courses/domain/entities/course_type.dart';
 import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.dart';
+import 'package:sigapp/courses/infrastructure/pages/career/widgets/course_subtitle.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/course_prerequisite_chain_page.dart';
 
 class CareerPageProgramCurriculumWidget extends StatelessWidget {
@@ -20,7 +21,7 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
           return ExpansionTile(
             title: Row(
               children: [
-                Icon(Icons.school),
+                Icon(Icons.book),
                 SizedBox(width: 8),
                 Text(
                   'Ciclo ${term.termRomanNumeral}',
@@ -57,36 +58,8 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
     required ProgramCurriculumCourse course,
     required VoidCallback onSeePrerequisites,
   }) {
-    Widget buildInfo({
-      required String text,
-      IconData? icon,
-    }) {
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (icon != null) ...[
-            Icon(icon, size: 16),
-            SizedBox(width: 4),
-          ],
-          Text(text),
-        ],
-      );
-    }
-
-    List<Widget> join(List<Widget> list, Widget separator) {
-      final result = <Widget>[];
-      for (var i = 0; i < list.length; i++) {
-        result.add(list[i]);
-        if (i < list.length - 1) {
-          result.add(separator);
-        }
-      }
-      return result;
-    }
-
-    final items = <Widget>[];
-
-    items.add(buildInfo(
+    final items = <CourseSubtitleWidgetItem>[];
+    items.add(CourseSubtitleWidgetItem(
       icon: course.info.courseType == CourseType.mandatory
           ? MdiIcons.school
           : MdiIcons.leaf,
@@ -94,19 +67,19 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
           ? 'Obligatorio'
           : 'Electivo',
     ));
-    items.add(buildInfo(
+    items.add(CourseSubtitleWidgetItem(
       text: course.info.credits == 1
           ? '1 crédito'
           : '${course.info.credits} créditos',
     ));
     if (course.prerequisites.isNotEmpty) {
-      items.add(buildInfo(
+      items.add(CourseSubtitleWidgetItem(
         icon: MdiIcons.link,
         text:
             '${course.prerequisites.length} requisito${course.prerequisites.length != 1 ? 's' : ''}',
       ));
     } else if (course.info.termNumber != 1) {
-      items.add(buildInfo(
+      items.add(CourseSubtitleWidgetItem(
         icon: MdiIcons.linkOff,
         text: 'Sin requisitos',
       ));
@@ -114,28 +87,28 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
 
     return ListTile(
       leading: (() {
-        final hasPrerequisitesApproved = course.hasPrerequisitesApproved;
-        final primaryColor = Theme.of(context).primaryColor;
-        return Icon(
-          hasPrerequisitesApproved == true
-              ? Icons.lock_open_outlined
-              : Icons.lock_outline,
-          color: hasPrerequisitesApproved == true
-              ? primaryColor
-              : course.prerequisites.isEmpty
-                  ? Colors.transparent
-                  : null,
-        );
+        if (course.isApproved == true) {
+          return const Icon(Icons.check, color: Colors.green);
+        }
+        if (course.isApproved == false) {
+          return const Icon(Icons.close, color: Colors.red);
+        }
+        if (course.hasPrerequisitesApproved == null) {
+          return Icon(Icons.abc, color: Colors.transparent);
+        }
+        if (course.hasPrerequisitesApproved == true) {
+          return Icon(
+            Icons.lock_open_outlined,
+            color: Theme.of(context).primaryColor,
+          );
+        }
+        return Icon(Icons.lock_outlined);
       })(),
       title: Text(course.info.courseName),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Wrap(
-            spacing: 4,
-            runSpacing: 4,
-            children: join(items, Text('•')),
-          ),
+          CourseSubtitleWidget(items: items),
           if (course.prerequisites.isNotEmpty ||
               course.getDependentCoursesTree(
                       programCurriculum: programCurriculum) !=
@@ -147,12 +120,12 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
             ),
         ],
       ),
-      trailing: course.isApproved == null
-          ? null
-          : Icon(
-              course.isApproved! ? Icons.check : Icons.close,
-              color: course.isApproved! ? Colors.green : Colors.red,
-            ),
+      // trailing: course.isApproved == null
+      //     ? null
+      //     : Icon(
+      //         course.isApproved! ? Icons.check : Icons.close,
+      //         color: course.isApproved! ? Colors.green : Colors.red,
+      //       ),
     );
   }
 }

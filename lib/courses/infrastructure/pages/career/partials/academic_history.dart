@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:sigapp/courses/domain/entities/academic_history_term.dart';
 import 'package:sigapp/courses/domain/entities/course_type.dart';
+import 'package:sigapp/student/domain/entities/student_academic_report.dart';
 
 class CareerPageAcademicHistoryWidget extends StatelessWidget {
   const CareerPageAcademicHistoryWidget({
     super.key,
     required this.academicHistory,
+    required this.report,
   });
 
   final List<AcademicHistoryTerm> academicHistory;
+  final AcademicReport report;
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +23,7 @@ class CareerPageAcademicHistoryWidget extends StatelessWidget {
         ...academicHistory.map(
           (term) {
             return ExpansionTile(
-              title: Text(
-                'Semestre ${term.term.name}',
-              ),
+              title: Text('Semestre ${term.term.name}'),
               children: [
                 if (term.statistics != null)
                   Container(
@@ -104,6 +105,8 @@ class CareerPageAcademicHistoryWidget extends StatelessWidget {
                                         normalLabel: 'Total obligatorios',
                                         passLabel:
                                             'Total obligatorios (aprobados)',
+                                        total:
+                                            report.curriculumMandatoryCredits,
                                       ),
                                       ..._maybeAddCredits(
                                         normal: term.statistics!
@@ -113,6 +116,7 @@ class CareerPageAcademicHistoryWidget extends StatelessWidget {
                                         normalLabel: 'Total electivos',
                                         passLabel:
                                             'Total electivos (aprobados)',
+                                        total: report.curriculumElectiveCredits,
                                       ),
                                     ],
                                   ),
@@ -188,16 +192,14 @@ class CareerPageAcademicHistoryWidget extends StatelessWidget {
           title,
           style: textTheme.titleMedium,
         ),
-        ...data
-            .map((entry) => Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(entry[0]),
-                    SizedBox(width: 8),
-                    Text(entry[1]),
-                  ],
-                ))
-            .toList()
+        ...data.map((entry) => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(entry[0]),
+                SizedBox(width: 8),
+                Text(entry[1]),
+              ],
+            ))
       ],
     );
   }
@@ -225,20 +227,20 @@ class CareerPageAcademicHistoryWidget extends StatelessWidget {
   }
 
   /// This method is used to generate the statistics section of the career page.
-  List<List<String>> _maybeAddCredits({
-    required int normal,
-    required int pass,
-    required String normalLabel,
-    required String passLabel,
-  }) {
+  List<List<String>> _maybeAddCredits(
+      {required int normal,
+      required int pass,
+      required String normalLabel,
+      required String passLabel,
+      int? total}) {
     if (normal == pass) {
       return [
-        [normalLabel, normal.toString()],
+        [normalLabel, '$normal de $total'],
       ];
     } else {
       return [
-        [normalLabel, normal.toString()],
-        [passLabel, pass.toString()],
+        [normalLabel, '$normal de $total'],
+        [passLabel, '$pass de $total'],
       ];
     }
   }

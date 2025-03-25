@@ -22,9 +22,9 @@ class _CareerPageViewState extends State<CareerPageView>
 
   @override
   void initState() {
+    _tabController = TabController(length: 2, vsync: this);
     _cubit = BlocProvider.of<CareerPageCubit>(context);
     _cubit.fetch();
-    _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
 
@@ -79,6 +79,7 @@ class _CareerPageViewState extends State<CareerPageView>
         ),
         CareerPageAcademicHistoryWidget(
           academicHistory: state.programCurriculumProgress.academicHistory,
+          report: state.academicReport,
         ),
       ],
     );

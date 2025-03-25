@@ -20,7 +20,8 @@ mixin _$CareerPageState {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(
-            ProgramCurriculumProgress programCurriculumProgress)
+            ProgramCurriculumProgress programCurriculumProgress,
+            AcademicReport academicReport)
         success,
     required TResult Function(String message) error,
   }) =>
@@ -28,7 +29,8 @@ mixin _$CareerPageState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(ProgramCurriculumProgress programCurriculumProgress)?
+    TResult? Function(ProgramCurriculumProgress programCurriculumProgress,
+            AcademicReport academicReport)?
         success,
     TResult? Function(String message)? error,
   }) =>
@@ -36,7 +38,8 @@ mixin _$CareerPageState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(ProgramCurriculumProgress programCurriculumProgress)?
+    TResult Function(ProgramCurriculumProgress programCurriculumProgress,
+            AcademicReport academicReport)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -141,7 +144,8 @@ class _$CareerPageLoadingStateImpl
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(
-            ProgramCurriculumProgress programCurriculumProgress)
+            ProgramCurriculumProgress programCurriculumProgress,
+            AcademicReport academicReport)
         success,
     required TResult Function(String message) error,
   }) {
@@ -152,7 +156,8 @@ class _$CareerPageLoadingStateImpl
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(ProgramCurriculumProgress programCurriculumProgress)?
+    TResult? Function(ProgramCurriculumProgress programCurriculumProgress,
+            AcademicReport academicReport)?
         success,
     TResult? Function(String message)? error,
   }) {
@@ -163,7 +168,8 @@ class _$CareerPageLoadingStateImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(ProgramCurriculumProgress programCurriculumProgress)?
+    TResult Function(ProgramCurriculumProgress programCurriculumProgress,
+            AcademicReport academicReport)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -220,7 +226,11 @@ abstract class _$$CareerPageSuccessStateImplCopyWith<$Res> {
           $Res Function(_$CareerPageSuccessStateImpl) then) =
       __$$CareerPageSuccessStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({ProgramCurriculumProgress programCurriculumProgress});
+  $Res call(
+      {ProgramCurriculumProgress programCurriculumProgress,
+      AcademicReport academicReport});
+
+  $AcademicReportCopyWith<$Res> get academicReport;
 }
 
 /// @nodoc
@@ -238,13 +248,28 @@ class __$$CareerPageSuccessStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? programCurriculumProgress = null,
+    Object? academicReport = null,
   }) {
     return _then(_$CareerPageSuccessStateImpl(
       programCurriculumProgress: null == programCurriculumProgress
           ? _value.programCurriculumProgress
           : programCurriculumProgress // ignore: cast_nullable_to_non_nullable
               as ProgramCurriculumProgress,
+      academicReport: null == academicReport
+          ? _value.academicReport
+          : academicReport // ignore: cast_nullable_to_non_nullable
+              as AcademicReport,
     ));
+  }
+
+  /// Create a copy of CareerPageState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AcademicReportCopyWith<$Res> get academicReport {
+    return $AcademicReportCopyWith<$Res>(_value.academicReport, (value) {
+      return _then(_value.copyWith(academicReport: value));
+    });
   }
 }
 
@@ -253,14 +278,17 @@ class __$$CareerPageSuccessStateImplCopyWithImpl<$Res>
 class _$CareerPageSuccessStateImpl
     with DiagnosticableTreeMixin
     implements CareerPageSuccessState {
-  const _$CareerPageSuccessStateImpl({required this.programCurriculumProgress});
+  const _$CareerPageSuccessStateImpl(
+      {required this.programCurriculumProgress, required this.academicReport});
 
   @override
   final ProgramCurriculumProgress programCurriculumProgress;
+  @override
+  final AcademicReport academicReport;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CareerPageState.success(programCurriculumProgress: $programCurriculumProgress)';
+    return 'CareerPageState.success(programCurriculumProgress: $programCurriculumProgress, academicReport: $academicReport)';
   }
 
   @override
@@ -269,7 +297,8 @@ class _$CareerPageSuccessStateImpl
     properties
       ..add(DiagnosticsProperty('type', 'CareerPageState.success'))
       ..add(DiagnosticsProperty(
-          'programCurriculumProgress', programCurriculumProgress));
+          'programCurriculumProgress', programCurriculumProgress))
+      ..add(DiagnosticsProperty('academicReport', academicReport));
   }
 
   @override
@@ -279,11 +308,14 @@ class _$CareerPageSuccessStateImpl
             other is _$CareerPageSuccessStateImpl &&
             (identical(other.programCurriculumProgress,
                     programCurriculumProgress) ||
-                other.programCurriculumProgress == programCurriculumProgress));
+                other.programCurriculumProgress == programCurriculumProgress) &&
+            (identical(other.academicReport, academicReport) ||
+                other.academicReport == academicReport));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, programCurriculumProgress);
+  int get hashCode =>
+      Object.hash(runtimeType, programCurriculumProgress, academicReport);
 
   /// Create a copy of CareerPageState
   /// with the given fields replaced by the non-null parameter values.
@@ -299,35 +331,38 @@ class _$CareerPageSuccessStateImpl
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(
-            ProgramCurriculumProgress programCurriculumProgress)
+            ProgramCurriculumProgress programCurriculumProgress,
+            AcademicReport academicReport)
         success,
     required TResult Function(String message) error,
   }) {
-    return success(programCurriculumProgress);
+    return success(programCurriculumProgress, academicReport);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(ProgramCurriculumProgress programCurriculumProgress)?
+    TResult? Function(ProgramCurriculumProgress programCurriculumProgress,
+            AcademicReport academicReport)?
         success,
     TResult? Function(String message)? error,
   }) {
-    return success?.call(programCurriculumProgress);
+    return success?.call(programCurriculumProgress, academicReport);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(ProgramCurriculumProgress programCurriculumProgress)?
+    TResult Function(ProgramCurriculumProgress programCurriculumProgress,
+            AcademicReport academicReport)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(programCurriculumProgress);
+      return success(programCurriculumProgress, academicReport);
     }
     return orElse();
   }
@@ -369,10 +404,12 @@ class _$CareerPageSuccessStateImpl
 
 abstract class CareerPageSuccessState implements CareerPageState {
   const factory CareerPageSuccessState(
-      {required final ProgramCurriculumProgress
-          programCurriculumProgress}) = _$CareerPageSuccessStateImpl;
+          {required final ProgramCurriculumProgress programCurriculumProgress,
+          required final AcademicReport academicReport}) =
+      _$CareerPageSuccessStateImpl;
 
   ProgramCurriculumProgress get programCurriculumProgress;
+  AcademicReport get academicReport;
 
   /// Create a copy of CareerPageState
   /// with the given fields replaced by the non-null parameter values.
@@ -463,7 +500,8 @@ class _$CareerPageErrorStateImpl
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(
-            ProgramCurriculumProgress programCurriculumProgress)
+            ProgramCurriculumProgress programCurriculumProgress,
+            AcademicReport academicReport)
         success,
     required TResult Function(String message) error,
   }) {
@@ -474,7 +512,8 @@ class _$CareerPageErrorStateImpl
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
-    TResult? Function(ProgramCurriculumProgress programCurriculumProgress)?
+    TResult? Function(ProgramCurriculumProgress programCurriculumProgress,
+            AcademicReport academicReport)?
         success,
     TResult? Function(String message)? error,
   }) {
@@ -485,7 +524,8 @@ class _$CareerPageErrorStateImpl
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
-    TResult Function(ProgramCurriculumProgress programCurriculumProgress)?
+    TResult Function(ProgramCurriculumProgress programCurriculumProgress,
+            AcademicReport academicReport)?
         success,
     TResult Function(String message)? error,
     required TResult orElse(),
