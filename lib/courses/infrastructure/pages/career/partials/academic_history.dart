@@ -139,7 +139,7 @@ class CareerPageAcademicHistoryWidget extends StatelessWidget {
                   (course) {
                     return ListTile(
                       title:
-                          Text('${course.courseCode} - ${course.courseName}'),
+                          Text('${course.courseName} (${course.courseCode})'),
                       subtitle: CourseSubtitleWidget(children: [
                         CourseSubtitleWidgetItem(
                           icon: course.courseType == CourseType.mandatory
@@ -154,6 +154,12 @@ class CareerPageAcademicHistoryWidget extends StatelessWidget {
                               ? '1 crédito'
                               : '${course.credits} créditos',
                         ),
+                        if (course.programCurriculumCourse != null)
+                          CourseSubtitleWidgetItem(
+                            icon: Icons.book,
+                            text:
+                                'Ciclo ${course.programCurriculumCourse!.info.termRomanNumeral}',
+                          ),
                       ]),
                       trailing: Text(
                         course.grade.toStringAsFixed(2),

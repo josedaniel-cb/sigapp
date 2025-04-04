@@ -25,11 +25,17 @@ class GetProgramCurriculumProgressUsecase {
         final courseInfo = course.info;
         final history = academicHistoryCourses.where((courseHistory) =>
             courseHistory.courseCode == courseInfo.courseCode);
+        for (final courseHistory in history) {
+          courseHistory.programCurriculumCourse = course;
+        }
         if (history.isNotEmpty) {
           course.lastGrade = history.last.grade;
         }
       }
     }
+
+    // TODO: isAcademicHistoryAvailable
+    // TODO: link academic history item to program curriculum course
 
     return ProgramCurriculumProgress(
       programCurriculum: programCurriculum,

@@ -104,7 +104,7 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
         }
         return Icon(Icons.lock_outlined);
       })(),
-      title: Text(course.info.courseName),
+      title: Text('${course.info.courseName} (${course.info.courseCode})'),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

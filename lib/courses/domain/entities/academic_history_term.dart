@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sigapp/courses/domain/entities/course_type.dart';
+import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.dart';
 import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
 
 part 'academic_history_term.freezed.dart';
@@ -57,6 +58,7 @@ class AcademicHistoryCourse {
   final CourseType courseType;
   final int credits;
   final double grade;
+  ProgramCurriculumCourse? programCurriculumCourse;
 
   AcademicHistoryCourse({
     required this.courseCode,
