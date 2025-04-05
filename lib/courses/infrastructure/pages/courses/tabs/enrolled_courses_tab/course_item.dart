@@ -45,95 +45,76 @@ class CourseItemWidget extends StatelessWidget {
                     title: Text(state.course.data.courseName),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 4,
                       children: [
-                        CourseSubtitleWidget(children: [
-                          // Tipo de curso
-                          state.course.data.courseType == CourseType.mandatory
-                              ? CourseSubtitleWidgetItem(
-                                  text: 'Obligatorio',
-                                  icon: Icons.school,
-                                )
-                              : state.course.data.courseType ==
-                                      CourseType.elective
-                                  ? CourseSubtitleWidgetItem(
-                                      text: 'Electivo',
-                                      icon: MdiIcons.leaf,
-                                    )
-                                  : CourseSubtitleWidgetItem(
-                                      text: 'Tipo desconocido',
+                        CourseSubtitleWidget(
+                          children: [
+                            // Tipo de curso
+                            state.course.data.courseType == CourseType.mandatory
+                                ? CourseSubtitleWidgetItem(
+                                    text: 'Obligatorio',
+                                    icon: Icons.school,
+                                  )
+                                : state.course.data.courseType ==
+                                        CourseType.elective
+                                    ? CourseSubtitleWidgetItem(
+                                        text: 'Electivo',
+                                        icon: MdiIcons.leaf,
+                                      )
+                                    : CourseSubtitleWidgetItem(
+                                        text: 'Tipo desconocido',
+                                      ),
+                            // Créditos
+                            CourseSubtitleWidgetItem(
+                              text: state.course.data.credits == 1
+                                  ? '1 crédito'
+                                  : '${state.course.data.credits} créditos',
+                            ),
+                          ],
+                        ),
+                        Builder(
+                          builder: (context) {
+                            final additionalItems = <CourseSubtitleWidgetItem?>[
+                              // Notas
+                              state.grades.maybeWhen(
+                                loading: () => CourseSubtitleWidgetItem(
+                                    text: 'Notas', loading: true),
+                                loaded: (courseGradeInfo) {
+                                  return courseGradeInfo.grade.maybeWhen(
+                                    loaded: (value, isPartial) =>
+                                        CourseSubtitleWidgetItem(
+                                      text: value.toStringAsFixed(2),
+                                      icon: isPartial
+                                          ? MdiIcons.clipboardCheckOutline
+                                          : MdiIcons.clipboardCheck,
                                     ),
-                          // Créditos
-                          CourseSubtitleWidgetItem(
-                            text: state.course.data.credits == 1
-                                ? '1 crédito'
-                                : '${state.course.data.credits} créditos',
-                          ),
-                        ]),
-                        // Syllabus
-                        CourseSubtitleWidget(children: [
-                          state.syllabus.when(
-                            initial: () => CourseSubtitleWidgetItem(
-                              text: 'Verificando syllabus',
-                              loading: true,
-                            ),
-                            loading: () => CourseSubtitleWidgetItem(
-                              text: 'Verificando syllabus',
-                              loading: true,
-                            ),
-                            loaded: (_) => CourseSubtitleWidgetItem(
-                              text: 'Syllabus disponible',
-                              icon: Icons.check_circle,
-                            ),
-                            notFound: () => CourseSubtitleWidgetItem(
-                              text: 'Syllabus no disponible',
-                              icon: Icons.cancel_outlined,
-                            ),
-                            error: (_) => CourseSubtitleWidgetItem(
-                              text: 'Error al descargar syllabus',
-                              icon: Icons.error,
-                            ),
-                          ),
-                        ]),
-                        CourseSubtitleWidget(children: [
-                          // Notas
-                          state.grades.when(
-                            initial: () => CourseSubtitleWidgetItem(
-                              text: 'Verificando notas',
-                              loading: true,
-                            ),
-                            loading: () => CourseSubtitleWidgetItem(
-                              text: 'Verificando notas',
-                              loading: true,
-                            ),
-                            loaded: (courseGradeInfo) {
-                              final params = courseGradeInfo.grade.maybeWhen(
-                                empty: () => [
-                                  MdiIcons.clipboardAlertOutline,
-                                  'Notas no disponibles'
-                                ],
-                                loaded: (grade, isPartial) => isPartial
-                                    ? [
-                                        MdiIcons.clipboardCheckOutline,
-                                        'Nota parcial: $grade'
-                                      ]
-                                    : [
-                                        MdiIcons.clipboardCheck,
-                                        'Nota final: $grade'
-                                      ],
-                                orElse: () =>
-                                    [Icons.error, 'Error al verificar notas'],
-                              );
-                              return CourseSubtitleWidgetItem(
-                                text: params[1] as String,
-                                icon: params[0] as IconData?,
-                              );
-                            },
-                            error: (_) => CourseSubtitleWidgetItem(
-                              text: 'Error al verificar notas',
-                              icon: Icons.error,
-                            ),
-                          ),
-                        ]),
+                                    orElse: () => null,
+                                  );
+                                },
+                                orElse: () => null,
+                              ),
+                              // Syllabus
+                              state.syllabus.maybeWhen(
+                                loading: () => CourseSubtitleWidgetItem(
+                                  text: 'Syllabus',
+                                  loading: true,
+                                ),
+                                loaded: (_) => CourseSubtitleWidgetItem(
+                                  text: 'Syllabus',
+                                  icon: Icons.check_circle,
+                                ),
+                                orElse: () => null,
+                              ),
+                            ].whereType<CourseSubtitleWidgetItem>().toList();
+
+                            if (additionalItems.isEmpty) {
+                              return const SizedBox.shrink();
+                            }
+
+                            return CourseSubtitleWidget(
+                                children: additionalItems);
+                          },
+                        ),
                       ],
                     ),
                   ),

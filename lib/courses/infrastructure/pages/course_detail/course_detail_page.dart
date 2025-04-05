@@ -19,6 +19,8 @@ class CourseDetailPageWidget extends StatefulWidget {
 }
 
 class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
+  Offset _tapPosition = Offset.zero;
+
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<CourseDetailCubit>(context);
@@ -83,47 +85,53 @@ class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
                           text: state.course.data.googleClassroomCode!));
                     },
                   ),
-                ListTile(
-                  title: Text('Syllabus'),
-                  subtitle: state.syllabus.map(
-                    initial: (_) => Text('-'),
-                    loading: (_) => Text('Cargando'),
-                    loaded: (_) => Text('Disponible'),
-                    notFound: (_) => Text('No disponible'),
-                    error: (_) => Text('Error al descargar'),
-                  ),
-                  trailing: state.syllabus.maybeWhen(
-                    loading: () => LoadingIndicatorIconWidget(),
-                    loaded: (file) => Icon(Icons.open_in_new),
-                    notFound: () => Icon(Icons.refresh),
-                    error: (_) => Icon(Icons.info),
-                    orElse: () => null,
-                  ),
-                  onTap: () {
-                    state.syllabus.maybeWhen(
-                      loaded: (file) => OpenFile.open(file.path),
-                      notFound: () {
-                        cubit.fetchSyllabus(forceDownload: true);
-                      },
-                      error: (_) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Reintentando'),
-                          ),
-                        );
-                        cubit.fetchSyllabus(forceDownload: true);
-                      },
-                      orElse: () => null,
-                    );
+                GestureDetector(
+                  onTapDown: (details) {
+                    // Guarda la posición a del toque.
+                    _tapPosition = details.globalPosition;
                   },
                   onLongPress: () {
                     state.syllabus.maybeWhen(
                       loaded: (_) {
-                        _showPopupMenu(context, cubit);
+                        _showPopupMenu(context, cubit, _tapPosition);
                       },
                       orElse: () => null,
                     );
                   },
+                  child: ListTile(
+                    title: Text('Syllabus'),
+                    subtitle: state.syllabus.map(
+                      initial: (_) => Text('-'),
+                      loading: (_) => Text('Cargando'),
+                      loaded: (_) => Text('Disponible'),
+                      notFound: (_) => Text('No disponible'),
+                      error: (_) => Text('Error al descargar'),
+                    ),
+                    trailing: state.syllabus.maybeWhen(
+                      loading: () => LoadingIndicatorIconWidget(),
+                      loaded: (file) => Icon(Icons.open_in_new),
+                      notFound: () => Icon(Icons.refresh),
+                      error: (_) => Icon(Icons.info),
+                      orElse: () => null,
+                    ),
+                    onTap: () {
+                      state.syllabus.maybeWhen(
+                        loaded: (file) => OpenFile.open(file.path),
+                        notFound: () {
+                          cubit.fetchSyllabus(forceDownload: true);
+                        },
+                        error: (_) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Reintentando'),
+                            ),
+                          );
+                          cubit.fetchSyllabus(forceDownload: true);
+                        },
+                        orElse: () => null,
+                      );
+                    },
+                  ),
                 ),
                 ListTile(
                   title: Text('Notas'),
@@ -271,17 +279,23 @@ class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
     );
   }
 
-  void _showPopupMenu(BuildContext context, CourseDetailCubit cubit) {
+  void _showPopupMenu(
+      BuildContext context, CourseDetailCubit cubit, Offset tapPosition) {
+    final RenderBox overlay =
+        Overlay.of(context).context.findRenderObject() as RenderBox;
     showMenu(
       context: context,
-      position: RelativeRect.fill,
+      position: RelativeRect.fromRect(
+        tapPosition & const Size(40, 40),
+        Offset.zero & overlay.size,
+      ),
       items: [
         PopupMenuItem(
           child: Text('Refrescar'),
           onTap: () {
             cubit.fetchSyllabus(forceDownload: true);
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Actualizando syllabus...')),
+              SnackBar(content: Text('Refrescando syllabus')),
             );
           },
         ),

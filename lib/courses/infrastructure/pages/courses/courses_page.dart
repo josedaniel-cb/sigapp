@@ -94,11 +94,11 @@ class _CoursesPageWidgetState extends State<CoursesPageWidget>
       body: TabBarView(
         controller: _tabController,
         children: [
-          _EnrolledCoursesTabWrapperWidget(
+          _Tab1(
             enrolledCourses: state.enrolledCourses,
             onRetry: () => _cubit.retryFetchEnrolledCourses(),
           ),
-          _ScheduleTabWrapperWidget(
+          _Tab2(
             coursesPageSuccessState: state,
             onRetry: () => _cubit.retryFetchEnrolledCourses(),
           ),
@@ -127,21 +127,17 @@ class _CoursesPageWidgetState extends State<CoursesPageWidget>
   }
 }
 
-class _EnrolledCoursesTabWrapperWidget extends StatefulWidget {
-  const _EnrolledCoursesTabWrapperWidget(
-      {required this.enrolledCourses, required this.onRetry});
+class _Tab1 extends StatefulWidget {
+  const _Tab1({required this.enrolledCourses, required this.onRetry});
 
   final EnrolledCoursesState enrolledCourses;
   final void Function() onRetry;
 
   @override
-  State<_EnrolledCoursesTabWrapperWidget> createState() =>
-      _EnrolledCoursesTabWrapperWidgetState();
+  State<_Tab1> createState() => _Tab1State();
 }
 
-class _EnrolledCoursesTabWrapperWidgetState
-    extends State<_EnrolledCoursesTabWrapperWidget>
-    with AutomaticKeepAliveClientMixin {
+class _Tab1State extends State<_Tab1> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -155,20 +151,17 @@ class _EnrolledCoursesTabWrapperWidgetState
   }
 }
 
-class _ScheduleTabWrapperWidget extends StatefulWidget {
-  const _ScheduleTabWrapperWidget(
-      {required this.coursesPageSuccessState, required this.onRetry});
+class _Tab2 extends StatefulWidget {
+  const _Tab2({required this.coursesPageSuccessState, required this.onRetry});
 
   final CoursesPageSuccessState coursesPageSuccessState;
   final void Function() onRetry;
 
   @override
-  State<_ScheduleTabWrapperWidget> createState() =>
-      _ScheduleTabWrapperWidgetState();
+  State<_Tab2> createState() => _Tab2State();
 }
 
-class _ScheduleTabWrapperWidgetState extends State<_ScheduleTabWrapperWidget>
-    with AutomaticKeepAliveClientMixin {
+class _Tab2State extends State<_Tab2> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 

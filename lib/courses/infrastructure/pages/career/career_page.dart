@@ -74,14 +74,55 @@ class _CareerPageViewState extends State<CareerPageView>
     return TabBarView(
       controller: _tabController,
       children: [
-        CareerPageProgramCurriculumWidget(
-          programCurriculum: state.programCurriculumProgress.programCurriculum,
-        ),
-        CareerPageAcademicHistoryWidget(
-          academicHistory: state.programCurriculumProgress.academicHistory,
-          report: state.academicReport,
-        ),
+        _Tab1(state),
+        _Tab2(state),
       ],
+    );
+  }
+}
+
+class _Tab2 extends StatefulWidget {
+  final CareerPageSuccessState state;
+
+  const _Tab2(this.state);
+
+  @override
+  State<_Tab2> createState() => _Tab2State();
+}
+
+class _Tab2State extends State<_Tab2> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return CareerPageAcademicHistoryWidget(
+      academicHistory: widget.state.programCurriculumProgress.academicHistory,
+      report: widget.state.academicReport,
+    );
+  }
+}
+
+class _Tab1 extends StatefulWidget {
+  final CareerPageSuccessState state;
+
+  const _Tab1(this.state);
+
+  @override
+  State<_Tab1> createState() => _Tab1State();
+}
+
+class _Tab1State extends State<_Tab1> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return CareerPageProgramCurriculumWidget(
+      programCurriculum:
+          widget.state.programCurriculumProgress.programCurriculum,
     );
   }
 }

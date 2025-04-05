@@ -29,19 +29,18 @@ class CourseSubtitleWidget extends StatelessWidget {
 
   Widget _buildInfo(CourseSubtitleWidgetItem item) {
     final children = <Widget>[Text(item.text)];
-    final iconSize = 14.0;
     if (item.loading == true) {
       children.insertAll(0, [
         SizedBox(
-          height: iconSize,
-          width: iconSize,
+          height: 12,
+          width: 12,
           child: CircularProgressIndicator(strokeWidth: 2),
         ),
         SizedBox(width: 4),
       ]);
     } else if (item.icon != null) {
       children.insertAll(0, [
-        Icon(item.icon, size: iconSize),
+        Icon(item.icon, size: 14),
         SizedBox(width: 4),
       ]);
     }
