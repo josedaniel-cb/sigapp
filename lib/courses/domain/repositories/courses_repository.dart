@@ -5,5 +5,4 @@ abstract class CoursesRepository {
   Future<List<EnrolledCourseData>> getEnrolledCourses(String semesterId);
   // TODO: USE
   Future<List<RawCourseRequirement>> getCourseRequirements(String courseCode);
-  Future<List<String>> getStudentCodeAndRegevaTokens();
 }

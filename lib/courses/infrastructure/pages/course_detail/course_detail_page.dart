@@ -125,6 +125,53 @@ class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
                     );
                   },
                 ),
+                ListTile(
+                  title: Text('Notas'),
+                  subtitle: state.grades.map(
+                    initial: (_) => Text('-'),
+                    loading: (_) => Text('Cargando'),
+                    loaded: (_) => Text('Disponible'),
+                    notFound: (_) => Text('No disponible'),
+                    error: (_) => Text('Error al descargar'),
+                  ),
+                  trailing: state.grades.maybeMap(
+                    loading: (_) => LoadingIndicatorIconWidget(),
+                    loaded: (state) => Icon(Icons.open_in_new),
+                    notFound: (_) => Icon(Icons.refresh),
+                    error: (_) => Icon(Icons.info),
+                    orElse: () => null,
+                  ),
+                  onTap: () {
+                    state.grades.maybeMap(
+                      loaded: (state) {
+                        launchUrl(
+                          Uri.parse(state.url),
+                          mode: LaunchMode.externalApplication,
+                        );
+                      },
+                      notFound: (_) {
+                        cubit.fetchGrades(forceDownload: true);
+                      },
+                      error: (_) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Reintentando'),
+                          ),
+                        );
+                        cubit.fetchGrades(forceDownload: true);
+                      },
+                      orElse: () => null,
+                    );
+                  },
+                  // onLongPress: () {
+                  //   state.grades.maybeWhen(
+                  //     loaded: (_) {
+                  //       _showPopupMenu(context, cubit);
+                  //     },
+                  //     orElse: () => null,
+                  //   );
+                  // },
+                ),
                 Divider(),
                 Container(
                   margin: EdgeInsets.only(top: 16),

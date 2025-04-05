@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/courses/application/exceptions/regeva_authentication_exception.dart';
-import 'package:sigapp/courses/domain/repositories/courses_repository.dart';
+import 'package:sigapp/courses/application/services/regeva_auth_service.dart';
 import 'package:sigapp/courses/domain/repositories/local_syllabus_repository.dart';
 import 'package:sigapp/courses/domain/repositories/regeva_repository.dart';
 import 'package:sigapp/courses/domain/value-objects/syllabus_download_data.dart';
@@ -11,10 +11,10 @@ import 'package:sigapp/courses/domain/value-objects/syllabus_download_data.dart'
 @lazySingleton
 class GetSyllabusFileUsecase {
   final RegevaRepository _regevaRepository;
-  final CoursesRepository _coursesRepository;
+  final RegevaAuthService _regevaAuthService;
   final LocalSyllabusRepository _localSyllabusRepository;
 
-  GetSyllabusFileUsecase(this._regevaRepository, this._coursesRepository,
+  GetSyllabusFileUsecase(this._regevaRepository, this._regevaAuthService,
       this._localSyllabusRepository);
 
   Future<File?> execute(String scheduledCourseId, {bool? forceDownload}) async {
@@ -53,12 +53,11 @@ class GetSyllabusFileUsecase {
     }
 
     // If the user is not authenticated, authenticate and try again
-    final [studentCode, token1, token2] =
-        await _coursesRepository.getStudentCodeAndRegevaTokens();
+    final credentials = await _regevaAuthService.getCredentials();
     await _regevaRepository.authenticate(
-      sigaToken1: token1,
-      sigaToken2: token2,
-      studentCode: studentCode,
+      sigaToken1: credentials.token1,
+      sigaToken2: credentials.token2,
+      studentCode: credentials.studentCode,
     );
     return await _regevaRepository.downloadSyllabus(scheduledCourseId);
   }

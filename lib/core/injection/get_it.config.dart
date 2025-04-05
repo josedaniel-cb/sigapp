@@ -43,10 +43,16 @@ import 'package:sigapp/core/infrastructure/http/siga_client.dart' as _i857;
 import 'package:sigapp/core/infrastructure/ui/not_used_pages/schedule_page/partials/export_to_calendar_cubit.dart'
     as _i893;
 import 'package:sigapp/core/injection/register_module.dart' as _i799;
+import 'package:sigapp/courses/application/repositories/regeva_auth_repository.dart'
+    as _i259;
+import 'package:sigapp/courses/application/services/regeva_auth_service.dart'
+    as _i229;
 import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.dart'
     as _i315;
 import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase.dart'
     as _i650;
+import 'package:sigapp/courses/application/usecases/get_grades_url_usecase.dart'
+    as _i54;
 import 'package:sigapp/courses/application/usecases/get_program_curriculum_progress_usecase.dart'
     as _i504;
 import 'package:sigapp/courses/application/usecases/get_syllabus_file_usecase.dart'
@@ -76,10 +82,14 @@ import 'package:sigapp/courses/infrastructure/repositories/local_syllabus_reposi
     as _i717;
 import 'package:sigapp/courses/infrastructure/repositories/program_curriculum_repository.dart'
     as _i654;
+import 'package:sigapp/courses/infrastructure/repositories/regeva_auth_repository.dart'
+    as _i136;
 import 'package:sigapp/courses/infrastructure/repositories/regeva_repository.dart'
     as _i75;
 import 'package:sigapp/courses/infrastructure/repositories/schedule_repository.dart'
     as _i637;
+import 'package:sigapp/courses/infrastructure/services/regeva_auth_service.dart'
+    as _i781;
 import 'package:sigapp/semester/application/get_semester_context_usecase.dart'
     as _i320;
 import 'package:sigapp/shared/domain/service/progress_indicator_service.dart'
@@ -143,6 +153,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i75.RegevaRepositoryImpl(gh<_i986.RegevaClient>()));
     gh.singleton<_i679.SessionLifecycleService>(
         () => _i649.SessionLifecycleServiceImpl(gh<_i857.SigaClient>()));
+    gh.lazySingleton<_i259.RegevaAuthRepository>(
+        () => _i136.RegevaAuthRepositoryImpl(gh<_i857.SigaClient>()));
     gh.lazySingleton<_i986.CoursesRepository>(
         () => _i892.CoursesRepositoryImpl(gh<_i857.SigaClient>()));
     gh.lazySingleton<_i594.StudentRepository>(
@@ -154,16 +166,12 @@ extension GetItInjectableX on _i174.GetIt {
             gh<_i1010.SharedPreferencesAuthRepository>()));
     gh.lazySingleton<_i974.ScheduleRepository>(
         () => _i637.ScheduleRepositoryImpl(gh<_i857.SigaClient>()));
+    gh.lazySingleton<_i229.RegevaAuthService>(
+        () => _i781.RegevaAuthServiceImpl(gh<_i259.RegevaAuthRepository>()));
     gh.lazySingleton<_i889.ProgramCurriculumRepository>(
         () => _i654.ProgramCurriculumRepositoryImpl(gh<_i857.SigaClient>()));
     gh.singleton<_i10.AuthRepository>(
         () => _i127.AuthRepositoryImpl(gh<_i857.SigaClient>()));
-    gh.lazySingleton<_i445.GetSyllabusFileUsecase>(
-        () => _i445.GetSyllabusFileUsecase(
-              gh<_i348.RegevaRepository>(),
-              gh<_i986.CoursesRepository>(),
-              gh<_i504.LocalSyllabusRepository>(),
-            ));
     gh.factory<_i755.EnsureNoPendingSurveyUseCase>(
         () => _i755.EnsureNoPendingSurveyUseCase(
               gh<_i10.AuthRepository>(),
@@ -172,8 +180,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i504.GetProgramCurriculumProgressUsecase>(() =>
         _i504.GetProgramCurriculumProgressUsecase(
             gh<_i889.ProgramCurriculumRepository>()));
-    gh.factory<_i215.CourseDetailCubit>(
-        () => _i215.CourseDetailCubit(gh<_i445.GetSyllabusFileUsecase>()));
     gh.singleton<_i469.SessionInfoService>(() => _i1002.SessionInfoServiceImpl(
           gh<_i771.GetAcademicReportUsecase>(),
           gh<_i320.GetSemesterContextUsecase>(),
@@ -182,10 +188,20 @@ extension GetItInjectableX on _i174.GetIt {
         () => registerModule.router(gh<_i193.GetStoredCredentialsUseCase>()));
     gh.lazySingleton<_i315.GetClassScheduleUsecase>(
         () => _i315.GetClassScheduleUsecase(gh<_i974.ScheduleRepository>()));
+    gh.lazySingleton<_i445.GetSyllabusFileUsecase>(
+        () => _i445.GetSyllabusFileUsecase(
+              gh<_i348.RegevaRepository>(),
+              gh<_i229.RegevaAuthService>(),
+              gh<_i504.LocalSyllabusRepository>(),
+            ));
     gh.factory<_i151.StudentPageViewCubit>(
         () => _i151.StudentPageViewCubit(gh<_i469.SessionInfoService>()));
     gh.factory<_i908.KeepSessionAliveUsecase>(
         () => _i908.KeepSessionAliveUsecase(gh<_i10.AuthRepository>()));
+    gh.lazySingleton<_i54.GetGradesUrlUsecase>(() => _i54.GetGradesUrlUsecase(
+          gh<_i229.RegevaAuthService>(),
+          gh<_i348.RegevaRepository>(),
+        ));
     gh.lazySingleton<_i650.GetEnrolledCoursesUsecase>(
         () => _i650.GetEnrolledCoursesUsecase(
               gh<_i986.CoursesRepository>(),
@@ -202,6 +218,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i525.CoursesPageCubit>(() => _i525.CoursesPageCubit(
           gh<_i650.GetEnrolledCoursesUsecase>(),
           gh<_i469.SessionInfoService>(),
+        ));
+    gh.factory<_i215.CourseDetailCubit>(() => _i215.CourseDetailCubit(
+          gh<_i445.GetSyllabusFileUsecase>(),
+          gh<_i54.GetGradesUrlUsecase>(),
         ));
     gh.factory<_i48.SignOutUseCase>(() => _i48.SignOutUseCase(
           gh<_i1010.SharedPreferencesAuthRepository>(),
