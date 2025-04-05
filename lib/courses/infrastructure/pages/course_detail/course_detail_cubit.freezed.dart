@@ -1305,9 +1305,7 @@ mixin _$CourseDetailGradesState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String url, double? grade, bool? isPartial)
-        loaded,
-    required TResult Function() notFound,
+    required TResult Function(CourseGradeInfo value) loaded,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -1315,8 +1313,7 @@ mixin _$CourseDetailGradesState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String url, double? grade, bool? isPartial)? loaded,
-    TResult? Function()? notFound,
+    TResult? Function(CourseGradeInfo value)? loaded,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -1324,8 +1321,7 @@ mixin _$CourseDetailGradesState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String url, double? grade, bool? isPartial)? loaded,
-    TResult Function()? notFound,
+    TResult Function(CourseGradeInfo value)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -1335,7 +1331,6 @@ mixin _$CourseDetailGradesState {
     required TResult Function(_CourseDetailGradesStateInitial value) initial,
     required TResult Function(_CourseDetailGradesStateLoading value) loading,
     required TResult Function(_CourseDetailGradesStateLoaded value) loaded,
-    required TResult Function(_CourseDetailGradesStateNotFound value) notFound,
     required TResult Function(_CourseDetailGradesStateError value) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -1344,7 +1339,6 @@ mixin _$CourseDetailGradesState {
     TResult? Function(_CourseDetailGradesStateInitial value)? initial,
     TResult? Function(_CourseDetailGradesStateLoading value)? loading,
     TResult? Function(_CourseDetailGradesStateLoaded value)? loaded,
-    TResult? Function(_CourseDetailGradesStateNotFound value)? notFound,
     TResult? Function(_CourseDetailGradesStateError value)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -1353,7 +1347,6 @@ mixin _$CourseDetailGradesState {
     TResult Function(_CourseDetailGradesStateInitial value)? initial,
     TResult Function(_CourseDetailGradesStateLoading value)? loading,
     TResult Function(_CourseDetailGradesStateLoaded value)? loaded,
-    TResult Function(_CourseDetailGradesStateNotFound value)? notFound,
     TResult Function(_CourseDetailGradesStateError value)? error,
     required TResult orElse(),
   }) =>
@@ -1438,9 +1431,7 @@ class _$CourseDetailGradesStateInitialImpl
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String url, double? grade, bool? isPartial)
-        loaded,
-    required TResult Function() notFound,
+    required TResult Function(CourseGradeInfo value) loaded,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -1451,8 +1442,7 @@ class _$CourseDetailGradesStateInitialImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String url, double? grade, bool? isPartial)? loaded,
-    TResult? Function()? notFound,
+    TResult? Function(CourseGradeInfo value)? loaded,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -1463,8 +1453,7 @@ class _$CourseDetailGradesStateInitialImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String url, double? grade, bool? isPartial)? loaded,
-    TResult Function()? notFound,
+    TResult Function(CourseGradeInfo value)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -1480,7 +1469,6 @@ class _$CourseDetailGradesStateInitialImpl
     required TResult Function(_CourseDetailGradesStateInitial value) initial,
     required TResult Function(_CourseDetailGradesStateLoading value) loading,
     required TResult Function(_CourseDetailGradesStateLoaded value) loaded,
-    required TResult Function(_CourseDetailGradesStateNotFound value) notFound,
     required TResult Function(_CourseDetailGradesStateError value) error,
   }) {
     return initial(this);
@@ -1492,7 +1480,6 @@ class _$CourseDetailGradesStateInitialImpl
     TResult? Function(_CourseDetailGradesStateInitial value)? initial,
     TResult? Function(_CourseDetailGradesStateLoading value)? loading,
     TResult? Function(_CourseDetailGradesStateLoaded value)? loaded,
-    TResult? Function(_CourseDetailGradesStateNotFound value)? notFound,
     TResult? Function(_CourseDetailGradesStateError value)? error,
   }) {
     return initial?.call(this);
@@ -1504,7 +1491,6 @@ class _$CourseDetailGradesStateInitialImpl
     TResult Function(_CourseDetailGradesStateInitial value)? initial,
     TResult Function(_CourseDetailGradesStateLoading value)? loading,
     TResult Function(_CourseDetailGradesStateLoaded value)? loaded,
-    TResult Function(_CourseDetailGradesStateNotFound value)? notFound,
     TResult Function(_CourseDetailGradesStateError value)? error,
     required TResult orElse(),
   }) {
@@ -1577,9 +1563,7 @@ class _$CourseDetailGradesStateLoadingImpl
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String url, double? grade, bool? isPartial)
-        loaded,
-    required TResult Function() notFound,
+    required TResult Function(CourseGradeInfo value) loaded,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -1590,8 +1574,7 @@ class _$CourseDetailGradesStateLoadingImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String url, double? grade, bool? isPartial)? loaded,
-    TResult? Function()? notFound,
+    TResult? Function(CourseGradeInfo value)? loaded,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -1602,8 +1585,7 @@ class _$CourseDetailGradesStateLoadingImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String url, double? grade, bool? isPartial)? loaded,
-    TResult Function()? notFound,
+    TResult Function(CourseGradeInfo value)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -1619,7 +1601,6 @@ class _$CourseDetailGradesStateLoadingImpl
     required TResult Function(_CourseDetailGradesStateInitial value) initial,
     required TResult Function(_CourseDetailGradesStateLoading value) loading,
     required TResult Function(_CourseDetailGradesStateLoaded value) loaded,
-    required TResult Function(_CourseDetailGradesStateNotFound value) notFound,
     required TResult Function(_CourseDetailGradesStateError value) error,
   }) {
     return loading(this);
@@ -1631,7 +1612,6 @@ class _$CourseDetailGradesStateLoadingImpl
     TResult? Function(_CourseDetailGradesStateInitial value)? initial,
     TResult? Function(_CourseDetailGradesStateLoading value)? loading,
     TResult? Function(_CourseDetailGradesStateLoaded value)? loaded,
-    TResult? Function(_CourseDetailGradesStateNotFound value)? notFound,
     TResult? Function(_CourseDetailGradesStateError value)? error,
   }) {
     return loading?.call(this);
@@ -1643,7 +1623,6 @@ class _$CourseDetailGradesStateLoadingImpl
     TResult Function(_CourseDetailGradesStateInitial value)? initial,
     TResult Function(_CourseDetailGradesStateLoading value)? loading,
     TResult Function(_CourseDetailGradesStateLoaded value)? loaded,
-    TResult Function(_CourseDetailGradesStateNotFound value)? notFound,
     TResult Function(_CourseDetailGradesStateError value)? error,
     required TResult orElse(),
   }) {
@@ -1667,7 +1646,7 @@ abstract class _$$CourseDetailGradesStateLoadedImplCopyWith<$Res> {
           $Res Function(_$CourseDetailGradesStateLoadedImpl) then) =
       __$$CourseDetailGradesStateLoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String url, double? grade, bool? isPartial});
+  $Res call({CourseGradeInfo value});
 }
 
 /// @nodoc
@@ -1685,23 +1664,13 @@ class __$$CourseDetailGradesStateLoadedImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? url = null,
-    Object? grade = freezed,
-    Object? isPartial = freezed,
+    Object? value = null,
   }) {
     return _then(_$CourseDetailGradesStateLoadedImpl(
-      url: null == url
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
-              as String,
-      grade: freezed == grade
-          ? _value.grade
-          : grade // ignore: cast_nullable_to_non_nullable
-              as double?,
-      isPartial: freezed == isPartial
-          ? _value.isPartial
-          : isPartial // ignore: cast_nullable_to_non_nullable
-              as bool?,
+      null == value
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as CourseGradeInfo,
     ));
   }
 }
@@ -1711,19 +1680,14 @@ class __$$CourseDetailGradesStateLoadedImplCopyWithImpl<$Res>
 class _$CourseDetailGradesStateLoadedImpl
     with DiagnosticableTreeMixin
     implements _CourseDetailGradesStateLoaded {
-  const _$CourseDetailGradesStateLoadedImpl(
-      {required this.url, this.grade, this.isPartial});
+  const _$CourseDetailGradesStateLoadedImpl(this.value);
 
   @override
-  final String url;
-  @override
-  final double? grade;
-  @override
-  final bool? isPartial;
+  final CourseGradeInfo value;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CourseDetailGradesState.loaded(url: $url, grade: $grade, isPartial: $isPartial)';
+    return 'CourseDetailGradesState.loaded(value: $value)';
   }
 
   @override
@@ -1731,9 +1695,7 @@ class _$CourseDetailGradesStateLoadedImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'CourseDetailGradesState.loaded'))
-      ..add(DiagnosticsProperty('url', url))
-      ..add(DiagnosticsProperty('grade', grade))
-      ..add(DiagnosticsProperty('isPartial', isPartial));
+      ..add(DiagnosticsProperty('value', value));
   }
 
   @override
@@ -1741,14 +1703,11 @@ class _$CourseDetailGradesStateLoadedImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CourseDetailGradesStateLoadedImpl &&
-            (identical(other.url, url) || other.url == url) &&
-            (identical(other.grade, grade) || other.grade == grade) &&
-            (identical(other.isPartial, isPartial) ||
-                other.isPartial == isPartial));
+            (identical(other.value, value) || other.value == value));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, url, grade, isPartial);
+  int get hashCode => Object.hash(runtimeType, value);
 
   /// Create a copy of CourseDetailGradesState
   /// with the given fields replaced by the non-null parameter values.
@@ -1765,12 +1724,10 @@ class _$CourseDetailGradesStateLoadedImpl
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String url, double? grade, bool? isPartial)
-        loaded,
-    required TResult Function() notFound,
+    required TResult Function(CourseGradeInfo value) loaded,
     required TResult Function(String message) error,
   }) {
-    return loaded(url, grade, isPartial);
+    return loaded(value);
   }
 
   @override
@@ -1778,11 +1735,10 @@ class _$CourseDetailGradesStateLoadedImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String url, double? grade, bool? isPartial)? loaded,
-    TResult? Function()? notFound,
+    TResult? Function(CourseGradeInfo value)? loaded,
     TResult? Function(String message)? error,
   }) {
-    return loaded?.call(url, grade, isPartial);
+    return loaded?.call(value);
   }
 
   @override
@@ -1790,13 +1746,12 @@ class _$CourseDetailGradesStateLoadedImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String url, double? grade, bool? isPartial)? loaded,
-    TResult Function()? notFound,
+    TResult Function(CourseGradeInfo value)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(url, grade, isPartial);
+      return loaded(value);
     }
     return orElse();
   }
@@ -1807,7 +1762,6 @@ class _$CourseDetailGradesStateLoadedImpl
     required TResult Function(_CourseDetailGradesStateInitial value) initial,
     required TResult Function(_CourseDetailGradesStateLoading value) loading,
     required TResult Function(_CourseDetailGradesStateLoaded value) loaded,
-    required TResult Function(_CourseDetailGradesStateNotFound value) notFound,
     required TResult Function(_CourseDetailGradesStateError value) error,
   }) {
     return loaded(this);
@@ -1819,7 +1773,6 @@ class _$CourseDetailGradesStateLoadedImpl
     TResult? Function(_CourseDetailGradesStateInitial value)? initial,
     TResult? Function(_CourseDetailGradesStateLoading value)? loading,
     TResult? Function(_CourseDetailGradesStateLoaded value)? loaded,
-    TResult? Function(_CourseDetailGradesStateNotFound value)? notFound,
     TResult? Function(_CourseDetailGradesStateError value)? error,
   }) {
     return loaded?.call(this);
@@ -1831,7 +1784,6 @@ class _$CourseDetailGradesStateLoadedImpl
     TResult Function(_CourseDetailGradesStateInitial value)? initial,
     TResult Function(_CourseDetailGradesStateLoading value)? loading,
     TResult Function(_CourseDetailGradesStateLoaded value)? loaded,
-    TResult Function(_CourseDetailGradesStateNotFound value)? notFound,
     TResult Function(_CourseDetailGradesStateError value)? error,
     required TResult orElse(),
   }) {
@@ -1844,14 +1796,10 @@ class _$CourseDetailGradesStateLoadedImpl
 
 abstract class _CourseDetailGradesStateLoaded
     implements CourseDetailGradesState {
-  const factory _CourseDetailGradesStateLoaded(
-      {required final String url,
-      final double? grade,
-      final bool? isPartial}) = _$CourseDetailGradesStateLoadedImpl;
+  const factory _CourseDetailGradesStateLoaded(final CourseGradeInfo value) =
+      _$CourseDetailGradesStateLoadedImpl;
 
-  String get url;
-  double? get grade;
-  bool? get isPartial;
+  CourseGradeInfo get value;
 
   /// Create a copy of CourseDetailGradesState
   /// with the given fields replaced by the non-null parameter values.
@@ -1859,145 +1807,6 @@ abstract class _CourseDetailGradesStateLoaded
   _$$CourseDetailGradesStateLoadedImplCopyWith<
           _$CourseDetailGradesStateLoadedImpl>
       get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$CourseDetailGradesStateNotFoundImplCopyWith<$Res> {
-  factory _$$CourseDetailGradesStateNotFoundImplCopyWith(
-          _$CourseDetailGradesStateNotFoundImpl value,
-          $Res Function(_$CourseDetailGradesStateNotFoundImpl) then) =
-      __$$CourseDetailGradesStateNotFoundImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$CourseDetailGradesStateNotFoundImplCopyWithImpl<$Res>
-    extends _$CourseDetailGradesStateCopyWithImpl<$Res,
-        _$CourseDetailGradesStateNotFoundImpl>
-    implements _$$CourseDetailGradesStateNotFoundImplCopyWith<$Res> {
-  __$$CourseDetailGradesStateNotFoundImplCopyWithImpl(
-      _$CourseDetailGradesStateNotFoundImpl _value,
-      $Res Function(_$CourseDetailGradesStateNotFoundImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of CourseDetailGradesState
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$CourseDetailGradesStateNotFoundImpl
-    with DiagnosticableTreeMixin
-    implements _CourseDetailGradesStateNotFound {
-  const _$CourseDetailGradesStateNotFoundImpl();
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CourseDetailGradesState.notFound()';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'CourseDetailGradesState.notFound'));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$CourseDetailGradesStateNotFoundImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(String url, double? grade, bool? isPartial)
-        loaded,
-    required TResult Function() notFound,
-    required TResult Function(String message) error,
-  }) {
-    return notFound();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(String url, double? grade, bool? isPartial)? loaded,
-    TResult? Function()? notFound,
-    TResult? Function(String message)? error,
-  }) {
-    return notFound?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(String url, double? grade, bool? isPartial)? loaded,
-    TResult Function()? notFound,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (notFound != null) {
-      return notFound();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(_CourseDetailGradesStateInitial value) initial,
-    required TResult Function(_CourseDetailGradesStateLoading value) loading,
-    required TResult Function(_CourseDetailGradesStateLoaded value) loaded,
-    required TResult Function(_CourseDetailGradesStateNotFound value) notFound,
-    required TResult Function(_CourseDetailGradesStateError value) error,
-  }) {
-    return notFound(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(_CourseDetailGradesStateInitial value)? initial,
-    TResult? Function(_CourseDetailGradesStateLoading value)? loading,
-    TResult? Function(_CourseDetailGradesStateLoaded value)? loaded,
-    TResult? Function(_CourseDetailGradesStateNotFound value)? notFound,
-    TResult? Function(_CourseDetailGradesStateError value)? error,
-  }) {
-    return notFound?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(_CourseDetailGradesStateInitial value)? initial,
-    TResult Function(_CourseDetailGradesStateLoading value)? loading,
-    TResult Function(_CourseDetailGradesStateLoaded value)? loaded,
-    TResult Function(_CourseDetailGradesStateNotFound value)? notFound,
-    TResult Function(_CourseDetailGradesStateError value)? error,
-    required TResult orElse(),
-  }) {
-    if (notFound != null) {
-      return notFound(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class _CourseDetailGradesStateNotFound
-    implements CourseDetailGradesState {
-  const factory _CourseDetailGradesStateNotFound() =
-      _$CourseDetailGradesStateNotFoundImpl;
 }
 
 /// @nodoc
@@ -2085,9 +1894,7 @@ class _$CourseDetailGradesStateErrorImpl
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(String url, double? grade, bool? isPartial)
-        loaded,
-    required TResult Function() notFound,
+    required TResult Function(CourseGradeInfo value) loaded,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -2098,8 +1905,7 @@ class _$CourseDetailGradesStateErrorImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(String url, double? grade, bool? isPartial)? loaded,
-    TResult? Function()? notFound,
+    TResult? Function(CourseGradeInfo value)? loaded,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -2110,8 +1916,7 @@ class _$CourseDetailGradesStateErrorImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(String url, double? grade, bool? isPartial)? loaded,
-    TResult Function()? notFound,
+    TResult Function(CourseGradeInfo value)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -2127,7 +1932,6 @@ class _$CourseDetailGradesStateErrorImpl
     required TResult Function(_CourseDetailGradesStateInitial value) initial,
     required TResult Function(_CourseDetailGradesStateLoading value) loading,
     required TResult Function(_CourseDetailGradesStateLoaded value) loaded,
-    required TResult Function(_CourseDetailGradesStateNotFound value) notFound,
     required TResult Function(_CourseDetailGradesStateError value) error,
   }) {
     return error(this);
@@ -2139,7 +1943,6 @@ class _$CourseDetailGradesStateErrorImpl
     TResult? Function(_CourseDetailGradesStateInitial value)? initial,
     TResult? Function(_CourseDetailGradesStateLoading value)? loading,
     TResult? Function(_CourseDetailGradesStateLoaded value)? loaded,
-    TResult? Function(_CourseDetailGradesStateNotFound value)? notFound,
     TResult? Function(_CourseDetailGradesStateError value)? error,
   }) {
     return error?.call(this);
@@ -2151,7 +1954,6 @@ class _$CourseDetailGradesStateErrorImpl
     TResult Function(_CourseDetailGradesStateInitial value)? initial,
     TResult Function(_CourseDetailGradesStateLoading value)? loading,
     TResult Function(_CourseDetailGradesStateLoaded value)? loaded,
-    TResult Function(_CourseDetailGradesStateNotFound value)? notFound,
     TResult Function(_CourseDetailGradesStateError value)? error,
     required TResult orElse(),
   }) {

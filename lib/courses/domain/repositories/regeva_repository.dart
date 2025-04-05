@@ -1,3 +1,4 @@
+import 'package:sigapp/courses/domain/value-objects/course_grade.dart';
 import 'package:sigapp/courses/domain/value-objects/syllabus_download_data.dart';
 
 abstract class RegevaRepository {
@@ -18,4 +19,11 @@ abstract class RegevaRepository {
   Future<SyllabusDownloadData?> downloadSyllabus(String scheduledCourseId);
 
   Future<void> disposeCookies();
+
+  Future<CourseGradeValue?> getCourseGrade({
+    required String scheduledCourseId,
+    required String studentCode,
+    required String sigaToken1,
+    required String sigaToken2,
+  });
 }

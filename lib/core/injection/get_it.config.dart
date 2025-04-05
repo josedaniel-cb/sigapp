@@ -49,10 +49,10 @@ import 'package:sigapp/courses/application/services/regeva_auth_service.dart'
     as _i229;
 import 'package:sigapp/courses/application/usecases/get_class_schedule_usecase.dart'
     as _i315;
+import 'package:sigapp/courses/application/usecases/get_course_grade_usecase.dart'
+    as _i504;
 import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase.dart'
     as _i650;
-import 'package:sigapp/courses/application/usecases/get_grades_url_usecase.dart'
-    as _i54;
 import 'package:sigapp/courses/application/usecases/get_program_curriculum_progress_usecase.dart'
     as _i504;
 import 'package:sigapp/courses/application/usecases/get_syllabus_file_usecase.dart'
@@ -198,9 +198,14 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i151.StudentPageViewCubit(gh<_i469.SessionInfoService>()));
     gh.factory<_i908.KeepSessionAliveUsecase>(
         () => _i908.KeepSessionAliveUsecase(gh<_i10.AuthRepository>()));
-    gh.lazySingleton<_i54.GetGradesUrlUsecase>(() => _i54.GetGradesUrlUsecase(
-          gh<_i229.RegevaAuthService>(),
-          gh<_i348.RegevaRepository>(),
+    gh.lazySingleton<_i504.GetCourseGradeUsecase>(
+        () => _i504.GetCourseGradeUsecase(
+              gh<_i229.RegevaAuthService>(),
+              gh<_i348.RegevaRepository>(),
+            ));
+    gh.factory<_i215.CourseDetailCubit>(() => _i215.CourseDetailCubit(
+          gh<_i445.GetSyllabusFileUsecase>(),
+          gh<_i504.GetCourseGradeUsecase>(),
         ));
     gh.lazySingleton<_i650.GetEnrolledCoursesUsecase>(
         () => _i650.GetEnrolledCoursesUsecase(
@@ -218,10 +223,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i525.CoursesPageCubit>(() => _i525.CoursesPageCubit(
           gh<_i650.GetEnrolledCoursesUsecase>(),
           gh<_i469.SessionInfoService>(),
-        ));
-    gh.factory<_i215.CourseDetailCubit>(() => _i215.CourseDetailCubit(
-          gh<_i445.GetSyllabusFileUsecase>(),
-          gh<_i54.GetGradesUrlUsecase>(),
         ));
     gh.factory<_i48.SignOutUseCase>(() => _i48.SignOutUseCase(
           gh<_i1010.SharedPreferencesAuthRepository>(),

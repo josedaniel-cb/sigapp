@@ -130,27 +130,49 @@ class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
                   subtitle: state.grades.map(
                     initial: (_) => Text('-'),
                     loading: (_) => Text('Cargando'),
-                    loaded: (_) => Text('Disponible'),
-                    notFound: (_) => Text('No disponible'),
-                    error: (_) => Text('Error al descargar'),
+                    loaded: (state) {
+                      return state.value.grade.maybeWhen(
+                        loaded: (value, isPartial) {
+                          return Text(
+                            isPartial
+                                ? 'Nota parcial: ${value.toStringAsFixed(2)}'
+                                : 'Nota final: ${value.toStringAsFixed(2)}',
+                          );
+                        },
+                        empty: () {
+                          return Text('No disponibles');
+                        },
+                        orElse: () {
+                          return null;
+                        },
+                      );
+                    },
+                    error: (_) => Text('Error al obtener notas'),
                   ),
                   trailing: state.grades.maybeMap(
                     loading: (_) => LoadingIndicatorIconWidget(),
                     loaded: (state) => Icon(Icons.open_in_new),
-                    notFound: (_) => Icon(Icons.refresh),
                     error: (_) => Icon(Icons.info),
                     orElse: () => null,
                   ),
                   onTap: () {
                     state.grades.maybeMap(
                       loaded: (state) {
-                        launchUrl(
-                          Uri.parse(state.url),
-                          mode: LaunchMode.externalApplication,
+                        state.maybeWhen(
+                          loaded: (value) {
+                            launchUrl(
+                              Uri.parse(value.url),
+                              mode: LaunchMode.externalApplication,
+                            );
+                            value.grade.maybeWhen(
+                              empty: () {
+                                cubit.fetchGrades(forceDownload: true);
+                              },
+                              orElse: () => null,
+                            );
+                          },
+                          orElse: () => null,
                         );
-                      },
-                      notFound: (_) {
-                        cubit.fetchGrades(forceDownload: true);
                       },
                       error: (_) {
                         ScaffoldMessenger.of(context).showSnackBar(

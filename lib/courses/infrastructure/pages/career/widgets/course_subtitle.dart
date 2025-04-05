@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 class CourseSubtitleWidgetItem {
   final String text;
   final IconData? icon;
+  final bool? loading;
 
-  CourseSubtitleWidgetItem({required this.text, this.icon});
+  CourseSubtitleWidgetItem({
+    required this.text,
+    this.icon,
+    this.loading,
+  });
 }
 
 class CourseSubtitleWidget extends StatelessWidget {
@@ -17,30 +22,32 @@ class CourseSubtitleWidget extends StatelessWidget {
     return Wrap(
       spacing: 6,
       runSpacing: 4,
-      children: _join(
-          children
-              .map((item) => _buildInfo(
-                    text: item.text,
-                    icon: item.icon,
-                  ))
-              .toList(),
-          Text('•')),
+      children:
+          _join(children.map((item) => _buildInfo(item)).toList(), Text('•')),
     );
   }
 
-  Widget _buildInfo({
-    required String text,
-    IconData? icon,
-  }) {
+  Widget _buildInfo(CourseSubtitleWidgetItem item) {
+    final children = <Widget>[Text(item.text)];
+    final iconSize = 14.0;
+    if (item.loading == true) {
+      children.insertAll(0, [
+        SizedBox(
+          height: iconSize,
+          width: iconSize,
+          child: CircularProgressIndicator(strokeWidth: 2),
+        ),
+        SizedBox(width: 4),
+      ]);
+    } else if (item.icon != null) {
+      children.insertAll(0, [
+        Icon(item.icon, size: iconSize),
+        SizedBox(width: 4),
+      ]);
+    }
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: [
-        if (icon != null) ...[
-          Icon(icon, size: 16),
-          SizedBox(width: 4),
-        ],
-        Text(text),
-      ],
+      children: children,
     );
   }
 

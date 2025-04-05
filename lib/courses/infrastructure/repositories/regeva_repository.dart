@@ -5,7 +5,9 @@ import 'package:injectable/injectable.dart';
 import 'package:sigapp/core/infrastructure/http/regeva_client.dart';
 import 'package:sigapp/courses/application/exceptions/regeva_authentication_exception.dart';
 import 'package:sigapp/courses/domain/repositories/regeva_repository.dart';
+import 'package:sigapp/courses/domain/value-objects/course_grade.dart';
 import 'package:sigapp/courses/domain/value-objects/syllabus_download_data.dart';
+import 'package:html/parser.dart' as htmlParser;
 
 @LazySingleton(as: RegevaRepository)
 class RegevaRepositoryImpl implements RegevaRepository {
@@ -46,6 +48,19 @@ class RegevaRepositoryImpl implements RegevaRepository {
         followRedirects: false,
       ),
     );
+
+    _ensureRedirectionSuccess(response);
+
+    final setCookieHeaders = response.headers['set-cookie'] ?? [];
+    if (setCookieHeaders.isEmpty) {
+      throw RegevaAuthenticationException(
+          'No set-cookie headers found, authentication failed');
+    }
+
+    return;
+  }
+
+  void _ensureRedirectionSuccess(Response<dynamic> response) {
     final locationHeaders = response.headers['location'] ?? [];
     if (response.statusCode == 302 &&
         !locationHeaders.any((value) =>
@@ -53,12 +68,6 @@ class RegevaRepositoryImpl implements RegevaRepository {
       throw RegevaAuthenticationException(
           'Redirection indicates authentication failure');
     }
-    final setCookieHeaders = response.headers['set-cookie'] ?? [];
-    if (setCookieHeaders.isEmpty) {
-      throw RegevaAuthenticationException(
-          'No set-cookie headers found, authentication failed');
-    }
-    return;
   }
 
   // Node.js request equivalent:
@@ -87,12 +96,7 @@ class RegevaRepositoryImpl implements RegevaRepository {
     );
 
     // Verify authentication error
-    final locationHeaders = response.headers['location'] ?? [];
-    if (response.statusCode == 302 &&
-        locationHeaders.any((value) =>
-            value.startsWith(RegevaClient.forceSignOutRedirectionLocation))) {
-      throw RegevaAuthenticationException('Regeva authentication failed');
-    }
+    _ensureSignOutNotTriggered(response);
 
     if (response.statusCode != 200) return null;
 
@@ -103,8 +107,62 @@ class RegevaRepositoryImpl implements RegevaRepository {
     return SyllabusDownloadData(contentType: contentType, data: data);
   }
 
+  void _ensureSignOutNotTriggered(Response<dynamic> response) {
+    final locationHeaders = response.headers['location'] ?? [];
+    if (response.statusCode == 302 &&
+        locationHeaders.any((value) =>
+            value.startsWith(RegevaClient.forceSignOutRedirectionLocation))) {
+      throw RegevaAuthenticationException('Regeva authentication failed');
+    }
+  }
+
   @override
   Future<void> disposeCookies() async {
     await _regevaClient.cookieManager.clearAllCookies();
+  }
+
+  @override
+  Future<CourseGradeValue?> getCourseGrade({
+    required String scheduledCourseId,
+    required String studentCode,
+    required String sigaToken1,
+    required String sigaToken2,
+  }) async {
+    // Get
+    final response = await _regevaClient.http.get(
+      buildGradesUrl(
+        scheduledCourseId: scheduledCourseId,
+        token1: sigaToken1,
+        token2: sigaToken2,
+        studentCode: studentCode,
+      ),
+      options: Options(maxRedirects: 1),
+    );
+
+    // Build
+    final html = htmlParser.parse(response.data as String);
+
+    // ```html
+    // ...
+    // <div class="center alert alert-info bolder">
+    //     <span class="badge badge-success">Aprobado</span>
+    //     <div>
+    //         Nota Final
+    //         <span class="badge badge-success">14</span>
+    //     </div>
+    // </div>
+    // ...
+    // ```
+    final container = html.querySelector('.bolder > div');
+    if (container == null) return null;
+    final text = container.text.trim();
+    final gradeText = RegExp(r'(\d+(\.\d+)?)').firstMatch(text)?.group(1);
+    if (gradeText == null) return null;
+    final isFinal = text.toLowerCase().contains('final');
+
+    return CourseGradeValue(
+      value: double.parse(gradeText),
+      isPartial: !isFinal,
+    );
   }
 }

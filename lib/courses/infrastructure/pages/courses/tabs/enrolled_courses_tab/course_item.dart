@@ -47,6 +47,7 @@ class CourseItemWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CourseSubtitleWidget(children: [
+                          // Tipo de curso
                           state.course.data.courseType == CourseType.mandatory
                               ? CourseSubtitleWidgetItem(
                                   text: 'Obligatorio',
@@ -61,48 +62,78 @@ class CourseItemWidget extends StatelessWidget {
                                   : CourseSubtitleWidgetItem(
                                       text: 'Tipo desconocido',
                                     ),
+                          // Créditos
                           CourseSubtitleWidgetItem(
                             text: state.course.data.credits == 1
                                 ? '1 crédito'
                                 : '${state.course.data.credits} créditos',
                           ),
                         ]),
-                        state.syllabus.when(
-                          loading: () => Container(
-                            margin: const EdgeInsets.only(top: 4),
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  height: 12,
-                                  width: 12,
-                                  child:
-                                      CircularProgressIndicator(strokeWidth: 2),
-                                ),
-                                SizedBox(width: 3),
-                                Text('Verificando syllabus'),
-                              ],
+                        // Syllabus
+                        CourseSubtitleWidget(children: [
+                          state.syllabus.when(
+                            initial: () => CourseSubtitleWidgetItem(
+                              text: 'Verificando syllabus',
+                              loading: true,
+                            ),
+                            loading: () => CourseSubtitleWidgetItem(
+                              text: 'Verificando syllabus',
+                              loading: true,
+                            ),
+                            loaded: (_) => CourseSubtitleWidgetItem(
+                              text: 'Syllabus disponible',
+                              icon: Icons.check_circle,
+                            ),
+                            notFound: () => CourseSubtitleWidgetItem(
+                              text: 'Syllabus no disponible',
+                              icon: Icons.cancel_outlined,
+                            ),
+                            error: (_) => CourseSubtitleWidgetItem(
+                              text: 'Error al descargar syllabus',
+                              icon: Icons.error,
                             ),
                           ),
-                          loaded: (syllabusFile) => Container(
-                            margin: const EdgeInsets.only(top: 4),
-                            child: Row(
-                              children: [
-                                Icon(Icons.check_circle, size: 16),
-                                SizedBox(width: 2),
-                                Text('Syllabus'),
-                              ],
+                        ]),
+                        CourseSubtitleWidget(children: [
+                          // Notas
+                          state.grades.when(
+                            initial: () => CourseSubtitleWidgetItem(
+                              text: 'Verificando notas',
+                              loading: true,
+                            ),
+                            loading: () => CourseSubtitleWidgetItem(
+                              text: 'Verificando notas',
+                              loading: true,
+                            ),
+                            loaded: (courseGradeInfo) {
+                              final params = courseGradeInfo.grade.maybeWhen(
+                                empty: () => [
+                                  MdiIcons.clipboardAlertOutline,
+                                  'Notas no disponibles'
+                                ],
+                                loaded: (grade, isPartial) => isPartial
+                                    ? [
+                                        MdiIcons.clipboardCheckOutline,
+                                        'Nota parcial: $grade'
+                                      ]
+                                    : [
+                                        MdiIcons.clipboardCheck,
+                                        'Nota final: $grade'
+                                      ],
+                                orElse: () =>
+                                    [Icons.error, 'Error al verificar notas'],
+                              );
+                              return CourseSubtitleWidgetItem(
+                                text: params[1] as String,
+                                icon: params[0] as IconData?,
+                              );
+                            },
+                            error: (_) => CourseSubtitleWidgetItem(
+                              text: 'Error al verificar notas',
+                              icon: Icons.error,
                             ),
                           ),
-                          notFound: () => Container(
-                            margin: const EdgeInsets.only(top: 4),
-                            child: Text('Syllabus no disponible'),
-                          ),
-                          error: (msg) => Container(
-                            margin: const EdgeInsets.only(top: 4),
-                            child: Text('Error al descargar syllabus'),
-                          ),
-                          initial: () => Container(),
-                        ),
+                        ]),
                       ],
                     ),
                   ),
@@ -111,39 +142,7 @@ class CourseItemWidget extends StatelessWidget {
             ),
           ),
         );
-        // if (state is CourseDetailEmptyState) {
-        //   return Container();
-        // }
-        // state = state as CourseDetailReadyState;
       },
     );
   }
-
-  // Widget _buildSyllabusButton(CourseDetailReadyState state) {
-  //   return state.syllabus.when(
-  //     initial: () => TextButton.icon(
-  //       onPressed: null,
-  //       icon: Icon(Icons.list),
-  //       label: Text('Cargar syllabus...'),
-  //     ),
-  //     loading: () => TextButton.icon(
-  //       icon: SizedBox(
-  //         width: 20,
-  //         height: 20,
-  //         child: CircularProgressIndicator(strokeWidth: 3),
-  //       ),
-  //       label: Text('Descargando...'),
-  //       onPressed: null,
-  //     ),
-  //     loaded: (file) => TextButton.icon(
-  //       icon: Icon(Icons.list_alt),
-  //       label: Text('Syllabus'),
-  //       onPressed: () {
-  //         OpenFile.open(file.path);
-  //       },
-  //     ),
-  //     notFound: () => Text('Syllabus no disponible'),
-  //     error: (msg) => Text('Error al descargar syllabus'),
-  //   );
-  // }
 }
