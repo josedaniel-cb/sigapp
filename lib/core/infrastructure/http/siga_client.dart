@@ -12,7 +12,9 @@ class SigaClient {
   static const signInPageRedirectionLocation = '/Home/Index';
   static const signInPath = '/';
   static const keepSessionPath = "/Home/KeepSession";
-  static const surveyPath = "/PasosRequeridos/ProcesoEncuesta";
+  static const survey1RedirectionLocation = "/PasosRequeridos/ProcesoEncuesta";
+  static const survey2RedirectionLocation =
+      "/PasosRequeridos/ProcesoDatosAlumno";
 
   late final HttpClientBuilderResult _httpClient;
 

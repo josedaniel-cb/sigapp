@@ -70,7 +70,11 @@ class AuthenticationManager {
         ),
         ApiPathAndMethod(
           ApiMethod.get,
-          SigaClient.surveyPath,
+          SigaClient.survey1RedirectionLocation,
+        ),
+        ApiPathAndMethod(
+          ApiMethod.get,
+          SigaClient.survey2RedirectionLocation,
         ),
       ],
       onSessionExpired: () {

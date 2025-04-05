@@ -121,7 +121,9 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
     if (locationHeaderValue == null) {
       return false;
     }
-    return locationHeaderValue.contains(SigaClient.surveyPath);
+    return locationHeaderValue
+            .contains(SigaClient.survey1RedirectionLocation) ||
+        locationHeaderValue.contains(SigaClient.survey2RedirectionLocation);
   }
 
   // ----------------

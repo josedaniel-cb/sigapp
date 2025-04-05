@@ -71,9 +71,18 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<ApiResponse> checkSurvey() async {
+  Future<ApiResponse> checkSurvey1() async {
+    return _checkSurvey(SigaClient.survey1RedirectionLocation);
+  }
+
+  @override
+  Future<ApiResponse> checkSurvey2() async {
+    return _checkSurvey(SigaClient.survey2RedirectionLocation);
+  }
+
+  Future<ApiResponse> _checkSurvey(String path) async {
     final response = await _sigaClient.http.get(
-      SigaClient.surveyPath,
+      path,
       options: Options(
         validateStatus: (status) => true,
       ),

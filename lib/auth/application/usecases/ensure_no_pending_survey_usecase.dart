@@ -14,8 +14,12 @@ class EnsureNoPendingSurveyUseCase {
 
   Future<void> execute(ApiResponse response) async {
     if (_sessionLifecycleService.evaluateIsSurveyAvailable(response)) {
-      final checkSurveyResponse = await _authRepository.checkSurvey();
-      if (checkSurveyResponse.statusCode == 200) {
+      final survey1 = await _authRepository.checkSurvey1();
+      if (survey1.statusCode == 200) {
+        throw PendingSurveyException();
+      }
+      final survey2 = await _authRepository.checkSurvey2();
+      if (survey2.statusCode == 200) {
         throw PendingSurveyException();
       }
     }
