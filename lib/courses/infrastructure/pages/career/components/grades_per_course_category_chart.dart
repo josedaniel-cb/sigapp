@@ -1,46 +1,29 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sigapp/courses/domain/entities/academic_history_term.dart';
 import 'dart:math' as math;
 
 final Map<String, String> coursePrefixes = {
-  'SI': 'Ingeniería Informática / Sistemas de Información',
-  'IS': 'Ingeniería de Sistemas',
+  'SI': 'Ingeniería de Sistemas',
+  'ED': 'Educación General',
   'MA': 'Matemáticas',
-  'FI': 'Física',
-  'QU': 'Química',
-  'EE': 'Ingeniería Eléctrica / Electrónica',
-  'EC': 'Economía',
-  'AD': 'Administración de Empresas',
-  'CO': 'Contabilidad',
-  'PS': 'Psicología',
-  'AR': 'Arquitectura',
-  'EN': 'Ingeniería Electrónica',
-  'IN': 'Ingeniería Industrial',
-  'CB': 'Ciencias Básicas',
-  'CE': 'Ciencias Económicas',
-  'ED': 'Educación',
-  'LI': 'Lingüística e Idiomas',
-  'BI': 'Biología',
-  'GE': 'Geografía',
-  'HI': 'Historia',
-  'SO': 'Sociología',
-  'DE': 'Derecho',
-  'ME': 'Medicina',
   'CS': 'Ciencias Sociales',
-  'PI': 'Filosofía',
-  'CA': 'Ciencias Ambientales',
-  'AG': 'Agronomía',
-  'TE': 'Telecomunicaciones',
-  'AM': 'Administración de Empresas Turísticas',
-  'TR': 'Trabajo Social',
-  'CI': 'Ciencias de la Computación',
-  'MI': 'Microbiología',
-  'AN': 'Antropología',
-  'PE': 'Pedagogía',
-  'MO': 'Morfología',
-  'OP': 'Optometría',
-  'FA': 'Farmacia',
+  'FI': 'Física',
+  'CA': 'Administración',
+  'IO': 'Ingeniería de Operaciones',
+  'CO': 'Contabilidad',
+  'ES': 'Estadística',
+  'II': 'Ingeniería Industrial',
+  'EM': 'Economía',
+  'EA': 'Economía',
+  'CB': 'Ciencias Biológicas',
+  'DP': 'Derecho',
+  'AA': 'Administración y Logística',
+  'QU': 'Química',
+  'EC': 'Economía',
+  'CG': 'Contabilidad',
+  'DE': 'Derecho',
 };
 
 class GradesPerCourseCategoryChart extends StatelessWidget {
@@ -134,9 +117,16 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
 
     // Definir el valor máximo del eje Y con un pequeño margen
     const double marginFactor = 0.1;
-    final double finalMaxY =
+    final double tentativeMaxY =
         (globalMaxGrade > 0) ? globalMaxGrade * (1 + marginFactor) : 20;
+    final double finalMaxY = math.min(20, tentativeMaxY); // Nunca más de 20
 
+    // Definir el valor mínimo del eje Y
+    final double globalMinGrade = allCourses.isNotEmpty
+        ? allCourses.map((c) => c.grade).reduce((a, b) => a < b ? a : b)
+        : 0;
+    final double tentativeMinY = globalMinGrade - 1;
+    final double finalMinY = tentativeMinY < 0 ? 0 : tentativeMinY;
     return Container(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -153,22 +143,29 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           // Agregar la leyenda con tres elementos:
-          LegendsListWidget(
-            legends: [
-              Legend('Nota única', Colors.purple),
-              Legend('Mínima', Colors.blue),
-              Legend('Máxima', Colors.red),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              LegendsListWidget(
+                legends: [
+                  Legend('Nota única', Colors.purple),
+                  Legend('Mínima', Colors.blue),
+                  Legend('Máxima', Colors.red),
+                ],
+              )
             ],
           ),
           const SizedBox(height: 8),
           SizedBox(
-            height: 300,
+            // height: 300,
+            height: sortedKeys.length * 35,
             child: BarChart(
               BarChartData(
                 // Hacemos la gráfica horizontal rotándola 90 grados
                 rotationQuarterTurns: 1,
                 alignment: BarChartAlignment.spaceAround,
                 maxY: finalMaxY,
+                minY: finalMinY,
                 barGroups: barGroups,
                 gridData: FlGridData(show: true),
                 borderData: FlBorderData(
@@ -199,19 +196,25 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      reservedSize: 30,
+                      reservedSize: 120,
                       getTitlesWidget: (value, meta) {
                         int idx = value.toInt();
                         if (idx < 0 || idx >= sortedKeys.length) {
                           return const SizedBox.shrink();
                         }
+                        final prefix = sortedKeys[idx];
+                        final displayName = coursePrefixes.containsKey(prefix)
+                            ? '($prefix) ${coursePrefixes[prefix]}'
+                            : prefix;
                         return SideTitleWidget(
                           meta: meta,
                           child: Padding(
                             padding: const EdgeInsets.only(top: 4.0),
                             child: Text(
-                              sortedKeys[idx],
-                              style: const TextStyle(fontSize: 12),
+                              displayName,
+                              style: const TextStyle(fontSize: 10),
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
                             ),
                           ),
                         );
@@ -285,13 +288,15 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) {
-        // Imprimir todas las agrupaciones y sus cursos
-        for (final entry in sortedGroups) {
-          final category = entry.key;
-          final courses = entry.value;
-          print('Categoría: $category (${courses.length} cursos)');
-          for (final course in courses) {
-            print('  - ${course.courseName} (${course.courseCode})');
+        if (kDebugMode) {
+          // Imprimir en consola para depuración
+          for (final entry in sortedGroups) {
+            final category = entry.key;
+            final courses = entry.value;
+            print('Categoría: $category (${courses.length} cursos)');
+            for (final course in courses) {
+              print('  - ${course.courseName} (${course.courseCode})');
+            }
           }
         }
 
@@ -305,7 +310,7 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
                 children: [
                   Text(
                     "Las categorías se deducen del prefijo alfabético de cada código de curso. "
-                    "Por ejemplo, 'IS' en 'ISXXXX' podría interpretarse como Ingeniería de Sistemas. "
+                    "Por ejemplo, 'EC' en 'ECXXXX' podría interpretarse como Economía. "
                     "Esta clasificación no es oficial, solo se basa en la agrupación de códigos.",
                     style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                   ),
@@ -320,6 +325,11 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
                           "Categoría: $category",
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
+                        if (coursePrefixes.containsKey(category))
+                          Text(
+                            "${coursePrefixes[category]}",
+                            style: const TextStyle(fontStyle: FontStyle.italic),
+                          ),
                         ...courses.map((course) => Padding(
                               padding: const EdgeInsets.only(left: 8.0, top: 2),
                               child: Text(
