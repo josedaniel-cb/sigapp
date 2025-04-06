@@ -90,24 +90,33 @@ class CareerPageAcademicHistoryWidget extends StatelessWidget {
                                         normalLabel: 'Electivos',
                                         passLabel: 'Electivos (aprobados)',
                                       ),
-                                      [
-                                        'Obligatorios convalidados',
-                                        term.statistics!
-                                            .mandatoryCreditsValidated
-                                            .toString(),
-                                      ],
-                                      [
-                                        'Electivos convalidados',
-                                        term.statistics!
-                                            .electiveCreditsValidated
-                                            .toString(),
-                                      ],
-                                      [
-                                        'Total obligatorios convalidados',
-                                        term.statistics!
-                                            .totalMandatoryCreditsValidated
-                                            .toString(),
-                                      ],
+                                      if (term.statistics!
+                                              .mandatoryCreditsValidated >
+                                          0)
+                                        [
+                                          'Obligatorios convalidados',
+                                          term.statistics!
+                                              .mandatoryCreditsValidated
+                                              .toString(),
+                                        ],
+                                      if (term.statistics!
+                                              .electiveCreditsValidated >
+                                          0)
+                                        [
+                                          'Electivos convalidados',
+                                          term.statistics!
+                                              .electiveCreditsValidated
+                                              .toString(),
+                                        ],
+                                      if (term.statistics!
+                                              .totalMandatoryCreditsValidated >
+                                          0)
+                                        [
+                                          'Total obligatorios convalidados',
+                                          term.statistics!
+                                              .totalMandatoryCreditsValidated
+                                              .toString(),
+                                        ],
                                       ..._maybeAddCredits(
                                         normal: term.statistics!
                                             .totalMandatoryCreditsTaken,
@@ -189,11 +198,6 @@ class CareerPageAcademicHistoryWidget extends StatelessWidget {
     required String title,
     required List<List<String>> data,
   }) {
-    data = data.where((entry) {
-      final value = double.tryParse(entry[1]) ?? 0.0;
-      return value != 0.0;
-    }).toList();
-
     final textTheme = Theme.of(context).textTheme;
 
     return Column(
@@ -210,7 +214,7 @@ class CareerPageAcademicHistoryWidget extends StatelessWidget {
                 SizedBox(width: 8),
                 Text(entry[1]),
               ],
-            ))
+            )),
       ],
     );
   }
