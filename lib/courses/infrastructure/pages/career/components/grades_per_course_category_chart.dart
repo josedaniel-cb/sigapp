@@ -110,8 +110,11 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
         BarChartGroupData(
           x: index,
           barRods: rods,
+          showingTooltipIndicators:
+              List.generate(rods.length, (index) => index),
         ),
       );
+
       index++;
     }
 
@@ -229,20 +232,18 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
                   ),
                 ),
                 barTouchData: BarTouchData(
-                  enabled: true,
+                  enabled: false,
                   touchTooltipData: BarTouchTooltipData(
-                    getTooltipColor: (group) => Colors.grey.shade200,
+                    fitInsideHorizontally: true,
+                    fitInsideVertically: true,
+                    tooltipPadding: EdgeInsets.zero,
+                    tooltipMargin: 0,
+                    getTooltipColor: (group) => Colors.transparent,
                     getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                      String label = '';
-                      if (barGroups[groupIndex].barRods.length > 1) {
-                        label = (rodIndex == 0) ? 'Min: ' : 'Max: ';
-                      }
                       return BarTooltipItem(
-                        '$label${rod.toY.toStringAsFixed(2)}',
-                        const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+                        '  ${rod.toY.toStringAsFixed(1)}',
+                        Theme.of(context).textTheme.labelSmall ??
+                            const TextStyle(),
                       );
                     },
                   ),
