@@ -5,7 +5,7 @@ import 'package:sigapp/core/infrastructure/ui/widgets/error_state.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/loading_state.dart';
 import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/partials/empty_courses.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_tab/weekly_schedule.dart';
+import 'package:sigapp/courses/infrastructure/pages/courses/partials/weekly_schedule.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_tab/schedule_share_button.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_tab/schedule_share_button_cubit.dart';
