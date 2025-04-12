@@ -8,10 +8,16 @@ class GetEnrolledCoursesUsecase {
   final CoursesRepository _coursesRepository;
   final GetClassScheduleUsecase _getClassScheduleUsecase;
 
+  final Map<String, List<EnrolledCourse>> _cache = {};
+
   GetEnrolledCoursesUsecase(
       this._coursesRepository, this._getClassScheduleUsecase);
 
   Future<List<EnrolledCourse>> execute(String semesterId) async {
+    if (_cache.containsKey(semesterId)) {
+      return _cache[semesterId]!;
+    }
+
     final enrolledCoursesData =
         await _coursesRepository.getEnrolledCourses(semesterId);
     final scheduleEvents = await _getClassScheduleUsecase.execute(semesterId);
@@ -24,6 +30,8 @@ class GetEnrolledCoursesUsecase {
                   .toList(),
             ))
         .toList();
+
+    _cache[semesterId] = enrolledCourses;
 
     return enrolledCourses;
   }

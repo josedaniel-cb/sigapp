@@ -1,4 +1,6 @@
 import 'package:injectable/injectable.dart';
+import 'package:sigapp/courses/application/services/student_session_service.dart';
+import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase.dart';
 import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
 import 'package:sigapp/semester/domain/value-objects/semester_context.dart';
 import 'package:sigapp/student/application/usecases/get_academic_report_usecase.dart';
@@ -20,8 +22,11 @@ class AcademicInfoServiceImpl extends AcademicInfoService {
   AcademicInfoData? _data;
 
   final GetAcademicReportUsecase _getAcademicReportUsecase;
+  final StudentSessionService _studentSessionService;
+  final GetEnrolledCoursesUsecase _getEnrolledCoursesUsecase;
 
-  AcademicInfoServiceImpl(this._getAcademicReportUsecase);
+  AcademicInfoServiceImpl(this._getAcademicReportUsecase,
+      this._getEnrolledCoursesUsecase, this._studentSessionService);
 
   @override
   Future<AcademicInfoData> getSessionInfo() async {
@@ -47,38 +52,45 @@ class AcademicInfoServiceImpl extends AcademicInfoService {
 
   Future<SemesterContext> _calculateSemesterContext(
       AcademicReport academicReport) async {
-    // Fetch
-    final firstSemester = ScheduledTermIdentifier.buildFromId(
-        academicReport.enrollmentSemesterId);
-    var lastSemester = academicReport.lastSemesterId != null
-        ? ScheduledTermIdentifier.buildFromId(academicReport.lastSemesterId!)
-        : null;
+    final firstSemester = academicReport.enrollmentSemester;
+    ScheduledTermIdentifier? lastSemester;
 
-    // Calculate default semester and available semesters
+    //  First, try with current semester
+    final studentSessionInfo = await _studentSessionService.getInfo();
+    final currentSemesterEnrolledCourses = await _getEnrolledCoursesUsecase
+        .execute(studentSessionInfo.currentSemester.id);
+    if (currentSemesterEnrolledCourses.isNotEmpty) {
+      lastSemester = studentSessionInfo.currentSemester;
+      return SemesterContext(
+        isLast: academicReport.lastSemester != null,
+        defaultSemester: lastSemester,
+        availableSemesters: _buildSemesterRange(firstSemester, lastSemester),
+      );
+    }
+
+    // If current semester is empty, try with last semester
+    lastSemester = academicReport.lastSemester;
     final isLastSemesterIdKnown = lastSemester != null;
     ScheduledTermIdentifier defaultSemester;
-    var rangeLastSemesterId = '';
     if (isLastSemesterIdKnown) {
       defaultSemester = lastSemester;
-      rangeLastSemesterId = lastSemester.id;
     } else {
+      // If last semester is not known, use the current semester
       defaultSemester = firstSemester;
-      rangeLastSemesterId = academicReport.currentSemester.id;
+      lastSemester = studentSessionInfo.currentSemester;
     }
 
     return SemesterContext(
       isLast: isLastSemesterIdKnown,
       defaultSemester: defaultSemester,
-      availableSemesters:
-          _buildSemesterRange(firstSemester.id, rangeLastSemesterId),
+      availableSemesters: _buildSemesterRange(firstSemester, lastSemester),
     );
   }
 
   List<ScheduledTermIdentifier> _buildSemesterRange(
-      String firstSemesterId, String lastSemesterId) {
+      ScheduledTermIdentifier firstSemester,
+      ScheduledTermIdentifier lastSemester) {
     List<ScheduledTermIdentifier> semesters = [];
-    final firstSemester = ScheduledTermIdentifier.buildFromId(firstSemesterId);
-    final lastSemester = ScheduledTermIdentifier.buildFromId(lastSemesterId);
     for (var year = firstSemester.year; year <= lastSemester.year; year++) {
       var startPeriod = (year == firstSemester.year) ? firstSemester.period : 0;
       var endPeriod = (year == lastSemester.year) ? lastSemester.period : 2;

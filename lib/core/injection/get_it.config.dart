@@ -196,8 +196,6 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i594.StudentRepository>(),
               gh<_i44.StudentSessionService>(),
             ));
-    gh.singleton<_i23.AcademicInfoService>(() =>
-        _i409.AcademicInfoServiceImpl(gh<_i771.GetAcademicReportUsecase>()));
     gh.factory<_i215.CourseDetailCubit>(() => _i215.CourseDetailCubit(
           gh<_i445.GetSyllabusFileUsecase>(),
           gh<_i504.GetCourseGradeUsecase>(),
@@ -207,18 +205,17 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i986.CoursesRepository>(),
               gh<_i315.GetClassScheduleUsecase>(),
             ));
-    gh.factory<_i112.CareerPageCubit>(() => _i112.CareerPageCubit(
-          gh<_i504.GetProgramCurriculumProgressUsecase>(),
-          gh<_i23.AcademicInfoService>(),
-        ));
     gh.factory<_i893.ExportToCalendarCubit>(
         () => _i893.ExportToCalendarCubit(gh<_i315.GetClassScheduleUsecase>()));
-    gh.factory<_i151.StudentPageViewCubit>(
-        () => _i151.StudentPageViewCubit(gh<_i23.AcademicInfoService>()));
     gh.singleton<_i528.NavigationService>(
         () => _i561.NavigationServiceImpl(gh<_i583.GoRouter>()));
-    gh.factory<_i525.CoursesPageCubit>(() => _i525.CoursesPageCubit(
+    gh.singleton<_i23.AcademicInfoService>(() => _i409.AcademicInfoServiceImpl(
+          gh<_i771.GetAcademicReportUsecase>(),
           gh<_i650.GetEnrolledCoursesUsecase>(),
+          gh<_i44.StudentSessionService>(),
+        ));
+    gh.factory<_i112.CareerPageCubit>(() => _i112.CareerPageCubit(
+          gh<_i504.GetProgramCurriculumProgressUsecase>(),
           gh<_i23.AcademicInfoService>(),
         ));
     gh.factory<_i48.SignOutUseCase>(() => _i48.SignOutUseCase(
@@ -234,9 +231,15 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i1010.SharedPreferencesAuthRepository>(),
           gh<_i528.NavigationService>(),
         ));
+    gh.factory<_i151.StudentPageViewCubit>(
+        () => _i151.StudentPageViewCubit(gh<_i23.AcademicInfoService>()));
     gh.singleton<_i259.UserAvatarButtonCubit>(() => _i259.UserAvatarButtonCubit(
           gh<_i23.AcademicInfoService>(),
           gh<_i48.SignOutUseCase>(),
+        ));
+    gh.factory<_i525.CoursesPageCubit>(() => _i525.CoursesPageCubit(
+          gh<_i650.GetEnrolledCoursesUsecase>(),
+          gh<_i23.AcademicInfoService>(),
         ));
     gh.factory<_i41.LoginCubit>(() => _i41.LoginCubit(
           gh<_i193.GetStoredCredentialsUseCase>(),

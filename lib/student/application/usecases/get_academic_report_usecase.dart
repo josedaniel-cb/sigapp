@@ -1,5 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/courses/application/services/student_session_service.dart';
+import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
 import 'package:sigapp/student/domain/repositories/student_repository.dart';
 
@@ -31,9 +32,14 @@ class GetAcademicReportUsecase {
       lastName: studentInfoParts[1],
       code: studentInfoParts[0],
       cohort: academicReportModel.cohort,
-      enrollmentSemesterId: academicReportModel.enrollmentSemesterId,
-      curriculumSemesterId: academicReportModel.curriculumSemesterId,
-      lastSemesterId: academicReportModel.lastSemesterId,
+      enrollmentSemester: ScheduledTermIdentifier.buildFromId(
+          academicReportModel.enrollmentSemesterId),
+      curriculumSemester: ScheduledTermIdentifier.buildFromId(
+          academicReportModel.curriculumSemesterId),
+      lastSemester: academicReportModel.lastSemesterId != null
+          ? ScheduledTermIdentifier.buildFromId(
+              academicReportModel.lastSemesterId!)
+          : null,
       cumulativeWeightedAverage: academicReportModel.cumulativeWeightedAverage,
       cumulativeWeightedAverageOfPassedCourses:
           academicReportModel.cumulativeWeightedAverageOfPassedCourses,

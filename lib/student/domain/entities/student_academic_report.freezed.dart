@@ -21,10 +21,16 @@ mixin _$AcademicReport {
   String get firstName => throw _privateConstructorUsedError;
   String get lastName => throw _privateConstructorUsedError;
   String get code => throw _privateConstructorUsedError;
-  String get cohort => throw _privateConstructorUsedError;
-  String get enrollmentSemesterId => throw _privateConstructorUsedError;
-  String get curriculumSemesterId => throw _privateConstructorUsedError;
-  String? get lastSemesterId => throw _privateConstructorUsedError;
+  String get cohort =>
+      throw _privateConstructorUsedError; // required String enrollmentSemesterId,
+// required String curriculumSemesterId,
+// required String? lastSemesterId,
+  ScheduledTermIdentifier get enrollmentSemester =>
+      throw _privateConstructorUsedError;
+  ScheduledTermIdentifier get curriculumSemester =>
+      throw _privateConstructorUsedError;
+  ScheduledTermIdentifier? get lastSemester =>
+      throw _privateConstructorUsedError;
   double get cumulativeWeightedAverage => throw _privateConstructorUsedError;
   double get cumulativeWeightedAverageOfPassedCourses =>
       throw _privateConstructorUsedError;
@@ -59,9 +65,9 @@ abstract class $AcademicReportCopyWith<$Res> {
       String lastName,
       String code,
       String cohort,
-      String enrollmentSemesterId,
-      String curriculumSemesterId,
-      String? lastSemesterId,
+      ScheduledTermIdentifier enrollmentSemester,
+      ScheduledTermIdentifier curriculumSemester,
+      ScheduledTermIdentifier? lastSemester,
       double cumulativeWeightedAverage,
       double cumulativeWeightedAverageOfPassedCourses,
       double lastCumulativeWeightedAverage,
@@ -94,9 +100,9 @@ class _$AcademicReportCopyWithImpl<$Res, $Val extends AcademicReport>
     Object? lastName = null,
     Object? code = null,
     Object? cohort = null,
-    Object? enrollmentSemesterId = null,
-    Object? curriculumSemesterId = null,
-    Object? lastSemesterId = freezed,
+    Object? enrollmentSemester = null,
+    Object? curriculumSemester = null,
+    Object? lastSemester = freezed,
     Object? cumulativeWeightedAverage = null,
     Object? cumulativeWeightedAverageOfPassedCourses = null,
     Object? lastCumulativeWeightedAverage = null,
@@ -132,18 +138,18 @@ class _$AcademicReportCopyWithImpl<$Res, $Val extends AcademicReport>
           ? _value.cohort
           : cohort // ignore: cast_nullable_to_non_nullable
               as String,
-      enrollmentSemesterId: null == enrollmentSemesterId
-          ? _value.enrollmentSemesterId
-          : enrollmentSemesterId // ignore: cast_nullable_to_non_nullable
-              as String,
-      curriculumSemesterId: null == curriculumSemesterId
-          ? _value.curriculumSemesterId
-          : curriculumSemesterId // ignore: cast_nullable_to_non_nullable
-              as String,
-      lastSemesterId: freezed == lastSemesterId
-          ? _value.lastSemesterId
-          : lastSemesterId // ignore: cast_nullable_to_non_nullable
-              as String?,
+      enrollmentSemester: null == enrollmentSemester
+          ? _value.enrollmentSemester
+          : enrollmentSemester // ignore: cast_nullable_to_non_nullable
+              as ScheduledTermIdentifier,
+      curriculumSemester: null == curriculumSemester
+          ? _value.curriculumSemester
+          : curriculumSemester // ignore: cast_nullable_to_non_nullable
+              as ScheduledTermIdentifier,
+      lastSemester: freezed == lastSemester
+          ? _value.lastSemester
+          : lastSemester // ignore: cast_nullable_to_non_nullable
+              as ScheduledTermIdentifier?,
       cumulativeWeightedAverage: null == cumulativeWeightedAverage
           ? _value.cumulativeWeightedAverage
           : cumulativeWeightedAverage // ignore: cast_nullable_to_non_nullable
@@ -200,9 +206,9 @@ abstract class _$$AcademicReportImplCopyWith<$Res>
       String lastName,
       String code,
       String cohort,
-      String enrollmentSemesterId,
-      String curriculumSemesterId,
-      String? lastSemesterId,
+      ScheduledTermIdentifier enrollmentSemester,
+      ScheduledTermIdentifier curriculumSemester,
+      ScheduledTermIdentifier? lastSemester,
       double cumulativeWeightedAverage,
       double cumulativeWeightedAverageOfPassedCourses,
       double lastCumulativeWeightedAverage,
@@ -233,9 +239,9 @@ class __$$AcademicReportImplCopyWithImpl<$Res>
     Object? lastName = null,
     Object? code = null,
     Object? cohort = null,
-    Object? enrollmentSemesterId = null,
-    Object? curriculumSemesterId = null,
-    Object? lastSemesterId = freezed,
+    Object? enrollmentSemester = null,
+    Object? curriculumSemester = null,
+    Object? lastSemester = freezed,
     Object? cumulativeWeightedAverage = null,
     Object? cumulativeWeightedAverageOfPassedCourses = null,
     Object? lastCumulativeWeightedAverage = null,
@@ -271,18 +277,18 @@ class __$$AcademicReportImplCopyWithImpl<$Res>
           ? _value.cohort
           : cohort // ignore: cast_nullable_to_non_nullable
               as String,
-      enrollmentSemesterId: null == enrollmentSemesterId
-          ? _value.enrollmentSemesterId
-          : enrollmentSemesterId // ignore: cast_nullable_to_non_nullable
-              as String,
-      curriculumSemesterId: null == curriculumSemesterId
-          ? _value.curriculumSemesterId
-          : curriculumSemesterId // ignore: cast_nullable_to_non_nullable
-              as String,
-      lastSemesterId: freezed == lastSemesterId
-          ? _value.lastSemesterId
-          : lastSemesterId // ignore: cast_nullable_to_non_nullable
-              as String?,
+      enrollmentSemester: null == enrollmentSemester
+          ? _value.enrollmentSemester
+          : enrollmentSemester // ignore: cast_nullable_to_non_nullable
+              as ScheduledTermIdentifier,
+      curriculumSemester: null == curriculumSemester
+          ? _value.curriculumSemester
+          : curriculumSemester // ignore: cast_nullable_to_non_nullable
+              as ScheduledTermIdentifier,
+      lastSemester: freezed == lastSemester
+          ? _value.lastSemester
+          : lastSemester // ignore: cast_nullable_to_non_nullable
+              as ScheduledTermIdentifier?,
       cumulativeWeightedAverage: null == cumulativeWeightedAverage
           ? _value.cumulativeWeightedAverage
           : cumulativeWeightedAverage // ignore: cast_nullable_to_non_nullable
@@ -334,9 +340,9 @@ class _$AcademicReportImpl implements _AcademicReport {
       required this.lastName,
       required this.code,
       required this.cohort,
-      required this.enrollmentSemesterId,
-      required this.curriculumSemesterId,
-      required this.lastSemesterId,
+      required this.enrollmentSemester,
+      required this.curriculumSemester,
+      required this.lastSemester,
       required this.cumulativeWeightedAverage,
       required this.cumulativeWeightedAverageOfPassedCourses,
       required this.lastCumulativeWeightedAverage,
@@ -359,12 +365,15 @@ class _$AcademicReportImpl implements _AcademicReport {
   final String code;
   @override
   final String cohort;
+// required String enrollmentSemesterId,
+// required String curriculumSemesterId,
+// required String? lastSemesterId,
   @override
-  final String enrollmentSemesterId;
+  final ScheduledTermIdentifier enrollmentSemester;
   @override
-  final String curriculumSemesterId;
+  final ScheduledTermIdentifier curriculumSemester;
   @override
-  final String? lastSemesterId;
+  final ScheduledTermIdentifier? lastSemester;
   @override
   final double cumulativeWeightedAverage;
   @override
@@ -387,7 +396,7 @@ class _$AcademicReportImpl implements _AcademicReport {
 
   @override
   String toString() {
-    return 'AcademicReport(faculty: $faculty, school: $school, firstName: $firstName, lastName: $lastName, code: $code, cohort: $cohort, enrollmentSemesterId: $enrollmentSemesterId, curriculumSemesterId: $curriculumSemesterId, lastSemesterId: $lastSemesterId, cumulativeWeightedAverage: $cumulativeWeightedAverage, cumulativeWeightedAverageOfPassedCourses: $cumulativeWeightedAverageOfPassedCourses, lastCumulativeWeightedAverage: $lastCumulativeWeightedAverage, totalCreditsOfPassedCourses: $totalCreditsOfPassedCourses, curriculumMandatoryCredits: $curriculumMandatoryCredits, curriculumElectiveCredits: $curriculumElectiveCredits, mandatoryCreditsOfPassedCourses: $mandatoryCreditsOfPassedCourses, electiveCreditsOfPassedCourses: $electiveCreditsOfPassedCourses, currentSemester: $currentSemester)';
+    return 'AcademicReport(faculty: $faculty, school: $school, firstName: $firstName, lastName: $lastName, code: $code, cohort: $cohort, enrollmentSemester: $enrollmentSemester, curriculumSemester: $curriculumSemester, lastSemester: $lastSemester, cumulativeWeightedAverage: $cumulativeWeightedAverage, cumulativeWeightedAverageOfPassedCourses: $cumulativeWeightedAverageOfPassedCourses, lastCumulativeWeightedAverage: $lastCumulativeWeightedAverage, totalCreditsOfPassedCourses: $totalCreditsOfPassedCourses, curriculumMandatoryCredits: $curriculumMandatoryCredits, curriculumElectiveCredits: $curriculumElectiveCredits, mandatoryCreditsOfPassedCourses: $mandatoryCreditsOfPassedCourses, electiveCreditsOfPassedCourses: $electiveCreditsOfPassedCourses, currentSemester: $currentSemester)';
   }
 
   @override
@@ -403,12 +412,12 @@ class _$AcademicReportImpl implements _AcademicReport {
                 other.lastName == lastName) &&
             (identical(other.code, code) || other.code == code) &&
             (identical(other.cohort, cohort) || other.cohort == cohort) &&
-            (identical(other.enrollmentSemesterId, enrollmentSemesterId) ||
-                other.enrollmentSemesterId == enrollmentSemesterId) &&
-            (identical(other.curriculumSemesterId, curriculumSemesterId) ||
-                other.curriculumSemesterId == curriculumSemesterId) &&
-            (identical(other.lastSemesterId, lastSemesterId) ||
-                other.lastSemesterId == lastSemesterId) &&
+            (identical(other.enrollmentSemester, enrollmentSemester) ||
+                other.enrollmentSemester == enrollmentSemester) &&
+            (identical(other.curriculumSemester, curriculumSemester) ||
+                other.curriculumSemester == curriculumSemester) &&
+            (identical(other.lastSemester, lastSemester) ||
+                other.lastSemester == lastSemester) &&
             (identical(other.cumulativeWeightedAverage, cumulativeWeightedAverage) ||
                 other.cumulativeWeightedAverage == cumulativeWeightedAverage) &&
             (identical(other.cumulativeWeightedAverageOfPassedCourses,
@@ -446,9 +455,9 @@ class _$AcademicReportImpl implements _AcademicReport {
       lastName,
       code,
       cohort,
-      enrollmentSemesterId,
-      curriculumSemesterId,
-      lastSemesterId,
+      enrollmentSemester,
+      curriculumSemester,
+      lastSemester,
       cumulativeWeightedAverage,
       cumulativeWeightedAverageOfPassedCourses,
       lastCumulativeWeightedAverage,
@@ -477,9 +486,9 @@ abstract class _AcademicReport implements AcademicReport {
           required final String lastName,
           required final String code,
           required final String cohort,
-          required final String enrollmentSemesterId,
-          required final String curriculumSemesterId,
-          required final String? lastSemesterId,
+          required final ScheduledTermIdentifier enrollmentSemester,
+          required final ScheduledTermIdentifier curriculumSemester,
+          required final ScheduledTermIdentifier? lastSemester,
           required final double cumulativeWeightedAverage,
           required final double cumulativeWeightedAverageOfPassedCourses,
           required final double lastCumulativeWeightedAverage,
@@ -502,13 +511,15 @@ abstract class _AcademicReport implements AcademicReport {
   @override
   String get code;
   @override
-  String get cohort;
+  String get cohort; // required String enrollmentSemesterId,
+// required String curriculumSemesterId,
+// required String? lastSemesterId,
   @override
-  String get enrollmentSemesterId;
+  ScheduledTermIdentifier get enrollmentSemester;
   @override
-  String get curriculumSemesterId;
+  ScheduledTermIdentifier get curriculumSemester;
   @override
-  String? get lastSemesterId;
+  ScheduledTermIdentifier? get lastSemester;
   @override
   double get cumulativeWeightedAverage;
   @override
