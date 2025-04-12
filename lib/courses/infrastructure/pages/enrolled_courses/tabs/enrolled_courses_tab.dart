@@ -4,9 +4,9 @@ import 'package:sigapp/core/injection/get_it.dart';
 import 'package:sigapp/core/infrastructure/ui/utils/colors_utils.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/error_state.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/partials/empty_courses.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses_tab/course_item.dart';
+import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/enrolled_courses_page_cubit.dart';
+import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/partials/empty_courses.dart';
+import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/tabs/enrolled_courses_tab/course_item.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class EnrolledCoursesTabWidget extends StatelessWidget {

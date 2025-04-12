@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/partials/weekly_schedule.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/partials/weekly_schedule/event.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/partials/weekly_schedule/grid.dart';
+import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/partials/weekly_schedule.dart';
+import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/partials/weekly_schedule/event.dart';
+import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/partials/weekly_schedule/grid.dart';
 
 class BodyWidget extends StatelessWidget {
   final List<WeeklyScheduleWidgetItem> events;

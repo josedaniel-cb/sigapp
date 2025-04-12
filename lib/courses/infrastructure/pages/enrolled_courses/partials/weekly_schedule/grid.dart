@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/partials/weekly_schedule/hour_label.dart';
+import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/partials/weekly_schedule/hour_label.dart';
 
 class GridWidget extends StatelessWidget {
   final List<int> daysWithEvents;

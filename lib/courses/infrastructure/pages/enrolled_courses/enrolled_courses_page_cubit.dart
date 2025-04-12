@@ -9,7 +9,7 @@ import 'package:sigapp/student/domain/entities/student_academic_report.dart';
 import 'package:sigapp/student/domain/services/academic_info_service.dart';
 import 'package:sigapp/student/domain/value_objects/enrolled_course.dart';
 
-part 'courses_page_cubit.freezed.dart';
+part 'enrolled_courses_page_cubit.freezed.dart';
 
 @freezed
 abstract class EnrolledCoursesState with _$EnrolledCoursesState {

@@ -72,10 +72,10 @@ import 'package:sigapp/courses/infrastructure/pages/career/career_page_cubit.dar
     as _i112;
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart'
     as _i215;
-import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart'
-    as _i525;
-import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_tab/schedule_share_button_cubit.dart'
-    as _i835;
+import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/enrolled_courses_page_cubit.dart'
+    as _i885;
+import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/tabs/schedule_tab/schedule_share_button_cubit.dart'
+    as _i880;
 import 'package:sigapp/courses/infrastructure/repositories/courses_repository.dart'
     as _i892;
 import 'package:sigapp/courses/infrastructure/repositories/local_syllabus_repository.dart'
@@ -130,10 +130,10 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.singleton<_i906.CourseService>(() => _i906.CourseService());
-    gh.singleton<_i835.ScheduleShareButtonCubit>(
-        () => _i835.ScheduleShareButtonCubit());
     gh.singleton<_i675.ProgressIndicatorBloc>(
         () => _i675.ProgressIndicatorBloc());
+    gh.singleton<_i880.ScheduleShareButtonCubit>(
+        () => _i880.ScheduleShareButtonCubit());
     gh.singleton<_i986.RegevaClient>(
         () => _i986.RegevaClient(gh<_i460.SharedPreferences>()));
     gh.singleton<_i857.SigaClient>(
@@ -240,7 +240,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i23.AcademicInfoService>(),
           gh<_i48.SignOutUseCase>(),
         ));
-    gh.factory<_i525.CoursesPageCubit>(() => _i525.CoursesPageCubit(
+    gh.factory<_i885.CoursesPageCubit>(() => _i885.CoursesPageCubit(
           gh<_i650.GetEnrolledCoursesUsecase>(),
           gh<_i23.AcademicInfoService>(),
         ));

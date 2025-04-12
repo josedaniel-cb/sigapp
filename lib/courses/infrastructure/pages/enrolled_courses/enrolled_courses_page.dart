@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/error_state.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/loading_state.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/courses_page_cubit.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/partials/schedule_semester_select.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/tabs/enrolled_courses_tab.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/tabs/schedule_tab.dart';
+import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/enrolled_courses_page_cubit.dart';
+import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/partials/schedule_semester_select.dart';
+import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/tabs/enrolled_courses_tab.dart';
+import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/tabs/schedule_tab.dart';
 import 'package:sigapp/shared/infrastructure/partials/user_avatar_button.dart';
 
 class CoursesPageWidget extends StatefulWidget {

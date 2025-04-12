@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sigapp/core/infrastructure/ui/utils/colors_utils.dart';
 import 'package:sigapp/core/infrastructure/utils/time_utils.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/partials/weekly_schedule.dart';
+import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/partials/weekly_schedule.dart';
 
 class EventWidget extends StatelessWidget {
   final WeeklyScheduleWidgetItem event;

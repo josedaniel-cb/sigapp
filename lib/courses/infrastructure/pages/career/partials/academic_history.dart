@@ -5,7 +5,7 @@ import 'package:sigapp/courses/domain/entities/course_type.dart';
 import 'package:sigapp/courses/infrastructure/pages/career/components/grades_per_course_category_chart.dart';
 import 'package:sigapp/courses/infrastructure/pages/career/components/weighted_average_evolution_chart.dart';
 import 'package:sigapp/courses/infrastructure/pages/career/widgets/course_subtitle.dart';
-import 'package:sigapp/courses/infrastructure/pages/courses/partials/empty_courses.dart';
+import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/partials/empty_courses.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
 
 class CareerPageAcademicHistoryWidget extends StatelessWidget {
