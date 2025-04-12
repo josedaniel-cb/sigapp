@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sigapp/core/infrastructure/ui/utils/colors_utils.dart';
 import 'package:sigapp/core/infrastructure/utils/time_utils.dart';
@@ -67,6 +68,9 @@ class _WeeklyScheduleWidgetState extends State<WeeklyScheduleWidget> {
               .map((event) => event.data.endHour)
               .reduce((a, b) => a > b ? a : b) +
           1;
+    }
+    if (kDebugMode) {
+      print('startHour: $startHour, endHour: $endHour');
     }
   }
 
@@ -284,7 +288,7 @@ class Grid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final numOfRows = endHour - startHour - 1;
+    final numOfRows = endHour - startHour;
     return Column(
       children: List.generate(numOfRows, (hour) {
         return Row(
@@ -426,7 +430,7 @@ class EventWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final top = (event.data.startHour - startHour) * rowHeight +
-        (event.data.startMinute / 60) * rowHeight;
+        (event.data.startMinutes / 60) * rowHeight;
     final gridWidth =
         (constraints.maxWidth - hourWidth) / daysWithEvents.length;
     final littleMarginForSides = gridWidth * 0.05;
@@ -434,7 +438,7 @@ class EventWidget extends StatelessWidget {
     final dayIndex = daysWithEvents.indexOf(event.data.weekday);
     final left = hourWidth + dayIndex * gridWidth;
     final height = ((event.data.endHour - event.data.startHour) * rowHeight +
-            ((event.data.endMinute - event.data.startMinute) / 60) *
+            ((event.data.endMinutes - event.data.startMinutes) / 60) *
                 rowHeight) -
         littleMarginForSides;
 
@@ -518,9 +522,9 @@ class EventWidget extends StatelessWidget {
                       Text(
                         TimeUtils.formatEventDuration(EventDuration(
                           startHour: event.data.startHour,
-                          startMinute: event.data.startMinute,
+                          startMinute: event.data.startMinutes,
                           endHour: event.data.endHour,
-                          endMinute: event.data.endMinute,
+                          endMinute: event.data.endMinutes,
                         )),
                         style: TextStyle(
                           color: textColor,

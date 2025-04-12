@@ -9,13 +9,13 @@ class WeeklyScheduleEvent {
   final int startHour;
 
   /// 0-59 representing the minute of the hour
-  final int startMinute;
+  final int startMinutes;
 
   /// 0-23 representing the hour of the day
   final int endHour;
 
   /// 0-59 representing the minute of the hour
-  final int endMinute;
+  final int endMinutes;
 
   // final int color;
   final String location;
@@ -25,9 +25,9 @@ class WeeklyScheduleEvent {
     required this.courseName,
     required this.weekday,
     required this.startHour,
-    required this.startMinute,
+    required this.startMinutes,
     required this.endHour,
-    required this.endMinute,
+    required this.endMinutes,
     // required this.color,
     required this.location,
   });

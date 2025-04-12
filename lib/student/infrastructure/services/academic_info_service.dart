@@ -2,7 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:sigapp/courses/application/services/student_session_service.dart';
 import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase.dart';
 import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
-import 'package:sigapp/semester/domain/value-objects/semester_context.dart';
+import 'package:sigapp/student/domain/value_objects/semester_context.dart';
 import 'package:sigapp/student/application/usecases/get_academic_report_usecase.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
 import 'package:sigapp/student/domain/services/academic_info_service.dart';

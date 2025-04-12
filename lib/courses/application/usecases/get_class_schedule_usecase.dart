@@ -112,9 +112,9 @@ class GetClassScheduleUsecase {
           courseName: courseName,
           weekday: weekday,
           startHour: eventStart.hour,
-          startMinute: eventStart.minute,
+          startMinutes: eventStart.minute,
           endHour: eventEnd.hour,
-          endMinute: eventEnd.minute,
+          endMinutes: eventEnd.minute,
           // color: _courseService.getBackgroundColor(courseName),
           location: classLocation,
         ));

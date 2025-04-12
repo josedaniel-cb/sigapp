@@ -234,9 +234,9 @@ class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
                           '${weekdayName[0].toUpperCase()}${weekdayName.substring(1)}',
                           TimeUtils.formatEventDuration(EventDuration(
                             startHour: e.startHour,
-                            startMinute: e.startMinute,
+                            startMinute: e.startMinutes,
                             endHour: e.endHour,
-                            endMinute: e.endMinute,
+                            endMinute: e.endMinutes,
                           )),
                         ];
                       }).toList();
@@ -252,7 +252,7 @@ class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
                         (acc, e) {
                           final duration = Duration(
                             hours: e.endHour - e.startHour,
-                            minutes: e.endMinute - e.startMinute,
+                            minutes: e.endMinutes - e.startMinutes,
                           );
                           return acc + duration;
                         },

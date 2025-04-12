@@ -106,11 +106,11 @@ class ExportToCalendarCubit extends Cubit<ExportToCalendarState> {
           .add(Duration(days: weeklyEvent.weekday - startDate.weekday));
       final start = date.copyWith(
         hour: weeklyEvent.startHour,
-        minute: weeklyEvent.startMinute,
+        minute: weeklyEvent.startMinutes,
       );
       final end = date.copyWith(
         hour: weeklyEvent.endHour,
-        minute: weeklyEvent.endMinute,
+        minute: weeklyEvent.endMinutes,
       );
 
       // Create the event object
