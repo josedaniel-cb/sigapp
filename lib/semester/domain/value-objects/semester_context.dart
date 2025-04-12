@@ -6,8 +6,8 @@ part 'semester_context.freezed.dart';
 @freezed
 class SemesterContext with _$SemesterContext {
   factory SemesterContext({
-    required bool isLast,
     required List<ScheduledTermIdentifier> availableSemesters,
     required ScheduledTermIdentifier defaultSemester,
+    required bool isLast,
   }) = _SemesterContext;
 }

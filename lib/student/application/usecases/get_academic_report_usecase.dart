@@ -1,13 +1,15 @@
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
+import 'package:sigapp/courses/application/services/student_session_service.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
 import 'package:sigapp/student/domain/repositories/student_repository.dart';
 
 @lazySingleton
 class GetAcademicReportUsecase {
   final StudentRepository _studentRepository;
+  final StudentSessionService _studentSessionService;
 
-  GetAcademicReportUsecase(this._studentRepository);
+  GetAcademicReportUsecase(
+      this._studentRepository, this._studentSessionService);
 
   Future<AcademicReport> execute() async {
     final academicReportModel =
@@ -18,14 +20,13 @@ class GetAcademicReportUsecase {
                 enrollmentSemesterId: value.enrollmentSemesterId.trim(),
               ),
             );
-    final sessionStudentInfoModel =
-        await _studentRepository.getSessionStudentInfo();
+    final studentSessionInfo = await _studentSessionService.getInfo();
 
     final studentInfoParts = academicReportModel.studentName.split(' - ');
     studentInfoParts.replaceRange(1, 2, studentInfoParts[1].split(', '));
     return AcademicReport(
       faculty: academicReportModel.faculty,
-      school: sessionStudentInfoModel.schoolName,
+      school: studentSessionInfo.schoolName,
       firstName: studentInfoParts[2],
       lastName: studentInfoParts[1],
       code: studentInfoParts[0],
@@ -47,9 +48,7 @@ class GetAcademicReportUsecase {
           academicReportModel.mandatoryCreditsOfPassedCourses,
       electiveCreditsOfPassedCourses:
           academicReportModel.electiveCreditsOfPassedCourses,
-      currentSemesterId: ScheduledTermIdentifier.buildFromName(
-              sessionStudentInfoModel.currentSemesterName)
-          .name,
+      currentSemester: studentSessionInfo.currentSemester,
     );
   }
 }

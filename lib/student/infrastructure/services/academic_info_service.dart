@@ -1,13 +1,52 @@
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
 import 'package:sigapp/semester/domain/value-objects/semester_context.dart';
+import 'package:sigapp/student/application/usecases/get_academic_report_usecase.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
+import 'package:sigapp/student/domain/services/academic_info_service.dart';
 
-@lazySingleton
-class GetSemesterContextUsecase {
-  GetSemesterContextUsecase();
+class AcademicInfoData {
+  final AcademicReport academicReport;
+  final SemesterContext semesterContext;
 
-  Future<SemesterContext> execute(AcademicReport academicReport) async {
+  AcademicInfoData({
+    required this.academicReport,
+    required this.semesterContext,
+  });
+}
+
+@Singleton(as: AcademicInfoService)
+class AcademicInfoServiceImpl extends AcademicInfoService {
+  AcademicInfoData? _data;
+
+  final GetAcademicReportUsecase _getAcademicReportUsecase;
+
+  AcademicInfoServiceImpl(this._getAcademicReportUsecase);
+
+  @override
+  Future<AcademicInfoData> getSessionInfo() async {
+    if (_data != null) {
+      return _data!;
+    }
+
+    final academicReport = await _getAcademicReportUsecase.execute();
+    final semesterContext = await _calculateSemesterContext(academicReport);
+
+    _data = AcademicInfoData(
+      academicReport: academicReport,
+      semesterContext: semesterContext,
+    );
+
+    return _data!;
+  }
+
+  @override
+  void clearSessionInfo() {
+    _data = null;
+  }
+
+  Future<SemesterContext> _calculateSemesterContext(
+      AcademicReport academicReport) async {
     // Fetch
     final firstSemester = ScheduledTermIdentifier.buildFromId(
         academicReport.enrollmentSemesterId);
@@ -24,7 +63,7 @@ class GetSemesterContextUsecase {
       rangeLastSemesterId = lastSemester.id;
     } else {
       defaultSemester = firstSemester;
-      rangeLastSemesterId = academicReport.currentSemesterId;
+      rangeLastSemesterId = academicReport.currentSemester.id;
     }
 
     return SemesterContext(

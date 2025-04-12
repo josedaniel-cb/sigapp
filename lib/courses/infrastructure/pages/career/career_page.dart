@@ -52,11 +52,16 @@ class _CareerPageViewState extends State<CareerPageView>
             tabs: [
               Tab(
                 icon: Icon(MdiIcons.book),
-                text: 'Plan de estudios',
+                text: 'Plan',
               ),
               Tab(
                 icon: Icon(MdiIcons.fileChart),
-                text: 'Historial académico',
+                text: 'Historial',
+              ),
+              // TODO
+              Tab(
+                icon: Icon(MdiIcons.calendarSearch),
+                text: 'Programación',
               ),
             ],
           ),

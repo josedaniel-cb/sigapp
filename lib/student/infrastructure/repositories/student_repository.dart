@@ -12,24 +12,24 @@ class StudentRepositoryImpl implements StudentRepository {
 
   StudentRepositoryImpl(this._sigaClient);
 
-  @override
-  Future<StudentSessionInfo> getSessionStudentInfo() async {
-    final response = await _sigaClient.http.get('/Home/Index');
-    final rawHtml = response.data as String;
-    final html = htmlParser.parse(rawHtml);
-    final parts =
-        html.querySelectorAll('dd').map((e) => e.text.trim()).toList();
-    if (parts.length < 4) {
-      // TODO: LOGOUT?
-      throw Exception('Session info not found');
-    }
-    final currentSemesterId = parts[3];
-    final schoolName = parts[1];
-    return StudentSessionInfo(
-      currentSemesterName: currentSemesterId,
-      schoolName: schoolName,
-    );
-  }
+  // @override
+  // Future<StudentSessionInfo> getSessionStudentInfo() async {
+  //   final response = await _sigaClient.http.get('/Home/Index');
+  //   final rawHtml = response.data as String;
+  //   final html = htmlParser.parse(rawHtml);
+  //   final parts =
+  //       html.querySelectorAll('dd').map((e) => e.text.trim()).toList();
+  //   if (parts.length < 4) {
+  //     // TODO: LOGOUT?
+  //     throw Exception('Session info not found');
+  //   }
+  //   final currentSemesterId = parts[3];
+  //   final schoolName = parts[1];
+  //   return StudentSessionInfo(
+  //     currentSemesterName: currentSemesterId,
+  //     schoolName: schoolName,
+  //   );
+  // }
 
   @override
   Future<RawAcademicReport> getAcademicReport() async {

@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
 
 part 'student_academic_report.freezed.dart';
 
@@ -24,6 +25,6 @@ class AcademicReport with _$AcademicReport {
     required int electiveCreditsOfPassedCourses,
 
     // General
-    required String currentSemesterId,
+    required ScheduledTermIdentifier currentSemester,
   }) = _AcademicReport;
 }

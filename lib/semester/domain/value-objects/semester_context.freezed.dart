@@ -16,11 +16,11 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$SemesterContext {
-  bool get isLast => throw _privateConstructorUsedError;
   List<ScheduledTermIdentifier> get availableSemesters =>
       throw _privateConstructorUsedError;
   ScheduledTermIdentifier get defaultSemester =>
       throw _privateConstructorUsedError;
+  bool get isLast => throw _privateConstructorUsedError;
 
   /// Create a copy of SemesterContext
   /// with the given fields replaced by the non-null parameter values.
@@ -36,9 +36,9 @@ abstract class $SemesterContextCopyWith<$Res> {
       _$SemesterContextCopyWithImpl<$Res, SemesterContext>;
   @useResult
   $Res call(
-      {bool isLast,
-      List<ScheduledTermIdentifier> availableSemesters,
-      ScheduledTermIdentifier defaultSemester});
+      {List<ScheduledTermIdentifier> availableSemesters,
+      ScheduledTermIdentifier defaultSemester,
+      bool isLast});
 }
 
 /// @nodoc
@@ -56,15 +56,11 @@ class _$SemesterContextCopyWithImpl<$Res, $Val extends SemesterContext>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isLast = null,
     Object? availableSemesters = null,
     Object? defaultSemester = null,
+    Object? isLast = null,
   }) {
     return _then(_value.copyWith(
-      isLast: null == isLast
-          ? _value.isLast
-          : isLast // ignore: cast_nullable_to_non_nullable
-              as bool,
       availableSemesters: null == availableSemesters
           ? _value.availableSemesters
           : availableSemesters // ignore: cast_nullable_to_non_nullable
@@ -73,6 +69,10 @@ class _$SemesterContextCopyWithImpl<$Res, $Val extends SemesterContext>
           ? _value.defaultSemester
           : defaultSemester // ignore: cast_nullable_to_non_nullable
               as ScheduledTermIdentifier,
+      isLast: null == isLast
+          ? _value.isLast
+          : isLast // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -86,9 +86,9 @@ abstract class _$$SemesterContextImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {bool isLast,
-      List<ScheduledTermIdentifier> availableSemesters,
-      ScheduledTermIdentifier defaultSemester});
+      {List<ScheduledTermIdentifier> availableSemesters,
+      ScheduledTermIdentifier defaultSemester,
+      bool isLast});
 }
 
 /// @nodoc
@@ -104,15 +104,11 @@ class __$$SemesterContextImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? isLast = null,
     Object? availableSemesters = null,
     Object? defaultSemester = null,
+    Object? isLast = null,
   }) {
     return _then(_$SemesterContextImpl(
-      isLast: null == isLast
-          ? _value.isLast
-          : isLast // ignore: cast_nullable_to_non_nullable
-              as bool,
       availableSemesters: null == availableSemesters
           ? _value._availableSemesters
           : availableSemesters // ignore: cast_nullable_to_non_nullable
@@ -121,6 +117,10 @@ class __$$SemesterContextImplCopyWithImpl<$Res>
           ? _value.defaultSemester
           : defaultSemester // ignore: cast_nullable_to_non_nullable
               as ScheduledTermIdentifier,
+      isLast: null == isLast
+          ? _value.isLast
+          : isLast // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -129,13 +129,11 @@ class __$$SemesterContextImplCopyWithImpl<$Res>
 
 class _$SemesterContextImpl implements _SemesterContext {
   _$SemesterContextImpl(
-      {required this.isLast,
-      required final List<ScheduledTermIdentifier> availableSemesters,
-      required this.defaultSemester})
+      {required final List<ScheduledTermIdentifier> availableSemesters,
+      required this.defaultSemester,
+      required this.isLast})
       : _availableSemesters = availableSemesters;
 
-  @override
-  final bool isLast;
   final List<ScheduledTermIdentifier> _availableSemesters;
   @override
   List<ScheduledTermIdentifier> get availableSemesters {
@@ -147,10 +145,12 @@ class _$SemesterContextImpl implements _SemesterContext {
 
   @override
   final ScheduledTermIdentifier defaultSemester;
+  @override
+  final bool isLast;
 
   @override
   String toString() {
-    return 'SemesterContext(isLast: $isLast, availableSemesters: $availableSemesters, defaultSemester: $defaultSemester)';
+    return 'SemesterContext(availableSemesters: $availableSemesters, defaultSemester: $defaultSemester, isLast: $isLast)';
   }
 
   @override
@@ -158,19 +158,19 @@ class _$SemesterContextImpl implements _SemesterContext {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SemesterContextImpl &&
-            (identical(other.isLast, isLast) || other.isLast == isLast) &&
             const DeepCollectionEquality()
                 .equals(other._availableSemesters, _availableSemesters) &&
             (identical(other.defaultSemester, defaultSemester) ||
-                other.defaultSemester == defaultSemester));
+                other.defaultSemester == defaultSemester) &&
+            (identical(other.isLast, isLast) || other.isLast == isLast));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      isLast,
       const DeepCollectionEquality().hash(_availableSemesters),
-      defaultSemester);
+      defaultSemester,
+      isLast);
 
   /// Create a copy of SemesterContext
   /// with the given fields replaced by the non-null parameter values.
@@ -184,17 +184,16 @@ class _$SemesterContextImpl implements _SemesterContext {
 
 abstract class _SemesterContext implements SemesterContext {
   factory _SemesterContext(
-          {required final bool isLast,
-          required final List<ScheduledTermIdentifier> availableSemesters,
-          required final ScheduledTermIdentifier defaultSemester}) =
-      _$SemesterContextImpl;
+      {required final List<ScheduledTermIdentifier> availableSemesters,
+      required final ScheduledTermIdentifier defaultSemester,
+      required final bool isLast}) = _$SemesterContextImpl;
 
-  @override
-  bool get isLast;
   @override
   List<ScheduledTermIdentifier> get availableSemesters;
   @override
   ScheduledTermIdentifier get defaultSemester;
+  @override
+  bool get isLast;
 
   /// Create a copy of SemesterContext
   /// with the given fields replaced by the non-null parameter values.

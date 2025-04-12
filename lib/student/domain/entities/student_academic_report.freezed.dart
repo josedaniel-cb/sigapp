@@ -36,7 +36,8 @@ mixin _$AcademicReport {
   int get mandatoryCreditsOfPassedCourses => throw _privateConstructorUsedError;
   int get electiveCreditsOfPassedCourses =>
       throw _privateConstructorUsedError; // General
-  String get currentSemesterId => throw _privateConstructorUsedError;
+  ScheduledTermIdentifier get currentSemester =>
+      throw _privateConstructorUsedError;
 
   /// Create a copy of AcademicReport
   /// with the given fields replaced by the non-null parameter values.
@@ -69,7 +70,7 @@ abstract class $AcademicReportCopyWith<$Res> {
       int curriculumElectiveCredits,
       int mandatoryCreditsOfPassedCourses,
       int electiveCreditsOfPassedCourses,
-      String currentSemesterId});
+      ScheduledTermIdentifier currentSemester});
 }
 
 /// @nodoc
@@ -104,7 +105,7 @@ class _$AcademicReportCopyWithImpl<$Res, $Val extends AcademicReport>
     Object? curriculumElectiveCredits = null,
     Object? mandatoryCreditsOfPassedCourses = null,
     Object? electiveCreditsOfPassedCourses = null,
-    Object? currentSemesterId = null,
+    Object? currentSemester = null,
   }) {
     return _then(_value.copyWith(
       faculty: null == faculty
@@ -176,10 +177,10 @@ class _$AcademicReportCopyWithImpl<$Res, $Val extends AcademicReport>
           ? _value.electiveCreditsOfPassedCourses
           : electiveCreditsOfPassedCourses // ignore: cast_nullable_to_non_nullable
               as int,
-      currentSemesterId: null == currentSemesterId
-          ? _value.currentSemesterId
-          : currentSemesterId // ignore: cast_nullable_to_non_nullable
-              as String,
+      currentSemester: null == currentSemester
+          ? _value.currentSemester
+          : currentSemester // ignore: cast_nullable_to_non_nullable
+              as ScheduledTermIdentifier,
     ) as $Val);
   }
 }
@@ -210,7 +211,7 @@ abstract class _$$AcademicReportImplCopyWith<$Res>
       int curriculumElectiveCredits,
       int mandatoryCreditsOfPassedCourses,
       int electiveCreditsOfPassedCourses,
-      String currentSemesterId});
+      ScheduledTermIdentifier currentSemester});
 }
 
 /// @nodoc
@@ -243,7 +244,7 @@ class __$$AcademicReportImplCopyWithImpl<$Res>
     Object? curriculumElectiveCredits = null,
     Object? mandatoryCreditsOfPassedCourses = null,
     Object? electiveCreditsOfPassedCourses = null,
-    Object? currentSemesterId = null,
+    Object? currentSemester = null,
   }) {
     return _then(_$AcademicReportImpl(
       faculty: null == faculty
@@ -315,10 +316,10 @@ class __$$AcademicReportImplCopyWithImpl<$Res>
           ? _value.electiveCreditsOfPassedCourses
           : electiveCreditsOfPassedCourses // ignore: cast_nullable_to_non_nullable
               as int,
-      currentSemesterId: null == currentSemesterId
-          ? _value.currentSemesterId
-          : currentSemesterId // ignore: cast_nullable_to_non_nullable
-              as String,
+      currentSemester: null == currentSemester
+          ? _value.currentSemester
+          : currentSemester // ignore: cast_nullable_to_non_nullable
+              as ScheduledTermIdentifier,
     ));
   }
 }
@@ -344,7 +345,7 @@ class _$AcademicReportImpl implements _AcademicReport {
       required this.curriculumElectiveCredits,
       required this.mandatoryCreditsOfPassedCourses,
       required this.electiveCreditsOfPassedCourses,
-      required this.currentSemesterId});
+      required this.currentSemester});
 
   @override
   final String faculty;
@@ -382,11 +383,11 @@ class _$AcademicReportImpl implements _AcademicReport {
   final int electiveCreditsOfPassedCourses;
 // General
   @override
-  final String currentSemesterId;
+  final ScheduledTermIdentifier currentSemester;
 
   @override
   String toString() {
-    return 'AcademicReport(faculty: $faculty, school: $school, firstName: $firstName, lastName: $lastName, code: $code, cohort: $cohort, enrollmentSemesterId: $enrollmentSemesterId, curriculumSemesterId: $curriculumSemesterId, lastSemesterId: $lastSemesterId, cumulativeWeightedAverage: $cumulativeWeightedAverage, cumulativeWeightedAverageOfPassedCourses: $cumulativeWeightedAverageOfPassedCourses, lastCumulativeWeightedAverage: $lastCumulativeWeightedAverage, totalCreditsOfPassedCourses: $totalCreditsOfPassedCourses, curriculumMandatoryCredits: $curriculumMandatoryCredits, curriculumElectiveCredits: $curriculumElectiveCredits, mandatoryCreditsOfPassedCourses: $mandatoryCreditsOfPassedCourses, electiveCreditsOfPassedCourses: $electiveCreditsOfPassedCourses, currentSemesterId: $currentSemesterId)';
+    return 'AcademicReport(faculty: $faculty, school: $school, firstName: $firstName, lastName: $lastName, code: $code, cohort: $cohort, enrollmentSemesterId: $enrollmentSemesterId, curriculumSemesterId: $curriculumSemesterId, lastSemesterId: $lastSemesterId, cumulativeWeightedAverage: $cumulativeWeightedAverage, cumulativeWeightedAverageOfPassedCourses: $cumulativeWeightedAverageOfPassedCourses, lastCumulativeWeightedAverage: $lastCumulativeWeightedAverage, totalCreditsOfPassedCourses: $totalCreditsOfPassedCourses, curriculumMandatoryCredits: $curriculumMandatoryCredits, curriculumElectiveCredits: $curriculumElectiveCredits, mandatoryCreditsOfPassedCourses: $mandatoryCreditsOfPassedCourses, electiveCreditsOfPassedCourses: $electiveCreditsOfPassedCourses, currentSemester: $currentSemester)';
   }
 
   @override
@@ -432,8 +433,8 @@ class _$AcademicReportImpl implements _AcademicReport {
             (identical(other.electiveCreditsOfPassedCourses, electiveCreditsOfPassedCourses) ||
                 other.electiveCreditsOfPassedCourses ==
                     electiveCreditsOfPassedCourses) &&
-            (identical(other.currentSemesterId, currentSemesterId) ||
-                other.currentSemesterId == currentSemesterId));
+            (identical(other.currentSemester, currentSemester) ||
+                other.currentSemester == currentSemester));
   }
 
   @override
@@ -456,7 +457,7 @@ class _$AcademicReportImpl implements _AcademicReport {
       curriculumElectiveCredits,
       mandatoryCreditsOfPassedCourses,
       electiveCreditsOfPassedCourses,
-      currentSemesterId);
+      currentSemester);
 
   /// Create a copy of AcademicReport
   /// with the given fields replaced by the non-null parameter values.
@@ -470,24 +471,25 @@ class _$AcademicReportImpl implements _AcademicReport {
 
 abstract class _AcademicReport implements AcademicReport {
   factory _AcademicReport(
-      {required final String faculty,
-      required final String school,
-      required final String firstName,
-      required final String lastName,
-      required final String code,
-      required final String cohort,
-      required final String enrollmentSemesterId,
-      required final String curriculumSemesterId,
-      required final String? lastSemesterId,
-      required final double cumulativeWeightedAverage,
-      required final double cumulativeWeightedAverageOfPassedCourses,
-      required final double lastCumulativeWeightedAverage,
-      required final int totalCreditsOfPassedCourses,
-      required final int curriculumMandatoryCredits,
-      required final int curriculumElectiveCredits,
-      required final int mandatoryCreditsOfPassedCourses,
-      required final int electiveCreditsOfPassedCourses,
-      required final String currentSemesterId}) = _$AcademicReportImpl;
+          {required final String faculty,
+          required final String school,
+          required final String firstName,
+          required final String lastName,
+          required final String code,
+          required final String cohort,
+          required final String enrollmentSemesterId,
+          required final String curriculumSemesterId,
+          required final String? lastSemesterId,
+          required final double cumulativeWeightedAverage,
+          required final double cumulativeWeightedAverageOfPassedCourses,
+          required final double lastCumulativeWeightedAverage,
+          required final int totalCreditsOfPassedCourses,
+          required final int curriculumMandatoryCredits,
+          required final int curriculumElectiveCredits,
+          required final int mandatoryCreditsOfPassedCourses,
+          required final int electiveCreditsOfPassedCourses,
+          required final ScheduledTermIdentifier currentSemester}) =
+      _$AcademicReportImpl;
 
   @override
   String get faculty;
@@ -524,7 +526,7 @@ abstract class _AcademicReport implements AcademicReport {
   @override
   int get electiveCreditsOfPassedCourses; // General
   @override
-  String get currentSemesterId;
+  ScheduledTermIdentifier get currentSemester;
 
   /// Create a copy of AcademicReport
   /// with the given fields replaced by the non-null parameter values.

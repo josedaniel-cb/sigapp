@@ -4,7 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/auth/application/usecases/sign_out_usecase.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
-import 'package:sigapp/student/domain/services/student_info_service.dart';
+import 'package:sigapp/student/domain/services/academic_info_service.dart';
 
 part 'user_avatar_button_cubit.freezed.dart';
 
@@ -22,7 +22,7 @@ class UserAvatarButtonState with _$UserAvatarButtonState {
 
 @singleton
 class UserAvatarButtonCubit extends Cubit<UserAvatarButtonState> {
-  final SessionInfoService _sessionInfoService;
+  final AcademicInfoService _sessionInfoService;
   final SignOutUseCase _signOutUseCase;
 
   UserAvatarButtonCubit(this._sessionInfoService, this._signOutUseCase)

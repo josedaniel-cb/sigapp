@@ -1,25 +1,25 @@
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/courses/application/services/regeva_auth_service.dart';
+import 'package:sigapp/courses/application/services/student_session_service.dart';
 import 'package:sigapp/courses/domain/repositories/regeva_repository.dart';
 import 'package:sigapp/courses/domain/value-objects/course_grade.dart';
 
 @lazySingleton
 class GetCourseGradeUsecase {
-  final RegevaAuthService _regevaAuthService;
+  final StudentSessionService _studentSessionService;
   final RegevaRepository _regevaRepository;
 
-  GetCourseGradeUsecase(this._regevaAuthService, this._regevaRepository);
+  GetCourseGradeUsecase(this._studentSessionService, this._regevaRepository);
 
   Future<CourseGradeInfo> execute(String scheduledCourseId,
       [bool? refresh]) async {
-    final credentials = await _regevaAuthService.getCredentials(refresh);
+    final credentials = await _studentSessionService.getInfo(refresh);
     return CourseGradeInfo(
       grade: await _regevaRepository
           .getCourseGrade(
         scheduledCourseId: scheduledCourseId,
         studentCode: credentials.studentCode,
-        sigaToken1: credentials.token1,
-        sigaToken2: credentials.token2,
+        sigaToken1: credentials.regevaToken1,
+        sigaToken2: credentials.regevaToken2,
       )
           .then((value) {
         if (value == null) {
@@ -37,8 +37,8 @@ class GetCourseGradeUsecase {
       url: _regevaRepository.buildGradesUrl(
         scheduledCourseId: scheduledCourseId,
         studentCode: credentials.studentCode,
-        token1: credentials.token1,
-        token2: credentials.token2,
+        token1: credentials.regevaToken1,
+        token2: credentials.regevaToken2,
       ),
     );
   }

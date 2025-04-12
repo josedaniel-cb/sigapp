@@ -6,7 +6,7 @@ import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase
 import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
 import 'package:sigapp/semester/domain/value-objects/semester_context.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
-import 'package:sigapp/student/domain/services/student_info_service.dart';
+import 'package:sigapp/student/domain/services/academic_info_service.dart';
 import 'package:sigapp/student/domain/value_objects/enrolled_course.dart';
 
 part 'courses_page_cubit.freezed.dart';
@@ -36,7 +36,7 @@ abstract class CoursesPageState with _$CoursesPageState {
 // @singleton
 @injectable
 class CoursesPageCubit extends Cubit<CoursesPageState> {
-  final SessionInfoService _sessionInfoService;
+  final AcademicInfoService _sessionInfoService;
   final GetEnrolledCoursesUsecase _getEnrolledCoursesUsecase;
 
   CoursesPageCubit(this._getEnrolledCoursesUsecase, this._sessionInfoService)
