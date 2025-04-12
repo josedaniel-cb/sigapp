@@ -74,38 +74,36 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
       final grades = courseTypeGrades[type]!;
       final double minGrade = grades.reduce((a, b) => a < b ? a : b);
       final double maxGrade = grades.reduce((a, b) => a > b ? a : b);
+      final double avgGrade = grades.reduce((a, b) => a + b) / grades.length;
       globalMaxGrade = math.max(globalMaxGrade, maxGrade);
 
-      List<BarChartRodData> rods = [];
-      if (minGrade == maxGrade) {
-        // Nota única: barra morada
-        rods.add(
+      List<BarChartRodData> rods = [
+        if (grades.length > 1) ...[
           BarChartRodData(
             toY: minGrade,
-            width: 6,
-            color: Colors.purple,
-            borderRadius: BorderRadius.circular(0),
-          ),
-        );
-      } else {
-        // Dos barras: una para la nota mínima (azul) y otra para la máxima (roja)
-        rods.add(
-          BarChartRodData(
-            toY: minGrade,
-            width: 6,
-            color: Colors.blue,
-            borderRadius: BorderRadius.circular(0),
-          ),
-        );
-        rods.add(
-          BarChartRodData(
-            toY: maxGrade,
-            width: 6,
+            width: 5,
             color: Colors.red,
             borderRadius: BorderRadius.circular(0),
           ),
-        );
-      }
+          BarChartRodData(toY: -1, width: 3)
+        ],
+        BarChartRodData(
+          toY: avgGrade,
+          width: 5,
+          color: Colors.purple,
+          borderRadius: BorderRadius.circular(0),
+        ),
+        if (grades.length > 1) ...[
+          BarChartRodData(toY: -1, width: 3),
+          BarChartRodData(
+            toY: maxGrade,
+            width: 5,
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(0),
+          ),
+        ],
+      ];
+
       barGroups.add(
         BarChartGroupData(
           x: index,
@@ -151,105 +149,107 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
             children: [
               LegendsListWidget(
                 legends: [
-                  Legend('Nota única', Colors.purple),
-                  Legend('Mínima', Colors.blue),
-                  Legend('Máxima', Colors.red),
+                  Legend('Mínima', Colors.red),
+                  Legend('Promedio', Colors.purple),
+                  Legend('Máxima', Colors.blue),
                 ],
-              )
+              ),
             ],
           ),
           const SizedBox(height: 8),
           SizedBox(
-            // height: 300,
-            height: sortedKeys.length * 35,
-            child: BarChart(
-              BarChartData(
-                // Hacemos la gráfica horizontal rotándola 90 grados
-                rotationQuarterTurns: 1,
-                alignment: BarChartAlignment.spaceAround,
-                maxY: finalMaxY,
-                minY: finalMinY,
-                barGroups: barGroups,
-                gridData: FlGridData(show: true),
-                borderData: FlBorderData(
-                  show: true,
-                  border: const Border(
-                    left: BorderSide(color: Colors.black12),
-                    bottom: BorderSide(color: Colors.black12),
-                    top: BorderSide(color: Colors.transparent),
-                    right: BorderSide(color: Colors.transparent),
-                  ),
+            height: sortedKeys.length * 40.0,
+            child: BarChart(BarChartData(
+              // Hacemos la gráfica horizontal rotándola 90 grados
+              rotationQuarterTurns: 1,
+              alignment: BarChartAlignment.spaceAround,
+              maxY: finalMaxY,
+              minY: finalMinY,
+              barGroups: barGroups,
+              gridData: FlGridData(show: true),
+              borderData: FlBorderData(
+                show: true,
+                border: const Border(
+                  left: BorderSide(color: Colors.black12),
+                  bottom: BorderSide(color: Colors.black12),
+                  top: BorderSide(color: Colors.transparent),
+                  right: BorderSide(color: Colors.transparent),
                 ),
-                titlesData: FlTitlesData(
-                  leftTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 30,
-                      getTitlesWidget: (value, meta) {
-                        return SideTitleWidget(
-                          meta: meta,
-                          child: Text(
-                            value.toStringAsFixed(1),
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  bottomTitles: AxisTitles(
-                    sideTitles: SideTitles(
-                      showTitles: true,
-                      reservedSize: 120,
-                      getTitlesWidget: (value, meta) {
-                        int idx = value.toInt();
-                        if (idx < 0 || idx >= sortedKeys.length) {
-                          return const SizedBox.shrink();
-                        }
-                        final prefix = sortedKeys[idx];
-                        final displayName = coursePrefixes.containsKey(prefix)
-                            ? '($prefix) ${coursePrefixes[prefix]}'
-                            : prefix;
-                        return SideTitleWidget(
-                          meta: meta,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 4.0),
-                            child: Text(
-                              displayName,
-                              style: const TextStyle(fontSize: 10),
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  topTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
-                  rightTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
-                ),
-                barTouchData: BarTouchData(
-                  enabled: false,
-                  touchTooltipData: BarTouchTooltipData(
-                    fitInsideHorizontally: true,
-                    fitInsideVertically: true,
-                    tooltipPadding: EdgeInsets.zero,
-                    tooltipMargin: 0,
-                    getTooltipColor: (group) => Colors.transparent,
-                    getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                      return BarTooltipItem(
-                        '  ${rod.toY.toStringAsFixed(1)}',
-                        Theme.of(context).textTheme.labelSmall ??
-                            const TextStyle(),
+              ),
+              titlesData: FlTitlesData(
+                leftTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 30,
+                    getTitlesWidget: (value, meta) {
+                      return SideTitleWidget(
+                        meta: meta,
+                        child: Text(
+                          value.toStringAsFixed(1),
+                          style: const TextStyle(fontSize: 12),
+                        ),
                       );
                     },
                   ),
                 ),
+                bottomTitles: AxisTitles(
+                  sideTitles: SideTitles(
+                    showTitles: true,
+                    reservedSize: 120,
+                    getTitlesWidget: (value, meta) {
+                      int idx = value.toInt();
+                      if (idx < 0 || idx >= sortedKeys.length) {
+                        return const SizedBox.shrink();
+                      }
+                      final prefix = sortedKeys[idx];
+                      final displayName = coursePrefixes.containsKey(prefix)
+                          ? '($prefix) ${coursePrefixes[prefix]}'
+                          : prefix;
+                      return SideTitleWidget(
+                        meta: meta,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: Text(
+                            displayName,
+                            style: const TextStyle(fontSize: 10),
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                topTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
+                rightTitles: const AxisTitles(
+                  sideTitles: SideTitles(showTitles: false),
+                ),
               ),
-            ),
+              barTouchData: BarTouchData(
+                enabled: false,
+                touchTooltipData: BarTouchTooltipData(
+                  fitInsideHorizontally: true,
+                  fitInsideVertically: true,
+                  tooltipPadding: EdgeInsets.zero,
+                  tooltipMargin: 0,
+                  getTooltipColor: (group) => Colors.transparent,
+                  getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                    if (rod.toY == -1) {
+                      return BarTooltipItem('', const TextStyle());
+                    }
+
+                    return BarTooltipItem(
+                      '  ${rod.toY.toStringAsFixed(1)}',
+                      (Theme.of(context).textTheme.labelSmall ??
+                              const TextStyle())
+                          .copyWith(color: rod.color),
+                    );
+                  },
+                ),
+              ),
+            )),
           ),
           SizedBox(height: 8),
           Row(
