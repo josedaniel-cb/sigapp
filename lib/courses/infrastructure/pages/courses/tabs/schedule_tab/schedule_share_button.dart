@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
@@ -88,28 +89,37 @@ class _ScheduleShareButtonWidgetState extends State<ScheduleShareButtonWidget> {
 
     try {
       final Uint8List image = await screenshotController.captureFromWidget(
-        SizedBox(
-          width: pixelsToDIP(context, 1920),
-          child: WeeklyScheduleWidget(
-            courses: widget.enrolledCourses,
-            topLeft: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                BrandTextWidget(),
-                Text(
-                  'Horario ${widget.selectedSemester.name}',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-              ],
+        DefaultTextStyle(
+          style: GoogleFonts.lato(
+            color: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.color
+                ?.withValues(alpha: 0.5),
+          ),
+          child: SizedBox(
+            width: pixelsToDIP(context, 1920),
+            child: WeeklyScheduleWidget(
+              courses: widget.enrolledCourses,
+              topLeft: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  BrandTextWidget(),
+                  Text(
+                    'Horario ${widget.selectedSemester.name}',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                ],
+              ),
+              bottomLeft: Text(
+                  '${widget.academicReport.firstName} ${widget.academicReport.lastName}'),
+              bottomRight: Text(
+                  '${widget.academicReport.school} - Promoción ${widget.academicReport.cohort}'),
+              disableScroll: true,
+              fontSize: pixelsToDIP(context, 40),
+              hourWidth: pixelsToDIP(context, 200),
+              rowHeight: pixelsToDIP(context, 200),
             ),
-            bottomLeft: Text(
-                '${widget.academicReport.firstName} ${widget.academicReport.lastName}'),
-            bottomRight: Text(
-                '${widget.academicReport.school} - Promoción ${widget.academicReport.cohort}'),
-            disableScroll: true,
-            fontSize: pixelsToDIP(context, 40),
-            hourWidth: pixelsToDIP(context, 200),
-            rowHeight: pixelsToDIP(context, 200),
           ),
         ),
         context: context,

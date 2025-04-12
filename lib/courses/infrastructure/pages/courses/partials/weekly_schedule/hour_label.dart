@@ -32,7 +32,7 @@ class HourLabelWidget extends StatelessWidget {
             child: Container(
               width: littleRayLength,
               height: 1,
-              color: Colors.grey.withOpacity(0.5),
+              color: Colors.grey.withValues(alpha: 0.5),
             ),
           ),
           Container(

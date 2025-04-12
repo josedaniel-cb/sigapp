@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:sigapp/core/infrastructure/ui/utils/colors_utils.dart';
 import 'package:sigapp/core/infrastructure/utils/time_utils.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/partials/weekly_schedule.dart';
@@ -67,77 +66,74 @@ class EventWidget extends StatelessWidget {
 
     final textColor = ColorsUtils.getTextColor(event.color);
 
-    return DefaultTextStyle(
-      style: GoogleFonts.lato(),
-      child: Positioned(
-        top: top,
-        left: left,
-        width: width,
-        height: height,
-        child: Container(
-          decoration: BoxDecoration(
-            color: event.color,
-            borderRadius: BorderRadius.circular(verticalPadding),
+    return Positioned(
+      top: top,
+      left: left,
+      width: width,
+      height: height,
+      child: Container(
+        decoration: BoxDecoration(
+          color: event.color,
+          borderRadius: BorderRadius.circular(verticalPadding),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: verticalPadding,
+            horizontal: horizontalPadding,
           ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: verticalPadding,
-              horizontal: horizontalPadding,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: availableHeightForTitle,
+                width: availableWidth,
+                child: Text(
+                  event.data.courseName,
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: titleFontSize,
+                    height: titleLineHeight,
+                  ),
+                  maxLines: titleMaxLines,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              if (captionsCanBeShown)
                 SizedBox(
-                  height: availableHeightForTitle,
                   width: availableWidth,
-                  child: Text(
-                    event.data.courseName,
-                    style: TextStyle(
-                      color: textColor,
-                      fontSize: titleFontSize,
-                      height: titleLineHeight,
-                    ),
-                    maxLines: titleMaxLines,
-                    overflow: TextOverflow.ellipsis,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        event.data.location,
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: captionFontSize,
+                          height: captionLineHeight,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        TimeUtils.formatEventDuration(EventDuration(
+                          startHour: event.data.startHour,
+                          startMinute: event.data.startMinutes,
+                          endHour: event.data.endHour,
+                          endMinute: event.data.endMinutes,
+                        )),
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: captionFontSize,
+                          height: captionLineHeight,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
                 ),
-                if (captionsCanBeShown)
-                  SizedBox(
-                    width: availableWidth,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          event.data.location,
-                          style: TextStyle(
-                            color: textColor,
-                            fontSize: captionFontSize,
-                            height: captionLineHeight,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        Text(
-                          TimeUtils.formatEventDuration(EventDuration(
-                            startHour: event.data.startHour,
-                            startMinute: event.data.startMinutes,
-                            endHour: event.data.endHour,
-                            endMinute: event.data.endMinutes,
-                          )),
-                          style: TextStyle(
-                            color: textColor,
-                            fontSize: captionFontSize,
-                            height: captionLineHeight,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
+            ],
           ),
         ),
       ),

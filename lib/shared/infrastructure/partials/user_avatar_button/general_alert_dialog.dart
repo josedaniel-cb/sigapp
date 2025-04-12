@@ -49,89 +49,75 @@ class GeneralAvatarDialog extends StatelessWidget {
         horizontal: 0,
         vertical: 8,
       ),
-      content: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.4,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ListTile(
-                      leading: InitialsAvatarWidget(
-                        content: userFirstNameInitials,
-                        enableGradient: true,
-                        backgroundColor: Theme.of(context).primaryColor,
-                      ),
-                      title: Text(userFullName),
-                      subtitle: Text(userId),
-                    ),
-                    if (errorMessage != null)
-                      ListTile(
-                        subtitle: Text(
-                          errorMessage!,
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ),
-                    Divider(),
-                    ListTile(
-                      leading: Icon(Icons.share),
-                      title: Text('Compartir'),
-                      onTap: () {
-                        Navigator.of(context).pop();
-
-                        ShareUtils.shareAssetsFile(
-                          context,
-                          assetPath: 'assets/share.png',
-                          mimeType: 'image/png',
-                          name: 'share.png',
-                          text:
-                              'Unepino, descarga la app del SIGA (no oficial) desde el siguiente enlace: '
-                              '${Links.playStoreUrl}\n'
-                              '👌\tBon appetit',
-                        );
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.bug_report),
-                      title: Text('Reportar un problema'),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        MailUtils.launchEmail(
-                          context,
-                          email: Links.contactEmail,
-                          subject: 'Hola! Quiero reportar un error',
-                          body: '(agrega capturas de pantalla)',
-                        );
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.info_outline),
-                      title: Text('Acerca de'),
-                      onTap: () {
-                        Navigator.of(context).pop();
-                        GoRouter.of(context).push('/about');
-                      },
-                    ),
-                    Divider(),
-                    ListTile(
-                      leading: Icon(Icons.logout),
-                      title: Text('Cerrar sesión'),
-                      onTap: () {
-                        onSignOut();
-                      },
-                    ),
-                    Divider(),
-                  ],
-                ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: InitialsAvatarWidget(
+              content: userFirstNameInitials,
+              enableGradient: true,
+              backgroundColor: Theme.of(context).primaryColor,
+            ),
+            title: Text(userFullName),
+            subtitle: Text(userId),
+          ),
+          if (errorMessage != null)
+            ListTile(
+              subtitle: Text(
+                errorMessage!,
+                style: TextStyle(color: Colors.red),
               ),
             ),
-            _buildFooter(context),
-          ],
-        ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.share),
+            title: Text('Compartir'),
+            onTap: () {
+              Navigator.of(context).pop();
+              ShareUtils.shareAssetsFile(
+                context,
+                assetPath: 'assets/share.png',
+                mimeType: 'image/png',
+                name: 'share.png',
+                text:
+                    'Unepino, descarga la app del SIGA (no oficial) desde el siguiente enlace: '
+                    '${Links.playStoreUrl}\n'
+                    '👌\tBon appetit',
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.bug_report),
+            title: Text('Reportar un problema'),
+            onTap: () {
+              Navigator.of(context).pop();
+              MailUtils.launchEmail(
+                context,
+                email: Links.contactEmail,
+                subject: 'Hola! Quiero reportar un error',
+                body: '(agrega capturas de pantalla)',
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.info_outline),
+            title: Text('Acerca de'),
+            onTap: () {
+              Navigator.of(context).pop();
+              GoRouter.of(context).push('/about');
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text('Cerrar sesión'),
+            onTap: () {
+              onSignOut();
+            },
+          ),
+          Divider(),
+          _buildFooter(context),
+        ],
       ),
     );
   }

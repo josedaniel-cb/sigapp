@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sigapp/core/infrastructure/ui/utils/colors_utils.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/partials/weekly_schedule/body.dart';
 import 'package:sigapp/courses/infrastructure/pages/courses/partials/weekly_schedule/day_header.dart';
@@ -90,59 +91,68 @@ class _WeeklyScheduleWidgetState extends State<WeeklyScheduleWidget> {
         .where((day) => widget.events.any((event) => event.data.weekday == day))
         .toList();
 
-    return LayoutBuilder(builder: (context, constraints) {
-      return Container(
-        color: Colors.white,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (widget.topRight != null || widget.topLeft != null)
-              TextInfoWidget(
-                leftText: widget.topLeft,
-                rightText: widget.topRight,
-              ),
-            Row(
-              children: [
-                Container(
-                  width: widget.hourWidth,
-                  padding: const EdgeInsets.all(8),
+    return DefaultTextStyle(
+      style: GoogleFonts.lato(
+        color: Theme.of(context)
+            .textTheme
+            .bodyMedium
+            ?.color
+            ?.withValues(alpha: 0.5),
+      ),
+      child: LayoutBuilder(builder: (context, constraints) {
+        return Container(
+          color: Colors.white,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (widget.topRight != null || widget.topLeft != null)
+                TextInfoWidget(
+                  leftText: widget.topLeft,
+                  rightText: widget.topRight,
                 ),
-                for (var day in daysWithEvents) DayHeaderWidget(day: day),
-              ],
-            ),
-            widget.disableScroll
-                ? BodyWidget(
-                    events: widget.events,
-                    daysWithEvents: daysWithEvents,
-                    startHour: startHour,
-                    endHour: endHour,
-                    constraints: constraints,
-                    fontSize: widget.fontSize,
-                    hourWidth: widget.hourWidth,
-                    rowHeight: widget.rowHeight,
-                  )
-                : Expanded(
-                    child: SingleChildScrollView(
-                      child: BodyWidget(
-                        events: widget.events,
-                        daysWithEvents: daysWithEvents,
-                        startHour: startHour,
-                        endHour: endHour,
-                        constraints: constraints,
-                        fontSize: widget.fontSize,
-                        hourWidth: widget.hourWidth,
-                        rowHeight: widget.rowHeight,
+              Row(
+                children: [
+                  Container(
+                    width: widget.hourWidth,
+                    padding: const EdgeInsets.all(8),
+                  ),
+                  for (var day in daysWithEvents) DayHeaderWidget(day: day),
+                ],
+              ),
+              widget.disableScroll
+                  ? BodyWidget(
+                      events: widget.events,
+                      daysWithEvents: daysWithEvents,
+                      startHour: startHour,
+                      endHour: endHour,
+                      constraints: constraints,
+                      fontSize: widget.fontSize,
+                      hourWidth: widget.hourWidth,
+                      rowHeight: widget.rowHeight,
+                    )
+                  : Expanded(
+                      child: SingleChildScrollView(
+                        child: BodyWidget(
+                          events: widget.events,
+                          daysWithEvents: daysWithEvents,
+                          startHour: startHour,
+                          endHour: endHour,
+                          constraints: constraints,
+                          fontSize: widget.fontSize,
+                          hourWidth: widget.hourWidth,
+                          rowHeight: widget.rowHeight,
+                        ),
                       ),
                     ),
-                  ),
-            if (widget.bottomRight != null || widget.bottomLeft != null)
-              TextInfoWidget(
-                leftText: widget.bottomRight,
-                rightText: widget.bottomLeft,
-              ),
-          ],
-        ),
-      );
-    });
+              if (widget.bottomRight != null || widget.bottomLeft != null)
+                TextInfoWidget(
+                  leftText: widget.bottomRight,
+                  rightText: widget.bottomLeft,
+                ),
+            ],
+          ),
+        );
+      }),
+    );
   }
 }

@@ -78,12 +78,12 @@ class GridWidget extends StatelessWidget {
                     border: Border(
                       left: dayIndex == 0
                           ? BorderSide(
-                              color: Colors.grey.withOpacity(0.5),
+                              color: Colors.grey.withValues(alpha: 0.5),
                             )
                           : BorderSide.none,
                       right: dayIndex != daysWithEvents.length - 1
                           ? BorderSide(
-                              color: Colors.grey.withOpacity(0.5),
+                              color: Colors.grey.withValues(alpha: 0.5),
                             )
                           : BorderSide.none,
                     ),
