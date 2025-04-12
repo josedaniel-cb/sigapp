@@ -1,13 +1,23 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
 
-part 'semester_context.freezed.dart';
+enum SemesterContextType {
+  currentlyEnrolled,
+  completedLastEnrolled,
+  unknownLastEnrolled,
+}
 
-@freezed
-class SemesterContext with _$SemesterContext {
-  factory SemesterContext({
-    required List<ScheduledTermIdentifier> availableSemesters,
-    required ScheduledTermIdentifier defaultSemester,
-    required bool isLast,
-  }) = _SemesterContext;
+class SemesterContext {
+  final List<ScheduledTermIdentifier> availableSemesters;
+  final ScheduledTermIdentifier defaultSemester;
+  final SemesterContextType contextType;
+
+  SemesterContext({
+    required this.availableSemesters,
+    required this.defaultSemester,
+    required this.contextType,
+  });
+
+  bool get isDefaultSemesterLast =>
+      contextType == SemesterContextType.currentlyEnrolled ||
+      contextType == SemesterContextType.completedLastEnrolled;
 }

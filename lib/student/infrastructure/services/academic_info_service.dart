@@ -53,37 +53,37 @@ class AcademicInfoServiceImpl extends AcademicInfoService {
   Future<SemesterContext> _calculateSemesterContext(
       AcademicReport academicReport) async {
     final firstSemester = academicReport.enrollmentSemester;
-    ScheduledTermIdentifier? lastSemester;
-
-    //  First, try with current semester
     final studentSessionInfo = await _studentSessionService.getInfo();
+
+    // Case 1: Estudiante actualmente matriculado
     final currentSemesterEnrolledCourses = await _getEnrolledCoursesUsecase
         .execute(studentSessionInfo.currentSemester.id);
     if (currentSemesterEnrolledCourses.isNotEmpty) {
-      lastSemester = studentSessionInfo.currentSemester;
       return SemesterContext(
-        isLast: academicReport.lastSemester != null,
-        defaultSemester: lastSemester,
-        availableSemesters: _buildSemesterRange(firstSemester, lastSemester),
+        availableSemesters: _buildSemesterRange(
+            firstSemester, studentSessionInfo.currentSemester),
+        defaultSemester: studentSessionInfo.currentSemester,
+        contextType: SemesterContextType.currentlyEnrolled,
       );
     }
 
-    // If current semester is empty, try with last semester
-    lastSemester = academicReport.lastSemester;
-    final isLastSemesterIdKnown = lastSemester != null;
-    ScheduledTermIdentifier defaultSemester;
-    if (isLastSemesterIdKnown) {
-      defaultSemester = lastSemester;
-    } else {
-      // If last semester is not known, use the current semester
-      defaultSemester = firstSemester;
-      lastSemester = studentSessionInfo.currentSemester;
+    // Case 2: Estudiante egresado con último semestre conocido
+    final lastKnownSemester = academicReport.lastSemester;
+    if (lastKnownSemester != null) {
+      return SemesterContext(
+        availableSemesters:
+            _buildSemesterRange(firstSemester, lastKnownSemester),
+        defaultSemester: lastKnownSemester,
+        contextType: SemesterContextType.completedLastEnrolled,
+      );
     }
 
+    // Case 3: Último semestre desconocido (notas pendientes)
     return SemesterContext(
-      isLast: isLastSemesterIdKnown,
-      defaultSemester: defaultSemester,
-      availableSemesters: _buildSemesterRange(firstSemester, lastSemester),
+      availableSemesters: _buildSemesterRange(
+          firstSemester, studentSessionInfo.currentSemester),
+      defaultSemester: firstSemester,
+      contextType: SemesterContextType.unknownLastEnrolled,
     );
   }
 

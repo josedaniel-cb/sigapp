@@ -30,6 +30,7 @@ class ProgramCurriculumCourse {
   final ProgramCurriculumCourseInfo info;
   final List<ProgramCurriculumCourse> prerequisites;
   double? lastGrade;
+  bool? isEnrolled;
 
   ProgramCurriculumCourse({
     required this.info,

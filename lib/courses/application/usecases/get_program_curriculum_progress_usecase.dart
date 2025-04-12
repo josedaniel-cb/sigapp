@@ -1,41 +1,28 @@
 import 'package:injectable/injectable.dart';
+import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase.dart';
+import 'package:sigapp/courses/domain/entities/academic_history_term.dart';
 import 'package:sigapp/courses/domain/repositories/program_curriculum_repository.dart';
 import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.dart';
 import 'package:sigapp/courses/domain/value-objects/program_curriculum_progress.dart';
+import 'package:sigapp/student/domain/services/academic_info_service.dart';
+import 'package:sigapp/student/domain/value_objects/semester_context.dart';
 
 @lazySingleton
 class GetProgramCurriculumProgressUsecase {
   final ProgramCurriculumRepository _programCurriculumRepository;
+  final AcademicInfoService _academicInfoService;
+  final GetEnrolledCoursesUsecase _getEnrolledCoursesUsecase;
 
-  GetProgramCurriculumProgressUsecase(this._programCurriculumRepository);
+  GetProgramCurriculumProgressUsecase(this._programCurriculumRepository,
+      this._academicInfoService, this._getEnrolledCoursesUsecase);
 
   Future<ProgramCurriculumProgress> execute() async {
-    // Get program curriculum
     final programCurriculum = await _getTermCoursesMap();
-
-    // Get academic history
     final academicHistoryTerms =
         await _programCurriculumRepository.getAcademicHistory();
 
-    // Set last grades for program curriculum courses
-    final academicHistoryCourses =
-        academicHistoryTerms.expand((term) => term.courses).toList();
-    for (var term in programCurriculum) {
-      for (var course in term.courses) {
-        final courseInfo = course.info;
-        final history = academicHistoryCourses.where((courseHistory) =>
-            courseHistory.courseCode == courseInfo.courseCode);
-        for (final courseHistory in history) {
-          courseHistory.programCurriculumCourse = course;
-        }
-        if (history.isNotEmpty) {
-          course.lastGrade = history.last.grade;
-        }
-      }
-    }
-
-    // TODO: isAcademicHistoryAvailable
-    // TODO: link academic history item to program curriculum course
+    await _setLastGradesForCourses(programCurriculum, academicHistoryTerms);
+    await _setEnrolledCourses(programCurriculum);
 
     return ProgramCurriculumProgress(
       programCurriculum: programCurriculum,
@@ -71,5 +58,52 @@ class GetProgramCurriculumProgressUsecase {
         )
         .toList();
     return terms;
+  }
+
+  Future<void> _setLastGradesForCourses(
+    List<ProgramCurriculumTerm> programCurriculum,
+    List<AcademicHistoryTerm> academicHistoryTerms,
+  ) async {
+    final academicHistoryCourses =
+        academicHistoryTerms.expand((term) => term.courses).toList();
+
+    for (var term in programCurriculum) {
+      for (var course in term.courses) {
+        final matchingHistory = academicHistoryCourses.where(
+          (courseHistory) => courseHistory.courseCode == course.info.courseCode,
+        );
+
+        for (final courseHistory in matchingHistory) {
+          courseHistory.programCurriculumCourse = course;
+        }
+
+        if (matchingHistory.isNotEmpty) {
+          course.lastGrade = matchingHistory.last.grade;
+        }
+      }
+    }
+  }
+
+  Future<void> _setEnrolledCourses(
+      List<ProgramCurriculumTerm> programCurriculum) async {
+    final semesterContext = await _academicInfoService
+        .getSessionInfo()
+        .then((v) => v.semesterContext);
+
+    if (semesterContext.contextType != SemesterContextType.currentlyEnrolled) {
+      return;
+    }
+
+    final enrolledCourses = await _getEnrolledCoursesUsecase
+        .execute(semesterContext.defaultSemester.id);
+
+    final coursesWithoutGrades = programCurriculum
+        .expand((term) => term.courses)
+        .where((course) => course.lastGrade == null);
+
+    for (var course in coursesWithoutGrades) {
+      course.isEnrolled = enrolledCourses.any((enrolledCourse) =>
+          enrolledCourse.data.courseCode == course.info.courseCode);
+    }
   }
 }

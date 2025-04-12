@@ -6,7 +6,7 @@ import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.da
 import 'package:sigapp/courses/infrastructure/pages/career/widgets/course_subtitle.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/course_prerequisite_chain_page.dart';
 
-class CareerPageProgramCurriculumWidget extends StatelessWidget {
+class CareerPageProgramCurriculumWidget extends StatefulWidget {
   const CareerPageProgramCurriculumWidget({
     super.key,
     required this.programCurriculum,
@@ -15,11 +15,37 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
   final List<ProgramCurriculumTerm> programCurriculum;
 
   @override
+  State<CareerPageProgramCurriculumWidget> createState() =>
+      _CareerPageProgramCurriculumWidgetState();
+}
+
+class _CareerPageProgramCurriculumWidgetState
+    extends State<CareerPageProgramCurriculumWidget> {
+  late int? _lastEnrolledTermIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _findLastEnrolledTerm();
+  }
+
+  void _findLastEnrolledTerm() {
+    _lastEnrolledTermIndex = null;
+    for (int i = widget.programCurriculum.length - 1; i >= 0; i--) {
+      if (widget.programCurriculum[i].courses
+          .any((course) => course.isEnrolled == true)) {
+        _lastEnrolledTermIndex = i;
+        break;
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (kDebugMode) {
       final Map<String, List<ProgramCurriculumCourse>> courseGroups = {};
       final RegExp regex = RegExp(r'^[A-Za-z]+');
-      for (final term in programCurriculum) {
+      for (final term in widget.programCurriculum) {
         for (final course in term.courses) {
           final match = regex.firstMatch(course.info.courseCode);
           if (match != null) {
@@ -38,40 +64,48 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
       }
     }
     return ListView(
-      children: programCurriculum.map(
-        (term) {
-          return ExpansionTile(
-            title: Row(
-              children: [
-                Icon(Icons.book),
-                SizedBox(width: 8),
-                Text(
-                  'Ciclo ${term.termRomanNumeral}',
-                  style: Theme.of(context).textTheme.titleMedium,
-                )
-              ],
-            ),
-            children: term.courses.map(
-              (course) {
-                return _buildItem(
-                  context,
-                  course: course,
-                  onSeePrerequisites: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => CoursePrerequisiteChainPage(
-                          course: course,
-                          programCurriculum: programCurriculum,
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-            ).toList(),
-          );
-        },
-      ).toList(),
+      children: widget.programCurriculum
+          .asMap()
+          .map(
+            (index, term) {
+              return MapEntry(
+                index,
+                ExpansionTile(
+                  initiallyExpanded: index == _lastEnrolledTermIndex,
+                  title: Row(
+                    children: [
+                      Icon(Icons.book),
+                      SizedBox(width: 8),
+                      Text(
+                        'Ciclo ${term.termRomanNumeral}',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      )
+                    ],
+                  ),
+                  children: term.courses.map(
+                    (course) {
+                      return _buildItem(
+                        context,
+                        course: course,
+                        onSeePrerequisites: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => CoursePrerequisiteChainPage(
+                                course: course,
+                                programCurriculum: widget.programCurriculum,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  ).toList(),
+                ),
+              );
+            },
+          )
+          .values
+          .toList(),
     );
   }
 
@@ -106,6 +140,12 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
         text: 'Sin requisitos',
       ));
     }
+    if (course.isEnrolled == true) {
+      items.add(CourseSubtitleWidgetItem(
+        icon: Icons.check,
+        text: 'Inscrito',
+      ));
+    }
 
     return ListTile(
       leading: (() {
@@ -117,6 +157,12 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
         }
         if (course.hasPrerequisitesApproved == null) {
           return Icon(Icons.abc, color: Colors.transparent);
+        }
+        if (course.isEnrolled == true) {
+          return Icon(
+            MdiIcons.progressClock,
+            color: Theme.of(context).primaryColor,
+          );
         }
         if (course.hasPrerequisitesApproved == true) {
           return Icon(
@@ -133,7 +179,7 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
           CourseSubtitleWidget(children: items),
           if (course.prerequisites.isNotEmpty ||
               course.getDependentCoursesTree(
-                      programCurriculum: programCurriculum) !=
+                      programCurriculum: widget.programCurriculum) !=
                   null)
             TextButton.icon(
               icon: Icon(Icons.link),
@@ -142,12 +188,6 @@ class CareerPageProgramCurriculumWidget extends StatelessWidget {
             ),
         ],
       ),
-      // trailing: course.isApproved == null
-      //     ? null
-      //     : Icon(
-      //         course.isApproved! ? Icons.check : Icons.close,
-      //         color: course.isApproved! ? Colors.green : Colors.red,
-      //       ),
     );
   }
 }

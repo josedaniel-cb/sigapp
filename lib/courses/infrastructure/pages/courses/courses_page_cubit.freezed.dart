@@ -775,7 +775,6 @@ abstract class _$$CoursesPageSuccessStateImplCopyWith<$Res> {
       EnrolledCoursesState enrolledCourses});
 
   $AcademicReportCopyWith<$Res> get academicReport;
-  $SemesterContextCopyWith<$Res> get semesterContext;
   $EnrolledCoursesStateCopyWith<$Res> get enrolledCourses;
 }
 
@@ -825,16 +824,6 @@ class __$$CoursesPageSuccessStateImplCopyWithImpl<$Res>
   $AcademicReportCopyWith<$Res> get academicReport {
     return $AcademicReportCopyWith<$Res>(_value.academicReport, (value) {
       return _then(_value.copyWith(academicReport: value));
-    });
-  }
-
-  /// Create a copy of CoursesPageState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $SemesterContextCopyWith<$Res> get semesterContext {
-    return $SemesterContextCopyWith<$Res>(_value.semesterContext, (value) {
-      return _then(_value.copyWith(semesterContext: value));
     });
   }
 

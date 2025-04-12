@@ -81,7 +81,7 @@ class CoursePrerequisiteChainPage extends StatelessWidget {
                     node: prerequisiteCoursesTree,
                     title: 'Requisitos',
                     subtitle:
-                        'Cursos que abren ${course.info.courseName} (ciclo ${course.info.termRomanNumeral})',
+                        'Cursos necesarios para llevar ${course.info.courseName}',
                   ),
                 if (prerequisiteCoursesTree != null &&
                     dependentCoursesTree != null)
@@ -92,7 +92,7 @@ class CoursePrerequisiteChainPage extends StatelessWidget {
                     node: dependentCoursesTree,
                     title: 'Dependientes',
                     subtitle:
-                        'Cursos que abre de ${course.info.courseName} (ciclo ${course.info.termRomanNumeral})',
+                        'Cursos que requieren aprobar ${course.info.courseName}',
                   ),
               ],
             ),

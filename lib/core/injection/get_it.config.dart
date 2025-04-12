@@ -169,9 +169,6 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i10.AuthRepository>(),
               gh<_i679.SessionLifecycleService>(),
             ));
-    gh.lazySingleton<_i504.GetProgramCurriculumProgressUsecase>(() =>
-        _i504.GetProgramCurriculumProgressUsecase(
-            gh<_i889.ProgramCurriculumRepository>()));
     gh.lazySingleton<_i44.StudentSessionService>(() =>
         _i306.StudentSessionServiceImpl(gh<_i6.StudentSessionRepository>()));
     gh.lazySingleton<_i504.GetCourseGradeUsecase>(
@@ -214,6 +211,12 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i650.GetEnrolledCoursesUsecase>(),
           gh<_i44.StudentSessionService>(),
         ));
+    gh.lazySingleton<_i504.GetProgramCurriculumProgressUsecase>(
+        () => _i504.GetProgramCurriculumProgressUsecase(
+              gh<_i889.ProgramCurriculumRepository>(),
+              gh<_i23.AcademicInfoService>(),
+              gh<_i650.GetEnrolledCoursesUsecase>(),
+            ));
     gh.factory<_i112.CareerPageCubit>(() => _i112.CareerPageCubit(
           gh<_i504.GetProgramCurriculumProgressUsecase>(),
           gh<_i23.AcademicInfoService>(),

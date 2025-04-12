@@ -34,11 +34,13 @@ class CareerPageCubit extends Cubit<CareerPageState> {
   Future<void> fetch() async {
     emit(CareerPageState.loading());
     try {
-      final sessionInfo = await _sessionInfoService.getSessionInfo();
+      final academicReport = await _sessionInfoService
+          .getSessionInfo()
+          .then((v) => v.academicReport);
       final programCurriculumProgress =
           await _getProgramCurriculumProgressUsecase.execute();
       emit(CareerPageState.success(
-        academicReport: sessionInfo.academicReport,
+        academicReport: academicReport,
         programCurriculumProgress: programCurriculumProgress,
       ));
     } catch (e, s) {
