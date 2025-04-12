@@ -22,11 +22,20 @@ class CareerPageProgramCurriculumWidget extends StatefulWidget {
 class _CareerPageProgramCurriculumWidgetState
     extends State<CareerPageProgramCurriculumWidget> {
   late int? _lastEnrolledTermIndex;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _findLastEnrolledTerm();
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _scrollToLastEnrolled());
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   void _findLastEnrolledTerm() {
@@ -37,6 +46,17 @@ class _CareerPageProgramCurriculumWidgetState
         _lastEnrolledTermIndex = i;
         break;
       }
+    }
+  }
+
+  void _scrollToLastEnrolled() {
+    if (_lastEnrolledTermIndex != null) {
+      final double estimatedPosition = _lastEnrolledTermIndex! * 56.0;
+      _scrollController.animateTo(
+        estimatedPosition,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
     }
   }
 
@@ -64,6 +84,7 @@ class _CareerPageProgramCurriculumWidgetState
       }
     }
     return ListView(
+      controller: _scrollController,
       children: widget.programCurriculum
           .asMap()
           .map(
