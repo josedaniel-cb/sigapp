@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/error_state.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/loading_state.dart';
+import 'package:sigapp/core/injection/get_it.dart';
 import 'package:sigapp/courses/infrastructure/pages/career/career_page_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/career/partials/academic_history.dart';
 import 'package:sigapp/courses/infrastructure/pages/career/partials/program_curriculum.dart';
+import 'package:sigapp/courses/infrastructure/pages/scheduled_courses/scheduled_courses_cubit.dart';
+import 'package:sigapp/courses/infrastructure/pages/scheduled_courses/scheduled_courses_page.dart';
 import 'package:sigapp/shared/infrastructure/partials/user_avatar_button.dart';
 
 class CareerPageView extends StatefulWidget {
@@ -22,7 +25,7 @@ class _CareerPageViewState extends State<CareerPageView>
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _cubit = BlocProvider.of<CareerPageCubit>(context);
     _cubit.fetch();
     super.initState();
@@ -58,7 +61,6 @@ class _CareerPageViewState extends State<CareerPageView>
                 icon: Icon(MdiIcons.fileChart),
                 text: 'Historial',
               ),
-              // TODO
               Tab(
                 icon: Icon(MdiIcons.calendarSearch),
                 text: 'Programación',
@@ -81,6 +83,7 @@ class _CareerPageViewState extends State<CareerPageView>
       children: [
         _Tab1(state),
         _Tab2(state),
+        _Tab3(state),
       ],
     );
   }
@@ -105,6 +108,33 @@ class _Tab2State extends State<_Tab2> with AutomaticKeepAliveClientMixin {
     return CareerPageAcademicHistoryWidget(
       academicHistory: widget.state.programCurriculumProgress.academicHistory,
       report: widget.state.academicReport,
+    );
+  }
+}
+
+class _Tab3 extends StatefulWidget {
+  final CareerPageSuccessState state;
+
+  const _Tab3(this.state);
+
+  @override
+  State<_Tab3> createState() => _Tab3State();
+}
+
+class _Tab3State extends State<_Tab3> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return BlocProvider(
+      create: (context) {
+        final cubit = getIt<ScheduledCoursesPageCubit>();
+        cubit.setup();
+        return cubit;
+      },
+      child: ScheduledCoursesPage(),
     );
   }
 }

@@ -40,8 +40,8 @@ class HomePageWidgetState extends State<HomePageWidget>
             // },
             children: <Widget>[
               BlocProvider(
-                create: (_) => getIt<CoursesPageCubit>(),
-                child: CoursesPageWidget(
+                create: (_) => getIt<EnrolledCoursesPageCubit>(),
+                child: EnrolledCoursesPageWidget(
                     // appBarTrailing: UserAvatarButtonWidget(),
                     ),
               ),

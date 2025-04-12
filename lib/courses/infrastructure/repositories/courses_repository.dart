@@ -2,7 +2,9 @@ import 'package:injectable/injectable.dart';
 import 'package:sigapp/core/infrastructure/http/siga_client.dart';
 import 'package:sigapp/core/infrastructure/utils/time_utils.dart';
 import 'package:sigapp/courses/domain/entities/course_type.dart';
+import 'package:sigapp/courses/domain/entities/scheduled_course.dart';
 import 'package:sigapp/courses/domain/repositories/courses_repository.dart';
+import 'package:sigapp/courses/infrastructure/models/get_scheduled_courses.dart';
 import 'package:sigapp/student/domain/entities/raw_course_requirement.dart';
 import 'package:sigapp/courses/domain/entities/enrolled_course_data.dart';
 import 'package:sigapp/student/infrastructure/models/get_course_requirements.dart';
@@ -137,4 +139,86 @@ class CoursesRepositoryImpl implements CoursesRepository {
 
   //   return [studentCode, token1, token2];
   // }
+
+  /// Nodejs request equivalent:
+  /// ```js
+  /// fetch("https://academico.unp.edu.pe/Academico/ListarProgramacionAcad", {
+  ///   "headers": {
+  ///     "accept": "application/json, text/javascript, */*; q=0.01",
+  ///     "accept-language": "en-PE,en;q=0.5",
+  ///     "priority": "u=1, i",
+  ///     "sec-ch-ua": "\"Brave\";v=\"135\", \"Not-A.Brand\";v=\"8\", \"Chromium\";v=\"135\"",
+  ///     "sec-ch-ua-mobile": "?0",
+  ///     "sec-ch-ua-platform": "\"Windows\"",
+  ///     "sec-fetch-dest": "empty",
+  ///     "sec-fetch-mode": "cors",
+  ///     "sec-fetch-site": "same-origin",
+  ///     "sec-gpc": "1",
+  ///     "x-requested-with": "XMLHttpRequest",
+  ///     "cookie": "ASP.NET_SessionId=5xbyqodnc5au5v2cugykxf5o; .ASPXAUTH=08F577CD99264DC4069F800351703B2D53FC4499B7C5F71A19AF5DF7FC14B338585A58CA22DD0ECFCBB98D20C1E36854D70D33B3CAA5716CF3FA17DB696748E8B853B0E0F1676C17B13E2F8FAB7ED0C63EC4153E055507BA1E22DC40C347139E831A8CE8F59AE624ECC3C3ECAF172097DD18E465BA5DFA8946818DCA15B2F7176206286B73FCDF121B67CE7050B6ACBA63F2437ADBBDF6FB61ADA0C2554456DD9C641F0F76D9DA2CAC77F72FCE336EFA47E22E632B71537327F2C17D580C323F",
+  ///     "Referer": "https://academico.unp.edu.pe/Academico/ProgramacionAcademica",
+  ///     "Referrer-Policy": "strict-origin-when-cross-origin"
+  ///   },
+  ///   "body": null,
+  ///   "method": "POST"
+  /// });
+  /// ```
+  ///
+  /// Response TS equivalent:
+  /// ```ts
+  /// export type Root = {
+  ///   results: Array<{
+  ///     ExtensionData: {}
+  ///     Capacidad: number
+  ///     Ciclo: string
+  ///     ClaveCurso: string
+  ///     CodAula: string
+  ///     CodCurso: string
+  ///     CodDocentePractica: string
+  ///     CodDocenteTeoria: string
+  ///     CodGrupo: string
+  ///     CodTipoProg: any
+  ///     Cupos: number
+  ///     DescripcionAula: string
+  ///     DescripcionCurso: string
+  ///     DocentePractica: string
+  ///     DocenteTeoria: string
+  ///     Escuela: any
+  ///     Inscritos: number
+  ///     Item: number
+  ///     ItemProg: string
+  ///     Origen: any
+  ///     Seccion: string
+  ///     Tipo: any
+  ///   }>
+  ///   total: number
+  /// }
+  /// ```
+  Future<List<ScheduledCourse>> getScheduledCourses() async {
+    final response =
+        await _sigaClient.http.post('/Academico/ListarProgramacionAcad');
+    final models = (response.data['results'] as List)
+        .map((json) => GetScheduledCourseModel.fromJson(json));
+    final entities = models.map(
+      (model) => ScheduledCourse(
+        enrollmentCapacity: model.Capacidad,
+        period: model.Ciclo,
+        courseKey: model.ClaveCurso,
+        classroomCode: model.CodAula,
+        courseCode: model.CodCurso,
+        practiceTeacherCode: model.CodDocentePractica,
+        theoryTeacherCode: model.CodDocenteTeoria,
+        groupCode: model.CodGrupo,
+        availableSlots: model.Cupos,
+        classroomDescription: model.DescripcionAula,
+        courseDescription: model.DescripcionCurso,
+        practiceTeacher: model.DocentePractica,
+        theoryTeacher: model.DocenteTeoria,
+        enrolledStudents: model.Inscritos,
+        regevaCourseId: model.ItemProg,
+        section: model.Seccion,
+      ),
+    );
+    return entities.toList();
+  }
 }

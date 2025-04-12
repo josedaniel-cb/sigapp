@@ -8,25 +8,26 @@ import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/tabs/enroll
 import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/tabs/schedule_tab.dart';
 import 'package:sigapp/shared/infrastructure/partials/user_avatar_button.dart';
 
-class CoursesPageWidget extends StatefulWidget {
+class EnrolledCoursesPageWidget extends StatefulWidget {
   // const CoursesPageWidget({super.key, required this.appBarTrailing});
-  const CoursesPageWidget({super.key});
+  const EnrolledCoursesPageWidget({super.key});
 
   // final Widget appBarTrailing;
 
   @override
-  State<CoursesPageWidget> createState() => _CoursesPageWidgetState();
+  State<EnrolledCoursesPageWidget> createState() =>
+      _EnrolledCoursesPageWidgetState();
 }
 
-class _CoursesPageWidgetState extends State<CoursesPageWidget>
+class _EnrolledCoursesPageWidgetState extends State<EnrolledCoursesPageWidget>
     with TickerProviderStateMixin {
   late final TabController _tabController;
-  late final CoursesPageCubit _cubit;
+  late final EnrolledCoursesPageCubit _cubit;
 
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
-    _cubit = BlocProvider.of<CoursesPageCubit>(context);
+    _cubit = BlocProvider.of<EnrolledCoursesPageCubit>(context);
     _cubit.init();
     super.initState();
   }
@@ -39,7 +40,7 @@ class _CoursesPageWidgetState extends State<CoursesPageWidget>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CoursesPageCubit, CoursesPageState>(
+    return BlocBuilder<EnrolledCoursesPageCubit, EnrolledCoursesPageState>(
       builder: (context, state) {
         return state.map(
           loading: (_) => const LoadingStateWidget(),

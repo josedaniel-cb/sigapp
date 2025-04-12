@@ -75,8 +75,8 @@ class _CircleIconButton extends StatelessWidget {
   const _CircleIconButton({
     required this.child,
     required this.onTap,
-    this.splashColor = Colors.white60,
-  });
+    Color? splashColor,
+  }) : splashColor = splashColor ?? Colors.white60;
 
   @override
   Widget build(BuildContext context) {

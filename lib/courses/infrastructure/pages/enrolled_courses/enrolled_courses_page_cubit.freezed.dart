@@ -541,7 +541,7 @@ abstract class EnrolledCoursesErrorState implements EnrolledCoursesState {
 }
 
 /// @nodoc
-mixin _$CoursesPageState {
+mixin _$EnrolledCoursesPageState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
@@ -604,23 +604,24 @@ mixin _$CoursesPageState {
 }
 
 /// @nodoc
-abstract class $CoursesPageStateCopyWith<$Res> {
-  factory $CoursesPageStateCopyWith(
-          CoursesPageState value, $Res Function(CoursesPageState) then) =
-      _$CoursesPageStateCopyWithImpl<$Res, CoursesPageState>;
+abstract class $EnrolledCoursesPageStateCopyWith<$Res> {
+  factory $EnrolledCoursesPageStateCopyWith(EnrolledCoursesPageState value,
+          $Res Function(EnrolledCoursesPageState) then) =
+      _$EnrolledCoursesPageStateCopyWithImpl<$Res, EnrolledCoursesPageState>;
 }
 
 /// @nodoc
-class _$CoursesPageStateCopyWithImpl<$Res, $Val extends CoursesPageState>
-    implements $CoursesPageStateCopyWith<$Res> {
-  _$CoursesPageStateCopyWithImpl(this._value, this._then);
+class _$EnrolledCoursesPageStateCopyWithImpl<$Res,
+        $Val extends EnrolledCoursesPageState>
+    implements $EnrolledCoursesPageStateCopyWith<$Res> {
+  _$EnrolledCoursesPageStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CoursesPageState
+  /// Create a copy of EnrolledCoursesPageState
   /// with the given fields replaced by the non-null parameter values.
 }
 
@@ -634,14 +635,15 @@ abstract class _$$CoursesPageLoadingStateImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$CoursesPageLoadingStateImplCopyWithImpl<$Res>
-    extends _$CoursesPageStateCopyWithImpl<$Res, _$CoursesPageLoadingStateImpl>
+    extends _$EnrolledCoursesPageStateCopyWithImpl<$Res,
+        _$CoursesPageLoadingStateImpl>
     implements _$$CoursesPageLoadingStateImplCopyWith<$Res> {
   __$$CoursesPageLoadingStateImplCopyWithImpl(
       _$CoursesPageLoadingStateImpl _value,
       $Res Function(_$CoursesPageLoadingStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CoursesPageState
+  /// Create a copy of EnrolledCoursesPageState
   /// with the given fields replaced by the non-null parameter values.
 }
 
@@ -654,13 +656,14 @@ class _$CoursesPageLoadingStateImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CoursesPageState.loading()';
+    return 'EnrolledCoursesPageState.loading()';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties..add(DiagnosticsProperty('type', 'CoursesPageState.loading'));
+    properties
+      ..add(DiagnosticsProperty('type', 'EnrolledCoursesPageState.loading'));
   }
 
   @override
@@ -757,7 +760,7 @@ class _$CoursesPageLoadingStateImpl
   }
 }
 
-abstract class CoursesPageLoadingState implements CoursesPageState {
+abstract class CoursesPageLoadingState implements EnrolledCoursesPageState {
   const factory CoursesPageLoadingState() = _$CoursesPageLoadingStateImpl;
 }
 
@@ -780,14 +783,15 @@ abstract class _$$CoursesPageSuccessStateImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$CoursesPageSuccessStateImplCopyWithImpl<$Res>
-    extends _$CoursesPageStateCopyWithImpl<$Res, _$CoursesPageSuccessStateImpl>
+    extends _$EnrolledCoursesPageStateCopyWithImpl<$Res,
+        _$CoursesPageSuccessStateImpl>
     implements _$$CoursesPageSuccessStateImplCopyWith<$Res> {
   __$$CoursesPageSuccessStateImplCopyWithImpl(
       _$CoursesPageSuccessStateImpl _value,
       $Res Function(_$CoursesPageSuccessStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CoursesPageState
+  /// Create a copy of EnrolledCoursesPageState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -817,7 +821,7 @@ class __$$CoursesPageSuccessStateImplCopyWithImpl<$Res>
     ));
   }
 
-  /// Create a copy of CoursesPageState
+  /// Create a copy of EnrolledCoursesPageState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -827,7 +831,7 @@ class __$$CoursesPageSuccessStateImplCopyWithImpl<$Res>
     });
   }
 
-  /// Create a copy of CoursesPageState
+  /// Create a copy of EnrolledCoursesPageState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -860,14 +864,14 @@ class _$CoursesPageSuccessStateImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CoursesPageState.success(academicReport: $academicReport, semesterContext: $semesterContext, selectedSemester: $selectedSemester, enrolledCourses: $enrolledCourses)';
+    return 'EnrolledCoursesPageState.success(academicReport: $academicReport, semesterContext: $semesterContext, selectedSemester: $selectedSemester, enrolledCourses: $enrolledCourses)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'CoursesPageState.success'))
+      ..add(DiagnosticsProperty('type', 'EnrolledCoursesPageState.success'))
       ..add(DiagnosticsProperty('academicReport', academicReport))
       ..add(DiagnosticsProperty('semesterContext', semesterContext))
       ..add(DiagnosticsProperty('selectedSemester', selectedSemester))
@@ -893,7 +897,7 @@ class _$CoursesPageSuccessStateImpl
   int get hashCode => Object.hash(runtimeType, academicReport, semesterContext,
       selectedSemester, enrolledCourses);
 
-  /// Create a copy of CoursesPageState
+  /// Create a copy of EnrolledCoursesPageState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
@@ -989,7 +993,7 @@ class _$CoursesPageSuccessStateImpl
   }
 }
 
-abstract class CoursesPageSuccessState implements CoursesPageState {
+abstract class CoursesPageSuccessState implements EnrolledCoursesPageState {
   const factory CoursesPageSuccessState(
           {required final AcademicReport academicReport,
           required final SemesterContext semesterContext,
@@ -1002,7 +1006,7 @@ abstract class CoursesPageSuccessState implements CoursesPageState {
   ScheduledTermIdentifier get selectedSemester;
   EnrolledCoursesState get enrolledCourses;
 
-  /// Create a copy of CoursesPageState
+  /// Create a copy of EnrolledCoursesPageState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CoursesPageSuccessStateImplCopyWith<_$CoursesPageSuccessStateImpl>
@@ -1021,13 +1025,14 @@ abstract class _$$CoursesPageErrorStateImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$CoursesPageErrorStateImplCopyWithImpl<$Res>
-    extends _$CoursesPageStateCopyWithImpl<$Res, _$CoursesPageErrorStateImpl>
+    extends _$EnrolledCoursesPageStateCopyWithImpl<$Res,
+        _$CoursesPageErrorStateImpl>
     implements _$$CoursesPageErrorStateImplCopyWith<$Res> {
   __$$CoursesPageErrorStateImplCopyWithImpl(_$CoursesPageErrorStateImpl _value,
       $Res Function(_$CoursesPageErrorStateImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CoursesPageState
+  /// Create a copy of EnrolledCoursesPageState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -1055,14 +1060,14 @@ class _$CoursesPageErrorStateImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CoursesPageState.error(message: $message)';
+    return 'EnrolledCoursesPageState.error(message: $message)';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
-      ..add(DiagnosticsProperty('type', 'CoursesPageState.error'))
+      ..add(DiagnosticsProperty('type', 'EnrolledCoursesPageState.error'))
       ..add(DiagnosticsProperty('message', message));
   }
 
@@ -1077,7 +1082,7 @@ class _$CoursesPageErrorStateImpl
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of CoursesPageState
+  /// Create a copy of EnrolledCoursesPageState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
@@ -1170,13 +1175,13 @@ class _$CoursesPageErrorStateImpl
   }
 }
 
-abstract class CoursesPageErrorState implements CoursesPageState {
+abstract class CoursesPageErrorState implements EnrolledCoursesPageState {
   const factory CoursesPageErrorState(final String message) =
       _$CoursesPageErrorStateImpl;
 
   String get message;
 
-  /// Create a copy of CoursesPageState
+  /// Create a copy of EnrolledCoursesPageState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CoursesPageErrorStateImplCopyWith<_$CoursesPageErrorStateImpl>

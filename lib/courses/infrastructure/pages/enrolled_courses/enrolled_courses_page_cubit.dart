@@ -22,31 +22,33 @@ abstract class EnrolledCoursesState with _$EnrolledCoursesState {
 }
 
 @freezed
-abstract class CoursesPageState with _$CoursesPageState {
-  const factory CoursesPageState.loading() = CoursesPageLoadingState;
-  const factory CoursesPageState.success({
+abstract class EnrolledCoursesPageState with _$EnrolledCoursesPageState {
+  const factory EnrolledCoursesPageState.loading() = CoursesPageLoadingState;
+  const factory EnrolledCoursesPageState.success({
     required AcademicReport academicReport,
     required SemesterContext semesterContext,
     required ScheduledTermIdentifier selectedSemester,
     required EnrolledCoursesState enrolledCourses,
   }) = CoursesPageSuccessState;
-  const factory CoursesPageState.error(String message) = CoursesPageErrorState;
+  const factory EnrolledCoursesPageState.error(String message) =
+      CoursesPageErrorState;
 }
 
 // @singleton
 @injectable
-class CoursesPageCubit extends Cubit<CoursesPageState> {
+class EnrolledCoursesPageCubit extends Cubit<EnrolledCoursesPageState> {
   final AcademicInfoService _sessionInfoService;
   final GetEnrolledCoursesUsecase _getEnrolledCoursesUsecase;
 
-  CoursesPageCubit(this._getEnrolledCoursesUsecase, this._sessionInfoService)
-      : super(CoursesPageState.loading());
+  EnrolledCoursesPageCubit(
+      this._getEnrolledCoursesUsecase, this._sessionInfoService)
+      : super(EnrolledCoursesPageState.loading());
 
   Future<void> init() async {
-    emit(CoursesPageState.loading());
+    emit(EnrolledCoursesPageState.loading());
     try {
       final sessionInfo = await _sessionInfoService.getSessionInfo();
-      final nextState = CoursesPageState.success(
+      final nextState = EnrolledCoursesPageState.success(
         academicReport: sessionInfo.academicReport,
         semesterContext: sessionInfo.semesterContext,
         selectedSemester: sessionInfo.semesterContext.defaultSemester,
@@ -59,7 +61,7 @@ class CoursesPageCubit extends Cubit<CoursesPageState> {
         print(e);
         print(s);
       }
-      emit(CoursesPageState.error(e.toString()));
+      emit(EnrolledCoursesPageState.error(e.toString()));
     }
   }
 

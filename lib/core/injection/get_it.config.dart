@@ -55,6 +55,8 @@ import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase
     as _i650;
 import 'package:sigapp/courses/application/usecases/get_program_curriculum_progress_usecase.dart'
     as _i504;
+import 'package:sigapp/courses/application/usecases/get_scheduled_courses_usecase.dart'
+    as _i154;
 import 'package:sigapp/courses/application/usecases/get_syllabus_file_usecase.dart'
     as _i445;
 import 'package:sigapp/courses/domain/repositories/courses_repository.dart'
@@ -76,6 +78,8 @@ import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/enrolled_co
     as _i885;
 import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/tabs/schedule_tab/schedule_share_button_cubit.dart'
     as _i880;
+import 'package:sigapp/courses/infrastructure/pages/scheduled_courses/scheduled_courses_cubit.dart'
+    as _i27;
 import 'package:sigapp/courses/infrastructure/repositories/courses_repository.dart'
     as _i892;
 import 'package:sigapp/courses/infrastructure/repositories/local_syllabus_repository.dart'
@@ -160,10 +164,14 @@ extension GetItInjectableX on _i174.GetIt {
             gh<_i1010.SharedPreferencesAuthRepository>()));
     gh.lazySingleton<_i974.ScheduleRepository>(
         () => _i637.ScheduleRepositoryImpl(gh<_i857.SigaClient>()));
+    gh.lazySingleton<_i154.GetScheduledCoursesUsecase>(
+        () => _i154.GetScheduledCoursesUsecase(gh<_i986.CoursesRepository>()));
     gh.lazySingleton<_i889.ProgramCurriculumRepository>(
         () => _i654.ProgramCurriculumRepositoryImpl(gh<_i857.SigaClient>()));
     gh.singleton<_i10.AuthRepository>(
         () => _i127.AuthRepositoryImpl(gh<_i857.SigaClient>()));
+    gh.factory<_i27.ScheduledCoursesPageCubit>(() =>
+        _i27.ScheduledCoursesPageCubit(gh<_i154.GetScheduledCoursesUsecase>()));
     gh.factory<_i755.EnsureNoPendingSurveyUseCase>(
         () => _i755.EnsureNoPendingSurveyUseCase(
               gh<_i10.AuthRepository>(),
@@ -240,10 +248,11 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i23.AcademicInfoService>(),
           gh<_i48.SignOutUseCase>(),
         ));
-    gh.factory<_i885.CoursesPageCubit>(() => _i885.CoursesPageCubit(
-          gh<_i650.GetEnrolledCoursesUsecase>(),
-          gh<_i23.AcademicInfoService>(),
-        ));
+    gh.factory<_i885.EnrolledCoursesPageCubit>(
+        () => _i885.EnrolledCoursesPageCubit(
+              gh<_i650.GetEnrolledCoursesUsecase>(),
+              gh<_i23.AcademicInfoService>(),
+            ));
     gh.factory<_i41.LoginCubit>(() => _i41.LoginCubit(
           gh<_i193.GetStoredCredentialsUseCase>(),
           gh<_i365.SignInUseCase>(),
