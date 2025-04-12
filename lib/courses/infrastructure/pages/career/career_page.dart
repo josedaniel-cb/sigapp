@@ -58,7 +58,7 @@ class _CareerPageViewState extends State<CareerPageView>
                 text: 'Plan',
               ),
               Tab(
-                icon: Icon(MdiIcons.fileChart),
+                icon: Icon(MdiIcons.chartBar),
                 text: 'Historial',
               ),
               Tab(

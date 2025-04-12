@@ -11,83 +11,108 @@ class ScheduledCoursesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cursos programados'),
-      ),
-      body: BlocBuilder<ScheduledCoursesPageCubit, ScheduledCoursesPageState>(
-        builder: (context, state) {
-          return state.map(
-            loading: (_) => const Center(
+    return BlocBuilder<ScheduledCoursesPageCubit, ScheduledCoursesPageState>(
+      builder: (context, state) {
+        return state.map(
+          loading: (_) => Scaffold(
+            appBar: AppBar(
+              title: Text('Cursos programados'),
+            ),
+            body: Center(
               child: CircularProgressIndicator(),
             ),
-            success: (state) => _buildSuccess(context, state),
-            error: (state) => ErrorStateWidget(
+          ),
+          success: (state) => _buildSuccess(context, state),
+          error: (state) => Scaffold(
+            appBar: AppBar(
+              title: const Text('Cursos programados'),
+            ),
+            body: ErrorStateWidget(
               message: state.message,
               onRetry: () {
                 context.read<ScheduledCoursesPageCubit>().setup();
               },
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
   Widget _buildSuccess(
       BuildContext context, ScheduledCoursesPageSuccessState state) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: TextField(
-            decoration: const InputDecoration(
-                labelText: 'Buscar cursos',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-                hintText: 'Ingresa código, nombre, profesor, etc.'),
-            onChanged: (query) {
-              context.read<ScheduledCoursesPageCubit>().searchCourses(query);
-            },
+    final textTheme = Theme.of(context).textTheme;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Programación académica',
+          style: textTheme.titleLarge?.copyWith(
+            fontSize: textTheme.titleLarge?.fontSize != null
+                ? textTheme.titleLarge!.fontSize! * 0.85
+                : null,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(80),
+          child: Column(
             children: [
-              Text(
-                'Total: ${state.filteredCourses.length} cursos',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              if (state.searchQuery.isNotEmpty)
-                Text(
-                  'Filtrados de ${state.scheduledCourses.length}',
-                  style: const TextStyle(fontStyle: FontStyle.italic),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextField(
+                  decoration: const InputDecoration(
+                    labelText: 'Buscar cursos',
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(),
+                    hintText: 'Ingresa código, nombre, profesor, etc.',
+                    filled: true,
+                    fillColor: Colors.white,
+                    isDense: true,
+                  ),
+                  onChanged: (query) {
+                    context
+                        .read<ScheduledCoursesPageCubit>()
+                        .searchCourses(query);
+                  },
                 ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Total: ${state.filteredCourses.length} cursos',
+                      style: textTheme.titleSmall,
+                    ),
+                    if (state.searchQuery.isNotEmpty)
+                      Text(
+                        'Filtrados de ${state.scheduledCourses.length}',
+                        style: textTheme.titleSmall,
+                      ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
-        const SizedBox(height: 8),
-        Expanded(
-          child: state.filteredCourses.isEmpty
-              ? Center(
-                  child: Text(
-                    state.searchQuery.isEmpty
-                        ? 'No hay cursos disponibles'
-                        : 'No se encontraron resultados para "${state.searchQuery}"',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                )
-              : ListView.builder(
-                  itemCount: state.filteredCourses.length,
-                  itemBuilder: (context, index) {
-                    final course = state.filteredCourses[index];
-                    return _CourseCard(course: course);
-                  },
-                ),
-        ),
-      ],
+      ),
+      body: state.filteredCourses.isEmpty
+          ? Center(
+              child: Text(
+                state.searchQuery.isEmpty
+                    ? 'No hay cursos disponibles'
+                    : 'No se encontraron resultados para "${state.searchQuery}"',
+                style: const TextStyle(fontSize: 16),
+              ),
+            )
+          : ListView.builder(
+              itemCount: state.filteredCourses.length,
+              itemBuilder: (context, index) {
+                final course = state.filteredCourses[index];
+                return _CourseCard(course: course);
+              },
+            ),
     );
   }
 }
@@ -99,7 +124,7 @@ class _CourseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = Theme.of(context).textTheme;
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Padding(
@@ -112,17 +137,25 @@ class _CourseCard extends StatelessWidget {
               children: [
                 Text(
                   course.courseCode,
-                  style: theme.textTheme.titleMedium
+                  style: textTheme.titleMedium
                       ?.copyWith(fontWeight: FontWeight.w600),
                 ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: theme.colorScheme.primaryContainer,
-                  ),
-                  child: Text('Grupo ${course.groupCode.trim()}'),
+                Row(
+                  children: [
+                    _buildCustomChip(
+                      backgroundColor:
+                          Theme.of(context).colorScheme.primaryContainer,
+                      text: 'Grupo ${course.groupCode.trim()}',
+                    ),
+                    const SizedBox(width: 4),
+                    _buildCustomChip(
+                      backgroundColor: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withValues(alpha: 0.4),
+                      text: 'Sección ${course.section}',
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -139,7 +172,7 @@ class _CourseCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     'Teoría: ${course.theoryTeacher}',
-                    style: theme.textTheme.bodyMedium,
+                    style: textTheme.bodyMedium,
                   ),
                 ),
               ],
@@ -154,7 +187,7 @@ class _CourseCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'Práctica: ${course.practiceTeacher}',
-                        style: theme.textTheme.bodyMedium,
+                        style: textTheme.bodyMedium,
                       ),
                     ),
                   ],
@@ -167,7 +200,7 @@ class _CourseCard extends StatelessWidget {
                 const SizedBox(width: 4),
                 Text(
                   'Aula: ${course.classroomDescription}',
-                  style: theme.textTheme.bodyMedium,
+                  style: textTheme.bodyMedium,
                 ),
               ],
             ),
@@ -176,18 +209,34 @@ class _CourseCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Cupos: ${course.availableSlots}/${course.enrollmentCapacity}',
-                  style: theme.textTheme.bodySmall,
+                  'Clave: ${course.courseKey}',
+                  style: textTheme.bodySmall,
                 ),
                 Text(
-                  'Inscritos: ${course.enrolledStudents}',
-                  style: theme.textTheme.bodySmall,
+                  'Capacidad: ${course.enrollmentCapacity}',
+                  style: textTheme.bodySmall,
                 ),
               ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Container _buildCustomChip({
+    required Color backgroundColor,
+    required String text,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        // color: Theme.of(context).colorScheme.primaryContainer,
+        color: backgroundColor,
+      ),
+      // child: Text('Grupo ${course.groupCode.trim()}'),
+      child: Text(text),
     );
   }
 }
