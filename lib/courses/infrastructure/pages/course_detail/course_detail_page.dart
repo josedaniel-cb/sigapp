@@ -4,9 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/loading_indicator_icon.dart';
 import 'package:sigapp/core/infrastructure/utils/time_utils.dart';
+import 'package:sigapp/core/injection/get_it.dart';
 import 'package:sigapp/courses/domain/entities/course_type.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/partials/course_avatar.dart';
+import 'package:sigapp/courses/infrastructure/pages/course_detail/partials/grade_tracker_section.dart';
+import 'package:sigapp/courses/infrastructure/pages/course_detail/partials/grade_tracker_section_cubit.dart';
+import 'package:sigapp/courses/infrastructure/pages/course_detail/partials/schedule_section.dart';
+import 'package:sigapp/courses/infrastructure/pages/course_detail/components/table_info.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CourseDetailPageWidget extends StatefulWidget {
@@ -52,7 +57,7 @@ class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
                   ),
                 ),
                 ListTile(
-                  subtitle: _buildTableInfo([
+                  subtitle: TableInfoWidget([
                     [
                       'Tipo',
                       state.course.data.courseType == CourseType.mandatory
@@ -193,80 +198,16 @@ class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
                       orElse: () => null,
                     );
                   },
-                  // onLongPress: () {
-                  //   state.grades.maybeWhen(
-                  //     loaded: (_) {
-                  //       _showPopupMenu(context, cubit);
-                  //     },
-                  //     orElse: () => null,
-                  //   );
-                  // },
                 ),
                 Divider(),
-                Container(
-                  margin: EdgeInsets.only(top: 16),
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    'Horario',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                  ),
+                ScheduleSectionWidget(
+                  enrolledCourse: state.course,
                 ),
-                ListTile(
-                  subtitle: _buildTableInfo(
-                    [
-                      ['Grupo', state.course.data.group],
-                      ['Sección', state.course.data.section],
-                    ],
-                  ),
-                ),
-                ListTile(
-                  title: Text('Semana'),
-                  subtitle: _buildTableInfo(
-                    (() {
-                      final events = [...state.course.scheduleEvents];
-                      events.sort((a, b) => a.weekday.compareTo(b.weekday));
-                      return events.map((e) {
-                        final weekdayName =
-                            TimeUtils.weekdayToString(e.weekday);
-                        return [
-                          '${weekdayName[0].toUpperCase()}${weekdayName.substring(1)}',
-                          TimeUtils.formatEventDuration(EventDuration(
-                            startHour: e.startHour,
-                            startMinute: e.startMinutes,
-                            endHour: e.endHour,
-                            endMinute: e.endMinutes,
-                          )),
-                        ];
-                      }).toList();
-                    })(),
-                  ),
-                ),
-                ListTile(
-                  title: Text('Tiempo total'),
-                  subtitle: Text(
-                    (() {
-                      final total = state.course.scheduleEvents.fold(
-                        Duration(),
-                        (acc, e) {
-                          final duration = Duration(
-                            hours: e.endHour - e.startHour,
-                            minutes: e.endMinutes - e.startMinutes,
-                          );
-                          return acc + duration;
-                        },
-                      );
-                      final h = total.inHours;
-                      final m = total.inMinutes.remainder(60);
-                      var result = '$h hora';
-                      if (h != 1) result += 's';
-                      if (m > 0) {
-                        result += ' y $m minuto';
-                        if (m != 1) result += 's';
-                      }
-                      return result;
-                    })(),
+                Divider(),
+                BlocProvider(
+                  create: (context) => getIt<GradeTrackerSectionCubit>(),
+                  child: GradeTrackerSectionWidget(
+                    enrolledCourse: state.course,
                   ),
                 ),
                 Divider(),
@@ -300,22 +241,6 @@ class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
           },
         ),
       ],
-    );
-  }
-
-  Widget _buildTableInfo(List<List<String>> info) {
-    return Column(
-      children: info
-          .map(
-            (e) => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(e[0]),
-                Text(e[1]),
-              ],
-            ),
-          )
-          .toList(),
     );
   }
 }

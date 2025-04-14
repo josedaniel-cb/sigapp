@@ -2,9 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:sigapp/core/infrastructure/http/siga_client.dart';
 import 'package:sigapp/student/domain/repositories/student_repository.dart';
 import 'package:sigapp/student/domain/value_objects/raw_academic_report.dart';
-import 'package:sigapp/student/domain/value_objects/student_session_info.dart';
 import 'package:sigapp/student/infrastructure/models/get_academic_report.dart';
-import 'package:html/parser.dart' as htmlParser;
 
 @LazySingleton(as: StudentRepository)
 class StudentRepositoryImpl implements StudentRepository {
