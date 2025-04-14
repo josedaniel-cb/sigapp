@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sigapp/core/injection/get_it.dart';
+import 'package:sigapp/core/infrastructure/ui/widgets/brand_text.dart';
 import 'login_cubit.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,6 +15,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _usernameFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -24,44 +27,119 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _usernameFocusNode.dispose();
+    _passwordFocusNode.dispose();
+    super.dispose();
+  }
+
+  void _login() {
+    context.read<LoginCubit>().login(
+          _usernameController.text,
+          _passwordController.text,
+        );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
       body: BlocConsumer<LoginCubit, LoginState>(
         builder: (context, state) {
           final status = state.status;
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: <Widget>[
-                TextField(
-                  controller: _usernameController,
-                  decoration: const InputDecoration(labelText: 'Username'),
+          return Center(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const BrandTextWidget(fontSize: 40),
+                    const SizedBox(height: 40),
+                    Card(
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: [
+                            TextField(
+                              controller: _usernameController,
+                              focusNode: _usernameFocusNode,
+                              decoration: const InputDecoration(
+                                labelText: 'Usuario',
+                                prefixIcon: Icon(Icons.person),
+                                border: OutlineInputBorder(),
+                              ),
+                              textInputAction: TextInputAction.next,
+                              onSubmitted: (_) {
+                                FocusScope.of(context)
+                                    .requestFocus(_passwordFocusNode);
+                              },
+                            ),
+                            const SizedBox(height: 16),
+                            TextField(
+                              controller: _passwordController,
+                              focusNode: _passwordFocusNode,
+                              decoration: const InputDecoration(
+                                labelText: 'Contraseña',
+                                prefixIcon: Icon(Icons.lock),
+                                border: OutlineInputBorder(),
+                              ),
+                              obscureText: true,
+                              textInputAction: TextInputAction.done,
+                              onSubmitted: (_) {
+                                if (status is! LoginLoading) {
+                                  _login();
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 24),
+                            SizedBox(
+                              width: double.infinity,
+                              height: 50,
+                              child: FilledButton(
+                                style: FilledButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                onPressed:
+                                    status is LoginLoading ? null : _login,
+                                child: status is LoginLoading
+                                    ? const SizedBox(
+                                        height: 24,
+                                        width: 24,
+                                        child: CircularProgressIndicator(),
+                                      )
+                                    : const Text(
+                                        'Ingresar',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    if (status is LoginError)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: Text(
+                          status.message,
+                          style: const TextStyle(color: Colors.red),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                  ],
                 ),
-                TextField(
-                  controller: _passwordController,
-                  decoration: const InputDecoration(labelText: 'Password'),
-                  obscureText: true,
-                ),
-                ElevatedButton(
-                  onPressed: status is LoginLoading
-                      ? null
-                      : () => context.read<LoginCubit>().login(
-                            _usernameController.text,
-                            _passwordController.text,
-                          ),
-                  child: status is LoginLoading
-                      ? const CircularProgressIndicator()
-                      : const Text('Login'),
-                ),
-                if (status is LoginError)
-                  Text(
-                    status.message,
-                    style: const TextStyle(color: Colors.red),
-                  ),
-              ],
+              ),
             ),
           );
         },

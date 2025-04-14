@@ -71,7 +71,7 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      _buildHelpButton(context),
+                      _HelpButton(),
                     ],
                   ),
                 ],
@@ -87,16 +87,31 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
 
   Widget _buildContent(BuildContext context, GradeTrackerSectionState state) {
     return state.maybeMap(
-      empty: (_) => _buildEmptyState(context),
-      loading: (_) => _buildLoadingState(),
-      ready: (readyState) =>
-          _buildReadyState(context, readyState.courseTracking),
-      error: (errorState) => _buildErrorState(context, errorState.message),
+      empty: (_) => _EmptyStateView(
+        enrolledCourse: widget.enrolledCourse,
+        cubit: _cubit,
+      ),
+      loading: (_) => const _LoadingStateView(),
+      ready: (readyState) => _ReadyStateView(
+        tracking: readyState.courseTracking,
+        cubit: _cubit,
+      ),
+      error: (errorState) => _ErrorStateView(
+        errorMessage: errorState.message,
+        onRetry: () => _cubit.retry(),
+      ),
       orElse: () => const SizedBox.shrink(),
     );
   }
+}
 
-  Widget _buildLoadingState() {
+// Componentes privados extraídos
+
+class _LoadingStateView extends StatelessWidget {
+  const _LoadingStateView();
+
+  @override
+  Widget build(BuildContext context) {
     return const Center(
       child: Padding(
         padding: EdgeInsets.all(32.0),
@@ -104,8 +119,19 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
       ),
     );
   }
+}
 
-  Widget _buildErrorState(BuildContext context, String? errorMessage) {
+class _ErrorStateView extends StatelessWidget {
+  const _ErrorStateView({
+    required this.errorMessage,
+    required this.onRetry,
+  });
+
+  final String? errorMessage;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
     return Center(
@@ -128,7 +154,7 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
             if (errorMessage != null) ...[
               const SizedBox(height: 8),
               Text(
-                errorMessage,
+                errorMessage!,
                 textAlign: TextAlign.center,
                 style: textTheme.bodyMedium?.copyWith(
                   color: Colors.grey[600],
@@ -137,9 +163,7 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
             ],
             const SizedBox(height: 16),
             ElevatedButton.icon(
-              onPressed: () {
-                _cubit.retry();
-              },
+              onPressed: onRetry,
               icon: const Icon(Icons.refresh),
               label: const Text('Reintentar'),
             ),
@@ -148,8 +172,19 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
       ),
     );
   }
+}
 
-  Widget _buildEmptyState(BuildContext context) {
+class _EmptyStateView extends StatelessWidget {
+  const _EmptyStateView({
+    required this.enrolledCourse,
+    required this.cubit,
+  });
+
+  final EnrolledCourse enrolledCourse;
+  final GradeTrackerSectionCubit cubit;
+
+  @override
+  Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
@@ -157,11 +192,6 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Text(
-          //   'Aún no has configurado el seguimiento de notas para este curso.',
-          //   style: textTheme.bodyLarge,
-          // ),
-          // const SizedBox(height: 8),
           Text(
             'Registra tus notas y simula tu promedio ponderado final.',
             style: textTheme.bodyMedium,
@@ -170,8 +200,8 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
           Center(
             child: ElevatedButton.icon(
               onPressed: () {
-                _cubit.createCourseTracking(
-                  courseName: widget.enrolledCourse.data.courseName,
+                cubit.createCourseTracking(
+                  courseName: enrolledCourse.data.courseName,
                 );
               },
               icon: const Icon(Icons.add),
@@ -182,15 +212,29 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
       ),
     );
   }
+}
 
-  Widget _buildReadyState(BuildContext context, CourseTracking tracking) {
+class _ReadyStateView extends StatelessWidget {
+  const _ReadyStateView({
+    required this.tracking,
+    required this.cubit,
+  });
+
+  final CourseTracking tracking;
+  final GradeTrackerSectionCubit cubit;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildFinalGradeCard(context, tracking),
+        _FinalGradeCard(tracking: tracking),
         const SizedBox(height: 8),
         ...tracking.categories.map((category) {
-          return _buildCategoryCard(context, category);
+          return _CategoryCard(
+            category: category,
+            cubit: cubit,
+          );
         }),
         const SizedBox(height: 12),
         Container(
@@ -203,13 +247,22 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
           ),
         ),
         const SizedBox(height: 8),
-        _buildAddCategoryButton(context),
+        _AddCategoryButton(cubit: cubit),
         const SizedBox(height: 8),
       ],
     );
   }
+}
 
-  Widget _buildFinalGradeCard(BuildContext context, CourseTracking tracking) {
+class _FinalGradeCard extends StatelessWidget {
+  const _FinalGradeCard({
+    required this.tracking,
+  });
+
+  final CourseTracking tracking;
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
@@ -249,8 +302,19 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
       ),
     );
   }
+}
 
-  Widget _buildCategoryCard(BuildContext context, GradeCategory category) {
+class _CategoryCard extends StatelessWidget {
+  const _CategoryCard({
+    required this.category,
+    required this.cubit,
+  });
+
+  final GradeCategory category;
+  final GradeTrackerSectionCubit cubit;
+
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
 
@@ -274,7 +338,10 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
                   style: textTheme.bodyMedium,
                 ),
                 const SizedBox(width: 8),
-                _buildCategoryPopupMenu(context, category),
+                _CategoryPopupMenu(
+                  category: category,
+                  cubit: cubit,
+                ),
               ],
             ),
             const Divider(),
@@ -285,7 +352,11 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
               )
             else
               ...category.grades.map((grade) {
-                return _buildGradeItem(context, category.id, grade);
+                return _GradeItem(
+                  categoryId: category.id,
+                  grade: grade,
+                  cubit: cubit,
+                );
               }),
             const SizedBox(height: 8),
             Row(
@@ -293,9 +364,7 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
               children: [
                 RichText(
                   text: TextSpan(
-                    style: textTheme.titleMedium?.copyWith(
-                        // fontWeight: FontWeight.bold,
-                        ),
+                    style: textTheme.titleMedium,
                     children: [
                       TextSpan(text: 'Promedio: '),
                       TextSpan(
@@ -309,7 +378,7 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
                 ),
                 OutlinedButton.icon(
                   onPressed: () {
-                    _showAddGradeDialog(context, category.id);
+                    _showAddGradeDialog(context, category.id, cubit);
                   },
                   icon: const Icon(Icons.add, size: 16),
                   label: const Text('Añadir nota'),
@@ -321,24 +390,46 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
       ),
     );
   }
+}
 
-  Widget _buildGradeItem(BuildContext context, String categoryId, Grade grade) {
+class _GradeItem extends StatelessWidget {
+  const _GradeItem({
+    required this.categoryId,
+    required this.grade,
+    required this.cubit,
+  });
+
+  final String categoryId;
+  final Grade grade;
+  final GradeTrackerSectionCubit cubit;
+
+  @override
+  Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
     return ListTile(
       contentPadding: EdgeInsets.zero,
       title: Text(grade.name, style: textTheme.bodyLarge),
-      subtitle: grade.enabled
-          ? null
-          : Text('No considerar',
+      subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(
+          grade.score.toStringAsFixed(2),
+          style: textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w500,
+            color: grade.enabled ? _getColorForGrade(grade.score) : Colors.grey,
+          ),
+        ),
+        const SizedBox(height: 8),
+        if (!grade.enabled)
+          Text('No considerar',
               style: textTheme.bodyMedium?.copyWith(
                 fontStyle: FontStyle.italic,
                 color: Colors.grey[600],
-              )),
+              ))
+      ]),
       leading: Switch(
         value: grade.enabled,
         onChanged: (value) {
-          _cubit.toggleGradeEnabled(
+          cubit.toggleGradeEnabled(
             categoryId: categoryId,
             gradeId: grade.id,
             enabled: value,
@@ -348,40 +439,42 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            grade.score.toStringAsFixed(2),
-            style: textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-              color:
-                  grade.enabled ? _getColorForGrade(grade.score) : Colors.grey,
-            ),
-          ),
-          const SizedBox(width: 8),
           IconButton(
             icon: const Icon(Icons.edit, size: 20),
             onPressed: () {
-              _showEditGradeDialog(context, categoryId, grade);
+              _showEditGradeDialog(context, categoryId, grade, cubit);
             },
           ),
           IconButton(
             icon: const Icon(Icons.delete, size: 20),
             onPressed: () {
-              _showDeleteGradeDialog(context, categoryId, grade);
+              _showDeleteGradeDialog(context, categoryId, grade, cubit);
             },
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _buildCategoryPopupMenu(BuildContext context, GradeCategory category) {
+class _CategoryPopupMenu extends StatelessWidget {
+  const _CategoryPopupMenu({
+    required this.category,
+    required this.cubit,
+  });
+
+  final GradeCategory category;
+  final GradeTrackerSectionCubit cubit;
+
+  @override
+  Widget build(BuildContext context) {
     return PopupMenuButton<String>(
       icon: const Icon(Icons.more_vert),
       onSelected: (value) {
         if (value == 'edit') {
-          _showEditCategoryDialog(context, category);
+          _showEditCategoryDialog(context, category, cubit);
         } else if (value == 'delete') {
-          _showDeleteCategoryDialog(context, category);
+          _showDeleteCategoryDialog(context, category, cubit);
         }
       },
       itemBuilder: (context) => [
@@ -404,418 +497,438 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
       ],
     );
   }
+}
 
-  Widget _buildAddCategoryButton(BuildContext context) {
+class _AddCategoryButton extends StatelessWidget {
+  const _AddCategoryButton({
+    required this.cubit,
+  });
+
+  final GradeTrackerSectionCubit cubit;
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: TextButton.icon(
         onPressed: () {
-          _showAddCategoryDialog(context);
+          _showAddCategoryDialog(context, cubit);
         },
         icon: const Icon(Icons.add),
         label: const Text('Añadir categoría'),
       ),
     );
   }
+}
 
-  void _showAddCategoryDialog(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
-    String name = '';
-    double weight = 0;
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Añadir categoría'),
-          content: Form(
-            key: formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Nombre'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingresa un nombre';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) => name = value!,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Peso (%)'),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingresa un peso';
-                    }
-                    try {
-                      final weight = double.parse(value);
-                      if (weight <= 0 || weight > 100) {
-                        return 'El peso debe estar entre 1 y 100';
-                      }
-                    } catch (_) {
-                      return 'Por favor ingresa un número válido';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) => weight = double.parse(value!),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancelar'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  formKey.currentState!.save();
-                  _cubit.addCategory(
-                    name: name,
-                    weight: weight,
-                  );
-                  Navigator.pop(context);
-                }
-              },
-              child: const Text('Guardar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showEditCategoryDialog(BuildContext context, GradeCategory category) {
-    final formKey = GlobalKey<FormState>();
-    String name = category.name;
-    double weight = category.weight;
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Editar categoría'),
-          content: Form(
-            key: formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Nombre'),
-                  initialValue: category.name,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingresa un nombre';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) => name = value!,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Peso (%)'),
-                  initialValue: category.weight.toString(),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingresa un peso';
-                    }
-                    try {
-                      final weight = double.parse(value);
-                      if (weight <= 0 || weight > 100) {
-                        return 'El peso debe estar entre 1 y 100';
-                      }
-                    } catch (_) {
-                      return 'Por favor ingresa un número válido';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) => weight = double.parse(value!),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancelar'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  formKey.currentState!.save();
-                  _cubit.updateCategory(
-                    categoryId: category.id,
-                    newName: name,
-                    newWeight: weight,
-                  );
-                  Navigator.pop(context);
-                }
-              },
-              child: const Text('Guardar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showDeleteCategoryDialog(BuildContext context, GradeCategory category) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Eliminar categoría'),
-          content: Text(
-              '¿Estás seguro que deseas eliminar la categoría "${category.name}" y todas sus notas?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancelar'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _cubit.deleteCategory(
-                  categoryId: category.id,
-                );
-                Navigator.pop(context);
-              },
-              child: const Text('Eliminar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showAddGradeDialog(BuildContext context, String categoryId) {
-    final formKey = GlobalKey<FormState>();
-    String name = '';
-    double score = 0;
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Añadir nota'),
-          content: Form(
-            key: formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Nombre'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingresa un nombre';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) => name = value!,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Nota (0-20)'),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingresa una nota';
-                    }
-                    try {
-                      final score = double.parse(value);
-                      if (score < 0 || score > 20) {
-                        return 'La nota debe estar entre 0 y 20';
-                      }
-                    } catch (_) {
-                      return 'Por favor ingresa un número válido';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) => score = double.parse(value!),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancelar'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  formKey.currentState!.save();
-                  _cubit.addGrade(
-                    categoryId: categoryId,
-                    name: name,
-                    score: score,
-                  );
-                  Navigator.pop(context);
-                }
-              },
-              child: const Text('Guardar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showEditGradeDialog(
-      BuildContext context, String categoryId, Grade grade) {
-    final formKey = GlobalKey<FormState>();
-    String name = grade.name;
-    double score = grade.score;
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Editar nota'),
-          content: Form(
-            key: formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Nombre'),
-                  initialValue: grade.name,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingresa un nombre';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) => name = value!,
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Nota (0-20)'),
-                  initialValue: grade.score.toString(),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor ingresa una nota';
-                    }
-                    try {
-                      final score = double.parse(value);
-                      if (score < 0 || score > 20) {
-                        return 'La nota debe estar entre 0 y 20';
-                      }
-                    } catch (_) {
-                      return 'Por favor ingresa un número válido';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) => score = double.parse(value!),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancelar'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  formKey.currentState!.save();
-                  _cubit.updateGrade(
-                    categoryId: categoryId,
-                    gradeId: grade.id,
-                    newName: name,
-                    newScore: score,
-                  );
-                  Navigator.pop(context);
-                }
-              },
-              child: const Text('Guardar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showDeleteGradeDialog(
-      BuildContext context, String categoryId, Grade grade) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Eliminar nota'),
-          content: Text(
-              '¿Estás seguro que deseas eliminar la nota "${grade.name}"?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancelar'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                _cubit.deleteGrade(
-                  categoryId: categoryId,
-                  gradeId: grade.id,
-                );
-                Navigator.pop(context);
-              },
-              child: const Text('Eliminar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  IconButton _buildHelpButton(BuildContext context) {
+class _HelpButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.help_outline),
       color: Theme.of(context).colorScheme.primary,
       onPressed: () {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text('¿Cómo funciona?'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Puedes anticipar tu promedio final en el curso al registrar tus notas y los pesos ponderados de cada categoría:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 8),
-                  Text('• La suma de los pesos ponderados debe ser 100%'),
-                  Text(
-                      '• Puedes activar/desactivar notas específicas para simular su impacto en tu promedio'),
-                  SizedBox(height: 16),
-                  Text(
-                    'Este cálculo no tiene validez oficial y es solo una herramienta de referencia.',
-                  ),
-                  // Text(
-                  //   'Recuerda que estos cálculos se borrarán al cerrar sesión.',
-                  // ),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('Cerrar'),
-                ),
-              ],
-            );
-          },
-        );
+        _showHelpDialog(context);
       },
     );
   }
+}
 
-  Color _getColorForGrade(double grade) {
-    if (grade >= 14) {
-      return Colors.green;
-    } else if (grade >= 11) {
-      return Colors.amber.shade800;
-    } else {
-      return Colors.red;
-    }
+// Funciones de diálogo extraídas como funciones privadas independientes
+
+void _showHelpDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('¿Cómo funciona?'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text(
+              'Puedes anticipar tu promedio final en el curso al registrar tus notas y los pesos ponderados de cada categoría:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text('• La suma de los pesos ponderados debe ser 100%'),
+            Text(
+                '• Puedes activar/desactivar notas específicas para simular su impacto en tu promedio'),
+            SizedBox(height: 16),
+            Text(
+              'Este cálculo no tiene validez oficial y es solo una herramienta de referencia.',
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cerrar'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _showAddCategoryDialog(
+    BuildContext context, GradeTrackerSectionCubit cubit) {
+  final formKey = GlobalKey<FormState>();
+  String name = '';
+  double weight = 0;
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Añadir categoría'),
+        content: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'Nombre'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa un nombre';
+                  }
+                  return null;
+                },
+                onSaved: (value) => name = value!,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'Peso (%)'),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa un peso';
+                  }
+                  try {
+                    final weight = double.parse(value);
+                    if (weight <= 0 || weight > 100) {
+                      return 'El peso debe estar entre 1 y 100';
+                    }
+                  } catch (_) {
+                    return 'Por favor ingresa un número válido';
+                  }
+                  return null;
+                },
+                onSaved: (value) => weight = double.parse(value!),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                formKey.currentState!.save();
+                cubit.addCategory(
+                  name: name,
+                  weight: weight,
+                );
+                Navigator.pop(context);
+              }
+            },
+            child: const Text('Guardar'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _showEditCategoryDialog(BuildContext context, GradeCategory category,
+    GradeTrackerSectionCubit cubit) {
+  final formKey = GlobalKey<FormState>();
+  String name = category.name;
+  double weight = category.weight;
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Editar categoría'),
+        content: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'Nombre'),
+                initialValue: category.name,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa un nombre';
+                  }
+                  return null;
+                },
+                onSaved: (value) => name = value!,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'Peso (%)'),
+                initialValue: category.weight.toString(),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa un peso';
+                  }
+                  try {
+                    final weight = double.parse(value);
+                    if (weight <= 0 || weight > 100) {
+                      return 'El peso debe estar entre 1 y 100';
+                    }
+                  } catch (_) {
+                    return 'Por favor ingresa un número válido';
+                  }
+                  return null;
+                },
+                onSaved: (value) => weight = double.parse(value!),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                formKey.currentState!.save();
+                cubit.updateCategory(
+                  categoryId: category.id,
+                  newName: name,
+                  newWeight: weight,
+                );
+                Navigator.pop(context);
+              }
+            },
+            child: const Text('Guardar'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _showDeleteCategoryDialog(BuildContext context, GradeCategory category,
+    GradeTrackerSectionCubit cubit) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Eliminar categoría'),
+        content: Text(
+            '¿Estás seguro que deseas eliminar la categoría "${category.name}" y todas sus notas?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          FilledButton(
+            onPressed: () {
+              cubit.deleteCategory(
+                categoryId: category.id,
+              );
+              Navigator.pop(context);
+            },
+            child: const Text('Eliminar'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _showAddGradeDialog(
+    BuildContext context, String categoryId, GradeTrackerSectionCubit cubit) {
+  final formKey = GlobalKey<FormState>();
+  String name = '';
+  double score = 0;
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Añadir nota'),
+        content: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'Nombre'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa un nombre';
+                  }
+                  return null;
+                },
+                onSaved: (value) => name = value!,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'Nota (0-20)'),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa una nota';
+                  }
+                  try {
+                    final score = double.parse(value);
+                    if (score < 0 || score > 20) {
+                      return 'La nota debe estar entre 0 y 20';
+                    }
+                  } catch (_) {
+                    return 'Por favor ingresa un número válido';
+                  }
+                  return null;
+                },
+                onSaved: (value) => score = double.parse(value!),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                formKey.currentState!.save();
+                cubit.addGrade(
+                  categoryId: categoryId,
+                  name: name,
+                  score: score,
+                );
+                Navigator.pop(context);
+              }
+            },
+            child: const Text('Guardar'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _showEditGradeDialog(BuildContext context, String categoryId, Grade grade,
+    GradeTrackerSectionCubit cubit) {
+  final formKey = GlobalKey<FormState>();
+  String name = grade.name;
+  double score = grade.score;
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Editar nota'),
+        content: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'Nombre'),
+                initialValue: grade.name,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa un nombre';
+                  }
+                  return null;
+                },
+                onSaved: (value) => name = value!,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'Nota (0-20)'),
+                initialValue: grade.score.toString(),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor ingresa una nota';
+                  }
+                  try {
+                    final score = double.parse(value);
+                    if (score < 0 || score > 20) {
+                      return 'La nota debe estar entre 0 y 20';
+                    }
+                  } catch (_) {
+                    return 'Por favor ingresa un número válido';
+                  }
+                  return null;
+                },
+                onSaved: (value) => score = double.parse(value!),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                formKey.currentState!.save();
+                cubit.updateGrade(
+                  categoryId: categoryId,
+                  gradeId: grade.id,
+                  newName: name,
+                  newScore: score,
+                );
+                Navigator.pop(context);
+              }
+            },
+            child: const Text('Guardar'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void _showDeleteGradeDialog(BuildContext context, String categoryId,
+    Grade grade, GradeTrackerSectionCubit cubit) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Eliminar nota'),
+        content:
+            Text('¿Estás seguro que deseas eliminar la nota "${grade.name}"?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancelar'),
+          ),
+          FilledButton(
+            onPressed: () {
+              cubit.deleteGrade(
+                categoryId: categoryId,
+                gradeId: grade.id,
+              );
+              Navigator.pop(context);
+            },
+            child: const Text('Eliminar'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+// Función de utilidad para determinar el color de la nota
+Color _getColorForGrade(double grade) {
+  if (grade >= 14) {
+    return Colors.green;
+  } else if (grade >= 11) {
+    return Colors.amber.shade800;
+  } else {
+    return Colors.red;
   }
 }

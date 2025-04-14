@@ -15,18 +15,18 @@ class ScheduledCoursesPage extends StatelessWidget {
       builder: (context, state) {
         return state.map(
           loading: (_) => Scaffold(
-            appBar: AppBar(
-              title: Text('Cursos programados'),
-            ),
+            // appBar: AppBar(
+            //   title: Text('Cursos programados'),
+            // ),
             body: Center(
               child: CircularProgressIndicator(),
             ),
           ),
           success: (state) => _buildSuccess(context, state),
           error: (state) => Scaffold(
-            appBar: AppBar(
-              title: const Text('Cursos programados'),
-            ),
+            // appBar: AppBar(
+            //   title: const Text('Cursos programados'),
+            // ),
             body: ErrorStateWidget(
               message: state.message,
               onRetry: () {
