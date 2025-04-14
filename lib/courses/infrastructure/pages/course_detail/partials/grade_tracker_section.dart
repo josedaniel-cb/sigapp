@@ -58,17 +58,22 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
             Container(
               margin: const EdgeInsets.only(top: 16),
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Seguimiento de notas',
-                    style: textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Simulador de notas',
+                        style: textTheme.headlineSmall?.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      _buildHelpButton(context),
+                    ],
                   ),
-                  const SizedBox(width: 8),
-                  _buildHelpButton(context),
                 ],
               ),
             ),
@@ -152,13 +157,13 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Text(
+          //   'Aún no has configurado el seguimiento de notas para este curso.',
+          //   style: textTheme.bodyLarge,
+          // ),
+          // const SizedBox(height: 8),
           Text(
-            'Aún no has configurado el seguimiento de notas para este curso.',
-            style: textTheme.bodyLarge,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'El seguimiento te permite registrar tus evaluaciones y calcular tu nota final según los pesos de cada categoría.',
+            'Registra tus notas y simula tu promedio ponderado final.',
             style: textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),
@@ -170,7 +175,7 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
                 );
               },
               icon: const Icon(Icons.add),
-              label: const Text('Iniciar seguimiento'),
+              label: const Text('Iniciar'),
             ),
           ),
         ],
@@ -187,8 +192,19 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
         ...tracking.categories.map((category) {
           return _buildCategoryCard(context, category);
         }),
+        const SizedBox(height: 12),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            'Recuerda que estos cálculos se borrarán al cerrar sesión.',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Colors.grey[600],
+                ),
+          ),
+        ),
         const SizedBox(height: 8),
         _buildAddCategoryButton(context),
+        const SizedBox(height: 8),
       ],
     );
   }
@@ -209,18 +225,25 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Nota final estimada',
+                  'Promedio ponderado',
                   style: textTheme.titleMedium,
                 ),
                 Text(
                   tracking.finalGrade.toStringAsFixed(2),
-                  style: textTheme.headlineSmall?.copyWith(
+                  style: textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: _getColorForGrade(tracking.finalGrade),
                   ),
                 ),
               ],
             ),
+            if (!tracking.isWeightValid) ...[
+              SizedBox(height: 8),
+              Text(
+                '${tracking.weightDifference > 0 ? 'Falta ${tracking.weightDifference.toStringAsFixed(2)}% para completar los pesos ponderados' : ' Los pesos ponderados exceden el 100% en ${tracking.weightDifference.abs().toStringAsFixed(2)}%'}. El cálculo no es correcto.',
+                style: textTheme.bodyMedium,
+              ),
+            ],
           ],
         ),
       ),
@@ -268,10 +291,20 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Promedio: ${category.averagePercentage.toStringAsFixed(2)}',
-                  style: textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+                RichText(
+                  text: TextSpan(
+                    style: textTheme.titleMedium?.copyWith(
+                        // fontWeight: FontWeight.bold,
+                        ),
+                    children: [
+                      TextSpan(text: 'Promedio: '),
+                      TextSpan(
+                        text: category.averagePercentage.toStringAsFixed(2),
+                        style: TextStyle(
+                          color: _getColorForGrade(category.averagePercentage),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 OutlinedButton.icon(
@@ -297,7 +330,7 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
       title: Text(grade.name, style: textTheme.bodyLarge),
       subtitle: grade.enabled
           ? null
-          : Text('Desactivada',
+          : Text('No considerar',
               style: textTheme.bodyMedium?.copyWith(
                 fontStyle: FontStyle.italic,
                 color: Colors.grey[600],
@@ -747,19 +780,20 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
                   Text(
-                    'El seguimiento de notas te permite:',
+                    'Puedes anticipar tu promedio final en el curso al registrar tus notas y los pesos ponderados de cada categoría:',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 8),
+                  Text('• La suma de los pesos ponderados debe ser 100%'),
                   Text(
-                      '• Registrar notas por categorías (exámenes, trabajos, etc.)'),
-                  Text('• Asignar pesos a cada categoría'),
-                  Text('• Activar/desactivar notas específicas'),
-                  Text('• Ver tu promedio estimado en tiempo real'),
+                      '• Puedes activar/desactivar notas específicas para simular su impacto en tu promedio'),
                   SizedBox(height: 16),
                   Text(
-                    'Cada categoría tiene un peso porcentual que indica cuánto influye en tu nota final. La suma de los pesos debería ser 100%.',
+                    'Este cálculo no tiene validez oficial y es solo una herramienta de referencia.',
                   ),
+                  // Text(
+                  //   'Recuerda que estos cálculos se borrarán al cerrar sesión.',
+                  // ),
                 ],
               ),
               actions: [

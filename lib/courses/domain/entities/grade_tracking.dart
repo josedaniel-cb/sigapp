@@ -81,6 +81,18 @@ class CourseTracking {
     required this.categories,
   });
 
+  bool get isWeightValid {
+    if (categories.isEmpty) return false;
+    final totalWeight = categories.map((c) => c.weight).reduce((a, b) => a + b);
+    return totalWeight == 100.0;
+  }
+
+  double get weightDifference {
+    if (categories.isEmpty) return 100.0;
+    final totalWeight = categories.map((c) => c.weight).reduce((a, b) => a + b);
+    return 100.0 - totalWeight;
+  }
+
   double get finalGrade {
     if (categories.isEmpty) return 0.0;
     final totalContribution =
