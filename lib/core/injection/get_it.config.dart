@@ -38,8 +38,8 @@ import 'package:sigapp/auth/infrastructure/services/navigation_service.dart'
     as _i561;
 import 'package:sigapp/auth/infrastructure/services/session_lifecycle_service.dart'
     as _i649;
-import 'package:sigapp/core/infrastructure/database/database_service.dart'
-    as _i684;
+import 'package:sigapp/core/infrastructure/database/local_database_client.dart'
+    as _i702;
 import 'package:sigapp/core/infrastructure/http/regeva_client.dart' as _i986;
 import 'package:sigapp/core/infrastructure/http/siga_client.dart' as _i857;
 import 'package:sigapp/core/infrastructure/ui/not_used_pages/schedule_page/partials/export_to_calendar_cubit.dart'
@@ -139,7 +139,6 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final registerModule = _$RegisterModule();
-    gh.singleton<_i684.LocalDatabaseClient>(() => _i684.LocalDatabaseClient());
     await gh.singletonAsync<_i460.SharedPreferences>(
       () => registerModule.prefs,
       preResolve: true,
@@ -149,6 +148,7 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i880.ScheduleShareButtonCubit());
     gh.singleton<_i675.ProgressIndicatorBloc>(
         () => _i675.ProgressIndicatorBloc());
+    gh.singleton<_i702.LocalDatabaseClient>(() => _i702.LocalDatabaseClient());
     gh.singleton<_i986.RegevaClient>(
         () => _i986.RegevaClient(gh<_i460.SharedPreferences>()));
     gh.singleton<_i857.SigaClient>(
@@ -157,16 +157,14 @@ extension GetItInjectableX on _i174.GetIt {
         _i856.ProgressIndicatorServiceImpl(gh<_i675.ProgressIndicatorBloc>()));
     gh.singleton<_i504.LocalSyllabusRepository>(
         () => _i717.LocalSyllabusRepositoryImpl());
-    gh.lazySingleton<_i620.LocalGradeTrackingRepository>(() =>
-        _i735.LocalGradeTrackingRepositoryImpl(
-            gh<_i684.LocalDatabaseClient>()));
-    gh.lazySingleton<_i947.GradeTrackingUseCases>(() =>
-        _i947.GradeTrackingUseCases(gh<_i620.LocalGradeTrackingRepository>()));
     gh.singleton<_i1010.SharedPreferencesAuthRepository>(() =>
         _i247.SharedPreferencesAuthRepositoryImpl(
             gh<_i460.SharedPreferences>()));
     gh.lazySingleton<_i348.RegevaRepository>(
         () => _i75.RegevaRepositoryImpl(gh<_i986.RegevaClient>()));
+    gh.lazySingleton<_i620.LocalGradeTrackingRepository>(() =>
+        _i735.LocalGradeTrackingRepositoryImpl(
+            gh<_i702.LocalDatabaseClient>()));
     gh.singleton<_i679.SessionLifecycleService>(
         () => _i649.SessionLifecycleServiceImpl(gh<_i857.SigaClient>()));
     gh.lazySingleton<_i986.CoursesRepository>(
@@ -175,8 +173,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i528.StudentRepositoryImpl(gh<_i857.SigaClient>()));
     gh.lazySingleton<_i6.StudentSessionRepository>(
         () => _i79.StudentSessionRepositoryImpl(gh<_i857.SigaClient>()));
-    gh.factory<_i1059.GradeTrackerSectionCubit>(() =>
-        _i1059.GradeTrackerSectionCubit(gh<_i947.GradeTrackingUseCases>()));
     gh.factory<_i193.GetStoredCredentialsUseCase>(() =>
         _i193.GetStoredCredentialsUseCase(
             gh<_i1010.SharedPreferencesAuthRepository>()));
@@ -195,6 +191,8 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i10.AuthRepository>(),
               gh<_i679.SessionLifecycleService>(),
             ));
+    gh.lazySingleton<_i947.GradeTrackingUseCases>(() =>
+        _i947.GradeTrackingUseCases(gh<_i620.LocalGradeTrackingRepository>()));
     gh.lazySingleton<_i44.StudentSessionService>(() =>
         _i306.StudentSessionServiceImpl(gh<_i6.StudentSessionRepository>()));
     gh.lazySingleton<_i504.GetCourseGradeUsecase>(
@@ -212,6 +210,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => registerModule.router(gh<_i193.GetStoredCredentialsUseCase>()));
     gh.lazySingleton<_i315.GetClassScheduleUsecase>(
         () => _i315.GetClassScheduleUsecase(gh<_i974.ScheduleRepository>()));
+    gh.factory<_i1059.GradeTrackerSectionCubit>(() =>
+        _i1059.GradeTrackerSectionCubit(gh<_i947.GradeTrackingUseCases>()));
     gh.factory<_i908.KeepSessionAliveUsecase>(
         () => _i908.KeepSessionAliveUsecase(gh<_i10.AuthRepository>()));
     gh.lazySingleton<_i771.GetAcademicReportUsecase>(

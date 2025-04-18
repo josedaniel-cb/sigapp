@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import 'package:sigapp/core/infrastructure/database/database_service.dart';
+import 'package:sigapp/core/infrastructure/database/local_database_client.dart';
 import 'package:sigapp/courses/domain/entities/grade_tracking.dart';
 import 'package:sigapp/courses/domain/repositories/local_grade_tracking_repository.dart';
 import 'package:uuid/uuid.dart';
