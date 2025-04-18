@@ -1,18 +1,19 @@
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/core/infrastructure/database/local_database_client.dart';
 import 'package:sigapp/courses/domain/entities/grade_tracking.dart';
-import 'package:sigapp/courses/domain/repositories/local_grade_tracking_repository.dart';
+import 'package:sigapp/courses/domain/repositories/grade_tracking_repository.dart';
 import 'package:uuid/uuid.dart';
 
-@LazySingleton(as: LocalGradeTrackingRepository)
-class LocalGradeTrackingRepositoryImpl implements LocalGradeTrackingRepository {
+@LazySingleton(as: GradeTrackingRepository)
+class LocalGradeTrackingRepositoryImpl implements GradeTrackingRepository {
   final LocalDatabaseClient _databaseService;
   final _uuid = const Uuid();
 
   LocalGradeTrackingRepositoryImpl(this._databaseService);
 
   @override
-  Future<List<CourseTracking>> getAllCourses() async {
+  Future<List<CourseTracking>> getAllCourses(
+      {required String studentCode}) async {
     final db = await _databaseService.database;
 
     final List<Map<String, dynamic>> courseTrackingMaps = await db.query(
@@ -43,7 +44,8 @@ class LocalGradeTrackingRepositoryImpl implements LocalGradeTrackingRepository {
   }
 
   @override
-  Future<CourseTracking?> getCourseById(String courseId) async {
+  Future<CourseTracking?> getCourseById(
+      {required String studentCode, required String courseId}) async {
     final db = await _databaseService.database;
 
     final List<Map<String, dynamic>> courseTrackingMaps = await db.query(
@@ -72,9 +74,9 @@ class LocalGradeTrackingRepositoryImpl implements LocalGradeTrackingRepository {
 
   // Convenience method to maintain compatibility with previous code
   @override
-  Future<CourseTracking?> get() async {
+  Future<CourseTracking?> get({required String studentCode}) async {
     // Get the most recent course (assuming there could be several)
-    final courses = await getAllCourses();
+    final courses = await getAllCourses(studentCode: studentCode);
     if (courses.isEmpty) {
       return null;
     }
@@ -131,7 +133,8 @@ class LocalGradeTrackingRepositoryImpl implements LocalGradeTrackingRepository {
   }
 
   @override
-  Future<void> save(CourseTracking data) async {
+  Future<void> save(
+      {required String studentCode, required CourseTracking data}) async {
     final db = await _databaseService.database;
 
     // Using a transaction to ensure data integrity
@@ -232,7 +235,8 @@ class LocalGradeTrackingRepositoryImpl implements LocalGradeTrackingRepository {
 
   // Creates a new empty course tracking
   @override
-  Future<CourseTracking> createEmpty(String courseName) async {
+  Future<CourseTracking> createEmpty(
+      {required String studentCode, required String courseName}) async {
     final courseId = _uuid.v4();
 
     final courseTracking = CourseTracking(
@@ -241,14 +245,16 @@ class LocalGradeTrackingRepositoryImpl implements LocalGradeTrackingRepository {
       categories: [],
     );
 
-    await save(courseTracking);
+    await save(studentCode: studentCode, data: courseTracking);
     return courseTracking;
   }
 
   // Creates a new course tracking with default categories and grades
   @override
   Future<CourseTracking> createWithDefaults(
-      String courseId, String courseName) async {
+      {required String studentCode,
+      required String courseId,
+      required String courseName}) async {
     // Usar el courseId directamente como identificador del curso
     // Esto garantiza que siempre usemos el mismo ID para el mismo curso
 
@@ -260,13 +266,14 @@ class LocalGradeTrackingRepositoryImpl implements LocalGradeTrackingRepository {
           .v4(), // Pasar la función de generación de IDs para las categorías y notas
     );
 
-    await save(courseTracking);
+    await save(studentCode: studentCode, data: courseTracking);
     return courseTracking;
   }
 
   // Deletes a course and all its associated data
   @override
-  Future<void> deleteCourse(String courseId) async {
+  Future<void> deleteCourse(
+      {required String studentCode, required String courseId}) async {
     final db = await _databaseService.database;
 
     await db.delete(
@@ -278,9 +285,14 @@ class LocalGradeTrackingRepositoryImpl implements LocalGradeTrackingRepository {
 
   // Adds a new category to the grade tracking
   @override
-  Future<CourseTracking> addCategory(
-      String courseId, String categoryName, double weight) async {
-    final course = await getCourseById(courseId);
+  Future<CourseTracking> addCategory({
+    required String studentCode,
+    required String courseId,
+    required String categoryName,
+    required double weight,
+  }) async {
+    final course =
+        await getCourseById(studentCode: studentCode, courseId: courseId);
     if (course == null) {
       throw Exception('Course not found');
     }
@@ -301,15 +313,21 @@ class LocalGradeTrackingRepositoryImpl implements LocalGradeTrackingRepository {
       categories: updatedCategories,
     );
 
-    await save(updatedTracking);
+    await save(studentCode: studentCode, data: updatedTracking);
     return updatedTracking;
   }
 
   // Adds a new grade to a category
   @override
-  Future<CourseTracking> addGrade(String courseId, String categoryId,
-      String gradeName, double score) async {
-    final course = await getCourseById(courseId);
+  Future<CourseTracking> addGrade({
+    required String studentCode,
+    required String courseId,
+    required String categoryId,
+    required String gradeName,
+    required double score,
+  }) async {
+    final course =
+        await getCourseById(studentCode: studentCode, courseId: courseId);
     if (course == null) {
       throw Exception('Course not found');
     }
@@ -339,17 +357,19 @@ class LocalGradeTrackingRepositoryImpl implements LocalGradeTrackingRepository {
       categories: updatedCategories,
     );
 
-    await save(updatedTracking);
+    await save(studentCode: studentCode, data: updatedTracking);
     return updatedTracking;
   }
 
   // Deletes a category and all its grades
   @override
-  Future<CourseTracking> deleteCategory(
-    String courseId,
-    String categoryId,
-  ) async {
-    final course = await getCourseById(courseId);
+  Future<CourseTracking> deleteCategory({
+    required String studentCode,
+    required String courseId,
+    required String categoryId,
+  }) async {
+    final course =
+        await getCourseById(studentCode: studentCode, courseId: courseId);
     if (course == null) {
       throw Exception('Course not found');
     }
@@ -387,12 +407,14 @@ class LocalGradeTrackingRepositoryImpl implements LocalGradeTrackingRepository {
 
   // Deletes a specific grade
   @override
-  Future<CourseTracking> deleteGrade(
-    String courseId,
-    String categoryId,
-    String gradeId,
-  ) async {
-    final course = await getCourseById(courseId);
+  Future<CourseTracking> deleteGrade({
+    required String studentCode,
+    required String courseId,
+    required String categoryId,
+    required String gradeId,
+  }) async {
+    final course =
+        await getCourseById(studentCode: studentCode, courseId: courseId);
     if (course == null) {
       throw Exception('Course not found');
     }
@@ -431,7 +453,7 @@ class LocalGradeTrackingRepositoryImpl implements LocalGradeTrackingRepository {
 
   // Clears all data when user logs out
   @override
-  Future<void> clearAllData() async {
+  Future<void> clearAllData({required String studentCode}) async {
     final db = await _databaseService.database;
 
     await db.transaction((txn) async {
@@ -449,8 +471,11 @@ class LocalGradeTrackingRepositoryImpl implements LocalGradeTrackingRepository {
   // Updates a course name
   @override
   Future<CourseTracking> updateCourseName(
-      String courseId, String newName) async {
-    final course = await getCourseById(courseId);
+      {required String studentCode,
+      required String courseId,
+      required String newName}) async {
+    final course =
+        await getCourseById(studentCode: studentCode, courseId: courseId);
     if (course == null) {
       throw Exception('Course not found');
     }
@@ -475,13 +500,15 @@ class LocalGradeTrackingRepositoryImpl implements LocalGradeTrackingRepository {
 
   // Updates a category name and weight
   @override
-  Future<CourseTracking> updateCategory(
-    String courseId,
-    String categoryId,
-    String newName,
-    double newWeight,
-  ) async {
-    final course = await getCourseById(courseId);
+  Future<CourseTracking> updateCategory({
+    required String studentCode,
+    required String courseId,
+    required String categoryId,
+    required String newName,
+    required double newWeight,
+  }) async {
+    final course =
+        await getCourseById(studentCode: studentCode, courseId: courseId);
     if (course == null) {
       throw Exception('Course not found');
     }
@@ -521,14 +548,16 @@ class LocalGradeTrackingRepositoryImpl implements LocalGradeTrackingRepository {
 
   // Updates a specific grade
   @override
-  Future<CourseTracking> updateGrade(
-    String courseId,
-    String categoryId,
-    String gradeId,
-    String newName,
-    double newScore,
-  ) async {
-    final course = await getCourseById(courseId);
+  Future<CourseTracking> updateGrade({
+    required String studentCode,
+    required String courseId,
+    required String categoryId,
+    required String gradeId,
+    required String newName,
+    required double newScore,
+  }) async {
+    final course =
+        await getCourseById(studentCode: studentCode, courseId: courseId);
     if (course == null) {
       throw Exception('Course not found');
     }
@@ -580,13 +609,15 @@ class LocalGradeTrackingRepositoryImpl implements LocalGradeTrackingRepository {
 
   // Cambia el estado de habilitación de una nota específica
   @override
-  Future<CourseTracking> toggleGradeEnabled(
-    String courseId,
-    String categoryId,
-    String gradeId,
-    bool enabled,
-  ) async {
-    final course = await getCourseById(courseId);
+  Future<CourseTracking> toggleGradeEnabled({
+    required String studentCode,
+    required String courseId,
+    required String categoryId,
+    required String gradeId,
+    required bool enabled,
+  }) async {
+    final course =
+        await getCourseById(studentCode: studentCode, courseId: courseId);
     if (course == null) {
       throw Exception('Course not found');
     }

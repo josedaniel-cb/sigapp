@@ -65,8 +65,8 @@ import 'package:sigapp/courses/application/usecases/grade_tracking_usecases.dart
     as _i947;
 import 'package:sigapp/courses/domain/repositories/courses_repository.dart'
     as _i986;
-import 'package:sigapp/courses/domain/repositories/local_grade_tracking_repository.dart'
-    as _i620;
+import 'package:sigapp/courses/domain/repositories/grade_tracking_repository.dart'
+    as _i259;
 import 'package:sigapp/courses/domain/repositories/local_syllabus_repository.dart'
     as _i504;
 import 'package:sigapp/courses/domain/repositories/program_curriculum_repository.dart'
@@ -157,14 +157,14 @@ extension GetItInjectableX on _i174.GetIt {
         _i856.ProgressIndicatorServiceImpl(gh<_i675.ProgressIndicatorBloc>()));
     gh.singleton<_i504.LocalSyllabusRepository>(
         () => _i717.LocalSyllabusRepositoryImpl());
+    gh.lazySingleton<_i259.GradeTrackingRepository>(() =>
+        _i735.LocalGradeTrackingRepositoryImpl(
+            gh<_i702.LocalDatabaseClient>()));
     gh.singleton<_i1010.SharedPreferencesAuthRepository>(() =>
         _i247.SharedPreferencesAuthRepositoryImpl(
             gh<_i460.SharedPreferences>()));
     gh.lazySingleton<_i348.RegevaRepository>(
         () => _i75.RegevaRepositoryImpl(gh<_i986.RegevaClient>()));
-    gh.lazySingleton<_i620.LocalGradeTrackingRepository>(() =>
-        _i735.LocalGradeTrackingRepositoryImpl(
-            gh<_i702.LocalDatabaseClient>()));
     gh.singleton<_i679.SessionLifecycleService>(
         () => _i649.SessionLifecycleServiceImpl(gh<_i857.SigaClient>()));
     gh.lazySingleton<_i986.CoursesRepository>(
@@ -191,8 +191,6 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i10.AuthRepository>(),
               gh<_i679.SessionLifecycleService>(),
             ));
-    gh.lazySingleton<_i947.GradeTrackingUseCases>(() =>
-        _i947.GradeTrackingUseCases(gh<_i620.LocalGradeTrackingRepository>()));
     gh.lazySingleton<_i44.StudentSessionService>(() =>
         _i306.StudentSessionServiceImpl(gh<_i6.StudentSessionRepository>()));
     gh.lazySingleton<_i504.GetCourseGradeUsecase>(
@@ -205,6 +203,11 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i348.RegevaRepository>(),
               gh<_i44.StudentSessionService>(),
               gh<_i504.LocalSyllabusRepository>(),
+            ));
+    gh.lazySingleton<_i947.GradeTrackingUseCases>(
+        () => _i947.GradeTrackingUseCases(
+              gh<_i259.GradeTrackingRepository>(),
+              gh<_i44.StudentSessionService>(),
             ));
     gh.singleton<_i583.GoRouter>(
         () => registerModule.router(gh<_i193.GetStoredCredentialsUseCase>()));

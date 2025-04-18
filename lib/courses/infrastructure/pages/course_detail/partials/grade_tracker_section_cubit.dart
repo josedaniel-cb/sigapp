@@ -46,7 +46,9 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
       CourseTracking? tracking;
 
       if (_courseId != null) {
-        tracking = await _gradeTrackingUseCases.getCourseById(_courseId!);
+        tracking = await _gradeTrackingUseCases.getCourseById(
+          courseId: _courseId!,
+        );
       }
 
       if (tracking != null) {
@@ -85,7 +87,9 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
 
       // Primero verificamos si ya existe un curso con este ID
       CourseTracking? existingTracking =
-          await _gradeTrackingUseCases.getCourseById(_courseId!);
+          await _gradeTrackingUseCases.getCourseById(
+        courseId: _courseId!,
+      );
 
       if (existingTracking != null) {
         // Si ya existe, simplemente lo cargamos
@@ -97,8 +101,8 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
       // Pasamos el _courseId como identificador único
       final tracking =
           await _gradeTrackingUseCases.createCourseTrackingWithDefaults(
-        _courseId!, // Usar el courseId como identificador único
-        courseName,
+        courseId: _courseId!,
+        courseName: courseName,
       );
 
       emit(GradeTrackerSectionState.ready(courseTracking: tracking));
@@ -121,9 +125,9 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
       try {
         final courseId = currentState.courseTracking.id;
         final updatedTracking = await _gradeTrackingUseCases.addCategory(
-          courseId,
-          name,
-          weight,
+          courseId: courseId,
+          categoryName: name,
+          weight: weight,
         );
         emit(GradeTrackerSectionState.ready(courseTracking: updatedTracking));
       } catch (e, s) {
@@ -148,10 +152,10 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
       try {
         final courseId = currentState.courseTracking.id;
         final updatedTracking = await _gradeTrackingUseCases.updateCategory(
-          courseId,
-          categoryId,
-          newName,
-          newWeight,
+          courseId: courseId,
+          categoryId: categoryId,
+          newName: newName,
+          newWeight: newWeight,
         );
         emit(GradeTrackerSectionState.ready(courseTracking: updatedTracking));
       } catch (e, s) {
@@ -172,8 +176,8 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
       try {
         final courseId = currentState.courseTracking.id;
         final updatedTracking = await _gradeTrackingUseCases.removeCategory(
-          courseId,
-          categoryId,
+          courseId: courseId,
+          categoryId: categoryId,
         );
         emit(GradeTrackerSectionState.ready(courseTracking: updatedTracking));
       } catch (e, s) {
@@ -199,10 +203,10 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
       try {
         final courseId = currentState.courseTracking.id;
         final updatedTracking = await _gradeTrackingUseCases.addGrade(
-          courseId,
-          categoryId,
-          name,
-          score,
+          courseId: courseId,
+          categoryId: categoryId,
+          gradeName: name,
+          score: score,
         );
         emit(GradeTrackerSectionState.ready(courseTracking: updatedTracking));
       } catch (e, s) {
@@ -228,11 +232,11 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
       try {
         final courseId = currentState.courseTracking.id;
         final updatedTracking = await _gradeTrackingUseCases.updateGrade(
-          courseId,
-          categoryId,
-          gradeId,
-          newName,
-          newScore,
+          courseId: courseId,
+          categoryId: categoryId,
+          gradeId: gradeId,
+          newName: newName,
+          newScore: newScore,
         );
         emit(GradeTrackerSectionState.ready(courseTracking: updatedTracking));
       } catch (e, s) {
@@ -257,10 +261,10 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
       try {
         final courseId = currentState.courseTracking.id;
         final updatedTracking = await _gradeTrackingUseCases.toggleGradeEnabled(
-          courseId,
-          categoryId,
-          gradeId,
-          enabled,
+          courseId: courseId,
+          categoryId: categoryId,
+          gradeId: gradeId,
+          enabled: enabled,
         );
         emit(GradeTrackerSectionState.ready(courseTracking: updatedTracking));
       } catch (e, s) {
@@ -284,9 +288,9 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
       try {
         final courseId = currentState.courseTracking.id;
         final updatedTracking = await _gradeTrackingUseCases.removeGrade(
-          courseId,
-          categoryId,
-          gradeId,
+          courseId: courseId,
+          categoryId: categoryId,
+          gradeId: gradeId,
         );
         emit(GradeTrackerSectionState.ready(courseTracking: updatedTracking));
       } catch (e, s) {
