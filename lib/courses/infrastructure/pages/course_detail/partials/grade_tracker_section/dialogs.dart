@@ -167,7 +167,7 @@ void showEditCategoryDialog(BuildContext context, GradeCategory category,
               if (formKey.currentState!.validate()) {
                 formKey.currentState!.save();
                 cubit.updateCategory(
-                  categoryId: category.id,
+                  categoryId: category.id!,
                   newName: name,
                   newWeight: weight,
                 );
@@ -199,7 +199,7 @@ void showDeleteCategoryDialog(BuildContext context, GradeCategory category,
           FilledButton(
             onPressed: () {
               cubit.deleteCategory(
-                categoryId: category.id,
+                categoryId: category.id!,
               );
               Navigator.pop(context);
             },
@@ -344,7 +344,7 @@ void showEditGradeDialog(BuildContext context, String categoryId, Grade grade,
                 formKey.currentState!.save();
                 cubit.updateGrade(
                   categoryId: categoryId,
-                  gradeId: grade.id,
+                  gradeId: grade.id!,
                   newName: name,
                   newScore: score,
                 );
@@ -377,7 +377,7 @@ void showDeleteGradeDialog(BuildContext context, String categoryId, Grade grade,
             onPressed: () {
               cubit.deleteGrade(
                 categoryId: categoryId,
-                gradeId: grade.id,
+                gradeId: grade.id!,
               );
               Navigator.pop(context);
             },

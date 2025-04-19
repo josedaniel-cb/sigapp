@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sigapp/core/infrastructure/ui/app.dart';
 import 'package:sigapp/core/injection/get_it.dart';
 // import 'package:sigapp/core/infrastructure/database/database_service.dart';
@@ -6,6 +7,10 @@ import 'package:sigapp/core/injection/get_it.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Cargar variables de entorno
+  await dotenv.load(fileName: '.env');
+
   await configureDependencies();
 
   // // Inicializar y verificar la base de datos antes de iniciar la app

@@ -58,6 +58,7 @@ class _CourseDetailPageWidgetState extends State<CourseDetailPageWidget> {
                 ),
                 ListTile(
                   subtitle: TableInfoWidget([
+                    ['Código', state.course.data.courseCode],
                     [
                       'Tipo',
                       state.course.data.courseType == CourseType.mandatory

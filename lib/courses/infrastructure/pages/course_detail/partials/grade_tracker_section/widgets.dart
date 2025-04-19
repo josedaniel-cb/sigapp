@@ -104,7 +104,7 @@ class CategoryCardWidget extends StatelessWidget {
             else
               ...category.grades.map((grade) {
                 return _GradeItemWidget(
-                  categoryId: category.id,
+                  categoryId: category.id!,
                   grade: grade,
                   cubit: cubit,
                 );
@@ -129,7 +129,7 @@ class CategoryCardWidget extends StatelessWidget {
                 ),
                 OutlinedButton.icon(
                   onPressed: () {
-                    showAddGradeDialog(context, category.id, cubit);
+                    showAddGradeDialog(context, category.id!, cubit);
                   },
                   icon: const Icon(Icons.add, size: 16),
                   label: const Text('Añadir nota'),
@@ -182,7 +182,7 @@ class _GradeItemWidget extends StatelessWidget {
         onChanged: (value) {
           cubit.toggleGradeEnabled(
             categoryId: categoryId,
-            gradeId: grade.id,
+            gradeId: grade.id!,
             enabled: value,
           );
         },

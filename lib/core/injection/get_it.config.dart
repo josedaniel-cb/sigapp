@@ -15,6 +15,8 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 import 'package:sigapp/auth/application/managers/authentication_manager.dart'
     as _i767;
+import 'package:sigapp/auth/application/services/api_gateway_auth_service.dart'
+    as _i391;
 import 'package:sigapp/auth/application/usecases/ensure_no_pending_survey_usecase.dart'
     as _i755;
 import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.dart'
@@ -34,12 +36,16 @@ import 'package:sigapp/auth/infrastructure/repositories/auth_repository.dart'
     as _i127;
 import 'package:sigapp/auth/infrastructure/repositories/shared_preferences_auth_repository.dart'
     as _i247;
+import 'package:sigapp/auth/infrastructure/services/api_gateway_auth_service.dart'
+    as _i417;
 import 'package:sigapp/auth/infrastructure/services/navigation_service.dart'
     as _i561;
 import 'package:sigapp/auth/infrastructure/services/session_lifecycle_service.dart'
     as _i649;
-import 'package:sigapp/core/infrastructure/database/local_database_client.dart'
-    as _i702;
+import 'package:sigapp/core/infrastructure/database/sqlite_client_manager.dart'
+    as _i139;
+import 'package:sigapp/core/infrastructure/http/api_gateway_client.dart'
+    as _i200;
 import 'package:sigapp/core/infrastructure/http/regeva_client.dart' as _i986;
 import 'package:sigapp/core/infrastructure/http/siga_client.dart' as _i857;
 import 'package:sigapp/core/infrastructure/ui/not_used_pages/schedule_page/partials/export_to_calendar_cubit.dart'
@@ -90,8 +96,8 @@ import 'package:sigapp/courses/infrastructure/pages/scheduled_courses/scheduled_
     as _i27;
 import 'package:sigapp/courses/infrastructure/repositories/courses_repository.dart'
     as _i892;
-import 'package:sigapp/courses/infrastructure/repositories/local_grade_tracking_repository.dart'
-    as _i735;
+import 'package:sigapp/courses/infrastructure/repositories/grade_tracking_repository.dart'
+    as _i4;
 import 'package:sigapp/courses/infrastructure/repositories/local_syllabus_repository.dart'
     as _i717;
 import 'package:sigapp/courses/infrastructure/repositories/program_curriculum_repository.dart'
@@ -139,6 +145,7 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final registerModule = _$RegisterModule();
+    gh.singleton<_i139.SQLiteClientManager>(() => _i139.SQLiteClientManager());
     await gh.singletonAsync<_i460.SharedPreferences>(
       () => registerModule.prefs,
       preResolve: true,
@@ -148,7 +155,7 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i880.ScheduleShareButtonCubit());
     gh.singleton<_i675.ProgressIndicatorBloc>(
         () => _i675.ProgressIndicatorBloc());
-    gh.singleton<_i702.LocalDatabaseClient>(() => _i702.LocalDatabaseClient());
+    gh.singleton<_i200.ApiGatewayClient>(() => _i200.ApiGatewayClient());
     gh.singleton<_i986.RegevaClient>(
         () => _i986.RegevaClient(gh<_i460.SharedPreferences>()));
     gh.singleton<_i857.SigaClient>(
@@ -157,9 +164,6 @@ extension GetItInjectableX on _i174.GetIt {
         _i856.ProgressIndicatorServiceImpl(gh<_i675.ProgressIndicatorBloc>()));
     gh.singleton<_i504.LocalSyllabusRepository>(
         () => _i717.LocalSyllabusRepositoryImpl());
-    gh.lazySingleton<_i259.GradeTrackingRepository>(() =>
-        _i735.LocalGradeTrackingRepositoryImpl(
-            gh<_i702.LocalDatabaseClient>()));
     gh.singleton<_i1010.SharedPreferencesAuthRepository>(() =>
         _i247.SharedPreferencesAuthRepositoryImpl(
             gh<_i460.SharedPreferences>()));
@@ -180,6 +184,10 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i637.ScheduleRepositoryImpl(gh<_i857.SigaClient>()));
     gh.lazySingleton<_i154.GetScheduledCoursesUsecase>(
         () => _i154.GetScheduledCoursesUsecase(gh<_i986.CoursesRepository>()));
+    gh.lazySingleton<_i259.GradeTrackingRepository>(
+        () => _i4.GradeTrackingRepositoryImpl(gh<_i200.ApiGatewayClient>()));
+    gh.lazySingleton<_i391.ApiGatewayAuthService>(
+        () => _i417.ApiGatewayAuthServiceImpl(gh<_i200.ApiGatewayClient>()));
     gh.lazySingleton<_i889.ProgramCurriculumRepository>(
         () => _i654.ProgramCurriculumRepositoryImpl(gh<_i857.SigaClient>()));
     gh.singleton<_i10.AuthRepository>(
@@ -240,6 +248,12 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i650.GetEnrolledCoursesUsecase>(),
           gh<_i44.StudentSessionService>(),
         ));
+    gh.factory<_i365.SignInUseCase>(() => _i365.SignInUseCase(
+          gh<_i10.AuthRepository>(),
+          gh<_i1010.SharedPreferencesAuthRepository>(),
+          gh<_i391.ApiGatewayAuthService>(),
+          gh<_i528.NavigationService>(),
+        ));
     gh.lazySingleton<_i504.GetProgramCurriculumProgressUsecase>(
         () => _i504.GetProgramCurriculumProgressUsecase(
               gh<_i889.ProgramCurriculumRepository>(),
@@ -257,11 +271,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i348.RegevaRepository>(),
           gh<_i151.ProgressIndicatorService>(),
           gh<_i23.AcademicInfoService>(),
-        ));
-    gh.factory<_i365.SignInUseCase>(() => _i365.SignInUseCase(
-          gh<_i10.AuthRepository>(),
-          gh<_i1010.SharedPreferencesAuthRepository>(),
-          gh<_i528.NavigationService>(),
+          gh<_i391.ApiGatewayAuthService>(),
         ));
     gh.factory<_i151.StudentPageViewCubit>(
         () => _i151.StudentPageViewCubit(gh<_i23.AcademicInfoService>()));

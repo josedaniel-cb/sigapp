@@ -171,16 +171,16 @@ class _ReadyStateView extends StatelessWidget {
             cubit: cubit,
           );
         }),
-        const SizedBox(height: 12),
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(
-            'Recuerda que estos cálculos se borrarán al cerrar sesión.',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[600],
-                ),
-          ),
-        ),
+        // const SizedBox(height: 12),
+        // Container(
+        //   margin: const EdgeInsets.symmetric(horizontal: 16),
+        //   child: Text(
+        //     'Recuerda que estos cálculos se borrarán al cerrar sesión.',
+        //     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+        //           color: Colors.grey[600],
+        //         ),
+        //   ),
+        // ),
         const SizedBox(height: 8),
         AddCategoryButtonWidget(cubit: cubit),
         const SizedBox(height: 8),

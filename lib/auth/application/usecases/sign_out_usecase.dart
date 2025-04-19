@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:sigapp/auth/application/services/api_gateway_auth_service.dart';
 import 'package:sigapp/auth/domain/repositories/auth_repository.dart';
 import 'package:sigapp/auth/domain/repositories/shared_preferences_auth_repository.dart';
 import 'package:sigapp/auth/domain/services/navigation_service.dart';
@@ -14,6 +15,7 @@ class SignOutUseCase {
   final RegevaRepository _regevaRepository;
   final ProgressIndicatorService _progressIndicatorService;
   final AcademicInfoService _sessionInfoService;
+  final ApiGatewayAuthService _supabaseAuthService;
 
   SignOutUseCase(
       this._sharedPreferencesAuthRepository,
@@ -21,7 +23,8 @@ class SignOutUseCase {
       this._authRepository,
       this._regevaRepository,
       this._progressIndicatorService,
-      this._sessionInfoService);
+      this._sessionInfoService,
+      this._supabaseAuthService);
 
   Future<void> execute([String? message]) async {
     await _progressIndicatorService.show();
@@ -37,6 +40,8 @@ class SignOutUseCase {
       await _progressIndicatorService.hide();
       rethrow;
     }
+
+    await _supabaseAuthService.logoutUser();
 
     await _progressIndicatorService.hide();
 

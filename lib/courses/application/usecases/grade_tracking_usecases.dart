@@ -10,73 +10,45 @@ class GradeTrackingUseCases {
 
   GradeTrackingUseCases(this._repository, this._studentSessionService);
 
-  // Métodos de gestión de cursos
-  Future<List<CourseTracking>> getAllCourses() async {
-    return _repository.getAllCourses(studentCode: await _getStudentCode());
-  }
-
-  Future<CourseTracking?> getCourseById({required String courseId}) async {
-    return _repository.getCourseById(
-        studentCode: await _getStudentCode(), courseId: courseId);
-  }
-
-  Future<CourseTracking?> getCourseTracking() async {
-    return _repository.get(studentCode: await _getStudentCode());
-  }
-
-  Future<CourseTracking> createEmptyCourseTracking(
-      {required String courseName}) async {
-    return _repository.createEmpty(
-        studentCode: await _getStudentCode(), courseName: courseName);
+  Future<CourseTracking?> getCourseByCourseCode(
+      {required String courseCode}) async {
+    return _repository.getCourseTracking(
+        studentCode: await _getStudentCode(), courseCode: courseCode);
   }
 
   /// Crea un curso con categorías y notas predeterminadas
   Future<CourseTracking> createCourseTrackingWithDefaults(
-      {required String courseId, required String courseName}) async {
+      {required String courseCode, required String courseName}) async {
     // Utiliza el método implementado en el repositorio que a su vez usa
     // la lógica en la entidad CourseTracking
     return _repository.createWithDefaults(
       studentCode: await _getStudentCode(),
-      courseId: courseId,
+      courseCode: courseCode,
       courseName: courseName,
-    );
-  }
-
-  Future<void> deleteCourse({required String courseId}) async {
-    return _repository.deleteCourse(
-        studentCode: await _getStudentCode(), courseId: courseId);
-  }
-
-  Future<CourseTracking> updateCourseName(
-      {required String courseId, required String newName}) async {
-    return _repository.updateCourseName(
-      studentCode: await _getStudentCode(),
-      courseId: courseId,
-      newName: newName,
     );
   }
 
   // Métodos para categorías
   Future<CourseTracking> addCategory(
-      {required String courseId,
+      {required String courseCode,
       required String categoryName,
       required double weight}) async {
     return _repository.addCategory(
       studentCode: await _getStudentCode(),
-      courseId: courseId,
+      courseCode: courseCode,
       categoryName: categoryName,
       weight: weight,
     );
   }
 
   Future<CourseTracking> updateCategory(
-      {required String courseId,
+      {required String courseCode,
       required String categoryId,
       required String newName,
       required double newWeight}) async {
     return _repository.updateCategory(
       studentCode: await _getStudentCode(),
-      courseId: courseId,
+      courseCode: courseCode,
       categoryId: categoryId,
       newName: newName,
       newWeight: newWeight,
@@ -84,23 +56,23 @@ class GradeTrackingUseCases {
   }
 
   Future<CourseTracking> removeCategory(
-      {required String courseId, required String categoryId}) async {
+      {required String courseCode, required String categoryId}) async {
     return _repository.deleteCategory(
       studentCode: await _getStudentCode(),
-      courseId: courseId,
+      courseCode: courseCode,
       categoryId: categoryId,
     );
   }
 
   // Métodos para notas
   Future<CourseTracking> addGrade(
-      {required String courseId,
+      {required String courseCode,
       required String categoryId,
       required String gradeName,
       required double score}) async {
     return _repository.addGrade(
       studentCode: await _getStudentCode(),
-      courseId: courseId,
+      courseCode: courseCode,
       categoryId: categoryId,
       gradeName: gradeName,
       score: score,
@@ -108,14 +80,14 @@ class GradeTrackingUseCases {
   }
 
   Future<CourseTracking> updateGrade(
-      {required String courseId,
+      {required String courseCode,
       required String categoryId,
       required String gradeId,
       required String newName,
       required double newScore}) async {
     return _repository.updateGrade(
       studentCode: await _getStudentCode(),
-      courseId: courseId,
+      courseCode: courseCode,
       categoryId: categoryId,
       gradeId: gradeId,
       newName: newName,
@@ -124,34 +96,29 @@ class GradeTrackingUseCases {
   }
 
   Future<CourseTracking> removeGrade(
-      {required String courseId,
+      {required String courseCode,
       required String categoryId,
       required String gradeId}) async {
     return _repository.deleteGrade(
       studentCode: await _getStudentCode(),
-      courseId: courseId,
+      courseCode: courseCode,
       categoryId: categoryId,
       gradeId: gradeId,
     );
   }
 
   Future<CourseTracking> toggleGradeEnabled(
-      {required String courseId,
+      {required String courseCode,
       required String categoryId,
       required String gradeId,
       required bool enabled}) async {
     return _repository.toggleGradeEnabled(
       studentCode: await _getStudentCode(),
-      courseId: courseId,
+      courseCode: courseCode,
       categoryId: categoryId,
       gradeId: gradeId,
       enabled: enabled,
     );
-  }
-
-  // Método para limpiar datos al cerrar sesión
-  Future<void> clearAllData() async {
-    return _repository.clearAllData(studentCode: await _getStudentCode());
   }
 
   // Helper method to get student code

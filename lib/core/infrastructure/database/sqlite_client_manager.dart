@@ -5,7 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:developer' as developer;
 
 @singleton
-class LocalDatabaseClient {
+class SQLiteClientManager {
   static const String _databaseName = 'sigapp.db';
   static const int _databaseVersion = 1;
 
