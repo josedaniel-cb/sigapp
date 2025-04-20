@@ -20,17 +20,18 @@ class ApiGatewayClient {
         logger = ApiLogger() {
     http = Dio();
 
-    final workerUrl = dotenv.env['SUPABASE_GATEWAY_URL'];
-    if (workerUrl == null) {
+    final baseUrl = dotenv.env['SUPABASE_GATEWAY_URL'];
+    if (baseUrl == null) {
       throw Exception('SUPABASE_GATEWAY_URL not found in .env file');
     }
-    _url = workerUrl;
+    _url = baseUrl;
 
     // Configure base options
     http.options.baseUrl = _url;
     http.options.connectTimeout = const Duration(seconds: 10);
     http.options.receiveTimeout = const Duration(seconds: 10);
     http.options.headers['Content-Type'] = 'application/json';
+    http.options.headers['X-Upstream'] = 'supabase';
 
     refreshManager = TokenRefreshManager(tokenManager, _url);
 
@@ -56,6 +57,12 @@ class ApiGatewayClient {
         // Prevent retries on requests that are already retries
         if (options.extra.containsKey('isRetry') &&
             options.extra['isRetry'] == true) {
+          return handler.next(options);
+        }
+
+        // Skip authentication for token endpoints
+        if (options.path.contains('/auth/v1/token') ||
+            options.path.contains('/auth/v1/signup')) {
           return handler.next(options);
         }
 

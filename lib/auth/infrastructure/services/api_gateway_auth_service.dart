@@ -17,7 +17,7 @@ class ApiGatewayAuthServiceImpl implements ApiGatewayAuthService {
   }) async {
     try {
       final response = await _client.http.post(
-        '/auth/signup',
+        '/auth/v1/signup',
         data: {
           'email': _buildAuthEmail(studentCode),
           'password': password,
@@ -36,8 +36,8 @@ class ApiGatewayAuthServiceImpl implements ApiGatewayAuthService {
       await loginUser(password: password, studentCode: studentCode);
     } catch (e, s) {
       developer.log(
-        'Error en el registro con Worker',
-        name: 'SupabaseAuthServiceImpl',
+        'Error en el registro con Supabase',
+        name: 'ApiGatewayAuthServiceImpl',
         error: e,
         stackTrace: s,
       );
@@ -52,7 +52,7 @@ class ApiGatewayAuthServiceImpl implements ApiGatewayAuthService {
   }) async {
     try {
       final response = await _client.http.post(
-        '/auth/login',
+        '/auth/v1/token?grant_type=password',
         data: {
           'email': _buildAuthEmail(studentCode),
           'password': password,
@@ -76,8 +76,8 @@ class ApiGatewayAuthServiceImpl implements ApiGatewayAuthService {
       }
     } catch (e, s) {
       developer.log(
-        'Error en el inicio de sesión con Worker',
-        name: 'SupabaseAuthServiceImpl',
+        'Error en el inicio de sesión con Supabase',
+        name: 'ApiGatewayAuthServiceImpl',
         error: e,
         stackTrace: s,
       );
@@ -92,8 +92,8 @@ class ApiGatewayAuthServiceImpl implements ApiGatewayAuthService {
       await _client.clearTokens();
     } catch (e, s) {
       developer.log(
-        'Error al cerrar sesión con Worker',
-        name: 'SupabaseAuthServiceImpl',
+        'Error al cerrar sesión con Supabase',
+        name: 'ApiGatewayAuthServiceImpl',
         error: e,
         stackTrace: s,
       );

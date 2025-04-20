@@ -124,7 +124,7 @@ class TokenRefreshManager {
         return false;
       }
 
-      final uri = Uri.parse('$_baseUrl/auth/refresh');
+      final uri = Uri.parse('$_baseUrl/auth/v1/token?grant_type=refresh_token');
       final headers = {'Content-Type': 'application/json'};
       final body = {'refresh_token': refreshToken};
 
