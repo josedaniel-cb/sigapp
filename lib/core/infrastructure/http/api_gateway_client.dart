@@ -31,7 +31,7 @@ class ApiGatewayClient {
     http.options.connectTimeout = const Duration(seconds: 10);
     http.options.receiveTimeout = const Duration(seconds: 10);
     http.options.headers['Content-Type'] = 'application/json';
-    http.options.headers['X-Upstream'] = 'supabase';
+    // http.options.headers['X-Upstream'] = 'supabase';
 
     refreshManager = TokenRefreshManager(tokenManager, _url);
 

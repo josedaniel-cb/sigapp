@@ -26,6 +26,7 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
       final response = await _workerClient.http.get(
         '/rest/v1/gt_course_tracking',
         queryParameters: queryParams,
+        options: Options(headers: {'X-Upstream': 'supabase'}),
       );
 
       final List<dynamic> data = response.data;
@@ -91,7 +92,10 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
       final createResponse = await _workerClient.http.post(
         '/rest/v1/gt_course_tracking',
         data: courseData,
-        options: Options(headers: {'Prefer': 'return=representation'}),
+        options: Options(headers: {
+          'Prefer': 'return=representation',
+          'X-Upstream': 'supabase'
+        }),
       );
 
       final courseResponse = createResponse.data[0];
@@ -109,7 +113,10 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
             'name': category.name,
             'weight': category.weight,
           },
-          options: Options(headers: {'Prefer': 'return=representation'}),
+          options: Options(headers: {
+            'Prefer': 'return=representation',
+            'X-Upstream': 'supabase'
+          }),
         );
 
         final categoryData = categoryResponse.data[0];
@@ -128,7 +135,10 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
               'score': grade.score,
               'enabled': grade.enabled,
             },
-            options: Options(headers: {'Prefer': 'return=representation'}),
+            options: Options(headers: {
+              'Prefer': 'return=representation',
+              'X-Upstream': 'supabase'
+            }),
           );
 
           final gradeData = gradeResponse.data[0];
@@ -213,7 +223,10 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
           'name': categoryName,
           'weight': weight,
         },
-        options: Options(headers: {'Prefer': 'return=representation'}),
+        options: Options(headers: {
+          'Prefer': 'return=representation',
+          'X-Upstream': 'supabase'
+        }),
       );
 
       final categoryData = categoryResponse.data[0];
@@ -269,7 +282,10 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
           'score': score,
           'enabled': true,
         },
-        options: Options(headers: {'Prefer': 'return=representation'}),
+        options: Options(headers: {
+          'Prefer': 'return=representation',
+          'X-Upstream': 'supabase'
+        }),
       );
 
       final gradeData = gradeResponse.data[0];
@@ -331,6 +347,7 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
           'id': 'eq.$categoryId',
           'course_tracking_id': 'eq.${course.id}',
         },
+        options: Options(headers: {'X-Upstream': 'supabase'}),
       );
 
       final updatedCategories = course.categories
@@ -376,6 +393,7 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
           'id': 'eq.$gradeId',
           'category_id': 'eq.$categoryId',
         },
+        options: Options(headers: {'X-Upstream': 'supabase'}),
       );
 
       final updatedCategories = course.categories.map((category) {
@@ -437,6 +455,7 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
           'id': 'eq.$categoryId',
           'course_tracking_id': 'eq.${course.id}',
         },
+        options: Options(headers: {'X-Upstream': 'supabase'}),
       );
 
       final updatedCategories = course.categories.map((category) {
@@ -496,6 +515,7 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
           'id': 'eq.$gradeId',
           'category_id': 'eq.$categoryId',
         },
+        options: Options(headers: {'X-Upstream': 'supabase'}),
       );
 
       final updatedCategories = course.categories.map((category) {
@@ -565,6 +585,7 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
           'id': 'eq.$gradeId',
           'category_id': 'eq.$categoryId',
         },
+        options: Options(headers: {'X-Upstream': 'supabase'}),
       );
 
       final updatedCategories = course.categories.map((category) {

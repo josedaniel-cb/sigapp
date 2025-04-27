@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/auth/application/usecases/ensure_no_pending_survey_usecase.dart';
 import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.dart';
@@ -10,6 +9,7 @@ import 'package:sigapp/auth/application/usecases/sign_out_usecase.dart';
 import 'package:sigapp/core/infrastructure/http/siga_client.dart';
 import 'package:sigapp/auth/domain/services/session_lifecycle_service.dart';
 import 'package:sigapp/auth/domain/value-objects/api_path_and_method.dart';
+import 'dart:developer' as developer;
 
 @singleton
 class AuthenticationManager {
@@ -36,15 +36,17 @@ class AuthenticationManager {
         if (_sessionService.evaluateIsSurveyAvailable(response)) {
           try {
             await _ensureNoPendingSurveyUseCase.execute(response);
-            if (kDebugMode) {
-              print('[🧢] No pending survey');
-            }
+            developer.log(
+              'No pending survey',
+              name: 'AuthenticationManager',
+            );
           } catch (e, s) {
-            if (kDebugMode) {
-              print('[🧢] Pending survey found, execute sign out');
-              print(e);
-              print(s);
-            }
+            developer.log(
+              'Pending survey found, execute sign out',
+              name: 'AuthenticationManager',
+              error: e,
+              stackTrace: s,
+            );
             _signOutUseCase.execute(e.toString());
             rethrow;
           }
@@ -82,7 +84,6 @@ class AuthenticationManager {
       },
     );
 
-    // try {
     // Schedule
     Timer.periodic(_sessionTimeoutDuration, (timer) {
       _keepSessionAlive();
@@ -90,13 +91,6 @@ class AuthenticationManager {
 
     // Run
     _keepSessionAlive();
-    // } catch (e, s) {
-    //   if (kDebugMode) {
-    //     print(e);
-    //     print(s);
-    //   }
-    //   _signOutUseCase.execute(e.toString());
-    // }
   }
 
   Future<void> _keepSessionAlive() async {
@@ -108,15 +102,8 @@ class AuthenticationManager {
 
     _refreshSessionCompleter = Completer<void>();
     try {
-      // final keepSessionResponse = await _keepSessionAliveUsecase.execute();
       await _keepSessionAliveUsecase.execute();
 
-      // final sessionHasExpired = _sessionService.evaluateSessionExpiration(
-      //   headers: keepSessionResponse.headers,
-      //   statusCode: keepSessionResponse.statusCode,
-      // );
-      // If the session has expired, sign in again
-      // if (sessionHasExpired) {
       // Login
       final successfulSignIn = await _signInUseCase.execute(
         storedCredentials.username!,
@@ -125,21 +112,22 @@ class AuthenticationManager {
       if (!successfulSignIn) {
         throw Exception('Error refreshing session');
       }
-      if (kDebugMode) {
-        print('[🧢] Session refreshed');
-      }
-      // } else {
-      //   if (kDebugMode) {
-      //     print('[🧢] Session is still alive');
-      //   }
-      // }
+      developer.log(
+        'Session refreshed',
+        name: 'AuthenticationManager',
+      );
       _refreshSessionCompleter!.complete();
     } catch (e, s) {
-      if (kDebugMode) {
-        print('[🧢] Error refreshing session: $e');
-        print(s);
-      }
+      developer.log(
+        'Error refreshing session: $e',
+        name: 'AuthenticationManager',
+        error: e,
+        stackTrace: s,
+      );
       _refreshSessionCompleter!.completeError(e);
+
+      // Sign out if there is an error refreshing the session
+      await _signOutUseCase.execute();
     } finally {
       _refreshSessionCompleter = null;
     }
@@ -147,9 +135,10 @@ class AuthenticationManager {
 
   Future<void> completeSessionRefresh() async {
     if (_refreshSessionCompleter == null) {
-      if (kDebugMode) {
-        print('[🧢] There is no session refresh in progress');
-      }
+      developer.log(
+        'There is no session refresh in progress',
+        name: 'AuthenticationManager',
+      );
       return;
     }
     await _refreshSessionCompleter!.future;

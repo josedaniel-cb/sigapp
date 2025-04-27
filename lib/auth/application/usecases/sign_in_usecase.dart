@@ -23,19 +23,19 @@ class SignInUseCase {
   Future<bool> execute(String username, String password) async {
     final response = await _authRepository.login(username, password);
 
-    if (response.statusCode == 302) {
-      await _sharedPreferencesAuthRepository.saveCredentials(
-          username, password);
-      await _supabaseSignInAndSignUp(username, password);
-      _navigationService.refreshNavigation();
-      return true;
-    }
-
     if (response.statusCode == 200) {
       return false;
     }
 
-    throw Exception('Unsupported status code: ${response.statusCode}');
+    if (response.statusCode != 302) {
+      throw Exception('Unsupported status code: ${response.statusCode}');
+    }
+
+    await _sharedPreferencesAuthRepository.saveCredentials(username, password);
+    await _supabaseSignInAndSignUp(username, password);
+    _navigationService.refreshNavigation();
+
+    return true;
   }
 
   Future<void> _supabaseSignInAndSignUp(
