@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:developer' as developer;
 
 class MailUtils {
   static void launchEmail(
@@ -13,10 +14,10 @@ class MailUtils {
     final emailUri = Uri(
       scheme: 'mailto',
       path: email,
-      queryParameters: {
-        'subject': subject,
-        'body': body ?? '',
-      },
+      query: {
+        'subject': Uri.encodeComponent(subject),
+        'body': Uri.encodeComponent(body ?? ''),
+      }.entries.map((e) => '${e.key}=${e.value}').join('&'),
     );
 
     try {
@@ -25,10 +26,12 @@ class MailUtils {
         mode: LaunchMode.externalApplication,
       );
     } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
+      developer.log(
+        'Error launching email app: $e',
+        name: 'MailUtils',
+        error: e,
+        stackTrace: s,
+      );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Ocurrió un error al abrir el correo'),

@@ -34,7 +34,12 @@ class _LoginPageState extends State<LoginPage> {
         return AlertDialog(
           title: const Text('Querido unepino'),
           content: const Text(
-              'Este es un proyecto independiente de código abierto, desarrollado sin apoyo oficial de la universidad. Si te resulta útil o te gusta, puedes apoyarlo valorándolo con 5 estrellas.'),
+              'Este es un proyecto independiente de código abierto, '
+              'desarrollado sin apoyo oficial de la universidad. '
+              'Si te resulta útil o te gusta, puedes apoyarlo valorándolo con 5 estrellas. '
+              'Si no, excribe un correo a la dirección de contacto. '
+              'De lo contrario, escríbeme para reparar el error. '
+              '¡Gracias por tu apoyo!'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -81,13 +86,13 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         const BrandTextWidget(fontSize: 40),
-                        Text(
-                          'Beta',
-                          style:
-                              Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    color: Colors.red,
-                                  ),
-                        )
+                        // Text(
+                        //   'Beta',
+                        //   style:
+                        //       Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        //             color: Colors.red,
+                        //           ),
+                        // )
                       ],
                     ),
                     const SizedBox(height: 40),
