@@ -58,7 +58,7 @@ android {
         versionName = flutter.versionName
 
         // Version
-        versionCode 7
+        versionCode 8
         versionName "2.0.0"
     }
 
