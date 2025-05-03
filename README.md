@@ -1,30 +1,50 @@
 # SIGApp
 
-Consulta tu información académica ahora en una interfaz nativa para Android.
-Dirigido a estudiantes de la Universidad Nacional de Piura.
+Cliente móvil de código abierto para consultar información académica desde el sistema SIGA de la Universidad Nacional de Piura (UNP).
 
-Play Store: [Enlace](https://play.google.com/store/apps/details?id=com.josedanielcb.sigapp&pcampaignid=web_share).
+La app permite a los estudiantes acceder de forma rápida y organizada a su horario, historial académico, boletín de cursos y plan de estudios, todo desde una interfaz nativa para Android.
 
-Mejor experiencia de usuario en SIGA:
+## Arquitectura
 
-- 📅 Horario de Clases Mejorado ¡Ahora puedes compartirlo!
-- 📕 Plan de Estudios adaptado para dispositivos móviles
-- 🧾 Boletín de Cursos adaptado para dispositivos móviles
-- 📈 Historial Académico con gráfico de línea de tu promedio ponderado
-- 📋 Visualiza fácilmente tu progreso en la carrera en el Informe Académico
+SIGApp está desarrollada en Flutter. Utiliza HTTP directo hacia el backend del sistema académico institucional (`http://academico.unp.edu.pe/`), gestionando cookies y sesiones de forma manual para autenticar y recuperar datos del estudiante.
 
-SIGApp es un proyecto independiente. Tiene la mayoría de las funciones del sitio web del SIGA. Sin embargo, carece de características como:
+Ya no utiliza WebView ni DOM scraping.
 
-- Registro de cursos
-- Informe de Horario de Clases
-- Informe de Boletín de Cursos
-- Informe de Plan de Estudios
-- Verificación de Cursos
-- Informe de Historial Académico
+### Stack
 
-La app carga los datos del usuario estudiante desde el sitio web de SIGA de la Universidad Nacional de Piura. Su forma de operar es a través de web scraping, por lo que depende totalmente del sitio web [http://academico.unp.edu.pe/](http://academico.unp.edu.pe/).
+- Flutter (nativo Android)
+- HTTP + manejo de sesión (cookies, autenticación)
+- Persistencia local con `shared_preferences`
 
-## Contributors
+## Limitaciones
+
+- La app no permite modificar datos (registro de cursos, solicitudes, etc.).
+- Depende de la estructura actual del backend de SIGA; cambios drásticos podrían afectar el funcionamiento.
+- Algunas funcionalidades del sistema oficial (como reportes imprimibles) no están implementadas.
+
+## Instalación
+
+1. Clonar el repositorio:
+
+   ```bash
+   git clone https://github.com/josedaniel-cb/sigapp.git
+   ```
+
+2. Instalar dependencias:
+
+   ```bash
+   flutter pub get
+   ```
+
+3. Ejecutar en dispositivo/emulador:
+
+   ```bash
+   flutter run
+   ```
+
+## Contribuciones
+
+Cualquier colaboración es bienvenida. Puedes abrir un issue, proponer mejoras o enviar un pull request. Este es un proyecto comunitario orientado a mejorar la experiencia estudiantil con tecnologías modernas.
 
 <a href="https://github.com/josedaniel-cb/sigapp/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=josedaniel-cb/sigapp" />
