@@ -32,10 +32,11 @@ class AvatarCircleWidget extends StatelessWidget {
           padding: EdgeInsets.all(4),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: Colors.black26,
-              width: 2.0,
-            ),
+            // border: Border.all(
+            //   color: Colors.black26,
+            //   width: 2.0,
+            // ),
+            color: Colors.black12,
           ),
           child: Container(
             decoration: BoxDecoration(

@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/auth/application/usecases/ensure_no_pending_survey_usecase.dart';
 import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.dart';
@@ -13,7 +13,7 @@ import 'package:sigapp/auth/domain/exceptions/session_exception.dart';
 import 'dart:developer' as developer;
 
 @singleton
-class AuthenticationManager {
+class AuthenticationManager with WidgetsBindingObserver {
   static const _sessionTimeoutDuration = Duration(seconds: 60);
 
   final SessionLifecycleService _sessionService;
@@ -24,6 +24,7 @@ class AuthenticationManager {
   final EnsureNoPendingSurveyUseCase _ensureNoPendingSurveyUseCase;
   Completer<void>? _refreshSessionCompleter;
   Future<void>? _ongoingSessionRefresh;
+  DateTime? _lastBackgroundTime;
 
   AuthenticationManager(
       this._sessionService,
@@ -32,6 +33,9 @@ class AuthenticationManager {
       this._keepSessionAliveUsecase,
       this._signInUseCase,
       this._ensureNoPendingSurveyUseCase) {
+    // Registrar para eventos del ciclo de vida de la app
+    WidgetsBinding.instance.addObserver(this);
+
     // First
     _sessionService.configureSurveyAssertionInterceptors(
       ensureNoPendingSurvey: (response) async {
@@ -93,6 +97,81 @@ class AuthenticationManager {
 
     // Run
     _keepSessionAlive();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      _lastBackgroundTime = DateTime.now();
+      developer.log(
+        'App went to background at $_lastBackgroundTime',
+        name: 'AuthenticationManager',
+      );
+    } else if (state == AppLifecycleState.resumed) {
+      final now = DateTime.now();
+      final timeSinceBackground = _lastBackgroundTime != null
+          ? now.difference(_lastBackgroundTime!)
+          : const Duration(seconds: 0);
+
+      developer.log(
+        'App resumed after ${timeSinceBackground.inSeconds} seconds in background',
+        name: 'AuthenticationManager',
+      );
+
+      // Refrescar inmediatamente la sesión cuando la app vuelve al primer plano
+      // especialmente después de un largo período de inactividad
+      _refreshOnResume(timeSinceBackground);
+    }
+  }
+
+  Future<void> _refreshOnResume(Duration backgroundDuration) async {
+    // Si la app estuvo en segundo plano por más de 5 minutos, forzar un refresco
+    // El valor de 5 minutos (300 segundos) puede ajustarse según tus necesidades
+    if (backgroundDuration.inSeconds < 300) {
+      developer.log(
+        'App estuvo en segundo plano menos de 5 minutos, no se fuerza refresco',
+        name: 'AuthenticationManager',
+      );
+      return;
+    }
+
+    final storedCredentials = _getStoredCredentialsUseCase.execute();
+    if (!storedCredentials.hasCredentials) {
+      developer.log(
+        'No hay credenciales almacenadas, no se intenta refresco al reactivar',
+        name: 'AuthenticationManager',
+      );
+      return;
+    }
+
+    // Usar synchronized para prevenir operaciones mientras se completa el refresco
+    await synchronized(() async {
+      try {
+        developer.log(
+          'Refrescando proactivamente la sesión después de reactivar la app',
+          name: 'AuthenticationManager',
+        );
+
+        // Reiniciar el estado del refreshSessionCompleter para asegurar un refresco limpio
+        _refreshSessionCompleter = null;
+
+        // Forzar un refresco completo de la sesión
+        await _keepSessionAlive();
+
+        developer.log(
+          'Refresco de sesión después de reactivación completado exitosamente',
+          name: 'AuthenticationManager',
+        );
+      } catch (e, s) {
+        developer.log(
+          'Error al refrescar sesión después de reactivar: $e',
+          name: 'AuthenticationManager',
+          error: e,
+          stackTrace: s,
+        );
+        // El manejo de errores ya está implementado en _keepSessionAlive
+      }
+    });
   }
 
   Future<void> _keepSessionAlive() async {
@@ -236,5 +315,10 @@ class AuthenticationManager {
     } finally {
       _ongoingSessionRefresh = null;
     }
+  }
+
+  @disposeMethod
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
   }
 }

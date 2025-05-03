@@ -1,10 +1,18 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigapp/core/infrastructure/http/cookie_manager.dart';
 import 'dart:developer' as developer;
+
+final _loggingHeaders = [
+  'Authorization',
+  'Content-Type',
+  'Location',
+  'Set-Cookie',
+  'Cookie',
+  'Redirect-Location',
+];
 
 class HttpClientBuilder {
   final Dio _dio = Dio();
@@ -114,38 +122,58 @@ class HttpClientBuilder {
   }
 
   Map<String, dynamic> _processHeadersForLog(Map<String, dynamic> headers) {
-    final processedHeaders = Map<String, dynamic>.from(headers);
+    final processedHeaders = <String, dynamic>{};
+
+    for (var header in _loggingHeaders) {
+      if (headers.containsKey(header)) {
+        processedHeaders[header] = headers[header];
+      }
+    }
+
     if (processedHeaders.containsKey('cookie')) {
       processedHeaders['cookie'] =
           _truncateString(processedHeaders['cookie'], 100);
     }
+
     return processedHeaders;
   }
 
   void _printRequest(RequestOptions options) {
-    developer.log('⬆️ $_id: ${options.method} ${options.uri}', name: 'HTTP');
+    developer.log('⬆️ $_id: ${options.method} ${options.uri}',
+        name: 'HttpClientBuilder > Dio');
     developer.log(
         'Headers: ${json.encode(_processHeadersForLog(options.headers))}',
-        name: 'HTTP');
+        name: 'HttpClientBuilder > Dio');
     try {
-      developer.log('Data: ${json.encode(options.data)}', name: 'HTTP');
+      developer.log('Data: ${json.encode(options.data)}',
+          name: 'HttpClientBuilder > Dio');
     } catch (e) {
-      developer.log('Data: ${options.data}', name: 'HTTP');
+      developer.log('Data: ${options.data}', name: 'HttpClientBuilder > Dio');
     }
   }
 
   void _printResponse(Response<dynamic> response, String emoji) {
     developer.log(
         '⬇️$emoji $_id: ${response.requestOptions.method} ${response.requestOptions.uri} ${response.statusCode}',
-        name: 'HTTP');
+        name: 'HttpClientBuilder > Dio');
 
     final processedHeaders = _processHeadersForLog(response.headers.map);
-    developer.log('Headers: ${json.encode(processedHeaders)}', name: 'HTTP');
+    developer.log('Headers: ${json.encode(processedHeaders)}',
+        name: 'HttpClientBuilder > Dio');
+
+    if (response.headers.map.containsKey('location')) {
+      developer.log('Redirección a: ${response.headers.map['location']}',
+          name: 'HttpClientBuilder > Redirección');
+    }
 
     try {
-      developer.log('Data: ${json.encode(response.data)}', name: 'HTTP');
+      var responseData = json.encode(response.data);
+      developer.log('Data: ${_truncateString(responseData, 500)}',
+          name: 'HttpClientBuilder > Dio');
     } catch (e) {
-      developer.log('Data: ${response.data}', name: 'HTTP');
+      var responseStr = response.data.toString();
+      developer.log('Data: ${_truncateString(responseStr, 500)}',
+          name: 'HttpClientBuilder > Dio');
     }
   }
 }
