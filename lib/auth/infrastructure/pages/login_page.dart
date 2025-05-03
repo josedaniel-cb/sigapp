@@ -9,6 +9,7 @@ import 'package:sigapp/core/injection/get_it.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/brand_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'login_cubit.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -60,153 +61,178 @@ class _LoginPageState extends State<LoginPage> {
       body: BlocConsumer<LoginCubit, LoginState>(
         builder: (context, state) {
           final status = state.status;
-          return Column(
+          final size = MediaQuery.of(context).size;
+          return Stack(
             children: [
-              Expanded(
-                child: Center(
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              const BrandTextWidget(fontSize: 40),
-                              // Text(
-                              //   'Beta',
-                              //   style:
-                              //       Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              //             color: Colors.red,
-                              //           ),
-                              // )
-                            ],
-                          ),
-                          const SizedBox(height: 40),
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              children: [
-                                TextField(
-                                  controller: _usernameController,
-                                  focusNode: _usernameFocusNode,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Usuario',
-                                    prefixIcon: Icon(Icons.person),
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  textInputAction: TextInputAction.next,
-                                  onSubmitted: (_) {
-                                    FocusScope.of(context)
-                                        .requestFocus(_passwordFocusNode);
-                                  },
-                                ),
-                                const SizedBox(height: 16),
-                                TextField(
-                                  controller: _passwordController,
-                                  focusNode: _passwordFocusNode,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Contraseña',
-                                    prefixIcon: Icon(Icons.lock),
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  obscureText: true,
-                                  textInputAction: TextInputAction.done,
-                                  onSubmitted: (_) {
-                                    if (status is! LoginLoading) {
-                                      _login();
-                                    }
-                                  },
-                                ),
-                                const SizedBox(height: 24),
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: 50,
-                                  child: FilledButton(
-                                    style: FilledButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    onPressed:
-                                        status is LoginLoading ? null : _login,
-                                    child: status is LoginLoading
-                                        ? const SizedBox(
-                                            height: 24,
-                                            width: 24,
-                                            child: CircularProgressIndicator(),
-                                          )
-                                        : const Text(
-                                            'Ingresar',
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          if (status is LoginError)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 16.0),
-                              child: Text(
-                                status.message,
-                                style: const TextStyle(color: Colors.red),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                        ],
-                      ),
+              Positioned(
+                top: -size.height * (0.0),
+                left: -size.height * (0.75),
+                child: Opacity(
+                  opacity: 0.06,
+                  child: SvgPicture.asset(
+                    'assets/unp_logo_dark.svg',
+                    height: size.height * 1.25,
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).primaryColor,
+                      BlendMode.srcOut,
                     ),
                   ),
                 ),
               ),
-              Wrap(
-                alignment: WrapAlignment.center,
-                // spacing: 8.0, // Espacio horizontal entre widgets
-                runSpacing: 0, // Espacio vertical entre líneas
+              // Contenido principal
+              Column(
                 children: [
-                  TextButton.icon(
-                    onPressed: () {
-                      launchUrl(Uri.parse(Links.privacyPolicyUrl),
-                          mode: LaunchMode.externalApplication);
-                    },
-                    // icon: Icon(MdiIcons.web),
-                    label: const Text('Política de privacidad'),
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 0),
+                  Expanded(
+                    child: Center(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.all(24.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  const BrandTextWidget(fontSize: 40),
+                                  // Text(
+                                  //   'Beta',
+                                  //   style:
+                                  //       Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                  //             color: Colors.red,
+                                  //           ),
+                                  // )
+                                ],
+                              ),
+                              const SizedBox(height: 40),
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  children: [
+                                    TextField(
+                                      controller: _usernameController,
+                                      focusNode: _usernameFocusNode,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Usuario',
+                                        prefixIcon: Icon(Icons.person),
+                                        border: OutlineInputBorder(),
+                                      ),
+                                      textInputAction: TextInputAction.next,
+                                      onSubmitted: (_) {
+                                        FocusScope.of(context)
+                                            .requestFocus(_passwordFocusNode);
+                                      },
+                                    ),
+                                    const SizedBox(height: 16),
+                                    TextField(
+                                      controller: _passwordController,
+                                      focusNode: _passwordFocusNode,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Contraseña',
+                                        prefixIcon: Icon(Icons.lock),
+                                        border: OutlineInputBorder(),
+                                      ),
+                                      obscureText: true,
+                                      textInputAction: TextInputAction.done,
+                                      onSubmitted: (_) {
+                                        if (status is! LoginLoading) {
+                                          _login();
+                                        }
+                                      },
+                                    ),
+                                    const SizedBox(height: 24),
+                                    SizedBox(
+                                      width: double.infinity,
+                                      height: 50,
+                                      child: FilledButton(
+                                        style: FilledButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                        ),
+                                        onPressed: status is LoginLoading
+                                            ? null
+                                            : _login,
+                                        child: status is LoginLoading
+                                            ? const SizedBox(
+                                                height: 24,
+                                                width: 24,
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              )
+                                            : const Text(
+                                                'Ingresar',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              if (status is LoginError)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 16.0),
+                                  child: Text(
+                                    status.message,
+                                    style: const TextStyle(color: Colors.red),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  TextButton.icon(
-                    onPressed: () {
-                      launchUrl(Uri.parse(Links.projectUrl),
-                          mode: LaunchMode.externalApplication);
-                    },
-                    icon: Icon(MdiIcons.github),
-                    label: const Text('Proyecto'),
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 0),
-                    ),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    // spacing: 8.0, // Espacio horizontal entre widgets
+                    runSpacing: 0, // Espacio vertical entre líneas
+                    children: [
+                      TextButton.icon(
+                        onPressed: () {
+                          launchUrl(Uri.parse(Links.privacyPolicyUrl),
+                              mode: LaunchMode.externalApplication);
+                        },
+                        // icon: Icon(MdiIcons.web),
+                        label: const Text('Política de privacidad'),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 0),
+                        ),
+                      ),
+                      TextButton.icon(
+                        onPressed: () {
+                          launchUrl(Uri.parse(Links.projectUrl),
+                              mode: LaunchMode.externalApplication);
+                        },
+                        icon: Icon(MdiIcons.github),
+                        label: const Text('Proyecto'),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 0),
+                        ),
+                      ),
+                      TextButton.icon(
+                        onPressed: () {
+                          MailUtils.launchEmail(context,
+                              email: Links.contactEmail);
+                        },
+                        // icon: Icon(MdiIcons.handshake),
+                        label: const Text('Contacto'),
+                        style: TextButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 0),
+                        ),
+                      ),
+                    ],
                   ),
-                  TextButton.icon(
-                    onPressed: () {
-                      MailUtils.launchEmail(context, email: Links.contactEmail);
-                    },
-                    // icon: Icon(MdiIcons.handshake),
-                    label: const Text('Contacto'),
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 0),
-                    ),
-                  ),
+                  SizedBox(height: 10),
                 ],
               ),
-              SizedBox(height: 10),
             ],
           );
         },

@@ -30,6 +30,10 @@ class AboutPageWidget extends StatelessWidget {
           // subtitle: Text('Universidad Nacional de Piura'),
         ),
         ListTile(
+          subtitle: Text(
+              'Cliente móvil del Sistema Integrado de Gestión Académica de la Universidad Nacional de Piura'),
+        ),
+        ListTile(
           leading: Icon(MdiIcons.github),
           title: Text('GitHub del proyecto'),
           onTap: () => _launchUrl(context, Links.projectUrl),
@@ -63,7 +67,7 @@ class AboutPageWidget extends StatelessWidget {
         _buildLinkListTile(
           context,
           title: 'Reporte pagos',
-          url: 'http://pagos.unp.edu.pe/ReportePagos/',
+          url: 'https://pagos.unp.edu.pe/',
         ),
         _buildLinkListTile(
           context,
