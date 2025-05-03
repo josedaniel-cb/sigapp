@@ -5,6 +5,7 @@ import 'package:sigapp/core/infrastructure/ui/utils/mail_utils.dart';
 import 'package:sigapp/core/infrastructure/ui/utils/share_utils.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/brand_text.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/initials_avatar.dart';
+import 'package:sigapp/shared/infrastructure/pages/report_problem_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class GeneralAvatarDialog extends StatelessWidget {
@@ -91,11 +92,16 @@ class GeneralAvatarDialog extends StatelessWidget {
             title: Text('Reportar un problema'),
             onTap: () {
               Navigator.of(context).pop();
-              MailUtils.launchEmail(
+              // MailUtils.launchEmail(
+              //   context,
+              //   email: Links.contactEmail,
+              //   subject: 'Hola! Quiero reportar un error',
+              //   body: '(agrega capturas de pantalla)',
+              // );
+              // push ReportProblemPage
+              Navigator.push(
                 context,
-                email: Links.contactEmail,
-                subject: 'Hola! Quiero reportar un error',
-                body: '(agrega capturas de pantalla)',
+                MaterialPageRoute(builder: (context) => ReportProblemPage()),
               );
             },
           ),
