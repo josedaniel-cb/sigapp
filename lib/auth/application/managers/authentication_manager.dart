@@ -22,6 +22,7 @@ class AuthenticationManager {
   final SignInUseCase _signInUseCase;
   final EnsureNoPendingSurveyUseCase _ensureNoPendingSurveyUseCase;
   Completer<void>? _refreshSessionCompleter;
+  Future<void>? _ongoingSessionRefresh;
 
   AuthenticationManager(
       this._sessionService,
@@ -134,13 +135,55 @@ class AuthenticationManager {
   }
 
   Future<void> completeSessionRefresh() async {
-    if (_refreshSessionCompleter == null) {
+    // Si hay un refresh en progreso, simplemente espera a que termine
+    // en lugar de iniciar uno nuevo
+    synchronized(() async {
+      if (_refreshSessionCompleter == null) {
+        developer.log(
+          'Starting new session refresh',
+          name: 'AuthenticationManager',
+        );
+        await _keepSessionAlive();
+      } else {
+        developer.log(
+          'Waiting for ongoing session refresh',
+          name: 'AuthenticationManager',
+        );
+        await _refreshSessionCompleter!.future;
+      }
+    });
+  }
+
+  // Método para sincronizar las solicitudes de actualización de sesión
+  Future<T> synchronized<T>(Future<T> Function() fn) async {
+    // Evitar que múltiples hilos inicien una actualización de sesión al mismo tiempo
+    final localFuture = _ongoingSessionRefresh;
+    if (localFuture != null) {
+      // Ya hay una actualización en progreso, espera a que termine
       developer.log(
-        'There is no session refresh in progress',
+        'Found ongoing session refresh, waiting...',
         name: 'AuthenticationManager',
       );
-      return;
+      await localFuture;
+      developer.log(
+        'Previous session refresh completed, continuing',
+        name: 'AuthenticationManager',
+      );
+      return fn();
     }
-    await _refreshSessionCompleter!.future;
+
+    // No hay actualización en progreso, inicia una nueva
+    final completer = Completer<T>();
+    _ongoingSessionRefresh = completer.future;
+    try {
+      final result = await fn();
+      completer.complete(result);
+      return result;
+    } catch (e) {
+      completer.completeError(e);
+      rethrow;
+    } finally {
+      _ongoingSessionRefresh = null;
+    }
   }
 }
