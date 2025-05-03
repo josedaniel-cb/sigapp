@@ -17,6 +17,7 @@ abstract class ExportToCalendarState with _$ExportToCalendarState {
     // required DateTime startDate,
     // required DateTime endDate,
   }) = SuccessState;
+  // TODO: must be `dynamic error`
   const factory ExportToCalendarState.error(String message) = ErrorState;
 }
 

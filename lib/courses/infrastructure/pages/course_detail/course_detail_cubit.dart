@@ -31,6 +31,7 @@ class CourseDetailSyllabusState with _$CourseDetailSyllabusState {
       _CourseDetailSyllabusStateLoaded;
   const factory CourseDetailSyllabusState.notFound() =
       _CourseDetailSyllabusStateNotFound;
+  // TODO: must be `dynamic error`
   const factory CourseDetailSyllabusState.error(String message) =
       _CourseDetailSyllabusStateError;
 }
@@ -44,6 +45,7 @@ class CourseDetailGradesState with _$CourseDetailGradesState {
   const factory CourseDetailGradesState.loaded(
     CourseGradeInfo value,
   ) = _CourseDetailGradesStateLoaded;
+  // TODO: must be `dynamic error`
   const factory CourseDetailGradesState.error(String message) =
       _CourseDetailGradesStateError;
 }

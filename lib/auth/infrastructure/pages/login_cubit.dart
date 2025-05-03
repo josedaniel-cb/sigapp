@@ -22,6 +22,7 @@ abstract class LoginStatus with _$LoginStatus {
   const factory LoginStatus.initial() = LoginInitial;
   const factory LoginStatus.loading() = LoginLoading;
   const factory LoginStatus.success() = LoginSuccess;
+  // TODO: must be `dynamic error`
   const factory LoginStatus.error(String message) = LoginError;
 }
 

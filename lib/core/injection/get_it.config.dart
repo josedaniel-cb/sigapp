@@ -146,6 +146,7 @@ extension GetItInjectableX on _i174.GetIt {
     );
     final registerModule = _$RegisterModule();
     gh.singleton<_i139.SQLiteClientManager>(() => _i139.SQLiteClientManager());
+    gh.singleton<_i200.ApiGatewayClient>(() => _i200.ApiGatewayClient());
     await gh.singletonAsync<_i460.SharedPreferences>(
       () => registerModule.prefs,
       preResolve: true,
@@ -155,7 +156,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i880.ScheduleShareButtonCubit());
     gh.singleton<_i675.ProgressIndicatorBloc>(
         () => _i675.ProgressIndicatorBloc());
-    gh.singleton<_i200.ApiGatewayClient>(() => _i200.ApiGatewayClient());
     gh.singleton<_i986.RegevaClient>(
         () => _i986.RegevaClient(gh<_i460.SharedPreferences>()));
     gh.singleton<_i857.SigaClient>(
@@ -248,12 +248,6 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i650.GetEnrolledCoursesUsecase>(),
           gh<_i44.StudentSessionService>(),
         ));
-    gh.factory<_i365.SignInUseCase>(() => _i365.SignInUseCase(
-          gh<_i10.AuthRepository>(),
-          gh<_i1010.SharedPreferencesAuthRepository>(),
-          gh<_i391.ApiGatewayAuthService>(),
-          gh<_i528.NavigationService>(),
-        ));
     gh.lazySingleton<_i504.GetProgramCurriculumProgressUsecase>(
         () => _i504.GetProgramCurriculumProgressUsecase(
               gh<_i889.ProgramCurriculumRepository>(),
@@ -262,6 +256,13 @@ extension GetItInjectableX on _i174.GetIt {
             ));
     gh.factory<_i112.CareerPageCubit>(() => _i112.CareerPageCubit(
           gh<_i504.GetProgramCurriculumProgressUsecase>(),
+          gh<_i23.AcademicInfoService>(),
+        ));
+    gh.factory<_i365.SignInUseCase>(() => _i365.SignInUseCase(
+          gh<_i10.AuthRepository>(),
+          gh<_i1010.SharedPreferencesAuthRepository>(),
+          gh<_i391.ApiGatewayAuthService>(),
+          gh<_i528.NavigationService>(),
           gh<_i23.AcademicInfoService>(),
         ));
     gh.factory<_i48.SignOutUseCase>(() => _i48.SignOutUseCase(

@@ -13,6 +13,7 @@ abstract class StudentPageViewState with _$StudentPageViewState {
   const factory StudentPageViewState.success(
     AcademicReport academicReport,
   ) = SuccessState;
+  // TODO: must be `dynamic error`
   const factory StudentPageViewState.error(String message) = ErrorState;
 }
 

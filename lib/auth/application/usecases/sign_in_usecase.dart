@@ -5,6 +5,7 @@ import 'package:sigapp/auth/application/services/api_gateway_auth_service.dart';
 import 'package:sigapp/auth/domain/repositories/auth_repository.dart';
 import 'package:sigapp/auth/domain/repositories/shared_preferences_auth_repository.dart';
 import 'package:sigapp/auth/domain/services/navigation_service.dart';
+import 'package:sigapp/student/domain/services/academic_info_service.dart';
 
 @injectable
 class SignInUseCase {
@@ -12,12 +13,16 @@ class SignInUseCase {
   final SharedPreferencesAuthRepository _sharedPreferencesAuthRepository;
   final ApiGatewayAuthService _supabaseAuthService;
   final NavigationService _navigationService;
+  // TODO: Required refactor in order to impement cashing at the infrastructure layer
+  // TODO: Required refactor in order to not call services from usecases
+  final AcademicInfoService _academicInfoService;
 
   SignInUseCase(
     this._authRepository,
     this._sharedPreferencesAuthRepository,
     this._supabaseAuthService,
     this._navigationService,
+    this._academicInfoService,
   );
 
   Future<bool> execute(String username, String password) async {
@@ -32,6 +37,23 @@ class SignInUseCase {
     }
 
     await _sharedPreferencesAuthRepository.saveCredentials(username, password);
+
+    // Validate if student user is ready to use the app
+    // This could throw an exception if the student is newly registered
+    try {
+      await _academicInfoService.getSessionInfo();
+    } catch (e, s) {
+      developer.log(
+        'Error al obtener la información de la sesión del estudiante.',
+        name: 'SignInUseCase',
+        error: e,
+        stackTrace: s,
+      );
+      throw Exception(
+        'Tu usuario aún no está listo para usar la aplicación, por favor usa la versión web por el momento.',
+      );
+    }
+
     await _supabaseSignInAndSignUp(username, password);
     _navigationService.refreshNavigation();
 

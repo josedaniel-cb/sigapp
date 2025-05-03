@@ -15,6 +15,7 @@ abstract class ScheduledCoursesPageState with _$ScheduledCoursesPageState {
     required List<ScheduledCourse> filteredCourses,
     required String searchQuery,
   }) = ScheduledCoursesPageSuccessState;
+  // TODO: must be `dynamic error`
   const factory ScheduledCoursesPageState.error(String message) =
       CoursesPageErrorState;
 }

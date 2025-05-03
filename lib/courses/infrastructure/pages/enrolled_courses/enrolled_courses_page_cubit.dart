@@ -17,6 +17,7 @@ abstract class EnrolledCoursesState with _$EnrolledCoursesState {
   const factory EnrolledCoursesState.success({
     required List<EnrolledCourse> value,
   }) = EnrolledCoursesSuccessState;
+  // TODO: must be `dynamic error`
   const factory EnrolledCoursesState.error(String message) =
       EnrolledCoursesErrorState;
 }
@@ -30,6 +31,7 @@ abstract class EnrolledCoursesPageState with _$EnrolledCoursesPageState {
     required ScheduledTermIdentifier selectedSemester,
     required EnrolledCoursesState enrolledCourses,
   }) = CoursesPageSuccessState;
+  // TODO: must be `dynamic error`
   const factory EnrolledCoursesPageState.error(String message) =
       CoursesPageErrorState;
 }

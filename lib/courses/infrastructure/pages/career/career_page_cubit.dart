@@ -16,6 +16,7 @@ abstract class CareerPageState with _$CareerPageState {
     required ProgramCurriculumProgress programCurriculumProgress,
     required AcademicReport academicReport,
   }) = CareerPageSuccessState;
+  // TODO: must be `dynamic error`
   const factory CareerPageState.error(String message) = CareerPageErrorState;
 }
 

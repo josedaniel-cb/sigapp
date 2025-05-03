@@ -18,7 +18,7 @@ class GradeTrackerSectionState with _$GradeTrackerSectionState {
   const factory GradeTrackerSectionState.ready({
     required CourseTracking courseTracking,
   }) = GradeTrackerSectionReadyState;
-
+  // TODO: must be `dynamic error`
   const factory GradeTrackerSectionState.error({
     String? message,
   }) = GradeTrackerSectionErrorState;

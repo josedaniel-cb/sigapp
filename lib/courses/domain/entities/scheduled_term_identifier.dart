@@ -12,8 +12,20 @@ class ScheduledTermIdentifier {
   });
 
   factory ScheduledTermIdentifier.buildFromId(String id) {
-    final year = int.parse(id.substring(0, 4));
-    final period = int.parse(id.substring(4));
+    if (id.length != 5) {
+      throw ArgumentError(
+          'El ID del semestre debe tener exactamente 5 caracteres, pero se recibió "$id".');
+    }
+    final year = int.tryParse(id.substring(0, 4));
+    if (year == null) {
+      throw ArgumentError(
+          'El ID del semestre debe comenzar con un año válido de 4 dígitos, pero se recibió "$id".');
+    }
+    final period = int.tryParse(id.substring(4));
+    if (period == null || period < 0 || period > 2) {
+      throw ArgumentError(
+          'El período del semestre debe ser un número entre 0 y 2, pero se recibió "$period" ("$id").');
+    }
     final name = '$year-$period';
     return ScheduledTermIdentifier._(
       id: id,
@@ -23,14 +35,22 @@ class ScheduledTermIdentifier {
     );
   }
 
-  // static String getIdFromName(String name) {
-  //   final parts = name.split('-');
-  //   return '${parts[0]}${parts[1]}';
-  // }
   factory ScheduledTermIdentifier.buildFromName(String name) {
     final parts = name.split('-');
-    final year = int.parse(parts[0]);
-    final period = int.parse(parts[1]);
+    if (parts.length != 2) {
+      throw ArgumentError(
+          'El nombre del semestre debe estar en el formato "YYYY-X", pero se recibió "$name".');
+    }
+    final year = int.tryParse(parts[0]);
+    if (year == null) {
+      throw ArgumentError(
+          'El año en el nombre del semestre debe ser un número válido de 4 dígitos, pero se recibió "$name".');
+    }
+    final period = int.tryParse(parts[1]);
+    if (period == null || period < 0 || period > 2) {
+      throw ArgumentError(
+          'El período en el nombre debe ser un número entre 0 y 2, pero se recibió "$period" ("$name").');
+    }
     final id = '$year$period';
     return ScheduledTermIdentifier._(
       id: id,
