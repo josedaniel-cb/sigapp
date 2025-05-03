@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'dart:developer' as developer;
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/auth/domain/value-objects/api_response.dart';
 import 'package:sigapp/core/infrastructure/http/siga_client.dart';
@@ -60,7 +60,7 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
       // Skip session expiration check if the response is from an excluded request.
       if (_isExcludedRequest(
           response.requestOptions, excludedEndpointsFromRefresh)) {
-        _logDebug(
+        developer.log(
           'Response from ${response.requestOptions.method} ${response.requestOptions.path} '
           'is excluded from session expiration evaluation.',
         );
@@ -86,7 +86,7 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
         onRequest: (options, handler) async {
           // Skip session refresh if this request is in the excluded list.
           if (_isExcludedRequest(options, excludedEndpointsFromRefresh)) {
-            _logDebug(
+            developer.log(
               'Request ${options.method} ${options.path} is excluded from session refresh.',
             );
             handler.next(options);
@@ -94,9 +94,9 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
           }
 
           // Refresh the session before the request.
-          _logDebug('Refreshing session before making the request...');
+          developer.log('Refreshing session before making the request...');
           await awaitOngoingSessionRefresh();
-          _logDebug('Session refreshed successfully.');
+          developer.log('Session refreshed successfully.');
 
           // Update cookies in the request headers if needed.
           _updateCookieHeader(options);
@@ -171,17 +171,10 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
     final originalCookieHeader = options.headers['Cookie'];
 
     if (originalCookieHeader != cookies) {
-      _logDebug(
+      developer.log(
         'Cookie header updated from "$originalCookieHeader" to "$cookies".',
       );
       options.headers['Cookie'] = cookies;
-    }
-  }
-
-  /// Prints debug messages only when in debug mode.
-  void _logDebug(String message) {
-    if (kDebugMode) {
-      print('[👓] $message');
     }
   }
 }

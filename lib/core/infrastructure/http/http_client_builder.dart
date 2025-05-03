@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigapp/core/infrastructure/http/cookie_manager.dart';
+import 'dart:developer' as developer;
 
 class HttpClientBuilder {
   final Dio _dio = Dio();
@@ -107,28 +108,44 @@ class HttpClientBuilder {
     );
   }
 
+  String _truncateString(String text, int maxLength) {
+    if (text.length <= maxLength) return text;
+    return '${text.substring(0, maxLength)}...';
+  }
+
+  Map<String, dynamic> _processHeadersForLog(Map<String, dynamic> headers) {
+    final processedHeaders = Map<String, dynamic>.from(headers);
+    if (processedHeaders.containsKey('cookie')) {
+      processedHeaders['cookie'] =
+          _truncateString(processedHeaders['cookie'], 100);
+    }
+    return processedHeaders;
+  }
+
   void _printRequest(RequestOptions options) {
-    if (kDebugMode) {
-      print('[📡] ⬆️ $_id: ${options.method} ${options.uri}');
-      print('Headers: ${json.encode(options.headers)}');
-      try {
-        print('Data: ${json.encode(options.data)}');
-      } catch (e) {
-        print('Data: ${options.data}');
-      }
+    developer.log('⬆️ $_id: ${options.method} ${options.uri}', name: 'HTTP');
+    developer.log(
+        'Headers: ${json.encode(_processHeadersForLog(options.headers))}',
+        name: 'HTTP');
+    try {
+      developer.log('Data: ${json.encode(options.data)}', name: 'HTTP');
+    } catch (e) {
+      developer.log('Data: ${options.data}', name: 'HTTP');
     }
   }
 
   void _printResponse(Response<dynamic> response, String emoji) {
-    if (kDebugMode) {
-      print(
-          '[📡] ⬇️$emoji $_id: ${response.requestOptions.method} ${response.requestOptions.uri} ${response.statusCode}');
-      print('Headers: ${json.encode(response.headers.map)}');
-      try {
-        print('Data: ${json.encode(response.data)}');
-      } catch (e) {
-        print('Data: ${response.data}');
-      }
+    developer.log(
+        '⬇️$emoji $_id: ${response.requestOptions.method} ${response.requestOptions.uri} ${response.statusCode}',
+        name: 'HTTP');
+
+    final processedHeaders = _processHeadersForLog(response.headers.map);
+    developer.log('Headers: ${json.encode(processedHeaders)}', name: 'HTTP');
+
+    try {
+      developer.log('Data: ${json.encode(response.data)}', name: 'HTTP');
+    } catch (e) {
+      developer.log('Data: ${response.data}', name: 'HTTP');
     }
   }
 }

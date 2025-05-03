@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer' as developer;
 
 /// Class that replicates the fields of a Cookie and allows serialization to JSON.
 class SerializableCookie {
@@ -185,11 +185,14 @@ class CookieManager {
         final sc = SerializableCookie.fromJson(e as Map<String, dynamic>);
         return sc.toCookie();
       }).toList();
-    } catch (e) {
+    } catch (e, s) {
       // If there is a parsing error, return an empty list
-      if (kDebugMode) {
-        print("Error parsing cookies of SharedPrefs: $e");
-      }
+      developer.log(
+        "Error parsing cookies of SharedPrefs for host '$host'.",
+        name: 'CookieManager',
+        error: e,
+        stackTrace: s,
+      );
       return [];
     }
   }
