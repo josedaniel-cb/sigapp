@@ -41,7 +41,7 @@ class AboutPageWidget extends StatelessWidget {
         ListTile(
           leading: Icon(MdiIcons.handshake),
           title: Text('¿Eres desarrollador?'),
-          subtitle: Text('Conviértete contribuyente'),
+          subtitle: Text('Apoyar al proyecto'),
           onTap: () {
             MailUtils.launchEmail(
               context,

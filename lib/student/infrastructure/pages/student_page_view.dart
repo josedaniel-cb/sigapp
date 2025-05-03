@@ -282,20 +282,29 @@ class _StudentPageViewState extends State<StudentPageView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: data
                           .map(
-                            (e) => Row(
-                              children: [
-                                Text(
-                                  '${e[0]}:',
-                                  style: textTheme.bodyMedium,
-                                ),
-                                const SizedBox(width: 6),
-                                Text(
-                                  e[1],
-                                  style: textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.w500,
+                            (e) => Padding(
+                              padding: const EdgeInsets.only(top: 2.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 100,
+                                    child: Text(
+                                      '${e[0]}:',
+                                      style: textTheme.bodyMedium,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  Expanded(
+                                    child: Text(
+                                      e[1],
+                                      style: textTheme.bodyMedium?.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      softWrap: true,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           )
                           .toList(),
