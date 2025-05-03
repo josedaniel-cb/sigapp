@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Opacity(
                   opacity: 0.06,
                   child: SvgPicture.asset(
-                    'assets/unp_logo_dark.svg',
+                    'assets/svg/unp_logo_dark.svg',
                     height: size.height * 1.25,
                     colorFilter: ColorFilter.mode(
                       Theme.of(context).primaryColor,

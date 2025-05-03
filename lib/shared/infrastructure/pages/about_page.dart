@@ -24,7 +24,7 @@ class AboutPageWidget extends StatelessWidget {
             child: Opacity(
               opacity: 0.06,
               child: SvgPicture.asset(
-                'assets/unp_logo_dark.svg',
+                'assets/svg/unp_logo_dark.svg',
                 height: size.height * 1,
                 colorFilter: ColorFilter.mode(
                   Theme.of(context).primaryColor,
