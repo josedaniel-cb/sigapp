@@ -25,6 +25,18 @@ class EventWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Obtener el ancho de la pantalla para adaptar el tamaño del texto
+    // final screenSize = MediaQuery.of(context).size;
+    // final screenWidth = screenSize.width;
+
+    // Factor de escala basado en el ancho de la pantalla
+    // Se usa 600.0 como ancho de referencia para una tablet pequeña
+    // final scaleFactor = screenWidth / 600.0;
+
+    // Limitar el factor de escala para evitar textos muy grandes o muy pequeños
+    // final adaptiveScaleFactor = scaleFactor.clamp(0.7, 1.3);
+    final adaptiveScaleFactor = MediaQuery.of(context).size.width * 0.0013;
+
     final top = (event.data.startHour - startHour) * rowHeight +
         (event.data.startMinutes / 60) * rowHeight;
     final gridWidth =
@@ -38,20 +50,29 @@ class EventWidget extends StatelessWidget {
                 rowHeight) -
         littleMarginForSides;
 
-    final titleFontSize = fontSize;
+    // Ajustar el tamaño de la fuente según el tamaño de la pantalla y especificaciones del usuario
+    // Multiplicamos x2 el tamaño de la fuente del título (nombre del curso)
+    final titleFontSize = fontSize * adaptiveScaleFactor * 1.9;
     const titleLineHeight = 1.1;
     final titleOneLineHeight = titleFontSize * titleLineHeight;
 
-    final captionFontSize = titleFontSize * 0.75;
-    const double captionLineHeight = 1.2;
-    final captionOneLineHeight = captionFontSize * captionLineHeight;
-    final captionsHeight = captionOneLineHeight * 2;
+    // Para el texto de la ubicación, aumentamos un poco más que el tamaño normal
+    final locationFontSize = fontSize * adaptiveScaleFactor * 1.4;
 
-    final separatorSpace = captionOneLineHeight;
+    // Para la duración del evento, mantenemos el tamaño original que ya estaba bien
+    final durationFontSize = fontSize * adaptiveScaleFactor * 1.4;
+
+    const double captionLineHeight = 1.2;
+    final locationOneLineHeight = locationFontSize * captionLineHeight;
+    final durationOneLineHeight = durationFontSize * captionLineHeight;
+    final captionsHeight = locationOneLineHeight + durationOneLineHeight;
+
+    final separatorSpace = locationOneLineHeight * 0.5;
 
     final verticalPadding = titleFontSize / 2;
     final horizontalPadding = titleFontSize / 3;
 
+    // Ajustar el resto de cálculos basados en el nuevo tamaño de fuente
     final availableHeight = height - (verticalPadding * 2);
     var availableHeightForTitle = availableHeight;
     final captionsCanBeShown = availableHeight >
@@ -59,8 +80,16 @@ class EventWidget extends StatelessWidget {
     if (captionsCanBeShown) {
       availableHeightForTitle -= separatorSpace + captionsHeight;
     }
+
+    // Corregido: Añadir un pequeño margen de seguridad para el ellipsis
+    // Restar un pequeño porcentaje para evitar el desbordamiento
+    final safetyMargin =
+        titleOneLineHeight * 0.15; // 15% de la altura de una línea
     final titleMaxLines =
-        (availableHeightForTitle / titleOneLineHeight).floor();
+        ((availableHeightForTitle - safetyMargin) / titleOneLineHeight).floor();
+
+    // Asegurar que siempre haya al menos una línea para mostrar
+    final finalTitleMaxLines = titleMaxLines > 0 ? titleMaxLines : 1;
 
     final availableWidth = width - (horizontalPadding * 2);
 
@@ -94,8 +123,9 @@ class EventWidget extends StatelessWidget {
                     color: textColor,
                     fontSize: titleFontSize,
                     height: titleLineHeight,
+                    fontWeight: FontWeight.bold,
                   ),
-                  maxLines: titleMaxLines,
+                  maxLines: finalTitleMaxLines,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -109,7 +139,7 @@ class EventWidget extends StatelessWidget {
                         event.data.location,
                         style: TextStyle(
                           color: textColor,
-                          fontSize: captionFontSize,
+                          fontSize: locationFontSize,
                           height: captionLineHeight,
                         ),
                         maxLines: 1,
@@ -124,7 +154,7 @@ class EventWidget extends StatelessWidget {
                         )),
                         style: TextStyle(
                           color: textColor,
-                          fontSize: captionFontSize,
+                          fontSize: durationFontSize,
                           height: captionLineHeight,
                         ),
                         maxLines: 1,

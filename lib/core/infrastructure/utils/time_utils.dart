@@ -11,7 +11,7 @@ class TimeUtils {
   }
 
   /// Formats the duration of an event in 12-hour format with AM/PM.
-  /// Example: 14:30 - 16:00 -> '2:30pm - 4pm'
+  /// Example: 14:00 - 16:00 -> '2 - 4pm'
   static String formatEventDuration(EventDuration duration) {
     final DateTime startTime =
         DateTime(0, 1, 1, duration.startHour, duration.startMinute);
@@ -19,12 +19,28 @@ class TimeUtils {
         DateTime(0, 1, 1, duration.endHour, duration.endMinute);
 
     final DateFormat timeFormatter = DateFormat('h:mm a');
-    final String start = timeFormatter.format(startTime).toLowerCase();
-    String end = timeFormatter.format(endTime).toLowerCase();
+    String startFormatted = timeFormatter.format(startTime).toLowerCase();
+    String endFormatted = timeFormatter.format(endTime).toLowerCase();
 
-    // Remove ':00' from the end time if minutes are zero
+    // Remove ':00' from both times if minutes are zero
+    if (duration.startMinute == 0) {
+      startFormatted = startFormatted.replaceFirst(':00', '');
+    }
+
     if (duration.endMinute == 0) {
-      end = end.replaceFirst(':00', '');
+      endFormatted = endFormatted.replaceFirst(':00', '');
+    }
+
+    // Check if both times are in the same period (AM/PM)
+    final bool sameAmPmPeriod = (startTime.hour < 12 && endTime.hour < 12) ||
+        (startTime.hour >= 12 && endTime.hour >= 12);
+
+    String start = startFormatted;
+    String end = endFormatted;
+
+    // If both times are in the same period, remove AM/PM from the start time
+    if (sameAmPmPeriod) {
+      start = start.replaceAll(RegExp(' [ap]m\$'), '');
     }
 
     return '$start - $end';
