@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/auth/application/usecases/sign_out_usecase.dart';
-import 'package:sigapp/student/domain/entities/student_academic_report.dart';
 import 'package:sigapp/student/domain/services/academic_info_service.dart';
+import 'package:sigapp/student/domain/value_objects/academic_info_data.dart';
 
 part 'user_avatar_button_cubit.freezed.dart';
 
@@ -13,7 +13,7 @@ class UserAvatarButtonState with _$UserAvatarButtonState {
   factory UserAvatarButtonState.initial() = _UserAvatarButtonInitialState;
   factory UserAvatarButtonState.loading() = _UserAvatarButtonLoadingState;
   factory UserAvatarButtonState.success({
-    required AcademicReport data,
+    required AcademicInfoData data,
     String? errorMessage,
   }) = _UserAvatarButtonSuccessState;
   factory UserAvatarButtonState.error(dynamic error) =
@@ -34,7 +34,7 @@ class UserAvatarButtonCubit extends Cubit<UserAvatarButtonState> {
     }
     try {
       final result = await _sessionInfoService.getSessionInfo();
-      emit(UserAvatarButtonState.success(data: result.academicReport));
+      emit(UserAvatarButtonState.success(data: result));
     } catch (e, s) {
       if (kDebugMode) {
         print(e);
@@ -45,7 +45,7 @@ class UserAvatarButtonCubit extends Cubit<UserAvatarButtonState> {
   }
 
   void signOut() async {
-    AcademicReport? loadedData;
+    AcademicInfoData? loadedData;
     state.mapOrNull(
       success: (s) {
         loadedData = s.data;

@@ -2,20 +2,11 @@ import 'package:injectable/injectable.dart';
 import 'package:sigapp/courses/application/services/student_session_service.dart';
 import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase.dart';
 import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
+import 'package:sigapp/student/domain/value_objects/academic_info_data.dart';
 import 'package:sigapp/student/domain/value_objects/semester_context.dart';
 import 'package:sigapp/student/application/usecases/get_academic_report_usecase.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
 import 'package:sigapp/student/domain/services/academic_info_service.dart';
-
-class AcademicInfoData {
-  final AcademicReport academicReport;
-  final SemesterContext semesterContext;
-
-  AcademicInfoData({
-    required this.academicReport,
-    required this.semesterContext,
-  });
-}
 
 @Singleton(as: AcademicInfoService)
 class AcademicInfoServiceImpl extends AcademicInfoService {
@@ -40,6 +31,8 @@ class AcademicInfoServiceImpl extends AcademicInfoService {
     _data = AcademicInfoData(
       academicReport: academicReport,
       semesterContext: semesterContext,
+      academicProgram:
+          AcademicProgramIdentifier.identifyProgram(academicReport.school),
     );
 
     return _data!;

@@ -1,23 +1,79 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sigapp/core/infrastructure/ui/links.dart';
-import 'package:sigapp/core/infrastructure/ui/utils/mail_utils.dart';
 import 'package:sigapp/core/infrastructure/ui/utils/share_utils.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/brand_text.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/initials_avatar.dart';
 import 'package:sigapp/shared/infrastructure/pages/report_problem_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class GeneralAvatarDialog extends StatelessWidget {
-  const GeneralAvatarDialog(
-      {super.key,
-      required this.userFirstNameInitials,
-      required this.userFullName,
-      required this.userId,
-      this.errorMessage,
-      required this.onSignOut});
+class AvatarCircleWidget extends StatelessWidget {
+  final String? imageFilePath;
+  final String? fallbackContent;
+  final Color backgroundColor;
+  final void Function()? onTap;
 
-  final String userFirstNameInitials;
+  const AvatarCircleWidget({
+    super.key,
+    required this.imageFilePath,
+    required this.fallbackContent,
+    required this.backgroundColor,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (imageFilePath != null) {
+      return GestureDetector(
+        onTap: onTap,
+        child: Container(
+          height: 16 * 2.75,
+          width: 16 * 2.75,
+          padding: EdgeInsets.all(2),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: Colors.black26,
+              width: 2.0,
+            ),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(imageFilePath!),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+    if (fallbackContent != null) {
+      return InitialsAvatarWidget(
+        backgroundColor: backgroundColor,
+        content: fallbackContent!,
+        enableGradient: true,
+        onPressed: onTap,
+      );
+    }
+    throw Exception(
+        'No image or fallback content provided for AvatarCircleWidget');
+  }
+}
+
+class GeneralAvatarDialog extends StatelessWidget {
+  const GeneralAvatarDialog({
+    super.key,
+    required this.avatar,
+    // required this.userFirstNameInitials,
+    required this.userFullName,
+    required this.userId,
+    this.errorMessage,
+    required this.onSignOut,
+  });
+
+  final Widget avatar;
+  // final String userFirstNameInitials;
   final String userFullName;
   final String userId;
   final String? errorMessage;
@@ -54,11 +110,14 @@ class GeneralAvatarDialog extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading: InitialsAvatarWidget(
-              content: userFirstNameInitials,
-              enableGradient: true,
-              backgroundColor: Theme.of(context).primaryColor,
-            ),
+            // leading: AvatarCircleWidget(
+            //   imageFilePath:
+            //       null, // Replace with actual image path if available
+            //   fallbackContent: userFirstNameInitials,
+            //   backgroundColor: Theme.of(context).primaryColor,
+            //   onTap: () {},
+            // ),
+            leading: avatar,
             title: Text(userFullName),
             subtitle: Text(userId),
           ),
@@ -92,13 +151,6 @@ class GeneralAvatarDialog extends StatelessWidget {
             title: Text('Reportar un problema'),
             onTap: () {
               Navigator.of(context).pop();
-              // MailUtils.launchEmail(
-              //   context,
-              //   email: Links.contactEmail,
-              //   subject: 'Hola! Quiero reportar un error',
-              //   body: '(agrega capturas de pantalla)',
-              // );
-              // push ReportProblemPage
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => ReportProblemPage()),
@@ -140,7 +192,6 @@ class GeneralAvatarDialog extends StatelessWidget {
 
   Future<void> _launchUrl(BuildContext context, String url) async {
     if (!await launchUrl(Uri.parse(url))) {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('No se pudo abrir el enlace'),

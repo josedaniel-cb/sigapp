@@ -1,4 +1,4 @@
-import 'package:sigapp/student/infrastructure/services/academic_info_service.dart';
+import 'package:sigapp/student/domain/value_objects/academic_info_data.dart';
 
 abstract class AcademicInfoService {
   Future<AcademicInfoData> getSessionInfo();
