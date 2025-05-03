@@ -11,6 +11,9 @@ import 'package:sigapp/auth/domain/value-objects/api_path_and_method.dart';
 class SessionLifecycleServiceImpl implements SessionLifecycleService {
   final SigaClient _sigaClient;
 
+  // Renombrando para mayor claridad en su propósito
+  bool _isHttpInterceptorRefreshInProgress = false;
+
   SessionLifecycleServiceImpl(this._sigaClient);
 
   @override
@@ -54,13 +57,14 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
   @override
   void configureSessionInterceptors({
     required Future<void> Function() awaitOngoingSessionRefresh,
-    required List<ApiPathAndMethod> excludedEndpointsFromRefresh,
+    // Actualizando el nombre del parámetro para que coincida con la interfaz
+    required List<ApiPathAndMethod> endpointsExcludedFromPreRequestRefresh,
     required void Function() onSessionExpired,
   }) {
     Response handleResponse(Response response) {
       // Skip session expiration check if the response is from an excluded request.
       if (_isExcludedRequest(
-          response.requestOptions, excludedEndpointsFromRefresh)) {
+          response.requestOptions, endpointsExcludedFromPreRequestRefresh)) {
         developer.log(
           'Response from ${response.requestOptions.method} ${response.requestOptions.path} '
           'is excluded from session expiration evaluation.',
@@ -106,8 +110,16 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
     _sigaClient.http.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
+          if (_isHttpInterceptorRefreshInProgress) {
+            developer.log('Skipping recursive session refresh');
+            _updateCookieHeader(options);
+            handler.next(options);
+            return;
+          }
+
           // Skip session refresh if this request is in the excluded list.
-          if (_isExcludedRequest(options, excludedEndpointsFromRefresh)) {
+          if (_isExcludedRequest(
+              options, endpointsExcludedFromPreRequestRefresh)) {
             developer.log(
               'Request ${options.method} ${options.path} is excluded from session refresh.',
             );
@@ -118,6 +130,7 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
           // Refresh the session before the request.
           developer.log('Refreshing session before making the request...');
           try {
+            _isHttpInterceptorRefreshInProgress = true;
             await awaitOngoingSessionRefresh();
             developer.log('Session refreshed successfully.');
           } catch (e) {
@@ -128,6 +141,8 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
               error: e,
             );
             // No relanzamos la excepción para permitir que la solicitud continúe
+          } finally {
+            _isHttpInterceptorRefreshInProgress = false;
           }
 
           // Update cookies in the request headers if needed.

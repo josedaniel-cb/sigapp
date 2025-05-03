@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
+import 'package:sigapp/auth/application/managers/authentication_manager/app_lifecycle_manager.dart';
+import 'package:sigapp/auth/application/managers/authentication_manager/async_operation_guard.dart';
+import 'package:sigapp/auth/application/managers/authentication_manager/auth_token_refresh_manager.dart';
 import 'package:sigapp/auth/application/usecases/ensure_no_pending_survey_usecase.dart';
 import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.dart';
 import 'package:sigapp/auth/application/usecases/keep_session_alive_usecase.dart';
@@ -9,12 +12,18 @@ import 'package:sigapp/auth/application/usecases/sign_out_usecase.dart';
 import 'package:sigapp/core/infrastructure/http/siga_client.dart';
 import 'package:sigapp/auth/domain/services/session_lifecycle_service.dart';
 import 'package:sigapp/auth/domain/value-objects/api_path_and_method.dart';
-import 'package:sigapp/auth/domain/exceptions/session_exception.dart';
 import 'dart:developer' as developer;
 
+/// Manager de autenticación que maneja el ciclo de vida de la sesión
+/// Ejecuta refrescos periódicos de token y maneja transiciones entre
+/// primer plano y segundo plano para mantener sesiones activas
 @singleton
-class AuthenticationManager with WidgetsBindingObserver {
+class AuthenticationManager {
   static const _sessionTimeoutDuration = Duration(seconds: 60);
+  static const _backgroundTimeBeforeRefresh = Duration(minutes: 5);
+
+  // Clave ÚNICA para todas las operaciones de refresco
+  static const _sessionRefreshKey = 'session_refresh';
 
   final SessionLifecycleService _sessionService;
   final GetStoredCredentialsUseCase _getStoredCredentialsUseCase;
@@ -22,33 +31,69 @@ class AuthenticationManager with WidgetsBindingObserver {
   final KeepSessionAliveUsecase _keepSessionAliveUsecase;
   final SignInUseCase _signInUseCase;
   final EnsureNoPendingSurveyUseCase _ensureNoPendingSurveyUseCase;
-  Completer<void>? _refreshSessionCompleter;
-  Future<void>? _ongoingSessionRefresh;
-  DateTime? _lastBackgroundTime;
+
+  // Clases de apoyo para separar responsabilidades
+  late final AppLifecycleManager _lifecycleManager;
+  late final AuthTokenRefreshManager _authTokenRefreshManager;
+  late final AsyncOperationGuard _asyncOperationGuard;
+
+  // Flag para asegurar que no se intente un refresco periódico durante el refresco inicial
+  bool _initialRefreshComplete = false;
 
   AuthenticationManager(
-      this._sessionService,
-      this._getStoredCredentialsUseCase,
-      this._signOutUseCase,
-      this._keepSessionAliveUsecase,
-      this._signInUseCase,
-      this._ensureNoPendingSurveyUseCase) {
-    // Registrar para eventos del ciclo de vida de la app
-    WidgetsBinding.instance.addObserver(this);
+    this._sessionService,
+    this._getStoredCredentialsUseCase,
+    this._signOutUseCase,
+    this._keepSessionAliveUsecase,
+    this._signInUseCase,
+    this._ensureNoPendingSurveyUseCase,
+  ) {
+    _authTokenRefreshManager = AuthTokenRefreshManager(
+      _keepSessionAliveUsecase,
+      _signInUseCase,
+      _signOutUseCase,
+      _getStoredCredentialsUseCase,
+    );
+    _asyncOperationGuard = AsyncOperationGuard();
+    _lifecycleManager = AppLifecycleManager(
+      onAppResumed: _handleAppResumed,
+      onAppPaused: _handleAppPaused,
+    );
 
-    // First
+    _inicializar();
+  }
+
+  Future<void> _inicializar() async {
+    // Configurar interceptores para encuestas pendientes
+    _configureEncuestasPendientesInterceptors();
+
+    // Configurar interceptores de sesión
+    _configureSessionInterceptors();
+
+    // Programar refresco periódico DESPUÉS del inicial
+    // Esto evita tener dos refrescos intentando ejecutarse al inicio
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Primero realizamos el refresco inicial
+      await _forceSessionRefresh();
+
+      // Una vez completado, iniciamos el timer periódico
+      Timer.periodic(_sessionTimeoutDuration, (_) => _refreshSession());
+    });
+  }
+
+  void _configureEncuestasPendientesInterceptors() {
     _sessionService.configureSurveyAssertionInterceptors(
       ensureNoPendingSurvey: (response) async {
         if (_sessionService.evaluateIsSurveyAvailable(response)) {
           try {
             await _ensureNoPendingSurveyUseCase.execute(response);
             developer.log(
-              'No pending survey',
+              'No hay encuestas pendientes',
               name: 'AuthenticationManager',
             );
           } catch (e, s) {
             developer.log(
-              'Pending survey found, execute sign out',
+              'Encuesta pendiente encontrada, cerrando sesión',
               name: 'AuthenticationManager',
               error: e,
               stackTrace: s,
@@ -59,11 +104,12 @@ class AuthenticationManager with WidgetsBindingObserver {
         }
       },
     );
+  }
 
-    // Second
+  void _configureSessionInterceptors() {
     _sessionService.configureSessionInterceptors(
-      awaitOngoingSessionRefresh: completeSessionRefresh,
-      excludedEndpointsFromRefresh: [
+      awaitOngoingSessionRefresh: _handleHttpInterceptorRefreshRequest,
+      endpointsExcludedFromPreRequestRefresh: [
         ApiPathAndMethod(
           ApiMethod.post,
           SigaClient.forceSignOutRedirectionLocation,
@@ -89,77 +135,105 @@ class AuthenticationManager with WidgetsBindingObserver {
         _signOutUseCase.execute();
       },
     );
-
-    // Schedule
-    Timer.periodic(_sessionTimeoutDuration, (timer) {
-      _keepSessionAlive();
-    });
-
-    // Run
-    _keepSessionAlive();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused) {
-      _lastBackgroundTime = DateTime.now();
-      developer.log(
-        'App went to background at $_lastBackgroundTime',
-        name: 'AuthenticationManager',
-      );
-    } else if (state == AppLifecycleState.resumed) {
-      final now = DateTime.now();
-      final timeSinceBackground = _lastBackgroundTime != null
-          ? now.difference(_lastBackgroundTime!)
-          : const Duration(seconds: 0);
-
-      developer.log(
-        'App resumed after ${timeSinceBackground.inSeconds} seconds in background',
-        name: 'AuthenticationManager',
-      );
-
-      // Refrescar inmediatamente la sesión cuando la app vuelve al primer plano
-      // especialmente después de un largo período de inactividad
-      _refreshOnResume(timeSinceBackground);
-    }
+  /// Maneja solicitudes de refresco de sesión desde interceptores
+  Future<void> _handleHttpInterceptorRefreshRequest() async {
+    await _asyncOperationGuard.executeSafely(() async {
+      if (_authTokenRefreshManager.isRefreshing) {
+        developer.log(
+          'Esperando refresco de sesión en curso',
+          name: 'AuthenticationManager',
+        );
+        await _authTokenRefreshManager.waitForOngoingRefresh();
+      } else {
+        developer.log(
+          'Iniciando nuevo refresco de sesión desde interceptor',
+          name: 'AuthenticationManager',
+        );
+        await _authTokenRefreshManager.refreshSession();
+      }
+    }, operationKey: _sessionRefreshKey); // MISMA CLAVE que otros refrescos
   }
 
-  Future<void> _refreshOnResume(Duration backgroundDuration) async {
-    // Si la app estuvo en segundo plano por más de 5 minutos, forzar un refresco
-    // El valor de 5 minutos (300 segundos) puede ajustarse según tus necesidades
-    if (backgroundDuration.inSeconds < 300) {
-      developer.log(
-        'App estuvo en segundo plano menos de 5 minutos, no se fuerza refresco',
-        name: 'AuthenticationManager',
-      );
-      return;
-    }
-
+  /// Fuerza un refresco completo de sesión
+  Future<void> _forceSessionRefresh() async {
     final storedCredentials = _getStoredCredentialsUseCase.execute();
     if (!storedCredentials.hasCredentials) {
       developer.log(
-        'No hay credenciales almacenadas, no se intenta refresco al reactivar',
+        'No hay credenciales almacenadas, no se intenta refresco',
+        name: 'AuthenticationManager',
+      );
+
+      _initialRefreshComplete = true;
+      return;
+    }
+
+    await _asyncOperationGuard.executeSafely(() async {
+      try {
+        developer.log(
+          'Iniciando refresco forzado de sesión al iniciar la app',
+          name: 'AuthenticationManager',
+        );
+
+        _authTokenRefreshManager.reset();
+        await _authTokenRefreshManager.refreshSession();
+
+        developer.log(
+          'Refresco forzado completado exitosamente',
+          name: 'AuthenticationManager',
+        );
+      } catch (e, s) {
+        developer.log(
+          'Error en refresco forzado: $e',
+          name: 'AuthenticationManager',
+          error: e,
+          stackTrace: s,
+        );
+      } finally {
+        _initialRefreshComplete = true;
+      }
+    }, operationKey: _sessionRefreshKey); // MISMA CLAVE que otros refrescos
+  }
+
+  /// Maneja el evento cuando la app vuelve a primer plano
+  Future<void> _handleAppResumed(Duration backgroundDuration) async {
+    if (backgroundDuration < _backgroundTimeBeforeRefresh) {
+      developer.log(
+        'App estuvo en segundo plano solo ${backgroundDuration.inSeconds} segundos, '
+        'no se requiere refresco',
         name: 'AuthenticationManager',
       );
       return;
     }
 
-    // Usar synchronized para prevenir operaciones mientras se completa el refresco
-    await synchronized(() async {
+    _refreshOnResume(backgroundDuration);
+  }
+
+  /// Maneja el evento cuando la app va a segundo plano
+  void _handleAppPaused() {
+    // No se requiere acción específica cuando la app va a segundo plano
+  }
+
+  /// Refresca la sesión después de que la app vuelve a primer plano
+  Future<void> _refreshOnResume(Duration backgroundDuration) async {
+    final storedCredentials = _getStoredCredentialsUseCase.execute();
+    if (!storedCredentials.hasCredentials) {
+      return;
+    }
+
+    await _asyncOperationGuard.executeSafely(() async {
       try {
         developer.log(
-          'Refrescando proactivamente la sesión después de reactivar la app',
+          'Refrescando sesión después de ${backgroundDuration.inSeconds} segundos en segundo plano',
           name: 'AuthenticationManager',
         );
 
-        // Reiniciar el estado del refreshSessionCompleter para asegurar un refresco limpio
-        _refreshSessionCompleter = null;
-
-        // Forzar un refresco completo de la sesión
-        await _keepSessionAlive();
+        _authTokenRefreshManager.reset();
+        await _authTokenRefreshManager.refreshSession();
 
         developer.log(
-          'Refresco de sesión después de reactivación completado exitosamente',
+          'Refresco después de reactivación completado exitosamente',
           name: 'AuthenticationManager',
         );
       } catch (e, s) {
@@ -169,156 +243,37 @@ class AuthenticationManager with WidgetsBindingObserver {
           error: e,
           stackTrace: s,
         );
-        // El manejo de errores ya está implementado en _keepSessionAlive
       }
-    });
+    }, operationKey: _sessionRefreshKey); // MISMA CLAVE que otros refrescos
   }
 
-  Future<void> _keepSessionAlive() async {
-    final storedCredentials = _getStoredCredentialsUseCase.execute();
-    if (!storedCredentials.hasCredentials) {
-      // Prevent from refreshing session if there is no session to keep alive
+  /// Refresca la sesión (utilizado por el timer periódico)
+  Future<void> _refreshSession() async {
+    // No intentar refresco periódico hasta que el inicial haya terminado
+    if (!_initialRefreshComplete) {
+      developer.log(
+        'Omitiendo refresco periódico porque el refresco inicial aún no ha terminado',
+        name: 'AuthenticationManager',
+      );
       return;
     }
 
-    _refreshSessionCompleter = Completer<void>();
-
-    // Implementación con reintentos
-    const maxRetries = 3;
-    dynamic lastError;
-    StackTrace? lastStack;
-
-    for (int attempt = 1; attempt <= maxRetries; attempt++) {
+    await _asyncOperationGuard.executeSafely(() async {
       try {
-        developer.log(
-          'Intento $attempt/$maxRetries de mantener la sesión activa',
-          name: 'AuthenticationManager',
-        );
-
-        await _keepSessionAliveUsecase.execute();
-
-        // Login
-        final successfulSignIn = await _signInUseCase.execute(
-          storedCredentials.username!,
-          storedCredentials.password!,
-        );
-
-        if (!successfulSignIn) {
-          throw SessionException.refreshError(
-            message: 'Error refreshing session: Sign in returned false',
-            originalError: 'SignIn returned false',
-          );
-        }
-
-        developer.log(
-          'Session refreshed successfully on attempt $attempt',
-          name: 'AuthenticationManager',
-        );
-
-        _refreshSessionCompleter!.complete();
-        return; // Éxito, salir del método
+        await _authTokenRefreshManager.refreshSession();
       } catch (e, s) {
-        lastError = e;
-        lastStack = s;
-
         developer.log(
-          'Error refreshing session (attempt $attempt/$maxRetries): $e',
+          'Error en refresco programado: $e',
           name: 'AuthenticationManager',
           error: e,
           stackTrace: s,
         );
-
-        if (attempt < maxRetries) {
-          // Esperar antes de reintentar, con backoff exponencial
-          final waitTime = Duration(seconds: attempt * 2);
-          developer.log(
-            'Reintentando en ${waitTime.inSeconds} segundos...',
-            name: 'AuthenticationManager',
-          );
-          await Future.delayed(waitTime);
-        }
       }
-    }
-
-    // Si llegamos aquí, todos los intentos fallaron
-    developer.log(
-      'Todos los intentos de refresco de sesión fallaron, cerrando sesión',
-      name: 'AuthenticationManager',
-      error: lastError,
-      stackTrace: lastStack,
-    );
-
-    _refreshSessionCompleter!.completeError(lastError);
-
-    // Convertir error original a un SessionException si no lo es ya
-    final sessionError = lastError is SessionException
-        ? lastError
-        : SessionException.refreshError(
-            message: 'Error en múltiples intentos de refresco de sesión',
-            originalError: lastError,
-          );
-
-    // Sign out if there is an error refreshing the session after all retries
-    await _signOutUseCase.execute(sessionError);
-
-    _refreshSessionCompleter = null;
-  }
-
-  Future<void> completeSessionRefresh() async {
-    // Si hay un refresh en progreso, simplemente espera a que termine
-    // en lugar de iniciar uno nuevo
-    synchronized(() async {
-      if (_refreshSessionCompleter == null) {
-        developer.log(
-          'Starting new session refresh',
-          name: 'AuthenticationManager',
-        );
-        await _keepSessionAlive();
-      } else {
-        developer.log(
-          'Waiting for ongoing session refresh',
-          name: 'AuthenticationManager',
-        );
-        await _refreshSessionCompleter!.future;
-      }
-    });
-  }
-
-  // Método para sincronizar las solicitudes de actualización de sesión
-  Future<T> synchronized<T>(Future<T> Function() fn) async {
-    // Evitar que múltiples hilos inicien una actualización de sesión al mismo tiempo
-    final localFuture = _ongoingSessionRefresh;
-    if (localFuture != null) {
-      // Ya hay una actualización en progreso, espera a que termine
-      developer.log(
-        'Found ongoing session refresh, waiting...',
-        name: 'AuthenticationManager',
-      );
-      await localFuture;
-      developer.log(
-        'Previous session refresh completed, continuing',
-        name: 'AuthenticationManager',
-      );
-      return fn();
-    }
-
-    // No hay actualización en progreso, inicia una nueva
-    final completer = Completer<T>();
-    _ongoingSessionRefresh = completer.future;
-    try {
-      final result = await fn();
-      completer.complete(result);
-      return result;
-    } catch (e) {
-      completer.completeError(e);
-      rethrow;
-    } finally {
-      _ongoingSessionRefresh = null;
-    }
+    }, operationKey: _sessionRefreshKey); // MISMA CLAVE que otros refrescos
   }
 
   @disposeMethod
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    _lifecycleManager.dispose();
   }
 }

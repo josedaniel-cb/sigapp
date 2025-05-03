@@ -132,7 +132,7 @@ class HttpClientBuilder {
 
     if (processedHeaders.containsKey('cookie')) {
       processedHeaders['cookie'] =
-          _truncateString(processedHeaders['cookie'], 100);
+          _truncateString(processedHeaders['cookie'], 50);
     }
 
     return processedHeaders;

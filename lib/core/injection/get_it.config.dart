@@ -288,14 +288,17 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.singleton<_i722.HomePageCubit>(
         () => _i722.HomePageCubit(gh<_i48.SignOutUseCase>()));
-    gh.singleton<_i767.AuthenticationManager>(() => _i767.AuthenticationManager(
-          gh<_i679.SessionLifecycleService>(),
-          gh<_i193.GetStoredCredentialsUseCase>(),
-          gh<_i48.SignOutUseCase>(),
-          gh<_i908.KeepSessionAliveUsecase>(),
-          gh<_i365.SignInUseCase>(),
-          gh<_i755.EnsureNoPendingSurveyUseCase>(),
-        ));
+    gh.singleton<_i767.AuthenticationManager>(
+      () => _i767.AuthenticationManager(
+        gh<_i679.SessionLifecycleService>(),
+        gh<_i193.GetStoredCredentialsUseCase>(),
+        gh<_i48.SignOutUseCase>(),
+        gh<_i908.KeepSessionAliveUsecase>(),
+        gh<_i365.SignInUseCase>(),
+        gh<_i755.EnsureNoPendingSurveyUseCase>(),
+      ),
+      dispose: (i) => i.dispose(),
+    );
     return this;
   }
 }
