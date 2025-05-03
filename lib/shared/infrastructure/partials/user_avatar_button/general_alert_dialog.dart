@@ -29,7 +29,7 @@ class AvatarCircleWidget extends StatelessWidget {
         child: Container(
           height: 16 * 2.75,
           width: 16 * 2.75,
-          padding: EdgeInsets.all(2),
+          padding: EdgeInsets.all(4),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             border: Border.all(

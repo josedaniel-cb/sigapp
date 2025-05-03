@@ -146,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                                         FilteringTextInputFormatter.digitsOnly,
                                         // LengthLimitingTextInputFormatter(10),
                                       ],
-                                      maxLength: 10,
+                                      // maxLength: 10,
                                       textInputAction: TextInputAction.next,
                                       onChanged: _validateUsername,
                                       onSubmitted: (_) {
