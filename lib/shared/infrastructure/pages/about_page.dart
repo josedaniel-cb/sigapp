@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:sigapp/core/infrastructure/ui/links.dart';
 import 'package:sigapp/core/infrastructure/ui/utils/mail_utils.dart';
@@ -11,71 +12,95 @@ class AboutPageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Acerca de')),
-      body: ListView(children: [
-        ListTile(
-          title: GestureDetector(
-            onLongPress: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const EasterEggPageWidget(),
+      body: Stack(
+        children: [
+          Positioned(
+            top: -size.height * 0.0,
+            // left: -size.height * 0.75,
+            child: Opacity(
+              opacity: 0.06,
+              child: SvgPicture.asset(
+                'assets/unp_logo_dark.svg',
+                height: size.height * 1,
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).primaryColor,
+                  BlendMode.srcOut,
                 ),
-              );
-            },
-            child: BrandTextWidget(
-              fontSize: Theme.of(context).textTheme.headlineLarge?.fontSize,
+              ),
             ),
           ),
-          // subtitle: Text('Universidad Nacional de Piura'),
-        ),
-        ListTile(
-          subtitle: Text(
-              'Cliente móvil del Sistema Integrado de Gestión Académica de la Universidad Nacional de Piura'),
-        ),
-        ListTile(
-          leading: Icon(MdiIcons.github),
-          title: Text('GitHub del proyecto'),
-          onTap: () => _launchUrl(context, Links.projectUrl),
-        ),
-        ListTile(
-          leading: Icon(MdiIcons.handshake),
-          title: Text('¿Eres desarrollador?'),
-          subtitle: Text('Apoyar al proyecto'),
-          onTap: () {
-            MailUtils.launchEmail(
-              context,
-              email: Links.contactEmail,
-              subject: 'Hola! Quiero contribuir al proyecto',
-            );
-          },
-        ),
-        Divider(),
-        ListTile(
-          title: Text(
-            'Enlaces útiles',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
+          ListView(
+            children: [
+              ListTile(
+                title: GestureDetector(
+                  onLongPress: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const EasterEggPageWidget(),
+                      ),
+                    );
+                  },
+                  child: BrandTextWidget(
+                    fontSize:
+                        Theme.of(context).textTheme.headlineLarge?.fontSize,
+                  ),
                 ),
+              ),
+              const ListTile(
+                subtitle: Text(
+                  'Cliente móvil del Sistema Integrado de Gestión Académica de la Universidad Nacional de Piura',
+                ),
+              ),
+              ListTile(
+                leading: Icon(MdiIcons.github),
+                title: const Text('GitHub del proyecto'),
+                onTap: () => _launchUrl(context, Links.projectUrl),
+              ),
+              ListTile(
+                leading: Icon(MdiIcons.handshake),
+                title: const Text('¿Eres desarrollador?'),
+                subtitle: const Text('Apoyar al proyecto'),
+                onTap: () {
+                  MailUtils.launchEmail(
+                    context,
+                    email: Links.contactEmail,
+                    subject: 'Hola! Quiero contribuir al proyecto',
+                  );
+                },
+              ),
+              const Divider(),
+              ListTile(
+                title: Text(
+                  'Enlaces útiles',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ),
+              _buildLinkListTile(
+                context,
+                title: 'SIGA',
+                url: 'https://academico.unp.edu.pe/',
+              ),
+              _buildLinkListTile(
+                context,
+                title: 'Reporte pagos',
+                url: 'https://pagos.unp.edu.pe/',
+              ),
+              _buildLinkListTile(
+                context,
+                title: 'Recuperar contraseña',
+                url: 'https://academico.unp.edu.pe/Cuenta/ResetPassword',
+              ),
+              const Divider(),
+            ],
           ),
-        ),
-        _buildLinkListTile(
-          context,
-          title: 'SIGA',
-          url: 'https://academico.unp.edu.pe/',
-        ),
-        _buildLinkListTile(
-          context,
-          title: 'Reporte pagos',
-          url: 'https://pagos.unp.edu.pe/',
-        ),
-        _buildLinkListTile(
-          context,
-          title: 'Recuperar contraseña',
-          url: 'https://academico.unp.edu.pe/Cuenta/ResetPassword',
-        ),
-        Divider(),
-      ]),
+        ],
+      ),
     );
   }
 
@@ -85,10 +110,8 @@ class AboutPageWidget extends StatelessWidget {
     required String url,
   }) {
     return ListTile(
-      // leading: EmptyIconWidget(),
       leading: Icon(MdiIcons.web),
       title: Text(title),
-      // trailing: Icon(Icons.open_in_new),
       onTap: () => _launchUrl(context, url),
     );
   }
@@ -98,9 +121,8 @@ class AboutPageWidget extends StatelessWidget {
       Uri.parse(url),
       mode: LaunchMode.externalApplication,
     )) {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('No se pudo abrir el enlace'),
         ),
       );
