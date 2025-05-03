@@ -29,46 +29,78 @@ class WelcomePage extends StatelessWidget {
 
             // Main content
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Hey, Unepino 👋',
-                      style: textTheme.headlineLarge
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 30),
-                    const Text(
-                      'Esto no es una app oficial de la universidad.',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Hey, Unepino 👋',
+                        style: textTheme.headlineLarge
+                            ?.copyWith(fontWeight: FontWeight.bold),
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Es un proyecto personal hecho con cariño por un exalumno (yo 🧉).',
-                      textAlign: TextAlign.center,
-                    ),
-                    Lottie.asset(
-                      'assets/lottie/developer.json',
-                      height: MediaQuery.of(context).size.width * 0.6,
-                    ),
-                    const Text(
-                      'Si te gusta, puedes dejar 5 estrellas. Si algo falla, '
-                      'escríbeme directamente. Prometo responder (eventualmente).\n\n'
-                      'Nada de burocracia. Solo código, café, y buena fe.',
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 30),
-                  ],
+                      const SizedBox(height: 30),
+                      const Text(
+                        'Esto no es una app oficial de la universidad.',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 10),
+                      RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: textTheme.bodyLarge,
+                          children: [
+                            const TextSpan(
+                              text:
+                                  'Es un proyecto comunitario fundado con cariño por un exalumno (yo 🧉).',
+                            ),
+                            TextSpan(
+                              text:
+                                  '\n\nTu apoyo al proyecto es totalmente bienvenido, avísame si deseas ensuciarte las manos.',
+                              style: const TextStyle(
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Lottie.asset(
+                        'assets/lottie/developer.json',
+                        height: MediaQuery.of(context).size.width * 0.75,
+                      ),
+                      RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          style: textTheme.bodyLarge,
+                          children: [
+                            const TextSpan(
+                              text:
+                                  'Si te gusta, puedes dejar 5 estrellas. Si algo falla, '
+                                  'escríbeme directamente. Prometo responder (eventualmente).\n\n',
+                            ),
+                            TextSpan(
+                              text:
+                                  'Nada de burocracia. Solo código, café, y buena fe.',
+                              style: const TextStyle(
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // const SizedBox(height: 30),
+                    ],
+                  ),
                 ),
               ),
             ),
 
             // Thanks button at bottom
+            const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
