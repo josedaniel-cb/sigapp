@@ -32,8 +32,7 @@ class AboutPageWidget extends StatelessWidget {
         ListTile(
           leading: Icon(MdiIcons.github),
           title: Text('GitHub del proyecto'),
-          onTap: () =>
-              _launchUrl(context, 'https://github.com/josedaniel-cb/sigapp'),
+          onTap: () => _launchUrl(context, Links.projectUrl),
         ),
         ListTile(
           leading: Icon(MdiIcons.handshake),

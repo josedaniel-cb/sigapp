@@ -124,8 +124,7 @@ class GeneralAvatarDialog extends StatelessWidget {
 
   GestureDetector _buildFooter(BuildContext context) {
     return GestureDetector(
-      onTap: () => _launchUrl(
-          context, 'https://josedaniel-cb.github.io/sigapp-privacy-policy/'),
+      onTap: () => _launchUrl(context, Links.privacyPolicyUrl),
       child: Text(
         'Política de privacidad',
         style: Theme.of(context).textTheme.bodySmall,

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:sigapp/auth/infrastructure/pages/welcome_page.dart';
+import 'package:sigapp/core/infrastructure/ui/links.dart';
+import 'package:sigapp/core/infrastructure/ui/utils/mail_utils.dart';
 import 'package:sigapp/core/injection/get_it.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/brand_text.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'login_cubit.dart';
 
 class LoginPage extends StatefulWidget {
@@ -22,35 +27,15 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<LoginCubit>().setup();
-      _showInfoDialog();
+      // showDearStudentDialog(context);
+      // push WelcomePage
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const WelcomePage(),
+        ),
+      );
     });
     super.initState();
-  }
-
-  void _showInfoDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Querido unepino'),
-          content: const Text(
-              'Este es un proyecto independiente de código abierto, '
-              'desarrollado sin apoyo oficial de la universidad. '
-              'Si te resulta útil o te gusta, puedes apoyarlo valorándolo con 5 estrellas. '
-              'Si no, excribe un correo a la dirección de contacto. '
-              'De lo contrario, escríbeme para reparar el error. '
-              '¡Gracias por tu apoyo!'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Gracias'),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -75,104 +60,154 @@ class _LoginPageState extends State<LoginPage> {
       body: BlocConsumer<LoginCubit, LoginState>(
         builder: (context, state) {
           final status = state.status;
-          return Center(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        const BrandTextWidget(fontSize: 40),
-                        // Text(
-                        //   'Beta',
-                        //   style:
-                        //       Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        //             color: Colors.red,
-                        //           ),
-                        // )
-                      ],
-                    ),
-                    const SizedBox(height: 40),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
+          return Column(
+            children: [
+              Expanded(
+                child: Center(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
                       child: Column(
-                        children: [
-                          TextField(
-                            controller: _usernameController,
-                            focusNode: _usernameFocusNode,
-                            decoration: const InputDecoration(
-                              labelText: 'Usuario',
-                              prefixIcon: Icon(Icons.person),
-                              border: OutlineInputBorder(),
-                            ),
-                            textInputAction: TextInputAction.next,
-                            onSubmitted: (_) {
-                              FocusScope.of(context)
-                                  .requestFocus(_passwordFocusNode);
-                            },
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              const BrandTextWidget(fontSize: 40),
+                              // Text(
+                              //   'Beta',
+                              //   style:
+                              //       Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              //             color: Colors.red,
+                              //           ),
+                              // )
+                            ],
                           ),
-                          const SizedBox(height: 16),
-                          TextField(
-                            controller: _passwordController,
-                            focusNode: _passwordFocusNode,
-                            decoration: const InputDecoration(
-                              labelText: 'Contraseña',
-                              prefixIcon: Icon(Icons.lock),
-                              border: OutlineInputBorder(),
-                            ),
-                            obscureText: true,
-                            textInputAction: TextInputAction.done,
-                            onSubmitted: (_) {
-                              if (status is! LoginLoading) {
-                                _login();
-                              }
-                            },
-                          ),
-                          const SizedBox(height: 24),
-                          SizedBox(
-                            width: double.infinity,
-                            height: 50,
-                            child: FilledButton(
-                              style: FilledButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
+                          const SizedBox(height: 40),
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              children: [
+                                TextField(
+                                  controller: _usernameController,
+                                  focusNode: _usernameFocusNode,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Usuario',
+                                    prefixIcon: Icon(Icons.person),
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  textInputAction: TextInputAction.next,
+                                  onSubmitted: (_) {
+                                    FocusScope.of(context)
+                                        .requestFocus(_passwordFocusNode);
+                                  },
                                 ),
-                              ),
-                              onPressed: status is LoginLoading ? null : _login,
-                              child: status is LoginLoading
-                                  ? const SizedBox(
-                                      height: 24,
-                                      width: 24,
-                                      child: CircularProgressIndicator(),
-                                    )
-                                  : const Text(
-                                      'Ingresar',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                                const SizedBox(height: 16),
+                                TextField(
+                                  controller: _passwordController,
+                                  focusNode: _passwordFocusNode,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Contraseña',
+                                    prefixIcon: Icon(Icons.lock),
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  obscureText: true,
+                                  textInputAction: TextInputAction.done,
+                                  onSubmitted: (_) {
+                                    if (status is! LoginLoading) {
+                                      _login();
+                                    }
+                                  },
+                                ),
+                                const SizedBox(height: 24),
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 50,
+                                  child: FilledButton(
+                                    style: FilledButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
                                       ),
                                     ),
+                                    onPressed:
+                                        status is LoginLoading ? null : _login,
+                                    child: status is LoginLoading
+                                        ? const SizedBox(
+                                            height: 24,
+                                            width: 24,
+                                            child: CircularProgressIndicator(),
+                                          )
+                                        : const Text(
+                                            'Ingresar',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
+                          if (status is LoginError)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16.0),
+                              child: Text(
+                                status.message,
+                                style: const TextStyle(color: Colors.red),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
                         ],
                       ),
                     ),
-                    if (status is LoginError)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        child: Text(
-                          status.message,
-                          style: const TextStyle(color: Colors.red),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                  ],
+                  ),
                 ),
               ),
-            ),
+              Wrap(
+                alignment: WrapAlignment.center,
+                // spacing: 8.0, // Espacio horizontal entre widgets
+                runSpacing: 0, // Espacio vertical entre líneas
+                children: [
+                  TextButton.icon(
+                    onPressed: () {
+                      launchUrl(Uri.parse(Links.privacyPolicyUrl),
+                          mode: LaunchMode.externalApplication);
+                    },
+                    // icon: Icon(MdiIcons.web),
+                    label: const Text('Política de privacidad'),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 0),
+                    ),
+                  ),
+                  TextButton.icon(
+                    onPressed: () {
+                      launchUrl(Uri.parse(Links.projectUrl),
+                          mode: LaunchMode.externalApplication);
+                    },
+                    icon: Icon(MdiIcons.github),
+                    label: const Text('Proyecto'),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 0),
+                    ),
+                  ),
+                  TextButton.icon(
+                    onPressed: () {
+                      MailUtils.launchEmail(context, email: Links.contactEmail);
+                    },
+                    // icon: Icon(MdiIcons.handshake),
+                    label: const Text('Contacto'),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 0),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+            ],
           );
         },
         listener: (context, state) {
@@ -187,7 +222,6 @@ class _LoginPageState extends State<LoginPage> {
 
           final status = state.status;
           if (status is LoginSuccess) {
-            // getIt<AuthRepository>().saveToken('aux');
             getIt<GoRouter>().pushReplacement('/');
           }
         },

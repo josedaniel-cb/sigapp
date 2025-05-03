@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:developer' as developer;
@@ -7,7 +6,7 @@ class MailUtils {
   static void launchEmail(
     BuildContext context, {
     required String email,
-    required String subject,
+    String? subject,
     String? body,
   }) async {
     // iOS: you need to ios/Runner/Info.plist
@@ -15,7 +14,7 @@ class MailUtils {
       scheme: 'mailto',
       path: email,
       query: {
-        'subject': Uri.encodeComponent(subject),
+        'subject': Uri.encodeComponent(subject ?? ''),
         'body': Uri.encodeComponent(body ?? ''),
       }.entries.map((e) => '${e.key}=${e.value}').join('&'),
     );
