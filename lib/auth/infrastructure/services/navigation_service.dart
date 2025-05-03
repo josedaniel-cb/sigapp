@@ -11,11 +11,13 @@ class NavigationServiceImpl implements NavigationService {
   NavigationServiceImpl(this._router);
 
   @override
-  void refreshNavigation([String? message]) {
+  void refreshNavigation([String? message, bool? isError]) {
     if (message != null) {
       toastification.show(
         title: Text(message),
-        type: ToastificationType.error,
+        type: (isError ?? false)
+            ? ToastificationType.error
+            : ToastificationType.info,
         autoCloseDuration: const Duration(seconds: 8),
       );
     }

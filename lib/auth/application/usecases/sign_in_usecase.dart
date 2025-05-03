@@ -29,12 +29,26 @@ class SignInUseCase {
     final response = await _authRepository.login(username, password);
 
     if (response.statusCode == 200) {
-      return false;
+      developer.log(
+        'Login exitoso con código 200',
+        name: 'SignInUseCase',
+      );
+      // Retornar TRUE si el código es 200 (éxito)
+      return true;
     }
 
     if (response.statusCode != 302) {
+      developer.log(
+        'Código de estado no soportado: ${response.statusCode}',
+        name: 'SignInUseCase',
+      );
       throw Exception('Unsupported status code: ${response.statusCode}');
     }
+
+    developer.log(
+      'Login exitoso con redirección 302',
+      name: 'SignInUseCase',
+    );
 
     await _sharedPreferencesAuthRepository.saveCredentials(username, password);
 

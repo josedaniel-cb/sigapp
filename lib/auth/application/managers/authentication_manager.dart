@@ -9,6 +9,7 @@ import 'package:sigapp/auth/application/usecases/sign_out_usecase.dart';
 import 'package:sigapp/core/infrastructure/http/siga_client.dart';
 import 'package:sigapp/auth/domain/services/session_lifecycle_service.dart';
 import 'package:sigapp/auth/domain/value-objects/api_path_and_method.dart';
+import 'package:sigapp/auth/domain/exceptions/session_exception.dart';
 import 'dart:developer' as developer;
 
 @singleton
@@ -102,36 +103,86 @@ class AuthenticationManager {
     }
 
     _refreshSessionCompleter = Completer<void>();
-    try {
-      await _keepSessionAliveUsecase.execute();
 
-      // Login
-      final successfulSignIn = await _signInUseCase.execute(
-        storedCredentials.username!,
-        storedCredentials.password!,
-      );
-      if (!successfulSignIn) {
-        throw Exception('Error refreshing session');
+    // Implementación con reintentos
+    const maxRetries = 3;
+    dynamic lastError;
+    StackTrace? lastStack;
+
+    for (int attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        developer.log(
+          'Intento $attempt/$maxRetries de mantener la sesión activa',
+          name: 'AuthenticationManager',
+        );
+
+        await _keepSessionAliveUsecase.execute();
+
+        // Login
+        final successfulSignIn = await _signInUseCase.execute(
+          storedCredentials.username!,
+          storedCredentials.password!,
+        );
+
+        if (!successfulSignIn) {
+          throw SessionException.refreshError(
+            message: 'Error refreshing session: Sign in returned false',
+            originalError: 'SignIn returned false',
+          );
+        }
+
+        developer.log(
+          'Session refreshed successfully on attempt $attempt',
+          name: 'AuthenticationManager',
+        );
+
+        _refreshSessionCompleter!.complete();
+        return; // Éxito, salir del método
+      } catch (e, s) {
+        lastError = e;
+        lastStack = s;
+
+        developer.log(
+          'Error refreshing session (attempt $attempt/$maxRetries): $e',
+          name: 'AuthenticationManager',
+          error: e,
+          stackTrace: s,
+        );
+
+        if (attempt < maxRetries) {
+          // Esperar antes de reintentar, con backoff exponencial
+          final waitTime = Duration(seconds: attempt * 2);
+          developer.log(
+            'Reintentando en ${waitTime.inSeconds} segundos...',
+            name: 'AuthenticationManager',
+          );
+          await Future.delayed(waitTime);
+        }
       }
-      developer.log(
-        'Session refreshed',
-        name: 'AuthenticationManager',
-      );
-      _refreshSessionCompleter!.complete();
-    } catch (e, s) {
-      developer.log(
-        'Error refreshing session: $e',
-        name: 'AuthenticationManager',
-        error: e,
-        stackTrace: s,
-      );
-      _refreshSessionCompleter!.completeError(e);
-
-      // Sign out if there is an error refreshing the session
-      await _signOutUseCase.execute();
-    } finally {
-      _refreshSessionCompleter = null;
     }
+
+    // Si llegamos aquí, todos los intentos fallaron
+    developer.log(
+      'Todos los intentos de refresco de sesión fallaron, cerrando sesión',
+      name: 'AuthenticationManager',
+      error: lastError,
+      stackTrace: lastStack,
+    );
+
+    _refreshSessionCompleter!.completeError(lastError);
+
+    // Convertir error original a un SessionException si no lo es ya
+    final sessionError = lastError is SessionException
+        ? lastError
+        : SessionException.refreshError(
+            message: 'Error en múltiples intentos de refresco de sesión',
+            originalError: lastError,
+          );
+
+    // Sign out if there is an error refreshing the session after all retries
+    await _signOutUseCase.execute(sessionError);
+
+    _refreshSessionCompleter = null;
   }
 
   Future<void> completeSessionRefresh() async {

@@ -145,6 +145,8 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final registerModule = _$RegisterModule();
+    gh.factory<_i755.EnsureNoPendingSurveyUseCase>(
+        () => _i755.EnsureNoPendingSurveyUseCase());
     gh.singleton<_i139.SQLiteClientManager>(() => _i139.SQLiteClientManager());
     gh.singleton<_i200.ApiGatewayClient>(() => _i200.ApiGatewayClient());
     await gh.singletonAsync<_i460.SharedPreferences>(
@@ -194,11 +196,6 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i127.AuthRepositoryImpl(gh<_i857.SigaClient>()));
     gh.factory<_i27.ScheduledCoursesPageCubit>(() =>
         _i27.ScheduledCoursesPageCubit(gh<_i154.GetScheduledCoursesUsecase>()));
-    gh.factory<_i755.EnsureNoPendingSurveyUseCase>(
-        () => _i755.EnsureNoPendingSurveyUseCase(
-              gh<_i10.AuthRepository>(),
-              gh<_i679.SessionLifecycleService>(),
-            ));
     gh.lazySingleton<_i44.StudentSessionService>(() =>
         _i306.StudentSessionServiceImpl(gh<_i6.StudentSessionRepository>()));
     gh.lazySingleton<_i504.GetCourseGradeUsecase>(
