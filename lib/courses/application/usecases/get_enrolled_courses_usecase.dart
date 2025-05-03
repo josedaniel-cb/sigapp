@@ -26,7 +26,7 @@ class GetEnrolledCoursesUsecase {
         .map((data) => EnrolledCourse(
               data: data,
               scheduleEvents: scheduleEvents
-                  .where((event) => event.courseName == data.courseName)
+                  .where((event) => data.courseName.contains(event.courseName))
                   .toList(),
             ))
         .toList();
