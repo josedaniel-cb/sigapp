@@ -20,7 +20,7 @@ mixin _$UserAvatarButtonState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(AcademicReport data, String? errorMessage)
+    required TResult Function(AcademicInfoData data, String? errorMessage)
         success,
     required TResult Function(dynamic error) error,
   }) =>
@@ -29,7 +29,7 @@ mixin _$UserAvatarButtonState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(AcademicReport data, String? errorMessage)? success,
+    TResult? Function(AcademicInfoData data, String? errorMessage)? success,
     TResult? Function(dynamic error)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -37,7 +37,7 @@ mixin _$UserAvatarButtonState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(AcademicReport data, String? errorMessage)? success,
+    TResult Function(AcademicInfoData data, String? errorMessage)? success,
     TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) =>
@@ -147,7 +147,7 @@ class _$UserAvatarButtonInitialStateImpl
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(AcademicReport data, String? errorMessage)
+    required TResult Function(AcademicInfoData data, String? errorMessage)
         success,
     required TResult Function(dynamic error) error,
   }) {
@@ -159,7 +159,7 @@ class _$UserAvatarButtonInitialStateImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(AcademicReport data, String? errorMessage)? success,
+    TResult? Function(AcademicInfoData data, String? errorMessage)? success,
     TResult? Function(dynamic error)? error,
   }) {
     return initial?.call();
@@ -170,7 +170,7 @@ class _$UserAvatarButtonInitialStateImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(AcademicReport data, String? errorMessage)? success,
+    TResult Function(AcademicInfoData data, String? errorMessage)? success,
     TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) {
@@ -278,7 +278,7 @@ class _$UserAvatarButtonLoadingStateImpl
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(AcademicReport data, String? errorMessage)
+    required TResult Function(AcademicInfoData data, String? errorMessage)
         success,
     required TResult Function(dynamic error) error,
   }) {
@@ -290,7 +290,7 @@ class _$UserAvatarButtonLoadingStateImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(AcademicReport data, String? errorMessage)? success,
+    TResult? Function(AcademicInfoData data, String? errorMessage)? success,
     TResult? Function(dynamic error)? error,
   }) {
     return loading?.call();
@@ -301,7 +301,7 @@ class _$UserAvatarButtonLoadingStateImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(AcademicReport data, String? errorMessage)? success,
+    TResult Function(AcademicInfoData data, String? errorMessage)? success,
     TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) {
@@ -360,9 +360,7 @@ abstract class _$$UserAvatarButtonSuccessStateImplCopyWith<$Res> {
           $Res Function(_$UserAvatarButtonSuccessStateImpl) then) =
       __$$UserAvatarButtonSuccessStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({AcademicReport data, String? errorMessage});
-
-  $AcademicReportCopyWith<$Res> get data;
+  $Res call({AcademicInfoData data, String? errorMessage});
 }
 
 /// @nodoc
@@ -387,22 +385,12 @@ class __$$UserAvatarButtonSuccessStateImplCopyWithImpl<$Res>
       data: null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as AcademicReport,
+              as AcademicInfoData,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
-  }
-
-  /// Create a copy of UserAvatarButtonState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $AcademicReportCopyWith<$Res> get data {
-    return $AcademicReportCopyWith<$Res>(_value.data, (value) {
-      return _then(_value.copyWith(data: value));
-    });
   }
 }
 
@@ -414,7 +402,7 @@ class _$UserAvatarButtonSuccessStateImpl
   _$UserAvatarButtonSuccessStateImpl({required this.data, this.errorMessage});
 
   @override
-  final AcademicReport data;
+  final AcademicInfoData data;
   @override
   final String? errorMessage;
 
@@ -460,7 +448,7 @@ class _$UserAvatarButtonSuccessStateImpl
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(AcademicReport data, String? errorMessage)
+    required TResult Function(AcademicInfoData data, String? errorMessage)
         success,
     required TResult Function(dynamic error) error,
   }) {
@@ -472,7 +460,7 @@ class _$UserAvatarButtonSuccessStateImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(AcademicReport data, String? errorMessage)? success,
+    TResult? Function(AcademicInfoData data, String? errorMessage)? success,
     TResult? Function(dynamic error)? error,
   }) {
     return success?.call(data, errorMessage);
@@ -483,7 +471,7 @@ class _$UserAvatarButtonSuccessStateImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(AcademicReport data, String? errorMessage)? success,
+    TResult Function(AcademicInfoData data, String? errorMessage)? success,
     TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) {
@@ -533,10 +521,10 @@ class _$UserAvatarButtonSuccessStateImpl
 
 abstract class _UserAvatarButtonSuccessState implements UserAvatarButtonState {
   factory _UserAvatarButtonSuccessState(
-      {required final AcademicReport data,
+      {required final AcademicInfoData data,
       final String? errorMessage}) = _$UserAvatarButtonSuccessStateImpl;
 
-  AcademicReport get data;
+  AcademicInfoData get data;
   String? get errorMessage;
 
   /// Create a copy of UserAvatarButtonState
@@ -632,7 +620,7 @@ class _$UserAvatarButtonErrorStateImpl
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(AcademicReport data, String? errorMessage)
+    required TResult Function(AcademicInfoData data, String? errorMessage)
         success,
     required TResult Function(dynamic error) error,
   }) {
@@ -644,7 +632,7 @@ class _$UserAvatarButtonErrorStateImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(AcademicReport data, String? errorMessage)? success,
+    TResult? Function(AcademicInfoData data, String? errorMessage)? success,
     TResult? Function(dynamic error)? error,
   }) {
     return error?.call(this.error);
@@ -655,7 +643,7 @@ class _$UserAvatarButtonErrorStateImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(AcademicReport data, String? errorMessage)? success,
+    TResult Function(AcademicInfoData data, String? errorMessage)? success,
     TResult Function(dynamic error)? error,
     required TResult orElse(),
   }) {

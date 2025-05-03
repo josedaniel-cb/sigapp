@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -23,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   final _usernameFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
+  String? _usernameErrorText;
 
   @override
   void initState() {
@@ -48,7 +50,26 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  void _validateUsername(String value) {
+    setState(() {
+      if (value.isEmpty) {
+        _usernameErrorText = 'El código es requerido';
+      } else if (value.length != 10) {
+        _usernameErrorText = 'El código debe tener exactamente 10 dígitos';
+      } else {
+        _usernameErrorText = null;
+      }
+    });
+  }
+
   void _login() {
+    if (_usernameController.text.length != 10) {
+      setState(() {
+        _usernameErrorText = 'El código debe tener exactamente 10 dígitos';
+      });
+      return;
+    }
+
     context.read<LoginCubit>().login(
           _usernameController.text,
           _passwordController.text,
@@ -111,12 +132,23 @@ class _LoginPageState extends State<LoginPage> {
                                     TextField(
                                       controller: _usernameController,
                                       focusNode: _usernameFocusNode,
-                                      decoration: const InputDecoration(
-                                        labelText: 'Usuario',
-                                        prefixIcon: Icon(Icons.person),
-                                        border: OutlineInputBorder(),
+                                      decoration: InputDecoration(
+                                        labelText: 'Código universitario',
+                                        hintText:
+                                            'Ingrese su código (10 dígitos)',
+                                        prefixIcon: const Icon(Icons.person),
+                                        border: const OutlineInputBorder(),
+                                        // counterText: '10 dígitos',
+                                        errorText: _usernameErrorText,
                                       ),
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly,
+                                        // LengthLimitingTextInputFormatter(10),
+                                      ],
+                                      maxLength: 10,
                                       textInputAction: TextInputAction.next,
+                                      onChanged: _validateUsername,
                                       onSubmitted: (_) {
                                         FocusScope.of(context)
                                             .requestFocus(_passwordFocusNode);
