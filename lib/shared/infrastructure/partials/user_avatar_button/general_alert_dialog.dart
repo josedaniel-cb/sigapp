@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sigapp/core/infrastructure/ui/links.dart';
 import 'package:sigapp/core/infrastructure/ui/utils/share_utils.dart';
+import 'package:sigapp/core/infrastructure/ui/widgets/avatar.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/brand_text.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/initials_avatar.dart';
 import 'package:sigapp/shared/infrastructure/pages/report_problem_page.dart';
@@ -24,26 +25,20 @@ class AvatarCircleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (imageFilePath != null) {
-      return GestureDetector(
-        onTap: onTap,
+      return AvatarWidget(
+        backgroundColor: backgroundColor,
+        onPressed: onTap,
+        enableGradient: true,
         child: Container(
-          height: 16 * 2.75,
-          width: 16 * 2.75,
-          padding: EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            // border: Border.all(
-            //   color: Colors.black26,
-            //   width: 2.0,
-            // ),
-            color: Colors.black12,
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(imageFilePath!),
-                fit: BoxFit.cover,
-              ),
+          padding: const EdgeInsets.all(16 * 0.6),
+          child: ColorFiltered(
+            colorFilter: const ColorFilter.mode(
+              Colors.white,
+              BlendMode.srcIn,
+            ),
+            child: Image.asset(
+              imageFilePath!,
+              fit: BoxFit.cover,
             ),
           ),
         ),
