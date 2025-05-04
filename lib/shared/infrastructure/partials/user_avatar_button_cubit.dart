@@ -20,7 +20,7 @@ class UserAvatarButtonState with _$UserAvatarButtonState {
       _UserAvatarButtonErrorState;
 }
 
-@singleton
+@injectable
 class UserAvatarButtonCubit extends Cubit<UserAvatarButtonState> {
   final AcademicInfoService _sessionInfoService;
   final SignOutUseCase _signOutUseCase;

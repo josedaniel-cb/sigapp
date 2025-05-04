@@ -147,6 +147,8 @@ extension GetItInjectableX on _i174.GetIt {
     final registerModule = _$RegisterModule();
     gh.factory<_i755.EnsureNoPendingSurveyUseCase>(
         () => _i755.EnsureNoPendingSurveyUseCase());
+    gh.factory<_i880.ScheduleShareButtonCubit>(
+        () => _i880.ScheduleShareButtonCubit());
     gh.singleton<_i139.SQLiteClientManager>(() => _i139.SQLiteClientManager());
     gh.singleton<_i200.ApiGatewayClient>(() => _i200.ApiGatewayClient());
     await gh.singletonAsync<_i460.SharedPreferences>(
@@ -154,8 +156,6 @@ extension GetItInjectableX on _i174.GetIt {
       preResolve: true,
     );
     gh.singleton<_i906.CourseService>(() => _i906.CourseService());
-    gh.singleton<_i880.ScheduleShareButtonCubit>(
-        () => _i880.ScheduleShareButtonCubit());
     gh.singleton<_i675.ProgressIndicatorBloc>(
         () => _i675.ProgressIndicatorBloc());
     gh.singleton<_i986.RegevaClient>(
@@ -273,7 +273,7 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.factory<_i151.StudentPageViewCubit>(
         () => _i151.StudentPageViewCubit(gh<_i23.AcademicInfoService>()));
-    gh.singleton<_i259.UserAvatarButtonCubit>(() => _i259.UserAvatarButtonCubit(
+    gh.factory<_i259.UserAvatarButtonCubit>(() => _i259.UserAvatarButtonCubit(
           gh<_i23.AcademicInfoService>(),
           gh<_i48.SignOutUseCase>(),
         ));
@@ -286,7 +286,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i193.GetStoredCredentialsUseCase>(),
           gh<_i365.SignInUseCase>(),
         ));
-    gh.singleton<_i722.HomePageCubit>(
+    gh.factory<_i722.HomePageCubit>(
         () => _i722.HomePageCubit(gh<_i48.SignOutUseCase>()));
     gh.singleton<_i767.AuthenticationManager>(
       () => _i767.AuthenticationManager(

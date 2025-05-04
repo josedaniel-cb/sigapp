@@ -20,7 +20,6 @@ abstract class CareerPageState with _$CareerPageState {
   const factory CareerPageState.error(String message) = CareerPageErrorState;
 }
 
-// @singleton
 @injectable
 class CareerPageCubit extends Cubit<CareerPageState> {
   final GetProgramCurriculumProgressUsecase

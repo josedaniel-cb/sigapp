@@ -14,7 +14,7 @@ abstract class ScheduleShareButtonState with _$ScheduleShareButtonState {
   }) = _ScheduleShareButtonState;
 }
 
-@singleton
+@injectable
 class ScheduleShareButtonCubit extends Cubit<ScheduleShareButtonState> {
   ScheduleShareButtonCubit()
       : super(ScheduleShareButtonState(loadingShare: false));

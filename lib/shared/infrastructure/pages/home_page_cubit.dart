@@ -14,7 +14,7 @@ abstract class HomePageState with _$HomePageState {
   }) = _HomePageState;
 }
 
-@singleton
+@injectable
 class HomePageCubit extends Cubit<HomePageState> {
   final SignOutUseCase _signOutUseCase;
 

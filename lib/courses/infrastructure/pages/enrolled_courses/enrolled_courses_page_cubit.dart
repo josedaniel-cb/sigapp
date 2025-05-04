@@ -36,7 +36,6 @@ abstract class EnrolledCoursesPageState with _$EnrolledCoursesPageState {
       CoursesPageErrorState;
 }
 
-// @singleton
 @injectable
 class EnrolledCoursesPageCubit extends Cubit<EnrolledCoursesPageState> {
   final AcademicInfoService _sessionInfoService;
