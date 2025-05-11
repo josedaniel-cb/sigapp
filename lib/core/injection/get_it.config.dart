@@ -295,6 +295,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i48.SignOutUseCase>(),
         gh<_i908.KeepSessionAliveUsecase>(),
         gh<_i365.SignInUseCase>(),
+        gh<_i873.ToastService>(),
       ),
       dispose: (i) => i.dispose(),
     );

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/auth/application/managers/authentication_manager/app_lifecycle_manager.dart';
@@ -9,6 +11,7 @@ import 'package:sigapp/auth/application/usecases/keep_session_alive_usecase.dart
 import 'package:sigapp/auth/application/usecases/sign_in_usecase.dart';
 import 'package:sigapp/auth/application/usecases/sign_out_usecase.dart';
 import 'package:sigapp/auth/domain/exceptions/session_exception.dart';
+import 'package:sigapp/auth/domain/services/toast_service.dart';
 import 'package:sigapp/core/infrastructure/http/siga_client.dart';
 import 'package:sigapp/auth/domain/services/session_lifecycle_service.dart';
 import 'package:sigapp/auth/domain/value-objects/api_path_and_method.dart';
@@ -30,6 +33,12 @@ class AuthenticationManager {
   final SignOutUseCase _signOutUseCase;
   final KeepSessionAliveUsecase _keepSessionAliveUsecase;
   final SignInUseCase _signInUseCase;
+  final ToastService _toastService;
+
+  // Variables para manejo offline
+  static const _offlineGracePeriod = Duration(hours: 12);
+  DateTime? _lastSuccessfulRefresh;
+  bool _isOfflineMode = false;
 
   // Clases de apoyo para separar responsabilidades
   late final AppLifecycleManager _lifecycleManager;
@@ -45,12 +54,14 @@ class AuthenticationManager {
     this._signOutUseCase,
     this._keepSessionAliveUsecase,
     this._signInUseCase,
+    this._toastService,
   ) {
     _authTokenRefreshManager = AuthTokenRefreshManager(
       _keepSessionAliveUsecase,
       _signInUseCase,
       _signOutUseCase,
       _getStoredCredentialsUseCase,
+      _toastService,
     );
     _asyncOperationGuard = AsyncOperationGuard();
     _lifecycleManager = AppLifecycleManager(
@@ -175,18 +186,18 @@ class AuthenticationManager {
 
         _authTokenRefreshManager.reset();
         await _authTokenRefreshManager.refreshSession();
+        _lastSuccessfulRefresh = DateTime.now();
+        if (_isOfflineMode) {
+          _isOfflineMode = false;
+          _toastService.show('Conexión recuperada');
+        }
 
         developer.log(
           'Refresco forzado completado exitosamente',
           name: 'AuthenticationManager',
         );
       } catch (e, s) {
-        developer.log(
-          'Error en refresco forzado: $e',
-          name: 'AuthenticationManager',
-          error: e,
-          stackTrace: s,
-        );
+        _handleRefreshError(e, s, 'forzado');
       } finally {
         _initialRefreshComplete = true;
       }
@@ -228,18 +239,18 @@ class AuthenticationManager {
 
         _authTokenRefreshManager.reset();
         await _authTokenRefreshManager.refreshSession();
+        _lastSuccessfulRefresh = DateTime.now();
+        if (_isOfflineMode) {
+          _isOfflineMode = false;
+          _toastService.show('Conexión recuperada');
+        }
 
         developer.log(
           'Refresco después de reactivación completado exitosamente',
           name: 'AuthenticationManager',
         );
       } catch (e, s) {
-        developer.log(
-          'Error al refrescar sesión después de reactivar: $e',
-          name: 'AuthenticationManager',
-          error: e,
-          stackTrace: s,
-        );
+        _handleRefreshError(e, s, 'reactivación');
       }
     }, operationKey: _sessionRefreshKey); // MISMA CLAVE que otros refrescos
   }
@@ -258,15 +269,75 @@ class AuthenticationManager {
     await _asyncOperationGuard.executeSafely(() async {
       try {
         await _authTokenRefreshManager.refreshSession();
+        _lastSuccessfulRefresh = DateTime.now();
+        if (_isOfflineMode) {
+          _isOfflineMode = false;
+          _toastService.show('Conexión recuperada');
+        }
       } catch (e, s) {
-        developer.log(
-          'Error en refresco programado: $e',
-          name: 'AuthenticationManager',
-          error: e,
-          stackTrace: s,
-        );
+        _handleRefreshError(e, s, 'programado');
       }
     }, operationKey: _sessionRefreshKey); // MISMA CLAVE que otros refrescos
+  }
+
+  void _handleRefreshError(
+      Object error, StackTrace stackTrace, String refreshType) {
+    final isNetworkError = _isNetworkError(error);
+    if (isNetworkError) {
+      if (!_isOfflineMode) {
+        _isOfflineMode = true;
+        _toastService.show('Modo sin conexión activo', isError: false);
+      }
+      if (_isWithinOfflineGracePeriod()) {
+        developer.log(
+          'Error de red en refresco $refreshType, pero dentro del período de gracia offline',
+          name: 'AuthenticationManager',
+          error: error,
+          stackTrace: stackTrace,
+        );
+      } else {
+        developer.log(
+          'Error de red en refresco $refreshType y FUERA del período de gracia',
+          name: 'AuthenticationManager',
+          error: error,
+          stackTrace: stackTrace,
+        );
+        _toastService.show(
+            'Sesión cerrada por estar demasiado tiempo sin conexión',
+            isError: true);
+        _signOutUseCase.execute(SessionException.refreshError(
+          message: 'Período de modo offline expirado',
+          originalError: 'Sin conexión por demasiado tiempo',
+        ));
+      }
+    } else {
+      developer.log(
+        'Error en refresco $refreshType: $error',
+        name: 'AuthenticationManager',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+  }
+
+  bool _isNetworkError(Object error) {
+    if (error is DioException) {
+      return error.type == DioExceptionType.connectionTimeout ||
+          error.type == DioExceptionType.sendTimeout ||
+          error.type == DioExceptionType.receiveTimeout ||
+          error.type == DioExceptionType.connectionError ||
+          (error.type == DioExceptionType.unknown &&
+              (error.error is SocketException ||
+                  error.message?.contains('Failed host lookup') == true));
+    }
+    return false;
+  }
+
+  bool _isWithinOfflineGracePeriod() {
+    if (_lastSuccessfulRefresh == null) return false;
+    final timeSinceLastRefresh =
+        DateTime.now().difference(_lastSuccessfulRefresh!);
+    return timeSinceLastRefresh < _offlineGracePeriod;
   }
 
   @disposeMethod

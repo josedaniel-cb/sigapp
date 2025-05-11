@@ -53,7 +53,7 @@ class AsyncOperationGuard {
     // Si hay otra operación diferente en curso, esperar a que termine
     if (_ongoingOperation != null) {
       developer.log(
-        'Operación diferente "${_currentOperationDescription}" en progreso, esperando antes de iniciar "$key"...',
+        'Operación diferente "$_currentOperationDescription" en progreso, esperando antes de iniciar "$key"...',
         name: 'OperationSynchronizer',
       );
       try {

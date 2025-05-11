@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'dart:developer' as developer;
 import 'package:injectable/injectable.dart';
@@ -167,6 +169,22 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
           }
         },
         onError: (error, handler) {
+          // Detectar error de red y NO cerrar sesión ni lanzar SessionException
+          if (error.type == DioExceptionType.connectionTimeout ||
+              error.type == DioExceptionType.sendTimeout ||
+              error.type == DioExceptionType.receiveTimeout ||
+              error.type == DioExceptionType.connectionError ||
+              (error.type == DioExceptionType.unknown &&
+                  (error.error is SocketException ||
+                      error.message?.contains('Failed host lookup') == true))) {
+            developer.log(
+              'Error de red detectado en interceptor, no se cierra sesión',
+              name: 'SessionLifecycle',
+              error: error,
+            );
+            handler.next(error);
+            return;
+          }
           if (error.response != null) {
             try {
               handleResponse(error.response!);

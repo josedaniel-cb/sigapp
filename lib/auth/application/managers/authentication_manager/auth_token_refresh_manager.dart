@@ -4,7 +4,10 @@ import 'package:sigapp/auth/application/usecases/keep_session_alive_usecase.dart
 import 'package:sigapp/auth/application/usecases/sign_in_usecase.dart';
 import 'package:sigapp/auth/application/usecases/sign_out_usecase.dart';
 import 'package:sigapp/auth/domain/exceptions/session_exception.dart';
+import 'package:sigapp/auth/domain/services/toast_service.dart';
 import 'dart:developer' as developer;
+import 'dart:io';
+import 'package:dio/dio.dart';
 
 /// Maneja el refresco de la sesión con estrategias de reintentos
 class AuthTokenRefreshManager {
@@ -14,6 +17,7 @@ class AuthTokenRefreshManager {
   final SignInUseCase _signInUseCase;
   final SignOutUseCase _signOutUseCase;
   final GetStoredCredentialsUseCase _getStoredCredentialsUseCase;
+  final ToastService _toastService;
 
   Completer<void>? _refreshSessionCompleter;
 
@@ -22,6 +26,7 @@ class AuthTokenRefreshManager {
     this._signInUseCase,
     this._signOutUseCase,
     this._getStoredCredentialsUseCase,
+    this._toastService,
   );
 
   /// Refresca la sesión con reintentos y backoff exponencial
@@ -95,15 +100,40 @@ class AuthTokenRefreshManager {
 
     _refreshSessionCompleter!.completeError(lastError);
 
-    final sessionError = lastError is SessionException
-        ? lastError
-        : SessionException.refreshError(
-            message: 'Error en múltiples intentos de refresco de sesión',
-            originalError: lastError,
-          );
-
-    await _signOutUseCase.execute(sessionError);
+    // Si el error es de red, NO cerrar sesión
+    if (_isNetworkError(lastError)) {
+      developer.log(
+        'Error de red detectado, NO se cierra sesión para permitir modo offline',
+        name: 'SessionRefreshManager',
+      );
+      _toastService.show('Problemas de conexión. Modo sin conexión activo',
+          isError: false);
+    } else {
+      final sessionError = lastError is SessionException
+          ? lastError
+          : SessionException.refreshError(
+              message: 'Error en múltiples intentos de refresco de sesión',
+              originalError: lastError,
+            );
+      await _signOutUseCase.execute(sessionError);
+    }
     _refreshSessionCompleter = null;
+  }
+
+  /// Detecta si un error es un problema de red/conectividad
+  bool _isNetworkError(Object error) {
+    try {
+      if (error is DioException) {
+        return error.type == DioExceptionType.connectionTimeout ||
+            error.type == DioExceptionType.sendTimeout ||
+            error.type == DioExceptionType.receiveTimeout ||
+            error.type == DioExceptionType.connectionError ||
+            (error.type == DioExceptionType.unknown &&
+                (error.error is SocketException ||
+                    (error.message?.contains('Failed host lookup') == true)));
+      }
+    } catch (_) {}
+    return false;
   }
 
   /// Agrega un log al inicio de waitForOngoingRefresh para mayor visibilidad
