@@ -5,6 +5,7 @@ import 'package:sigapp/auth/domain/exceptions/session_exception.dart';
 import 'package:sigapp/auth/domain/repositories/auth_repository.dart';
 import 'package:sigapp/auth/domain/repositories/shared_preferences_auth_repository.dart';
 import 'package:sigapp/auth/domain/services/navigation_service.dart';
+import 'package:sigapp/auth/domain/services/toast_service.dart';
 import 'package:sigapp/shared/domain/service/progress_indicator_service.dart';
 import 'package:sigapp/courses/domain/repositories/regeva_repository.dart';
 import 'package:sigapp/student/domain/services/academic_info_service.dart';
@@ -13,6 +14,7 @@ import 'package:sigapp/student/domain/services/academic_info_service.dart';
 class SignOutUseCase {
   final SharedPreferencesAuthRepository _sharedPreferencesAuthRepository;
   final NavigationService _navigationService;
+  final ToastService _toastService;
   final AuthRepository _authRepository;
   final RegevaRepository _regevaRepository;
   final ProgressIndicatorService _progressIndicatorService;
@@ -20,13 +22,15 @@ class SignOutUseCase {
   final ApiGatewayAuthService _supabaseAuthService;
 
   SignOutUseCase(
-      this._sharedPreferencesAuthRepository,
-      this._navigationService,
-      this._authRepository,
-      this._regevaRepository,
-      this._progressIndicatorService,
-      this._sessionInfoService,
-      this._supabaseAuthService);
+    this._sharedPreferencesAuthRepository,
+    this._navigationService,
+    this._authRepository,
+    this._regevaRepository,
+    this._progressIndicatorService,
+    this._sessionInfoService,
+    this._supabaseAuthService,
+    this._toastService,
+  );
 
   Future<void> execute([SessionException? technicalReason]) async {
     // Registramos el motivo técnico del cierre de sesión para diagnóstico
@@ -74,10 +78,11 @@ class SignOutUseCase {
 
     await _progressIndicatorService.hide();
 
-    // ui navigation con el nuevo parámetro isError
-    _navigationService.refreshNavigation(
+    // Refresh navigation and show message
+    _navigationService.refreshNavigation();
+    _toastService.show(
       messageInfo.userMessage,
-      messageInfo.shouldDisplayAsError,
+      isError: messageInfo.shouldDisplayAsError,
     );
 
     // clear

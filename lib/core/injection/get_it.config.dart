@@ -29,6 +29,7 @@ import 'package:sigapp/auth/domain/repositories/shared_preferences_auth_reposito
 import 'package:sigapp/auth/domain/services/navigation_service.dart' as _i528;
 import 'package:sigapp/auth/domain/services/session_lifecycle_service.dart'
     as _i679;
+import 'package:sigapp/auth/domain/services/toast_service.dart' as _i873;
 import 'package:sigapp/auth/infrastructure/pages/login_cubit.dart' as _i41;
 import 'package:sigapp/auth/infrastructure/repositories/auth_repository.dart'
     as _i127;
@@ -40,6 +41,8 @@ import 'package:sigapp/auth/infrastructure/services/navigation_service.dart'
     as _i561;
 import 'package:sigapp/auth/infrastructure/services/session_lifecycle_service.dart'
     as _i649;
+import 'package:sigapp/auth/infrastructure/services/toast_service.dart'
+    as _i804;
 import 'package:sigapp/core/infrastructure/database/sqlite_client_manager.dart'
     as _i139;
 import 'package:sigapp/core/infrastructure/http/api_gateway_client.dart'
@@ -162,6 +165,7 @@ extension GetItInjectableX on _i174.GetIt {
         _i856.ProgressIndicatorServiceImpl(gh<_i675.ProgressIndicatorBloc>()));
     gh.singleton<_i504.LocalSyllabusRepository>(
         () => _i717.LocalSyllabusRepositoryImpl());
+    gh.singleton<_i873.ToastService>(() => _i804.ToastServiceImpl());
     gh.singleton<_i1010.SharedPreferencesAuthRepository>(() =>
         _i247.SharedPreferencesAuthRepositoryImpl(
             gh<_i460.SharedPreferences>()));
@@ -267,6 +271,7 @@ extension GetItInjectableX on _i174.GetIt {
           gh<_i151.ProgressIndicatorService>(),
           gh<_i23.AcademicInfoService>(),
           gh<_i391.ApiGatewayAuthService>(),
+          gh<_i873.ToastService>(),
         ));
     gh.factory<_i151.StudentPageViewCubit>(
         () => _i151.StudentPageViewCubit(gh<_i23.AcademicInfoService>()));
