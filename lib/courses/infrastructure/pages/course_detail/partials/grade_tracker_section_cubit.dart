@@ -18,10 +18,9 @@ class GradeTrackerSectionState with _$GradeTrackerSectionState {
   const factory GradeTrackerSectionState.ready({
     required CourseTracking courseTracking,
   }) = GradeTrackerSectionReadyState;
-  // TODO: must be `dynamic error`
-  const factory GradeTrackerSectionState.error({
-    String? message,
-  }) = GradeTrackerSectionErrorState;
+  const factory GradeTrackerSectionState.error(
+    Object error,
+  ) = GradeTrackerSectionErrorState;
 }
 
 @injectable
@@ -63,7 +62,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
         print(s);
       }
       emit(GradeTrackerSectionState.error(
-        message: "Error al cargar el seguimiento de notas: ${e.toString()}",
+        "Error al cargar el seguimiento de notas: ${e.toString()}",
       ));
     }
   }
@@ -80,8 +79,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
       // para asegurarnos de que siempre recuperemos el mismo curso
       if (_courseCode == null) {
         emit(GradeTrackerSectionState.error(
-          message: "Error: No se pudo identificar el curso",
-        ));
+            "Error: No se pudo identificar el curso"));
         return;
       }
 
@@ -97,9 +95,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
         print(e);
         print(s);
       }
-      emit(GradeTrackerSectionState.error(
-        message: "Error al crear el seguimiento de notas: ${e.toString()}",
-      ));
+      emit(GradeTrackerSectionState.error(e));
     }
   }
 
@@ -121,9 +117,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
           print(e);
           print(s);
         }
-        emit(GradeTrackerSectionState.error(
-          message: "Error al añadir categoría: ${e.toString()}",
-        ));
+        emit(GradeTrackerSectionState.error(e));
       }
     }
   }
@@ -149,9 +143,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
           print(e);
           print(s);
         }
-        emit(GradeTrackerSectionState.error(
-          message: "Error al actualizar categoría: ${e.toString()}",
-        ));
+        emit(GradeTrackerSectionState.error(e));
       }
     }
   }
@@ -171,9 +163,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
           print(e);
           print(s);
         }
-        emit(GradeTrackerSectionState.error(
-          message: "Error al eliminar categoría: ${e.toString()}",
-        ));
+        emit(GradeTrackerSectionState.error(e));
       }
     }
   }
@@ -200,9 +190,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
           print(e);
           print(s);
         }
-        emit(GradeTrackerSectionState.error(
-          message: "Error al añadir nota: ${e.toString()}",
-        ));
+        emit(GradeTrackerSectionState.error(e));
       }
     }
   }
@@ -230,9 +218,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
           print(e);
           print(s);
         }
-        emit(GradeTrackerSectionState.error(
-          message: "Error al actualizar nota: ${e.toString()}",
-        ));
+        emit(GradeTrackerSectionState.error(e));
       }
     }
   }
@@ -258,9 +244,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
           print(e);
           print(s);
         }
-        emit(GradeTrackerSectionState.error(
-          message: "Error al cambiar estado de nota: ${e.toString()}",
-        ));
+        emit(GradeTrackerSectionState.error(e));
       }
     }
   }
@@ -284,9 +268,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
           print(e);
           print(s);
         }
-        emit(GradeTrackerSectionState.error(
-          message: "Error al eliminar nota: ${e.toString()}",
-        ));
+        emit(GradeTrackerSectionState.error(e));
       }
     }
   }

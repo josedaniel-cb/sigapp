@@ -20,21 +20,21 @@ mixin _$EnrolledCoursesState {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(List<EnrolledCourse> value) success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function(List<EnrolledCourse> value)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(List<EnrolledCourse> value)? success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -140,7 +140,7 @@ class _$EnrolledCoursesLoadingStateImpl
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(List<EnrolledCourse> value) success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) {
     return loading();
   }
@@ -150,7 +150,7 @@ class _$EnrolledCoursesLoadingStateImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function(List<EnrolledCourse> value)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) {
     return loading?.call();
   }
@@ -160,7 +160,7 @@ class _$EnrolledCoursesLoadingStateImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(List<EnrolledCourse> value)? success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -301,7 +301,7 @@ class _$EnrolledCoursesSuccessStateImpl
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(List<EnrolledCourse> value) success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) {
     return success(value);
   }
@@ -311,7 +311,7 @@ class _$EnrolledCoursesSuccessStateImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function(List<EnrolledCourse> value)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) {
     return success?.call(value);
   }
@@ -321,7 +321,7 @@ class _$EnrolledCoursesSuccessStateImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(List<EnrolledCourse> value)? success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -386,7 +386,7 @@ abstract class _$$EnrolledCoursesErrorStateImplCopyWith<$Res> {
           $Res Function(_$EnrolledCoursesErrorStateImpl) then) =
       __$$EnrolledCoursesErrorStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String message});
+  $Res call({Object error});
 }
 
 /// @nodoc
@@ -404,13 +404,10 @@ class __$$EnrolledCoursesErrorStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? message = null,
+    Object? error = null,
   }) {
     return _then(_$EnrolledCoursesErrorStateImpl(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
+      null == error ? _value.error : error,
     ));
   }
 }
@@ -420,14 +417,14 @@ class __$$EnrolledCoursesErrorStateImplCopyWithImpl<$Res>
 class _$EnrolledCoursesErrorStateImpl
     with DiagnosticableTreeMixin
     implements EnrolledCoursesErrorState {
-  const _$EnrolledCoursesErrorStateImpl(this.message);
+  const _$EnrolledCoursesErrorStateImpl(this.error);
 
   @override
-  final String message;
+  final Object error;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EnrolledCoursesState.error(message: $message)';
+    return 'EnrolledCoursesState.error(error: $error)';
   }
 
   @override
@@ -435,7 +432,7 @@ class _$EnrolledCoursesErrorStateImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'EnrolledCoursesState.error'))
-      ..add(DiagnosticsProperty('message', message));
+      ..add(DiagnosticsProperty('error', error));
   }
 
   @override
@@ -443,11 +440,12 @@ class _$EnrolledCoursesErrorStateImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$EnrolledCoursesErrorStateImpl &&
-            (identical(other.message, message) || other.message == message));
+            const DeepCollectionEquality().equals(other.error, error));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(error));
 
   /// Create a copy of EnrolledCoursesState
   /// with the given fields replaced by the non-null parameter values.
@@ -463,9 +461,9 @@ class _$EnrolledCoursesErrorStateImpl
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(List<EnrolledCourse> value) success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) {
-    return error(message);
+    return error(this.error);
   }
 
   @override
@@ -473,9 +471,9 @@ class _$EnrolledCoursesErrorStateImpl
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function(List<EnrolledCourse> value)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) {
-    return error?.call(message);
+    return error?.call(this.error);
   }
 
   @override
@@ -483,11 +481,11 @@ class _$EnrolledCoursesErrorStateImpl
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(List<EnrolledCourse> value)? success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(message);
+      return error(this.error);
     }
     return orElse();
   }
@@ -528,10 +526,10 @@ class _$EnrolledCoursesErrorStateImpl
 }
 
 abstract class EnrolledCoursesErrorState implements EnrolledCoursesState {
-  const factory EnrolledCoursesErrorState(final String message) =
+  const factory EnrolledCoursesErrorState(final Object error) =
       _$EnrolledCoursesErrorStateImpl;
 
-  String get message;
+  Object get error;
 
   /// Create a copy of EnrolledCoursesState
   /// with the given fields replaced by the non-null parameter values.
@@ -551,7 +549,7 @@ mixin _$EnrolledCoursesPageState {
             ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)
         success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -563,7 +561,7 @@ mixin _$EnrolledCoursesPageState {
             ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)?
         success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -575,7 +573,7 @@ mixin _$EnrolledCoursesPageState {
             ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)?
         success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -686,7 +684,7 @@ class _$CoursesPageLoadingStateImpl
             ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)
         success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) {
     return loading();
   }
@@ -701,7 +699,7 @@ class _$CoursesPageLoadingStateImpl
             ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)?
         success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) {
     return loading?.call();
   }
@@ -716,7 +714,7 @@ class _$CoursesPageLoadingStateImpl
             ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)?
         success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -916,7 +914,7 @@ class _$CoursesPageSuccessStateImpl
             ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)
         success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) {
     return success(
         academicReport, semesterContext, selectedSemester, enrolledCourses);
@@ -932,7 +930,7 @@ class _$CoursesPageSuccessStateImpl
             ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)?
         success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) {
     return success?.call(
         academicReport, semesterContext, selectedSemester, enrolledCourses);
@@ -948,7 +946,7 @@ class _$CoursesPageSuccessStateImpl
             ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)?
         success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -1020,7 +1018,7 @@ abstract class _$$CoursesPageErrorStateImplCopyWith<$Res> {
           $Res Function(_$CoursesPageErrorStateImpl) then) =
       __$$CoursesPageErrorStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String message});
+  $Res call({Object error});
 }
 
 /// @nodoc
@@ -1037,13 +1035,10 @@ class __$$CoursesPageErrorStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? message = null,
+    Object? error = null,
   }) {
     return _then(_$CoursesPageErrorStateImpl(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
+      null == error ? _value.error : error,
     ));
   }
 }
@@ -1053,14 +1048,14 @@ class __$$CoursesPageErrorStateImplCopyWithImpl<$Res>
 class _$CoursesPageErrorStateImpl
     with DiagnosticableTreeMixin
     implements CoursesPageErrorState {
-  const _$CoursesPageErrorStateImpl(this.message);
+  const _$CoursesPageErrorStateImpl(this.error);
 
   @override
-  final String message;
+  final Object error;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EnrolledCoursesPageState.error(message: $message)';
+    return 'EnrolledCoursesPageState.error(error: $error)';
   }
 
   @override
@@ -1068,7 +1063,7 @@ class _$CoursesPageErrorStateImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'EnrolledCoursesPageState.error'))
-      ..add(DiagnosticsProperty('message', message));
+      ..add(DiagnosticsProperty('error', error));
   }
 
   @override
@@ -1076,11 +1071,12 @@ class _$CoursesPageErrorStateImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CoursesPageErrorStateImpl &&
-            (identical(other.message, message) || other.message == message));
+            const DeepCollectionEquality().equals(other.error, error));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(error));
 
   /// Create a copy of EnrolledCoursesPageState
   /// with the given fields replaced by the non-null parameter values.
@@ -1101,9 +1097,9 @@ class _$CoursesPageErrorStateImpl
             ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)
         success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) {
-    return error(message);
+    return error(this.error);
   }
 
   @override
@@ -1116,9 +1112,9 @@ class _$CoursesPageErrorStateImpl
             ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)?
         success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) {
-    return error?.call(message);
+    return error?.call(this.error);
   }
 
   @override
@@ -1131,11 +1127,11 @@ class _$CoursesPageErrorStateImpl
             ScheduledTermIdentifier selectedSemester,
             EnrolledCoursesState enrolledCourses)?
         success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(message);
+      return error(this.error);
     }
     return orElse();
   }
@@ -1176,10 +1172,10 @@ class _$CoursesPageErrorStateImpl
 }
 
 abstract class CoursesPageErrorState implements EnrolledCoursesPageState {
-  const factory CoursesPageErrorState(final String message) =
+  const factory CoursesPageErrorState(final Object error) =
       _$CoursesPageErrorStateImpl;
 
-  String get message;
+  Object get error;
 
   /// Create a copy of EnrolledCoursesPageState
   /// with the given fields replaced by the non-null parameter values.

@@ -29,8 +29,8 @@ class ScheduleTabWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return enrolledCoursesState.map(
       loading: (_) => LoadingStateWidget(),
-      error: (state) => ErrorStateWidget(
-        message: state.message,
+      error: (state) => ErrorStateWidget.from(
+        state.error,
         onRetry: onRetry,
       ),
       success: (state) => _buildSuccessState(context, state),

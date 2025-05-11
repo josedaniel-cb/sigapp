@@ -20,8 +20,8 @@ class EnrolledCoursesTabWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return enrolledCourses.map(
       loading: (_) => _buildSkeleton(),
-      error: (state) => ErrorStateWidget(
-        message: state.message,
+      error: (state) => ErrorStateWidget.from(
+        state.error,
         onRetry: onRetry,
       ),
       success: (state) => _buildSuccessState(state),

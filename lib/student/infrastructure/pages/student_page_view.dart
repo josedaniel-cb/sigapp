@@ -46,8 +46,8 @@ class _StudentPageViewState extends State<StudentPageView> {
           body: state.map(
             loading: (_) => const LoadingStateWidget(),
             success: (state) => _buildSuccessState(context, state),
-            error: (state) => ErrorStateWidget(
-              message: state.message,
+            error: (state) => ErrorStateWidget.from(
+              state.error,
               onRetry: () => _cubit.setup(),
             ),
           ),

@@ -13,8 +13,7 @@ abstract class StudentPageViewState with _$StudentPageViewState {
   const factory StudentPageViewState.success(
     AcademicReport academicReport,
   ) = SuccessState;
-  // TODO: must be `dynamic error`
-  const factory StudentPageViewState.error(String message) = ErrorState;
+  const factory StudentPageViewState.error(Object error) = ErrorState;
 }
 
 @injectable
@@ -35,7 +34,7 @@ class StudentPageViewCubit extends Cubit<StudentPageViewState> {
         print(e);
         print(s);
       }
-      emit(StudentPageViewState.error(e.toString()));
+      emit(StudentPageViewState.error(e));
     }
   }
 }

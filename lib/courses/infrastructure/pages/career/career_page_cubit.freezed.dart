@@ -23,7 +23,7 @@ mixin _$CareerPageState {
             ProgramCurriculumProgress programCurriculumProgress,
             AcademicReport academicReport)
         success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -32,7 +32,7 @@ mixin _$CareerPageState {
     TResult? Function(ProgramCurriculumProgress programCurriculumProgress,
             AcademicReport academicReport)?
         success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -41,7 +41,7 @@ mixin _$CareerPageState {
     TResult Function(ProgramCurriculumProgress programCurriculumProgress,
             AcademicReport academicReport)?
         success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -147,7 +147,7 @@ class _$CareerPageLoadingStateImpl
             ProgramCurriculumProgress programCurriculumProgress,
             AcademicReport academicReport)
         success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) {
     return loading();
   }
@@ -159,7 +159,7 @@ class _$CareerPageLoadingStateImpl
     TResult? Function(ProgramCurriculumProgress programCurriculumProgress,
             AcademicReport academicReport)?
         success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) {
     return loading?.call();
   }
@@ -171,7 +171,7 @@ class _$CareerPageLoadingStateImpl
     TResult Function(ProgramCurriculumProgress programCurriculumProgress,
             AcademicReport academicReport)?
         success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -334,7 +334,7 @@ class _$CareerPageSuccessStateImpl
             ProgramCurriculumProgress programCurriculumProgress,
             AcademicReport academicReport)
         success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) {
     return success(programCurriculumProgress, academicReport);
   }
@@ -346,7 +346,7 @@ class _$CareerPageSuccessStateImpl
     TResult? Function(ProgramCurriculumProgress programCurriculumProgress,
             AcademicReport academicReport)?
         success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) {
     return success?.call(programCurriculumProgress, academicReport);
   }
@@ -358,7 +358,7 @@ class _$CareerPageSuccessStateImpl
     TResult Function(ProgramCurriculumProgress programCurriculumProgress,
             AcademicReport academicReport)?
         success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -424,7 +424,7 @@ abstract class _$$CareerPageErrorStateImplCopyWith<$Res> {
           $Res Function(_$CareerPageErrorStateImpl) then) =
       __$$CareerPageErrorStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String message});
+  $Res call({Object error});
 }
 
 /// @nodoc
@@ -440,13 +440,10 @@ class __$$CareerPageErrorStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? message = null,
+    Object? error = null,
   }) {
     return _then(_$CareerPageErrorStateImpl(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
+      null == error ? _value.error : error,
     ));
   }
 }
@@ -456,14 +453,14 @@ class __$$CareerPageErrorStateImplCopyWithImpl<$Res>
 class _$CareerPageErrorStateImpl
     with DiagnosticableTreeMixin
     implements CareerPageErrorState {
-  const _$CareerPageErrorStateImpl(this.message);
+  const _$CareerPageErrorStateImpl(this.error);
 
   @override
-  final String message;
+  final Object error;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'CareerPageState.error(message: $message)';
+    return 'CareerPageState.error(error: $error)';
   }
 
   @override
@@ -471,7 +468,7 @@ class _$CareerPageErrorStateImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'CareerPageState.error'))
-      ..add(DiagnosticsProperty('message', message));
+      ..add(DiagnosticsProperty('error', error));
   }
 
   @override
@@ -479,11 +476,12 @@ class _$CareerPageErrorStateImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CareerPageErrorStateImpl &&
-            (identical(other.message, message) || other.message == message));
+            const DeepCollectionEquality().equals(other.error, error));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(error));
 
   /// Create a copy of CareerPageState
   /// with the given fields replaced by the non-null parameter values.
@@ -503,9 +501,9 @@ class _$CareerPageErrorStateImpl
             ProgramCurriculumProgress programCurriculumProgress,
             AcademicReport academicReport)
         success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) {
-    return error(message);
+    return error(this.error);
   }
 
   @override
@@ -515,9 +513,9 @@ class _$CareerPageErrorStateImpl
     TResult? Function(ProgramCurriculumProgress programCurriculumProgress,
             AcademicReport academicReport)?
         success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) {
-    return error?.call(message);
+    return error?.call(this.error);
   }
 
   @override
@@ -527,11 +525,11 @@ class _$CareerPageErrorStateImpl
     TResult Function(ProgramCurriculumProgress programCurriculumProgress,
             AcademicReport academicReport)?
         success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(message);
+      return error(this.error);
     }
     return orElse();
   }
@@ -572,10 +570,10 @@ class _$CareerPageErrorStateImpl
 }
 
 abstract class CareerPageErrorState implements CareerPageState {
-  const factory CareerPageErrorState(final String message) =
+  const factory CareerPageErrorState(final Object error) =
       _$CareerPageErrorStateImpl;
 
-  String get message;
+  Object get error;
 
   /// Create a copy of CareerPageState
   /// with the given fields replaced by the non-null parameter values.

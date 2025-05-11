@@ -22,7 +22,7 @@ mixin _$ScheduledCoursesPageState {
     required TResult Function(List<ScheduledCourse> scheduledCourses,
             List<ScheduledCourse> filteredCourses, String searchQuery)
         success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -31,7 +31,7 @@ mixin _$ScheduledCoursesPageState {
     TResult? Function(List<ScheduledCourse> scheduledCourses,
             List<ScheduledCourse> filteredCourses, String searchQuery)?
         success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -40,7 +40,7 @@ mixin _$ScheduledCoursesPageState {
     TResult Function(List<ScheduledCourse> scheduledCourses,
             List<ScheduledCourse> filteredCourses, String searchQuery)?
         success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -148,7 +148,7 @@ class _$CoursesPageLoadingStateImpl
     required TResult Function(List<ScheduledCourse> scheduledCourses,
             List<ScheduledCourse> filteredCourses, String searchQuery)
         success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) {
     return loading();
   }
@@ -160,7 +160,7 @@ class _$CoursesPageLoadingStateImpl
     TResult? Function(List<ScheduledCourse> scheduledCourses,
             List<ScheduledCourse> filteredCourses, String searchQuery)?
         success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) {
     return loading?.call();
   }
@@ -172,7 +172,7 @@ class _$CoursesPageLoadingStateImpl
     TResult Function(List<ScheduledCourse> scheduledCourses,
             List<ScheduledCourse> filteredCourses, String searchQuery)?
         success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -353,7 +353,7 @@ class _$ScheduledCoursesPageSuccessStateImpl
     required TResult Function(List<ScheduledCourse> scheduledCourses,
             List<ScheduledCourse> filteredCourses, String searchQuery)
         success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) {
     return success(scheduledCourses, filteredCourses, searchQuery);
   }
@@ -365,7 +365,7 @@ class _$ScheduledCoursesPageSuccessStateImpl
     TResult? Function(List<ScheduledCourse> scheduledCourses,
             List<ScheduledCourse> filteredCourses, String searchQuery)?
         success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) {
     return success?.call(scheduledCourses, filteredCourses, searchQuery);
   }
@@ -377,7 +377,7 @@ class _$ScheduledCoursesPageSuccessStateImpl
     TResult Function(List<ScheduledCourse> scheduledCourses,
             List<ScheduledCourse> filteredCourses, String searchQuery)?
         success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -448,7 +448,7 @@ abstract class _$$CoursesPageErrorStateImplCopyWith<$Res> {
           $Res Function(_$CoursesPageErrorStateImpl) then) =
       __$$CoursesPageErrorStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String message});
+  $Res call({Object error});
 }
 
 /// @nodoc
@@ -465,13 +465,10 @@ class __$$CoursesPageErrorStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? message = null,
+    Object? error = null,
   }) {
     return _then(_$CoursesPageErrorStateImpl(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
+      null == error ? _value.error : error,
     ));
   }
 }
@@ -481,14 +478,14 @@ class __$$CoursesPageErrorStateImplCopyWithImpl<$Res>
 class _$CoursesPageErrorStateImpl
     with DiagnosticableTreeMixin
     implements CoursesPageErrorState {
-  const _$CoursesPageErrorStateImpl(this.message);
+  const _$CoursesPageErrorStateImpl(this.error);
 
   @override
-  final String message;
+  final Object error;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ScheduledCoursesPageState.error(message: $message)';
+    return 'ScheduledCoursesPageState.error(error: $error)';
   }
 
   @override
@@ -496,7 +493,7 @@ class _$CoursesPageErrorStateImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'ScheduledCoursesPageState.error'))
-      ..add(DiagnosticsProperty('message', message));
+      ..add(DiagnosticsProperty('error', error));
   }
 
   @override
@@ -504,11 +501,12 @@ class _$CoursesPageErrorStateImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CoursesPageErrorStateImpl &&
-            (identical(other.message, message) || other.message == message));
+            const DeepCollectionEquality().equals(other.error, error));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(error));
 
   /// Create a copy of ScheduledCoursesPageState
   /// with the given fields replaced by the non-null parameter values.
@@ -526,9 +524,9 @@ class _$CoursesPageErrorStateImpl
     required TResult Function(List<ScheduledCourse> scheduledCourses,
             List<ScheduledCourse> filteredCourses, String searchQuery)
         success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) {
-    return error(message);
+    return error(this.error);
   }
 
   @override
@@ -538,9 +536,9 @@ class _$CoursesPageErrorStateImpl
     TResult? Function(List<ScheduledCourse> scheduledCourses,
             List<ScheduledCourse> filteredCourses, String searchQuery)?
         success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) {
-    return error?.call(message);
+    return error?.call(this.error);
   }
 
   @override
@@ -550,11 +548,11 @@ class _$CoursesPageErrorStateImpl
     TResult Function(List<ScheduledCourse> scheduledCourses,
             List<ScheduledCourse> filteredCourses, String searchQuery)?
         success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(message);
+      return error(this.error);
     }
     return orElse();
   }
@@ -595,10 +593,10 @@ class _$CoursesPageErrorStateImpl
 }
 
 abstract class CoursesPageErrorState implements ScheduledCoursesPageState {
-  const factory CoursesPageErrorState(final String message) =
+  const factory CoursesPageErrorState(final Object error) =
       _$CoursesPageErrorStateImpl;
 
-  String get message;
+  Object get error;
 
   /// Create a copy of ScheduledCoursesPageState
   /// with the given fields replaced by the non-null parameter values.

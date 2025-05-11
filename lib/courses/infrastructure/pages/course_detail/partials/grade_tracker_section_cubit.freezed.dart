@@ -21,7 +21,7 @@ mixin _$GradeTrackerSectionState {
     required TResult Function() empty,
     required TResult Function() loading,
     required TResult Function(CourseTracking courseTracking) ready,
-    required TResult Function(String? message) error,
+    required TResult Function(Object error) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -29,7 +29,7 @@ mixin _$GradeTrackerSectionState {
     TResult? Function()? empty,
     TResult? Function()? loading,
     TResult? Function(CourseTracking courseTracking)? ready,
-    TResult? Function(String? message)? error,
+    TResult? Function(Object error)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -37,7 +37,7 @@ mixin _$GradeTrackerSectionState {
     TResult Function()? empty,
     TResult Function()? loading,
     TResult Function(CourseTracking courseTracking)? ready,
-    TResult Function(String? message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -147,7 +147,7 @@ class _$GradeTrackerSectionEmptyStateImpl
     required TResult Function() empty,
     required TResult Function() loading,
     required TResult Function(CourseTracking courseTracking) ready,
-    required TResult Function(String? message) error,
+    required TResult Function(Object error) error,
   }) {
     return empty();
   }
@@ -158,7 +158,7 @@ class _$GradeTrackerSectionEmptyStateImpl
     TResult? Function()? empty,
     TResult? Function()? loading,
     TResult? Function(CourseTracking courseTracking)? ready,
-    TResult? Function(String? message)? error,
+    TResult? Function(Object error)? error,
   }) {
     return empty?.call();
   }
@@ -169,7 +169,7 @@ class _$GradeTrackerSectionEmptyStateImpl
     TResult Function()? empty,
     TResult Function()? loading,
     TResult Function(CourseTracking courseTracking)? ready,
-    TResult Function(String? message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (empty != null) {
@@ -279,7 +279,7 @@ class _$GradeTrackerSectionLoadingStateImpl
     required TResult Function() empty,
     required TResult Function() loading,
     required TResult Function(CourseTracking courseTracking) ready,
-    required TResult Function(String? message) error,
+    required TResult Function(Object error) error,
   }) {
     return loading();
   }
@@ -290,7 +290,7 @@ class _$GradeTrackerSectionLoadingStateImpl
     TResult? Function()? empty,
     TResult? Function()? loading,
     TResult? Function(CourseTracking courseTracking)? ready,
-    TResult? Function(String? message)? error,
+    TResult? Function(Object error)? error,
   }) {
     return loading?.call();
   }
@@ -301,7 +301,7 @@ class _$GradeTrackerSectionLoadingStateImpl
     TResult Function()? empty,
     TResult Function()? loading,
     TResult Function(CourseTracking courseTracking)? ready,
-    TResult Function(String? message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -441,7 +441,7 @@ class _$GradeTrackerSectionReadyStateImpl
     required TResult Function() empty,
     required TResult Function() loading,
     required TResult Function(CourseTracking courseTracking) ready,
-    required TResult Function(String? message) error,
+    required TResult Function(Object error) error,
   }) {
     return ready(courseTracking);
   }
@@ -452,7 +452,7 @@ class _$GradeTrackerSectionReadyStateImpl
     TResult? Function()? empty,
     TResult? Function()? loading,
     TResult? Function(CourseTracking courseTracking)? ready,
-    TResult? Function(String? message)? error,
+    TResult? Function(Object error)? error,
   }) {
     return ready?.call(courseTracking);
   }
@@ -463,7 +463,7 @@ class _$GradeTrackerSectionReadyStateImpl
     TResult Function()? empty,
     TResult Function()? loading,
     TResult Function(CourseTracking courseTracking)? ready,
-    TResult Function(String? message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (ready != null) {
@@ -533,7 +533,7 @@ abstract class _$$GradeTrackerSectionErrorStateImplCopyWith<$Res> {
           $Res Function(_$GradeTrackerSectionErrorStateImpl) then) =
       __$$GradeTrackerSectionErrorStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String? message});
+  $Res call({Object error});
 }
 
 /// @nodoc
@@ -551,13 +551,10 @@ class __$$GradeTrackerSectionErrorStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? message = freezed,
+    Object? error = null,
   }) {
     return _then(_$GradeTrackerSectionErrorStateImpl(
-      message: freezed == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String?,
+      null == error ? _value.error : error,
     ));
   }
 }
@@ -567,14 +564,14 @@ class __$$GradeTrackerSectionErrorStateImplCopyWithImpl<$Res>
 class _$GradeTrackerSectionErrorStateImpl
     with DiagnosticableTreeMixin
     implements GradeTrackerSectionErrorState {
-  const _$GradeTrackerSectionErrorStateImpl({this.message});
+  const _$GradeTrackerSectionErrorStateImpl(this.error);
 
   @override
-  final String? message;
+  final Object error;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'GradeTrackerSectionState.error(message: $message)';
+    return 'GradeTrackerSectionState.error(error: $error)';
   }
 
   @override
@@ -582,7 +579,7 @@ class _$GradeTrackerSectionErrorStateImpl
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'GradeTrackerSectionState.error'))
-      ..add(DiagnosticsProperty('message', message));
+      ..add(DiagnosticsProperty('error', error));
   }
 
   @override
@@ -590,11 +587,12 @@ class _$GradeTrackerSectionErrorStateImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GradeTrackerSectionErrorStateImpl &&
-            (identical(other.message, message) || other.message == message));
+            const DeepCollectionEquality().equals(other.error, error));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(error));
 
   /// Create a copy of GradeTrackerSectionState
   /// with the given fields replaced by the non-null parameter values.
@@ -612,9 +610,9 @@ class _$GradeTrackerSectionErrorStateImpl
     required TResult Function() empty,
     required TResult Function() loading,
     required TResult Function(CourseTracking courseTracking) ready,
-    required TResult Function(String? message) error,
+    required TResult Function(Object error) error,
   }) {
-    return error(message);
+    return error(this.error);
   }
 
   @override
@@ -623,9 +621,9 @@ class _$GradeTrackerSectionErrorStateImpl
     TResult? Function()? empty,
     TResult? Function()? loading,
     TResult? Function(CourseTracking courseTracking)? ready,
-    TResult? Function(String? message)? error,
+    TResult? Function(Object error)? error,
   }) {
-    return error?.call(message);
+    return error?.call(this.error);
   }
 
   @override
@@ -634,11 +632,11 @@ class _$GradeTrackerSectionErrorStateImpl
     TResult Function()? empty,
     TResult Function()? loading,
     TResult Function(CourseTracking courseTracking)? ready,
-    TResult Function(String? message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(message);
+      return error(this.error);
     }
     return orElse();
   }
@@ -683,10 +681,10 @@ class _$GradeTrackerSectionErrorStateImpl
 
 abstract class GradeTrackerSectionErrorState
     implements GradeTrackerSectionState {
-  const factory GradeTrackerSectionErrorState({final String? message}) =
+  const factory GradeTrackerSectionErrorState(final Object error) =
       _$GradeTrackerSectionErrorStateImpl;
 
-  String? get message;
+  Object get error;
 
   /// Create a copy of GradeTrackerSectionState
   /// with the given fields replaced by the non-null parameter values.

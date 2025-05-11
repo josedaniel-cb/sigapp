@@ -9,10 +9,7 @@ import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/tabs/schedu
 import 'package:sigapp/shared/infrastructure/partials/user_avatar_button.dart';
 
 class EnrolledCoursesPageWidget extends StatefulWidget {
-  // const CoursesPageWidget({super.key, required this.appBarTrailing});
   const EnrolledCoursesPageWidget({super.key});
-
-  // final Widget appBarTrailing;
 
   @override
   State<EnrolledCoursesPageWidget> createState() =>
@@ -44,8 +41,8 @@ class _EnrolledCoursesPageWidgetState extends State<EnrolledCoursesPageWidget>
       builder: (context, state) {
         return state.map(
           loading: (_) => const LoadingStateWidget(),
-          error: (state) => ErrorStateWidget(
-            message: state.message,
+          error: (state) => ErrorStateWidget.from(
+            state.error,
             onRetry: () => _cubit.init(),
           ),
           success: _buildSuccessState,

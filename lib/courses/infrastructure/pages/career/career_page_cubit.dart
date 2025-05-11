@@ -16,8 +16,7 @@ abstract class CareerPageState with _$CareerPageState {
     required ProgramCurriculumProgress programCurriculumProgress,
     required AcademicReport academicReport,
   }) = CareerPageSuccessState;
-  // TODO: must be `dynamic error`
-  const factory CareerPageState.error(String message) = CareerPageErrorState;
+  const factory CareerPageState.error(Object error) = CareerPageErrorState;
 }
 
 @injectable
@@ -48,7 +47,7 @@ class CareerPageCubit extends Cubit<CareerPageState> {
         print(e);
         print(s);
       }
-      emit(CareerPageState.error(e.toString()));
+      emit(CareerPageState.error(e));
     }
   }
 }

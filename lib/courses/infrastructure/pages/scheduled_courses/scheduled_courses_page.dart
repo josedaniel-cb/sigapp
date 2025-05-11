@@ -27,10 +27,10 @@ class ScheduledCoursesPage extends StatelessWidget {
             // appBar: AppBar(
             //   title: const Text('Cursos programados'),
             // ),
-            body: ErrorStateWidget(
-              message: state.message,
+            body: ErrorStateWidget.from(
+              state.error,
               onRetry: () {
-                context.read<ScheduledCoursesPageCubit>().setup();
+                BlocProvider.of<ScheduledCoursesPageCubit>(context).setup();
               },
             ),
           ),

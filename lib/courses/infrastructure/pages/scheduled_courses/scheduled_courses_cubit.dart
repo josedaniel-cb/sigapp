@@ -15,8 +15,7 @@ abstract class ScheduledCoursesPageState with _$ScheduledCoursesPageState {
     required List<ScheduledCourse> filteredCourses,
     required String searchQuery,
   }) = ScheduledCoursesPageSuccessState;
-  // TODO: must be `dynamic error`
-  const factory ScheduledCoursesPageState.error(String message) =
+  const factory ScheduledCoursesPageState.error(Object error) =
       CoursesPageErrorState;
 }
 
@@ -41,7 +40,7 @@ class ScheduledCoursesPageCubit extends Cubit<ScheduledCoursesPageState> {
         print(e);
         print(s);
       }
-      emit(ScheduledCoursesPageState.error(e.toString()));
+      emit(ScheduledCoursesPageState.error(e));
     }
   }
 

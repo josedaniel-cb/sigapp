@@ -42,11 +42,10 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
     return BlocConsumer<GradeTrackerSectionCubit, GradeTrackerSectionState>(
       listener: (context, state) {
         state.maybeWhen(
-          error: (message) {
+          error: (error) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(message ??
-                    'Error al procesar datos de seguimiento de notas'),
+                content: Text(error.toString()),
                 duration: const Duration(seconds: 3),
               ),
             );
@@ -99,9 +98,8 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
         tracking: readyState.courseTracking,
         cubit: _cubit,
       ),
-      error: (errorState) => ErrorStateWidget(
-        message: errorState.message ??
-            'Ocurrió un error al cargar el seguimiento de notas',
+      error: (errorState) => ErrorStateWidget.from(
+        errorState.error,
         onRetry: () => _cubit.retry(),
       ),
       orElse: () => const SizedBox.shrink(),

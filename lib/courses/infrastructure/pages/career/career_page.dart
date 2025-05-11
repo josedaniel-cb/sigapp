@@ -71,7 +71,10 @@ class _CareerPageViewState extends State<CareerPageView>
         body: state.map(
           loading: (_) => LoadingStateWidget(),
           success: _buildReadyState,
-          error: (s) => ErrorStateWidget(message: s.message),
+          error: (s) => ErrorStateWidget.from(
+            s.error,
+            onRetry: () => _cubit.fetch(),
+          ),
         ),
       );
     });

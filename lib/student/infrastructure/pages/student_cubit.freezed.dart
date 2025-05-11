@@ -20,21 +20,21 @@ mixin _$StudentPageViewState {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(AcademicReport academicReport) success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function(AcademicReport academicReport)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(AcademicReport academicReport)? success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -134,7 +134,7 @@ class _$LoadingStateImpl with DiagnosticableTreeMixin implements LoadingState {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(AcademicReport academicReport) success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) {
     return loading();
   }
@@ -144,7 +144,7 @@ class _$LoadingStateImpl with DiagnosticableTreeMixin implements LoadingState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function(AcademicReport academicReport)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) {
     return loading?.call();
   }
@@ -154,7 +154,7 @@ class _$LoadingStateImpl with DiagnosticableTreeMixin implements LoadingState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(AcademicReport academicReport)? success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -293,7 +293,7 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(AcademicReport academicReport) success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) {
     return success(academicReport);
   }
@@ -303,7 +303,7 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function(AcademicReport academicReport)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) {
     return success?.call(academicReport);
   }
@@ -313,7 +313,7 @@ class _$SuccessStateImpl with DiagnosticableTreeMixin implements SuccessState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(AcademicReport academicReport)? success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -376,7 +376,7 @@ abstract class _$$ErrorStateImplCopyWith<$Res> {
           _$ErrorStateImpl value, $Res Function(_$ErrorStateImpl) then) =
       __$$ErrorStateImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String message});
+  $Res call({Object error});
 }
 
 /// @nodoc
@@ -392,13 +392,10 @@ class __$$ErrorStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? message = null,
+    Object? error = null,
   }) {
     return _then(_$ErrorStateImpl(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String,
+      null == error ? _value.error : error,
     ));
   }
 }
@@ -406,14 +403,14 @@ class __$$ErrorStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
-  const _$ErrorStateImpl(this.message);
+  const _$ErrorStateImpl(this.error);
 
   @override
-  final String message;
+  final Object error;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'StudentPageViewState.error(message: $message)';
+    return 'StudentPageViewState.error(error: $error)';
   }
 
   @override
@@ -421,7 +418,7 @@ class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'StudentPageViewState.error'))
-      ..add(DiagnosticsProperty('message', message));
+      ..add(DiagnosticsProperty('error', error));
   }
 
   @override
@@ -429,11 +426,12 @@ class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ErrorStateImpl &&
-            (identical(other.message, message) || other.message == message));
+            const DeepCollectionEquality().equals(other.error, error));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(error));
 
   /// Create a copy of StudentPageViewState
   /// with the given fields replaced by the non-null parameter values.
@@ -448,9 +446,9 @@ class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
   TResult when<TResult extends Object?>({
     required TResult Function() loading,
     required TResult Function(AcademicReport academicReport) success,
-    required TResult Function(String message) error,
+    required TResult Function(Object error) error,
   }) {
-    return error(message);
+    return error(this.error);
   }
 
   @override
@@ -458,9 +456,9 @@ class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? loading,
     TResult? Function(AcademicReport academicReport)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(Object error)? error,
   }) {
-    return error?.call(message);
+    return error?.call(this.error);
   }
 
   @override
@@ -468,11 +466,11 @@ class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? loading,
     TResult Function(AcademicReport academicReport)? success,
-    TResult Function(String message)? error,
+    TResult Function(Object error)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(message);
+      return error(this.error);
     }
     return orElse();
   }
@@ -513,9 +511,9 @@ class _$ErrorStateImpl with DiagnosticableTreeMixin implements ErrorState {
 }
 
 abstract class ErrorState implements StudentPageViewState {
-  const factory ErrorState(final String message) = _$ErrorStateImpl;
+  const factory ErrorState(final Object error) = _$ErrorStateImpl;
 
-  String get message;
+  Object get error;
 
   /// Create a copy of StudentPageViewState
   /// with the given fields replaced by the non-null parameter values.
