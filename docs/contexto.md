@@ -1,0 +1,13 @@
+**Describing user's context**
+
+The user was a student who created a mobile client app for their university’s academic system. The app connects to the university's backend and is available on the Play Store, even though the user had legal concerns prior to its public release. Years have passed, and now they wish to implement it on iOS using Flutter, considering a subscription model to cover Apple’s annual fee. However, they’re primarily concerned with sustainability and not profit. They also worry about the university storing student data.
+
+Thought for 4 seconds
+
+Desde sus inicios, él desarrolló la aplicación siendo aún estudiante: un **cliente móvil no oficial** del sistema académico SIGA de su universidad, construido en Flutter y que simplemente se conecta al backend institucional para mostrar calificaciones y datos de usuario. Tras graduarse, la app continuó activa en Google Play sin respaldo oficial ni convenio con la casa de estudios, a pesar de las reservas iniciales que tuvo sobre el aspecto legal de operar como cliente externo.
+
+Hoy, ya como exalumno, pretende llevar esa misma aplicación a iOS. Sabe que Apple exige una membresía anual de USD 99 para distribuir en la App Store, y por eso piensa en introducir una **suscripción de S/ 4.99 al año**, no como fuente de lucro, sino con la única finalidad de cubrir los costos operativos (mantenimiento de servidores, potencial integración de un LLM, etc.). Consultó de manera informal con un colega sobre los trámites para empezar a cobrar, pero recibió explicaciones muy genéricas que no encajan con su peculiar situación: **no es una empresa**, no busca beneficios económicos inmediatos y su volumen de ingresos sería prácticamente simbólico.
+
+Además de las dudas tributarias y de facturación, le preocupa el **manejo de datos personales**: la universidad almacena y protege la información académica de cada estudiante, y él accede a esos datos (nombres, apellidos, calificaciones) sin ningún acuerdo formal. Esto añade una capa de riesgo sobre responsabilidad y privacidad, pues aunque su app no guarde directamente calificaciones en su propio servidor —más allá de un CRUD de simulador y las credenciales cifradas en Supabase—, sí presenta información sensible obtenida del SIGA.
+
+Como alternativa válida, baraja también la idea de **constituirse formalmente como empresa** (por ejemplo, E.I.R.L. o S.R.L.) para asumir un marco legal y tributario más robusto, con la capacidad de emitir facturas, llevar contabilidad y limitar su responsabilidad. Esta opción le abriría camino para escalar el proyecto con mayor seguridad jurídica, aunque conllevaría una carga administrativa y contable notablemente mayor.
