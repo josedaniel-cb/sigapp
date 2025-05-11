@@ -194,6 +194,7 @@ class CoursesRepositoryImpl implements CoursesRepository {
   ///   total: number
   /// }
   /// ```
+  @override
   Future<List<ScheduledCourse>> getScheduledCourses() async {
     final response =
         await _sigaClient.http.post('/Academico/ListarProgramacionAcad');

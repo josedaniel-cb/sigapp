@@ -303,7 +303,7 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
 
         return AlertDialog(
           title: const Text("Detalle de Categorías"),
-          content: Container(
+          content: SizedBox(
             width: double.maxFinite,
             child: SingleChildScrollView(
               child: Column(
@@ -339,7 +339,7 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
                         const SizedBox(height: 10),
                       ],
                     );
-                  }).toList(),
+                  }),
                 ],
               ),
             ),

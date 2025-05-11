@@ -4,7 +4,7 @@ import 'package:sigapp/core/infrastructure/ui/links.dart';
 import 'package:sigapp/core/infrastructure/ui/utils/mail_utils.dart';
 
 class ReportProblemPage extends StatelessWidget {
-  const ReportProblemPage({Key? key}) : super(key: key);
+  const ReportProblemPage({super.key});
 
   @override
   Widget build(BuildContext context) {

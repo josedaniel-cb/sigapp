@@ -57,38 +57,46 @@ class AcademicProgramIdentifier {
     final normalizedName = _normalizeString(programName);
 
     // Try to match with each academic program
-    if (_matchAdministration(normalizedName))
+    if (_matchAdministration(normalizedName)) {
       return AcademicProgram.administration;
+    }
     if (_matchAgricultural(normalizedName)) return AcademicProgram.agricultural;
-    if (_matchAgroindustrialFood(normalizedName))
+    if (_matchAgroindustrialFood(normalizedName)) {
       return AcademicProgram.agroindustrialFood;
+    }
     if (_matchAgronomy(normalizedName)) return AcademicProgram.agronomy;
-    if (_matchEnvironmental(normalizedName))
+    if (_matchEnvironmental(normalizedName)) {
       return AcademicProgram.environmental;
+    }
     if (_matchArchitecture(normalizedName)) return AcademicProgram.architecture;
     if (_matchBiology(normalizedName)) return AcademicProgram.biology;
     if (_matchCivil(normalizedName)) return AcademicProgram.civil;
-    if (_matchCommunication(normalizedName))
+    if (_matchCommunication(normalizedName)) {
       return AcademicProgram.communication;
+    }
     if (_matchAccounting(normalizedName)) return AcademicProgram.accounting;
     if (_matchLaw(normalizedName)) return AcademicProgram.law;
     if (_matchEconomics(normalizedName)) return AcademicProgram.economics;
-    if (_matchInitialEducation(normalizedName))
+    if (_matchInitialEducation(normalizedName)) {
       return AcademicProgram.initialEducation;
-    if (_matchPrimaryEducation(normalizedName))
+    }
+    if (_matchPrimaryEducation(normalizedName)) {
       return AcademicProgram.primaryEducation;
+    }
     if (_matchElectronic(normalizedName)) return AcademicProgram.electronic;
     if (_matchNursing(normalizedName)) return AcademicProgram.nursing;
     if (_matchStatistics(normalizedName)) return AcademicProgram.statistics;
     if (_matchStomatology(normalizedName)) return AcademicProgram.stomatology;
     if (_matchPhysics(normalizedName)) return AcademicProgram.physics;
     if (_matchGeological(normalizedName)) return AcademicProgram.geological;
-    if (_matchHistoryGeography(normalizedName))
+    if (_matchHistoryGeography(normalizedName)) {
       return AcademicProgram.historyGeography;
+    }
     if (_matchIndustrial(normalizedName)) return AcademicProgram.industrial;
     if (_matchInformatics(normalizedName)) return AcademicProgram.informatics;
-    if (_matchLanguageLiterature(normalizedName))
+    if (_matchLanguageLiterature(normalizedName)) {
       return AcademicProgram.languageLiterature;
+    }
     if (_matchMathematics(normalizedName)) return AcademicProgram.mathematics;
     if (_matchMechatronics(normalizedName)) return AcademicProgram.mechatronics;
     if (_matchMedicine(normalizedName)) return AcademicProgram.medicine;
