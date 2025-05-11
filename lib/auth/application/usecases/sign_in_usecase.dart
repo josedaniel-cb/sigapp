@@ -5,6 +5,7 @@ import 'package:sigapp/auth/application/services/api_gateway_auth_service.dart';
 import 'package:sigapp/auth/domain/repositories/auth_repository.dart';
 import 'package:sigapp/auth/domain/repositories/shared_preferences_auth_repository.dart';
 import 'package:sigapp/auth/domain/services/navigation_service.dart';
+import 'package:sigapp/auth/domain/services/session_lifecycle_service.dart';
 import 'package:sigapp/student/domain/services/academic_info_service.dart';
 
 @injectable
@@ -16,6 +17,7 @@ class SignInUseCase {
   // TODO: Required refactor in order to impement cashing at the infrastructure layer
   // TODO: Required refactor in order to not call services from usecases
   final AcademicInfoService _academicInfoService;
+  final SessionLifecycleService _sessionLifecycleService;
 
   SignInUseCase(
     this._authRepository,
@@ -23,32 +25,16 @@ class SignInUseCase {
     this._supabaseAuthService,
     this._navigationService,
     this._academicInfoService,
+    this._sessionLifecycleService,
   );
 
   Future<bool> execute(String username, String password) async {
     final response = await _authRepository.login(username, password);
-
-    if (response.statusCode == 200) {
-      developer.log(
-        'Login exitoso con código 200',
-        name: 'SignInUseCase',
-      );
-      // Retornar TRUE si el código es 200 (éxito)
-      return true;
-    }
-
-    if (response.statusCode != 302) {
-      developer.log(
-        'Código de estado no soportado: ${response.statusCode}',
-        name: 'SignInUseCase',
-      );
-      throw Exception('Unsupported status code: ${response.statusCode}');
-    }
-
-    developer.log(
-      'Login exitoso con redirección 302',
-      name: 'SignInUseCase',
+    final success = _sessionLifecycleService.checkLoginResult(
+      headers: response.headers,
+      statusCode: response.statusCode,
     );
+    if (!success) return false;
 
     await _sharedPreferencesAuthRepository.saveCredentials(username, password);
 
@@ -64,7 +50,7 @@ class SignInUseCase {
         stackTrace: s,
       );
       throw Exception(
-        'Tu usuario aún no está listo para usar la aplicación, por favor usa la versión web por el momento.',
+        'No se pudo obtener tu información en este momento, por favor intenta en unos minutos.',
       );
     }
 

@@ -4,11 +4,11 @@ import 'package:injectable/injectable.dart';
 import 'package:sigapp/auth/application/managers/authentication_manager/app_lifecycle_manager.dart';
 import 'package:sigapp/auth/application/managers/authentication_manager/async_operation_guard.dart';
 import 'package:sigapp/auth/application/managers/authentication_manager/auth_token_refresh_manager.dart';
-import 'package:sigapp/auth/application/usecases/ensure_no_pending_survey_usecase.dart';
 import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.dart';
 import 'package:sigapp/auth/application/usecases/keep_session_alive_usecase.dart';
 import 'package:sigapp/auth/application/usecases/sign_in_usecase.dart';
 import 'package:sigapp/auth/application/usecases/sign_out_usecase.dart';
+import 'package:sigapp/auth/domain/exceptions/session_exception.dart';
 import 'package:sigapp/core/infrastructure/http/siga_client.dart';
 import 'package:sigapp/auth/domain/services/session_lifecycle_service.dart';
 import 'package:sigapp/auth/domain/value-objects/api_path_and_method.dart';
@@ -30,7 +30,6 @@ class AuthenticationManager {
   final SignOutUseCase _signOutUseCase;
   final KeepSessionAliveUsecase _keepSessionAliveUsecase;
   final SignInUseCase _signInUseCase;
-  final EnsureNoPendingSurveyUseCase _ensureNoPendingSurveyUseCase;
 
   // Clases de apoyo para separar responsabilidades
   late final AppLifecycleManager _lifecycleManager;
@@ -46,7 +45,6 @@ class AuthenticationManager {
     this._signOutUseCase,
     this._keepSessionAliveUsecase,
     this._signInUseCase,
-    this._ensureNoPendingSurveyUseCase,
   ) {
     _authTokenRefreshManager = AuthTokenRefreshManager(
       _keepSessionAliveUsecase,
@@ -85,22 +83,21 @@ class AuthenticationManager {
     _sessionService.configureSurveyAssertionInterceptors(
       ensureNoPendingSurvey: (response) async {
         if (_sessionService.evaluateIsSurveyAvailable(response)) {
-          try {
-            await _ensureNoPendingSurveyUseCase.execute(response);
+          if (!_sessionService.evaluateIsSurveyAvailable(response)) {
             developer.log(
               'No hay encuestas pendientes',
               name: 'AuthenticationManager',
             );
-          } catch (e, s) {
-            developer.log(
-              'Encuesta pendiente encontrada, cerrando sesión',
-              name: 'AuthenticationManager',
-              error: e,
-              stackTrace: s,
-            );
-            _signOutUseCase.execute(e.toString());
-            rethrow;
+            return;
           }
+          developer.log(
+            'Encuesta pendiente encontrada, cerrando sesión',
+            name: 'AuthenticationManager',
+          );
+          _signOutUseCase.execute(SessionException.pendingSurveyError(
+            message: 'Encuesta pendiente encontrada',
+            originalError: 'Encuesta pendiente encontrada',
+          ));
         }
       },
     );

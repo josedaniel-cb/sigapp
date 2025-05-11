@@ -4,6 +4,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.dart';
 import 'package:sigapp/auth/application/usecases/sign_in_usecase.dart';
+import 'package:sigapp/auth/domain/exceptions/session_exception.dart';
 import 'package:sigapp/auth/domain/value-objects/stored_credentials.dart';
 
 part 'login_cubit.freezed.dart';
@@ -80,6 +81,12 @@ class LoginCubit extends Cubit<LoginState> {
       if (kDebugMode) {
         print(e);
         print(s);
+      }
+      if (e is SessionException) {
+        emit(state.copyWith(
+          status: LoginStatus.error(e.message),
+        ));
+        return;
       }
       emit(state.copyWith(
         status: LoginStatus.error(e.toString()),

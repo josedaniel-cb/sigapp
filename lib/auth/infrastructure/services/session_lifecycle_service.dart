@@ -74,7 +74,7 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
 
       // Evaluate if the session has expired based on headers and status code.
       final hasExpired = response.statusCode != null &&
-          _evaluateSessionExpiration(
+          _checkSessionExpiration(
             headers: response.headers.map,
             statusCode: response.statusCode!,
           );
@@ -198,9 +198,12 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
     if (locationHeaderValue == null) {
       return false;
     }
-    return locationHeaderValue
-            .contains(SigaClient.survey1RedirectionLocation) ||
-        locationHeaderValue.contains(SigaClient.survey2RedirectionLocation);
+    return _evaluateSurveyRedirection(locationHeaderValue.first);
+  }
+
+  bool _evaluateSurveyRedirection(String locationUrl) {
+    return locationUrl.contains(SigaClient.survey1RedirectionLocation) ||
+        locationUrl.contains(SigaClient.survey2RedirectionLocation);
   }
 
   // ----------------
@@ -209,24 +212,14 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
 
   /// Determines if the session has expired based on the provided response headers and status code.
   /// Returns `true` if there is a 302 redirect to the sign-out or sign-in page.
-  bool _evaluateSessionExpiration({
+  bool _checkSessionExpiration({
     required Map<String, List<String>> headers,
     required int statusCode,
   }) {
-    // Si no es una redirección 302, no necesitamos evaluar más.
-    if (statusCode != 302) {
+    final locationHeaderValue = headers['location'] ?? [];
+    if (statusCode != 302 && locationHeaderValue.isEmpty) {
       developer.log(
-        'StatusCode no es 302, no se evalúa expiración de sesión',
-        name: 'SessionLifecycle',
-      );
-      return false;
-    }
-
-    // Si no hay encabezado 'location', tampoco hay señal de redirección.
-    final locationHeaderValue = headers['location'];
-    if (locationHeaderValue == null || locationHeaderValue.isEmpty) {
-      developer.log(
-        'No hay header location en respuesta 302, no se evalúa expiración',
+        'No hay respuesta 302 o header location, no se evalúa expiración',
         name: 'SessionLifecycle',
       );
       return false;
@@ -234,13 +227,7 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
 
     final locationUrl = locationHeaderValue.first;
 
-    // Verificar si la redirección coincide con "forceSignOut" o "signInPage"
-    final forceSignOut =
-        locationUrl.contains(SigaClient.forceSignOutRedirectionLocation);
-    final signInRedirect =
-        locationUrl.contains(SigaClient.signInPageRedirectionLocation);
-
-    if (forceSignOut) {
+    if (_evaluateSignOutRedirection(locationUrl)) {
       developer.log(
         'SESIÓN EXPIRADA: Detectada redirección de cierre se sesión: $locationUrl',
         name: 'SessionLifecycle',
@@ -248,13 +235,14 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
       return true;
     }
 
-    if (signInRedirect) {
-      developer.log(
-        'SESIÓN EXPIRADA: Detectada redirección a página de login: $locationUrl',
-        name: 'SessionLifecycle',
-      );
-      return true;
-    }
+    // WTF LOL
+    // if (_evaluateSignInRedirection(locationUrl)) {
+    //   developer.log(
+    //     'SESIÓN EXPIRADA: Detectada redirección a página de login: $locationUrl',
+    //     name: 'SessionLifecycle',
+    //   );
+    //   return true;
+    // }
 
     // Si llegamos aquí, es una redirección 302 a otra página (no expiró la sesión)
     developer.log(
@@ -262,6 +250,14 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
       name: 'SessionLifecycle',
     );
     return false;
+  }
+
+  bool _evaluateSignOutRedirection(String locationUrl) {
+    return locationUrl.contains(SigaClient.forceSignOutRedirectionLocation);
+  }
+
+  bool _evaluateSignInRedirection(String locationUrl) {
+    return locationUrl.contains(SigaClient.successSignInRedirectionLocation);
   }
 
   /// Checks if the request is in the list of excluded API paths and methods.
@@ -288,5 +284,41 @@ class SessionLifecycleServiceImpl implements SessionLifecycleService {
       );
       options.headers['Cookie'] = cookies;
     }
+  }
+
+  @override
+  bool checkLoginResult({
+    required Map<String, List<String>> headers,
+    required int statusCode,
+  }) {
+    final locationHeaderValue = headers['location'] ?? [];
+    if (statusCode == 200 && locationHeaderValue.isEmpty) {
+      developer.log(
+        'Failed login',
+        name: 'SessionLifecycle',
+      );
+      return false;
+    }
+
+    if (_evaluateSignInRedirection(locationHeaderValue.first)) {
+      developer.log(
+        'Successful login',
+        name: 'SessionLifecycle',
+      );
+      return true;
+    }
+
+    if (statusCode == 302) {
+      throw SessionException.authenticationError(
+        message: 'Proceso pendiente en SIGA web: $locationHeaderValue',
+        originalError:
+            'Status code: $statusCode, Location: $locationHeaderValue',
+      );
+    }
+
+    throw SessionException.authenticationError(
+      message: 'Ocurrió un error inesperado',
+      originalError: 'Status code: $statusCode, Location: $locationHeaderValue',
+    );
   }
 }

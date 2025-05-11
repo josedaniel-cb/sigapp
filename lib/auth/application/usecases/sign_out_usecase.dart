@@ -28,7 +28,7 @@ class SignOutUseCase {
       this._sessionInfoService,
       this._supabaseAuthService);
 
-  Future<void> execute([dynamic technicalReason]) async {
+  Future<void> execute([SessionException? technicalReason]) async {
     // Registramos el motivo técnico del cierre de sesión para diagnóstico
     developer.log(
       'Ejecutando SignOutUseCase. Motivo técnico: ${technicalReason ?? "No especificado"}',
@@ -86,114 +86,59 @@ class SignOutUseCase {
 
   /// Convierte excepciones tipadas en mensajes amigables para el usuario
   /// y determina si deben mostrarse como errores
-  _LogoutMessageInfo _get_LogoutMessageInfo(dynamic technicalReason) {
-    // Si no hay razón técnica, es un cierre de sesión voluntario
+  _LogoutMessageInfo _get_LogoutMessageInfo(SessionException? technicalReason) {
     if (technicalReason == null) {
       return _LogoutMessageInfo("Has cerrado sesión", false);
     }
 
-    // Si ya es un SessionException, usamos el patrón de coincidencia para manejar cada tipo
-    if (technicalReason is SessionException) {
-      return technicalReason.when(
-        // Errores de red - Mostrar como error ya que no es esperado
-        networkError: (message, originalError) {
-          return _LogoutMessageInfo(
-            "Se cerró tu sesión debido a problemas de conexión. Por favor, verifica tu conexión a internet y vuelve a intentarlo.",
-            true,
-          );
-        },
-
-        // Errores de refresco de sesión - No es crítico, informativo
-        refreshError: (message, originalError) {
-          return _LogoutMessageInfo(
-            "Tu sesión ha expirado. Esto puede ocurrir por inactividad o problemas en el servidor. Por favor, inicia sesión nuevamente.",
-            false,
-          );
-        },
-
-        // Errores de autenticación - Puede ser crítico (seguridad)
-        authenticationError: (message, originalError) {
-          return _LogoutMessageInfo(
-            "Se ha cerrado tu sesión por motivos de seguridad. Por favor, inicia sesión nuevamente.",
-            true,
-          );
-        },
-
-        // Errores de información académica - Mostrar como error
-        studentInfoError: (message, originalError) {
-          return _LogoutMessageInfo(
-            "No se pudo verificar tu información académica. Por favor, intenta nuevamente más tarde.",
-            true,
-          );
-        },
-
-        // Errores de encuestas pendientes - Es un proceso normal, no un error técnico
-        pendingSurveyError: (message, originalError) {
-          return _LogoutMessageInfo(
-            "Tienes encuestas pendientes que deben ser completadas en la versión web de SIGA. Por favor, inicia sesión en la plataforma web para completarlas.",
-            false,
-          );
-        },
-
-        // Errores desconocidos - Siempre mostrar como error
-        unknownError: (message, originalError) {
-          return _LogoutMessageInfo(
-            "Se cerró tu sesión por un error desconocido. Por favor, inicia sesión nuevamente.",
-            true,
-          );
-        },
-      );
-    }
-
-    // Para mantener compatibilidad con código antiguo, manejamos también strings
-    if (technicalReason is String) {
-      // Errores de red
-      if (technicalReason.contains('SocketException') ||
-          technicalReason.contains('connection') ||
-          technicalReason.contains('timeout')) {
+    return technicalReason.when(
+      // Errores de red - Mostrar como error ya que no es esperado
+      networkError: (message, originalError) {
         return _LogoutMessageInfo(
           "Se cerró tu sesión debido a problemas de conexión. Por favor, verifica tu conexión a internet y vuelve a intentarlo.",
           true,
         );
-      }
+      },
 
-      // Error de refresco de sesión
-      if (technicalReason.contains('Error en múltiples intentos de refresco')) {
+      // Errores de refresco de sesión - No es crítico, informativo
+      refreshError: (message, originalError) {
         return _LogoutMessageInfo(
           "Tu sesión ha expirado. Esto puede ocurrir por inactividad o problemas en el servidor. Por favor, inicia sesión nuevamente.",
           false,
         );
-      }
+      },
 
-      // Error en la verificación del estudiante
-      if (technicalReason.contains('información de la sesión del estudiante')) {
+      // Errores de autenticación - Puede ser crítico (seguridad)
+      authenticationError: (message, originalError) {
+        return _LogoutMessageInfo(
+          "Se ha cerrado tu sesión por motivos de seguridad. Por favor, inicia sesión nuevamente.",
+          true,
+        );
+      },
+
+      // Errores de información académica - Mostrar como error
+      studentInfoError: (message, originalError) {
         return _LogoutMessageInfo(
           "No se pudo verificar tu información académica. Por favor, intenta nuevamente más tarde.",
           true,
         );
-      }
+      },
 
-      // Error en Supabase
-      if (technicalReason.contains('Supabase')) {
-        return _LogoutMessageInfo(
-          "Ocurrió un problema con la autenticación. Por favor, intenta nuevamente.",
-          true,
-        );
-      }
-
-      // Error en encuestas pendientes
-      if (technicalReason.contains('Pending survey')) {
+      // Errores de encuestas pendientes - Es un proceso normal, no un error técnico
+      pendingSurveyError: (message, originalError) {
         return _LogoutMessageInfo(
           "Tienes encuestas pendientes que deben ser completadas en la versión web de SIGA. Por favor, inicia sesión en la plataforma web para completarlas.",
           false,
         );
-      }
-    }
+      },
 
-    // Si el error no está tipado ni reconocido, usamos un mensaje genérico
-    return _LogoutMessageInfo(
-      "Se cerró tu sesión. Por favor, inicia sesión nuevamente.",
-      true,
+      // Errores desconocidos - Siempre mostrar como error
+      unknownError: (message, originalError) {
+        return _LogoutMessageInfo(
+          "Se cerró tu sesión por un error desconocido. Por favor, inicia sesión nuevamente.",
+          true,
+        );
+      },
     );
   }
 }

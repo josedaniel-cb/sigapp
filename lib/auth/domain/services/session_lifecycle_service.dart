@@ -14,4 +14,8 @@ abstract class SessionLifecycleService {
     required Future<void> Function(ApiResponse response) ensureNoPendingSurvey,
   });
   bool evaluateIsSurveyAvailable(ApiResponse response);
+  bool checkLoginResult({
+    required Map<String, List<String>> headers,
+    required int statusCode,
+  });
 }

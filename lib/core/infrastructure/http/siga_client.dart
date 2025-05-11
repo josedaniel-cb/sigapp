@@ -9,7 +9,7 @@ class SigaClient {
   static const host = 'academico.unp.edu.pe';
   static const url = 'https://$host';
   static const forceSignOutRedirectionLocation = '/Cuenta/InicioSesion';
-  static const signInPageRedirectionLocation = '/Home/Index';
+  static const successSignInRedirectionLocation = '/Home/Index';
   static const signInPath = '/';
   static const keepSessionPath = "/Home/KeepSession";
   static const survey1RedirectionLocation = "/PasosRequeridos/ProcesoEncuesta";
