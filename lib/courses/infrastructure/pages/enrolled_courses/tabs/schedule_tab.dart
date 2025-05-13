@@ -47,16 +47,11 @@ class ScheduleTabWidget extends StatelessWidget {
       return EmptyCoursesWidget();
     }
 
-    // Crear una instancia de WeeklyScheduleWidget para obtener la lista de eventos
-    final weeklyScheduleWidget = WeeklyScheduleWidget(
-      courses: enrolledCourses,
-    );
-
     return BlocProvider(
       create: (context) {
         final cubit = CourseVisibilityCubit();
-        // Cargar los eventos ocultos
-        cubit.loadHiddenEvents(weeklyScheduleWidget.events);
+        cubit.loadHiddenEvents(
+            WeeklyScheduleWidget(courses: enrolledCourses).events);
         return cubit;
       },
       child: Builder(builder: (context) {
@@ -93,13 +88,11 @@ class ScheduleTabWidget extends StatelessWidget {
 
   void _showCourseDetails(
       BuildContext context, WeeklyScheduleWidgetItem event) {
-    // Usar el Cubit existente en lugar de crear uno nuevo
     final cubit = BlocProvider.of<CourseVisibilityCubit>(context);
 
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
-        // Reutilizar el mismo Cubit para el diálogo
         return BlocProvider.value(
           value: cubit,
           child: CourseDetailsDialog(

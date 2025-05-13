@@ -41,6 +41,9 @@ class EventWidget extends StatelessWidget {
         final Border? border =
             isHidden ? Border.all(color: Colors.grey, width: 1.0) : null;
 
+        // Definir el ancho del borde para usarlo en los cálculos
+        final borderWidth = isHidden ? 1.0 : 0.0;
+
         // Calcular dimensiones de posicionamiento
         final positionData = _calculatePositionData();
 
@@ -50,9 +53,16 @@ class EventWidget extends StatelessWidget {
         // Calcular espacios y paddings
         final layoutMeasures = _calculateLayoutMeasures(textMeasures);
 
-        // Calcular dimensiones de contenido
+        // Calcular dimensiones de contenido teniendo en cuenta el borde
         final contentMeasures = _calculateContentDimensions(
-            positionData.height, layoutMeasures, textMeasures);
+            positionData.height, layoutMeasures, textMeasures, borderWidth);
+
+        // Determinar si mostrar captions basado en el espacio disponible
+        final shouldShowCaptions = isHidden
+            ? (contentMeasures.captionsCanBeShown &&
+                contentMeasures.availableHeightForTitle >
+                    textMeasures.titleOneLineHeight * 1.2)
+            : contentMeasures.captionsCanBeShown;
 
         return Positioned(
           top: positionData.top,
@@ -79,7 +89,7 @@ class EventWidget extends StatelessWidget {
                   children: [
                     _buildTitleSection(
                         textColor, textMeasures, contentMeasures),
-                    if (contentMeasures.captionsCanBeShown)
+                    if (shouldShowCaptions)
                       _buildCaptionsSection(textColor, textMeasures,
                           contentMeasures.availableWidth),
                   ],
@@ -150,11 +160,15 @@ class EventWidget extends StatelessWidget {
   }
 
   /// Calcula las dimensiones del contenido basado en el espacio disponible
-  _ContentMeasures _calculateContentDimensions(double height,
-      _LayoutMeasures layoutMeasures, _TextMeasures textMeasures) {
-    final availableHeight = height - (layoutMeasures.verticalPadding * 2);
-    final availableWidth =
-        _calculatePositionData().width - (layoutMeasures.horizontalPadding * 2);
+  _ContentMeasures _calculateContentDimensions(
+      double height, _LayoutMeasures layoutMeasures, _TextMeasures textMeasures,
+      [double borderWidth = 0.0]) {
+    // Ajustar el espacio disponible considerando el borde
+    final availableHeight =
+        height - (layoutMeasures.verticalPadding * 2) - (borderWidth * 2);
+    final availableWidth = _calculatePositionData().width -
+        (layoutMeasures.horizontalPadding * 2) -
+        (borderWidth * 2);
 
     // Determinar si hay espacio para mostrar las leyendas
     final captionsCanBeShown = availableHeight >

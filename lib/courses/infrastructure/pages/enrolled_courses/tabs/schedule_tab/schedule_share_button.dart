@@ -10,6 +10,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:sigapp/core/infrastructure/ui/widgets/brand_text.dart';
 import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
 import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/partials/weekly_schedule.dart';
+import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/partials/weekly_schedule/course_visibility_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/tabs/schedule_tab/schedule_share_button_cubit.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
 import 'package:sigapp/student/domain/value_objects/enrolled_course.dart';
@@ -99,26 +100,35 @@ class _ScheduleShareButtonWidgetState extends State<ScheduleShareButtonWidget> {
           ),
           child: SizedBox(
             width: pixelsToDIP(context, 1920),
-            child: WeeklyScheduleWidget(
-              courses: widget.enrolledCourses,
-              topLeft: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  BrandTextWidget(),
-                  Text(
-                    'Horario ${widget.selectedSemester.name}',
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                ],
+            child: BlocProvider(
+              create: (context) {
+                final cubit = CourseVisibilityCubit();
+                cubit.loadHiddenEvents(
+                    WeeklyScheduleWidget(courses: widget.enrolledCourses)
+                        .events);
+                return cubit;
+              },
+              child: WeeklyScheduleWidget(
+                courses: widget.enrolledCourses,
+                topLeft: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    BrandTextWidget(),
+                    Text(
+                      'Horario ${widget.selectedSemester.name}',
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  ],
+                ),
+                bottomLeft: Text(
+                    '${widget.academicReport.firstName} ${widget.academicReport.lastName}'),
+                bottomRight: Text(
+                    '${widget.academicReport.school} - Promoción ${widget.academicReport.cohort}'),
+                disableScroll: true,
+                fontSize: pixelsToDIP(context, 40),
+                hourWidth: pixelsToDIP(context, 200),
+                rowHeight: pixelsToDIP(context, 200),
               ),
-              bottomLeft: Text(
-                  '${widget.academicReport.firstName} ${widget.academicReport.lastName}'),
-              bottomRight: Text(
-                  '${widget.academicReport.school} - Promoción ${widget.academicReport.cohort}'),
-              disableScroll: true,
-              fontSize: pixelsToDIP(context, 40),
-              hourWidth: pixelsToDIP(context, 200),
-              rowHeight: pixelsToDIP(context, 200),
             ),
           ),
         ),
