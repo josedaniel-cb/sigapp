@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/partials/weekly_schedule.dart';
 import 'package:sigapp/core/infrastructure/utils/time_utils.dart';
+import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/partials/weekly_schedule/course_visibility_cubit.dart';
 
 class CourseDetailsDialog extends StatelessWidget {
   final WeeklyScheduleWidgetItem event;
@@ -12,6 +14,9 @@ class CourseDetailsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<CourseVisibilityCubit>(context);
+    final isHidden = event.isHidden;
+
     return AlertDialog(
       title: Text(
         event.data.courseName,
@@ -35,19 +40,35 @@ class CourseDetailsDialog extends StatelessWidget {
             _getDayAndTime(),
           ),
           const SizedBox(height: 12),
-          // _buildInfoRow(
-          //   Icons.person,
-          //   'Profesor:',
-          //   event.data.professor ?? 'No disponible',
-          // ),
-          // if (event.data.courseCode != null) ...[
-          //   const SizedBox(height: 12),
-          //   _buildInfoRow(
-          //     Icons.numbers,
-          //     'Código:',
-          //     event.data.courseCode!,
-          //   ),
-          // ],
+          // Checkbox para ocultar/desocultar el evento
+          BlocBuilder<CourseVisibilityCubit, CourseVisibilityState>(
+            builder: (context, state) {
+              final isEventHidden =
+                  state.hiddenEvents[event.eventId] ?? isHidden;
+              return ListTile(
+                contentPadding: EdgeInsets.all(0),
+                title: Text('Marcar como no programado'),
+                subtitle: isEventHidden
+                    ? const Text(
+                        'Este curso se mostrará en gris en el horario',
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          color: Colors.grey,
+                        ),
+                      )
+                    : null,
+                onTap: () => cubit.toggleEventVisibility(event, !isEventHidden),
+                leading: Icon(
+                  isEventHidden
+                      ? Icons.check_box
+                      : Icons.check_box_outline_blank,
+                  color: isEventHidden
+                      ? Theme.of(context).colorScheme.primary
+                      : null,
+                ),
+              );
+            },
+          ),
         ],
       ),
       actions: [

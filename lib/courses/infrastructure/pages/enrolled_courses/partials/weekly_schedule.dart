@@ -11,8 +11,17 @@ import 'package:sigapp/student/domain/value_objects/enrolled_course.dart';
 class WeeklyScheduleWidgetItem {
   final WeeklyScheduleEvent data;
   final Color color;
+  bool isHidden;
 
-  WeeklyScheduleWidgetItem({required this.data, required this.color});
+  // Generar un identificador único para el evento
+  String get eventId =>
+      '${data.courseName}_${data.weekday}_${data.startHour}_${data.startMinutes}';
+
+  WeeklyScheduleWidgetItem({
+    required this.data,
+    required this.color,
+    this.isHidden = false,
+  });
 }
 
 class WeeklyScheduleWidget extends StatefulWidget {
@@ -60,6 +69,22 @@ class WeeklyScheduleWidget extends StatefulWidget {
 class _WeeklyScheduleWidgetState extends State<WeeklyScheduleWidget> {
   var startHour = 0;
   var endHour = 0;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    // Inicialización rápida para evitar la carga infinita
+    _initializeEvents();
+  }
+
+  Future<void> _initializeEvents() async {
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   void _calculateHourRange() {
     if (widget.events.isEmpty) {
@@ -81,6 +106,12 @@ class _WeeklyScheduleWidgetState extends State<WeeklyScheduleWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
     if (widget.events.isEmpty) {
       return const Center(
         child: Text('No events to display'),
