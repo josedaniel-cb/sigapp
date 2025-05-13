@@ -6,6 +6,7 @@ import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.da
 import 'package:sigapp/courses/domain/value-objects/program_curriculum_progress.dart';
 import 'package:sigapp/student/domain/services/academic_info_service.dart';
 import 'package:sigapp/student/domain/value_objects/semester_context.dart';
+import 'dart:developer' as developer;
 
 @lazySingleton
 class GetProgramCurriculumProgressUsecase {
@@ -18,8 +19,18 @@ class GetProgramCurriculumProgressUsecase {
 
   Future<ProgramCurriculumProgress> execute() async {
     final programCurriculum = await _getTermCoursesMap();
-    final academicHistoryTerms =
-        await _programCurriculumRepository.getAcademicHistory();
+    List<AcademicHistoryTerm> academicHistoryTerms = [];
+    try {
+      academicHistoryTerms =
+          await _programCurriculumRepository.getAcademicHistory();
+    } catch (e, s) {
+      developer.log(
+        'Error obteniendo el historial académico: $e',
+        name: 'GetProgramCurriculumProgressUsecase',
+        error: e,
+        stackTrace: s,
+      );
+    }
 
     await _setLastGradesForCourses(programCurriculum, academicHistoryTerms);
     await _setEnrolledCourses(programCurriculum);
