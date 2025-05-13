@@ -12,12 +12,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ToastificationWrapper(
-      child: MaterialApp.router(
-        builder: (context, child) {
-          return BlocProvider(
-            create: (context) => getIt<ProgressIndicatorBloc>(),
-            child: BlocBuilder<ProgressIndicatorBloc, ProgressIndicatorState>(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => getIt<ProgressIndicatorBloc>()),
+      ],
+      child: ToastificationWrapper(
+        child: MaterialApp.router(
+          builder: (context, child) {
+            return BlocBuilder<ProgressIndicatorBloc, ProgressIndicatorState>(
               builder: (context, state) {
                 if (state is ProgressIndicatorHidden) return child!;
                 return Overlay(
@@ -35,16 +37,38 @@ class MyApp extends StatelessWidget {
                   ],
                 );
               },
+            );
+          },
+          routerConfig: getIt<GoRouter>(),
+          themeMode: ThemeMode.system,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Color(BrandTheme.primaryColor),
+              primary: Color(BrandTheme.primaryColor),
+              secondary: Color(BrandTheme.secondaryColor),
+              brightness: Brightness.light,
             ),
-          );
-        },
-        routerConfig: getIt<GoRouter>(),
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Color(BrandTheme.primaryColor),
-            primary: Color(BrandTheme.primaryColor),
-            secondary: Color(BrandTheme.secondaryColor),
-            brightness: Brightness.light,
+          ),
+          // darkTheme: ThemeData(
+          //   colorScheme: ColorScheme.fromSeed(
+          //     seedColor: Color(BrandTheme.primaryColorDark),
+          //     primary: Color(BrandTheme.primaryColorDark),
+          //     secondary: Color(BrandTheme.secondaryColorDark),
+          //     brightness: Brightness.dark,
+          //     // background: Color(BrandTheme.backgroundColorDark), // deprecated
+          //     surface: Color(BrandTheme.surfaceColorDark),
+          //     error: Color(BrandTheme.errorColorDark),
+          //   ),
+          // ),
+          darkTheme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Color(BrandTheme.primaryColor),
+              primary: Color(BrandTheme.primaryColor),
+              secondary: Color(BrandTheme.secondaryColor),
+              brightness: Brightness.dark,
+              // surface: Color(BrandTheme.surfaceColorDark),
+              // error: Color(BrandTheme.errorColorDark),
+            ),
           ),
         ),
       ),

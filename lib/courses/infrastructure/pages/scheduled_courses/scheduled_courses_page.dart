@@ -65,7 +65,6 @@ class ScheduledCoursesPage extends StatelessWidget {
                     border: OutlineInputBorder(),
                     hintText: 'Ingresa código, nombre, profesor, etc.',
                     filled: true,
-                    fillColor: Colors.white,
                     isDense: true,
                   ),
                   onChanged: (query) {

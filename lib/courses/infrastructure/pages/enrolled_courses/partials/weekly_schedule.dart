@@ -101,7 +101,6 @@ class _WeeklyScheduleWidgetState extends State<WeeklyScheduleWidget> {
       ),
       child: LayoutBuilder(builder: (context, constraints) {
         return Container(
-          color: Colors.white,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
