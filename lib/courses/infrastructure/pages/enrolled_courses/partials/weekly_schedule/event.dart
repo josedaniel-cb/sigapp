@@ -11,6 +11,7 @@ class EventWidget extends StatelessWidget {
   final double fontSize;
   final double rowHeight;
   final double hourWidth;
+  final Function(WeeklyScheduleWidgetItem)? onTap;
 
   const EventWidget({
     super.key,
@@ -21,20 +22,11 @@ class EventWidget extends StatelessWidget {
     required this.fontSize,
     required this.rowHeight,
     required this.hourWidth,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    // Obtener el ancho de la pantalla para adaptar el tamaño del texto
-    // final screenSize = MediaQuery.of(context).size;
-    // final screenWidth = screenSize.width;
-
-    // Factor de escala basado en el ancho de la pantalla
-    // Se usa 600.0 como ancho de referencia para una tablet pequeña
-    // final scaleFactor = screenWidth / 600.0;
-
-    // Limitar el factor de escala para evitar textos muy grandes o muy pequeños
-    // final adaptiveScaleFactor = scaleFactor.clamp(0.7, 1.3);
     final adaptiveScaleFactor = MediaQuery.of(context).size.width * 0.0013;
 
     final top = (event.data.startHour - startHour) * rowHeight +
@@ -100,70 +92,73 @@ class EventWidget extends StatelessWidget {
       left: left,
       width: width,
       height: height,
-      child: Container(
-        decoration: BoxDecoration(
-          color: event.color,
-          borderRadius: BorderRadius.circular(verticalPadding),
-        ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            vertical: verticalPadding,
-            horizontal: horizontalPadding,
+      child: GestureDetector(
+        onTap: onTap != null ? () => onTap!(event) : null,
+        child: Container(
+          decoration: BoxDecoration(
+            color: event.color,
+            borderRadius: BorderRadius.circular(verticalPadding),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: availableHeightForTitle,
-                width: availableWidth,
-                child: Text(
-                  event.data.courseName,
-                  style: TextStyle(
-                    color: textColor,
-                    fontSize: titleFontSize,
-                    height: titleLineHeight,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  maxLines: finalTitleMaxLines,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              if (captionsCanBeShown)
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              vertical: verticalPadding,
+              horizontal: horizontalPadding,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
                 SizedBox(
+                  height: availableHeightForTitle,
                   width: availableWidth,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        event.data.location,
-                        style: TextStyle(
-                          color: textColor,
-                          fontSize: locationFontSize,
-                          height: captionLineHeight,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        TimeUtils.formatEventDuration(EventDuration(
-                          startHour: event.data.startHour,
-                          startMinute: event.data.startMinutes,
-                          endHour: event.data.endHour,
-                          endMinute: event.data.endMinutes,
-                        )),
-                        style: TextStyle(
-                          color: textColor,
-                          fontSize: durationFontSize,
-                          height: captionLineHeight,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+                  child: Text(
+                    event.data.courseName,
+                    style: TextStyle(
+                      color: textColor,
+                      fontSize: titleFontSize,
+                      height: titleLineHeight,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: finalTitleMaxLines,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-            ],
+                if (captionsCanBeShown)
+                  SizedBox(
+                    width: availableWidth,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          event.data.location,
+                          style: TextStyle(
+                            color: textColor,
+                            fontSize: locationFontSize,
+                            height: captionLineHeight,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          TimeUtils.formatEventDuration(EventDuration(
+                            startHour: event.data.startHour,
+                            startMinute: event.data.startMinutes,
+                            endHour: event.data.endHour,
+                            endMinute: event.data.endMinutes,
+                          )),
+                          style: TextStyle(
+                            color: textColor,
+                            fontSize: durationFontSize,
+                            height: captionLineHeight,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),

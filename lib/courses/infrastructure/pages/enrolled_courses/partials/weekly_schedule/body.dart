@@ -12,6 +12,7 @@ class BodyWidget extends StatelessWidget {
   final double fontSize;
   final double hourWidth;
   final double rowHeight;
+  final Function(WeeklyScheduleWidgetItem)? onEventTap;
 
   const BodyWidget({
     super.key,
@@ -23,6 +24,7 @@ class BodyWidget extends StatelessWidget {
     required this.fontSize,
     required this.hourWidth,
     required this.rowHeight,
+    this.onEventTap,
   });
 
   @override
@@ -49,6 +51,7 @@ class BodyWidget extends StatelessWidget {
                   fontSize: fontSize,
                   rowHeight: rowHeight,
                   hourWidth: hourWidth,
+                  onTap: onEventTap,
                 )),
       ],
     );

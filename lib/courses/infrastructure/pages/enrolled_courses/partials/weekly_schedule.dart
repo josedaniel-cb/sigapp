@@ -25,6 +25,7 @@ class WeeklyScheduleWidget extends StatefulWidget {
   final double rowHeight;
   final bool disableScroll;
   final double fontSize;
+  final Function(WeeklyScheduleWidgetItem)? onEventTap;
 
   WeeklyScheduleWidget({
     super.key,
@@ -37,6 +38,7 @@ class WeeklyScheduleWidget extends StatefulWidget {
     this.topLeft,
     this.hourWidth = 50.0,
     this.rowHeight = 75.0,
+    this.onEventTap,
   }) {
     events = courses.indexed
         .map(
@@ -128,6 +130,7 @@ class _WeeklyScheduleWidgetState extends State<WeeklyScheduleWidget> {
                       fontSize: widget.fontSize,
                       hourWidth: widget.hourWidth,
                       rowHeight: widget.rowHeight,
+                      onEventTap: widget.onEventTap,
                     )
                   : Expanded(
                       child: SingleChildScrollView(
@@ -140,6 +143,7 @@ class _WeeklyScheduleWidgetState extends State<WeeklyScheduleWidget> {
                           fontSize: widget.fontSize,
                           hourWidth: widget.hourWidth,
                           rowHeight: widget.rowHeight,
+                          onEventTap: widget.onEventTap,
                         ),
                       ),
                     ),
