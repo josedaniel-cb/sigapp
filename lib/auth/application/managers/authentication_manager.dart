@@ -22,7 +22,7 @@ import 'dart:developer' as developer;
 /// primer plano y segundo plano para mantener sesiones activas
 @singleton
 class AuthenticationManager {
-  static const _sessionTimeoutDuration = Duration(seconds: 60);
+  // static const _sessionTimeoutDuration = Duration(seconds: 60);
   static const _backgroundTimeBeforeRefresh = Duration(minutes: 5);
 
   // Clave ÚNICA para todas las operaciones de refresco
@@ -46,7 +46,7 @@ class AuthenticationManager {
   late final AsyncOperationGuard _asyncOperationGuard;
 
   // Flag para asegurar que no se intente un refresco periódico durante el refresco inicial
-  bool _initialRefreshComplete = false;
+  // bool _initialRefreshComplete = false;
 
   AuthenticationManager(
     this._sessionService,
@@ -86,7 +86,8 @@ class AuthenticationManager {
       await _forceSessionRefresh();
 
       // Una vez completado, iniciamos el timer periódico
-      Timer.periodic(_sessionTimeoutDuration, (_) => _refreshSession());
+      // DEBUG: still testing
+      // Timer.periodic(_sessionTimeoutDuration, (_) => _refreshSession());
     });
   }
 
@@ -173,7 +174,7 @@ class AuthenticationManager {
         name: 'AuthenticationManager',
       );
 
-      _initialRefreshComplete = true;
+      // _initialRefreshComplete = true;
       return;
     }
 
@@ -199,7 +200,7 @@ class AuthenticationManager {
       } catch (e, s) {
         _handleRefreshError(e, s, 'forzado');
       } finally {
-        _initialRefreshComplete = true;
+        // _initialRefreshComplete = true;
       }
     }, operationKey: _sessionRefreshKey); // MISMA CLAVE que otros refrescos
   }
@@ -255,30 +256,30 @@ class AuthenticationManager {
     }, operationKey: _sessionRefreshKey); // MISMA CLAVE que otros refrescos
   }
 
-  /// Refresca la sesión (utilizado por el timer periódico)
-  Future<void> _refreshSession() async {
-    // No intentar refresco periódico hasta que el inicial haya terminado
-    if (!_initialRefreshComplete) {
-      developer.log(
-        'Omitiendo refresco periódico porque el refresco inicial aún no ha terminado',
-        name: 'AuthenticationManager',
-      );
-      return;
-    }
+  // /// Refresca la sesión (utilizado por el timer periódico)
+  // Future<void> _refreshSession() async {
+  //   // No intentar refresco periódico hasta que el inicial haya terminado
+  //   if (!_initialRefreshComplete) {
+  //     developer.log(
+  //       'Omitiendo refresco periódico porque el refresco inicial aún no ha terminado',
+  //       name: 'AuthenticationManager',
+  //     );
+  //     return;
+  //   }
 
-    await _asyncOperationGuard.executeSafely(() async {
-      try {
-        await _authTokenRefreshManager.refreshSession();
-        _lastSuccessfulRefresh = DateTime.now();
-        if (_isOfflineMode) {
-          _isOfflineMode = false;
-          _toastService.show('Conexión recuperada');
-        }
-      } catch (e, s) {
-        _handleRefreshError(e, s, 'programado');
-      }
-    }, operationKey: _sessionRefreshKey); // MISMA CLAVE que otros refrescos
-  }
+  //   await _asyncOperationGuard.executeSafely(() async {
+  //     try {
+  //       await _authTokenRefreshManager.refreshSession();
+  //       _lastSuccessfulRefresh = DateTime.now();
+  //       if (_isOfflineMode) {
+  //         _isOfflineMode = false;
+  //         _toastService.show('Conexión recuperada');
+  //       }
+  //     } catch (e, s) {
+  //       _handleRefreshError(e, s, 'programado');
+  //     }
+  //   }, operationKey: _sessionRefreshKey); // MISMA CLAVE que otros refrescos
+  // }
 
   void _handleRefreshError(
       Object error, StackTrace stackTrace, String refreshType) {
