@@ -32,11 +32,9 @@ class _LoginPageState extends State<LoginPage> {
       context.read<LoginCubit>().setup();
       // showDearStudentDialog(context);
       // push WelcomePage
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => const WelcomePage(),
-        ),
-      );
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (context) => const WelcomePage()));
     });
     super.initState();
   }
@@ -71,9 +69,9 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     context.read<LoginCubit>().login(
-          _usernameController.text,
-          _passwordController.text,
-        );
+      _usernameController.text,
+      _passwordController.text,
+    );
   }
 
   @override
@@ -94,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                     'assets/svg/unp_logo_dark.svg',
                     height: size.height * 1.25,
                     colorFilter: ColorFilter.mode(
-                      Theme.of(context).primaryColor,
+                      Theme.of(context).colorScheme.primary,
                       BlendMode.srcOut,
                     ),
                   ),
@@ -150,8 +148,9 @@ class _LoginPageState extends State<LoginPage> {
                                       textInputAction: TextInputAction.next,
                                       onChanged: _validateUsername,
                                       onSubmitted: (_) {
-                                        FocusScope.of(context)
-                                            .requestFocus(_passwordFocusNode);
+                                        FocusScope.of(
+                                          context,
+                                        ).requestFocus(_passwordFocusNode);
                                       },
                                     ),
                                     const SizedBox(height: 16),
@@ -178,27 +177,30 @@ class _LoginPageState extends State<LoginPage> {
                                       child: FilledButton(
                                         style: FilledButton.styleFrom(
                                           shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
                                           ),
                                         ),
-                                        onPressed: status is LoginLoading
-                                            ? null
-                                            : _login,
-                                        child: status is LoginLoading
-                                            ? const SizedBox(
-                                                height: 24,
-                                                width: 24,
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              )
-                                            : const Text(
-                                                'Ingresar',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
+                                        onPressed:
+                                            status is LoginLoading
+                                                ? null
+                                                : _login,
+                                        child:
+                                            status is LoginLoading
+                                                ? const SizedBox(
+                                                  height: 24,
+                                                  width: 24,
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                )
+                                                : const Text(
+                                                  'Ingresar',
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
-                                              ),
                                       ),
                                     ),
                                   ],
@@ -226,38 +228,50 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       TextButton.icon(
                         onPressed: () {
-                          launchUrl(Uri.parse(Links.privacyPolicyUrl),
-                              mode: LaunchMode.externalApplication);
+                          launchUrl(
+                            Uri.parse(Links.privacyPolicyUrl),
+                            mode: LaunchMode.externalApplication,
+                          );
                         },
                         // icon: Icon(MdiIcons.web),
                         label: const Text('Política de privacidad'),
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 0),
+                            horizontal: 8,
+                            vertical: 0,
+                          ),
                         ),
                       ),
                       TextButton.icon(
                         onPressed: () {
-                          launchUrl(Uri.parse(Links.projectUrl),
-                              mode: LaunchMode.externalApplication);
+                          launchUrl(
+                            Uri.parse(Links.projectUrl),
+                            mode: LaunchMode.externalApplication,
+                          );
                         },
                         icon: Icon(MdiIcons.github),
                         label: const Text('Proyecto'),
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 0),
+                            horizontal: 8,
+                            vertical: 0,
+                          ),
                         ),
                       ),
                       TextButton.icon(
                         onPressed: () {
-                          MailUtils.launchEmail(context,
-                              email: Links.contactEmail);
+                          MailUtils.launchEmail(
+                            context,
+                            email: Links.contactEmail,
+                          );
                         },
                         // icon: Icon(MdiIcons.handshake),
                         label: const Text('Contacto'),
                         style: TextButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 0),
+                            horizontal: 8,
+                            vertical: 0,
+                          ),
                         ),
                       ),
                     ],

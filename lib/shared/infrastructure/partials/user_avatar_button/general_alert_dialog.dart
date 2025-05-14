@@ -32,14 +32,8 @@ class AvatarCircleWidget extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16 * 0.6),
           child: ColorFiltered(
-            colorFilter: const ColorFilter.mode(
-              Colors.white,
-              BlendMode.srcIn,
-            ),
-            child: Image.asset(
-              imageFilePath!,
-              fit: BoxFit.cover,
-            ),
+            colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+            child: Image.asset(imageFilePath!, fit: BoxFit.cover),
           ),
         ),
       );
@@ -53,7 +47,8 @@ class AvatarCircleWidget extends StatelessWidget {
       );
     }
     throw Exception(
-        'No image or fallback content provided for AvatarCircleWidget');
+      'No image or fallback content provided for AvatarCircleWidget',
+    );
   }
 }
 
@@ -98,10 +93,7 @@ class GeneralAvatarDialog extends StatelessWidget {
           ),
         ],
       ),
-      contentPadding: EdgeInsets.symmetric(
-        horizontal: 0,
-        vertical: 8,
-      ),
+      contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 8),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -110,7 +102,7 @@ class GeneralAvatarDialog extends StatelessWidget {
             //   imageFilePath:
             //       null, // Replace with actual image path if available
             //   fallbackContent: userFirstNameInitials,
-            //   backgroundColor: Theme.of(context).primaryColor,
+            //   backgroundColor: Theme.of(context).colorScheme.primary,
             //   onTap: () {},
             // ),
             leading: avatar,
@@ -188,11 +180,9 @@ class GeneralAvatarDialog extends StatelessWidget {
 
   Future<void> _launchUrl(BuildContext context, String url) async {
     if (!await launchUrl(Uri.parse(url))) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('No se pudo abrir el enlace'),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('No se pudo abrir el enlace')));
     }
   }
 }

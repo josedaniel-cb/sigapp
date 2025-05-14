@@ -38,8 +38,9 @@ class UserAvatarButtonWidget extends StatelessWidget {
   }
 
   Widget _build(BuildContext context, UserAvatarButtonState state) {
-    final academicProgram =
-        state.mapOrNull(success: (s) => s.data.academicProgram);
+    final academicProgram = state.mapOrNull(
+      success: (s) => s.data.academicProgram,
+    );
 
     final userData = _extractUserData(state);
     final cubit = BlocProvider.of<UserAvatarButtonCubit>(context);
@@ -72,11 +73,12 @@ class UserAvatarButtonWidget extends StatelessWidget {
 
     state.mapOrNull(
       success: (state) {
-        initials = state.data.academicReport.firstName
-            .split(' ')
-            .map((w) => w.characters.first.toUpperCase())
-            .take(2)
-            .join();
+        initials =
+            state.data.academicReport.firstName
+                .split(' ')
+                .map((w) => w.characters.first.toUpperCase())
+                .take(2)
+                .join();
         fullName =
             '${state.data.academicReport.firstName} ${state.data.academicReport.lastName}';
         id = state.data.academicReport.code;
@@ -104,43 +106,38 @@ class UserAvatarButtonWidget extends StatelessWidget {
     required _UserData userData,
     required UserAvatarButtonCubit cubit,
   }) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+
     // Si tenemos una ruta de imagen, creamos un avatar con imagen
     if (imageFilePath != null) {
-      return GestureDetector(
-        onTap: () => _showAvatarDialog(
-          context: context,
-          imageFilePath: imageFilePath,
-          initials: null,
-          userData: userData,
-          cubit: cubit,
-        ),
-        child: AvatarCircleWidget(
-          imageFilePath: imageFilePath,
-          fallbackContent: null,
-          backgroundColor: Theme.of(context).primaryColor,
-          onTap: () => _showAvatarDialog(
-            context: context,
-            imageFilePath: imageFilePath,
-            initials: null,
-            userData: userData,
-            cubit: cubit,
-          ),
-        ),
+      return AvatarCircleWidget(
+        imageFilePath: imageFilePath,
+        fallbackContent: null,
+        backgroundColor: primaryColor,
+        onTap:
+            () => _showAvatarDialog(
+              context: context,
+              imageFilePath: imageFilePath,
+              initials: null,
+              userData: userData,
+              cubit: cubit,
+            ),
       );
     }
 
     // Si no tenemos imagen, creamos un avatar con iniciales
     return InitialsAvatarWidget(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: primaryColor,
       content: initials ?? '?',
       enableGradient: true,
-      onPressed: () => _showAvatarDialog(
-        context: context,
-        imageFilePath: null,
-        initials: initials,
-        userData: userData,
-        cubit: cubit,
-      ),
+      onPressed:
+          () => _showAvatarDialog(
+            context: context,
+            imageFilePath: null,
+            initials: initials,
+            userData: userData,
+            cubit: cubit,
+          ),
     );
   }
 
@@ -151,6 +148,8 @@ class UserAvatarButtonWidget extends StatelessWidget {
     required _UserData userData,
     required UserAvatarButtonCubit cubit,
   }) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -158,7 +157,7 @@ class UserAvatarButtonWidget extends StatelessWidget {
           avatar: AvatarCircleWidget(
             imageFilePath: imageFilePath,
             fallbackContent: initials,
-            backgroundColor: Theme.of(context).primaryColor,
+            backgroundColor: primaryColor,
           ),
           userFullName: userData.fullName,
           userId: userData.id,

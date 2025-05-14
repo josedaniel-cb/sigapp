@@ -27,7 +27,7 @@ class AboutPageWidget extends StatelessWidget {
                 'assets/svg/unp_logo_dark.svg',
                 height: size.height * 1,
                 colorFilter: ColorFilter.mode(
-                  Theme.of(context).primaryColor,
+                  Theme.of(context).colorScheme.primary,
                   BlendMode.srcOut,
                 ),
               ),
@@ -76,9 +76,9 @@ class AboutPageWidget extends StatelessWidget {
               ListTile(
                 title: Text(
                   'Enlaces útiles',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
               _buildLinkListTile(
@@ -122,9 +122,7 @@ class AboutPageWidget extends StatelessWidget {
       mode: LaunchMode.externalApplication,
     )) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('No se pudo abrir el enlace'),
-        ),
+        const SnackBar(content: Text('No se pudo abrir el enlace')),
       );
     }
   }

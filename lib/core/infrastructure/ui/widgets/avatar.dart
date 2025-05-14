@@ -21,10 +21,7 @@ class AvatarWidget extends StatelessWidget {
     if (onPressed == null) {
       return _buildAvatar();
     }
-    return _TapRegion(
-      onTap: onPressed!,
-      child: _buildAvatar(),
-    );
+    return _TapRegion(onTap: onPressed!, child: _buildAvatar());
   }
 
   Widget _buildAvatar() {
@@ -56,26 +53,22 @@ class _AvatarContainer extends StatelessWidget {
     return Container(
       width: diameter,
       height: diameter,
-      decoration: enableGradient
-          ? BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  backgroundColor.withValues(alpha: 0.5),
-                  backgroundColor,
-                  backgroundColor.withValues(alpha: 0.7),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              shape: BoxShape.circle,
-            )
-          : BoxDecoration(
-              color: backgroundColor,
-              shape: BoxShape.circle,
-            ),
-      child: Center(
-        child: child,
-      ),
+      decoration:
+          enableGradient
+              ? BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color.lerp(backgroundColor, Colors.white, 0.4)!,
+                    backgroundColor,
+                    Color.lerp(backgroundColor, Colors.black, 0.6)!,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                shape: BoxShape.circle,
+              )
+              : BoxDecoration(color: backgroundColor, shape: BoxShape.circle),
+      child: Center(child: child),
     );
   }
 }

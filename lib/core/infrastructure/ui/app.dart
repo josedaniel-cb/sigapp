@@ -25,14 +25,15 @@ class MyApp extends StatelessWidget {
                 return Overlay(
                   initialEntries: [
                     OverlayEntry(
-                      builder: (context) => Stack(
-                        children: [
-                          child!,
-                          Positioned.fill(
-                            child: ProgressIndicatorOverlayWidget(),
+                      builder:
+                          (context) => Stack(
+                            children: [
+                              child!,
+                              Positioned.fill(
+                                child: ProgressIndicatorOverlayWidget(),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
                     ),
                   ],
                 );
@@ -43,31 +44,19 @@ class MyApp extends StatelessWidget {
           themeMode: ThemeMode.system,
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(
-              seedColor: Color(BrandTheme.primaryColor),
-              primary: Color(BrandTheme.primaryColor),
-              secondary: Color(BrandTheme.secondaryColor),
+              seedColor: BrandTheme.primaryColor,
+              primary: BrandTheme.primaryColor,
+              secondary: BrandTheme.secondaryColor,
               brightness: Brightness.light,
             ),
           ),
-          // darkTheme: ThemeData(
-          //   colorScheme: ColorScheme.fromSeed(
-          //     seedColor: Color(BrandTheme.primaryColorDark),
-          //     primary: Color(BrandTheme.primaryColorDark),
-          //     secondary: Color(BrandTheme.secondaryColorDark),
-          //     brightness: Brightness.dark,
-          //     // background: Color(BrandTheme.backgroundColorDark), // deprecated
-          //     surface: Color(BrandTheme.surfaceColorDark),
-          //     error: Color(BrandTheme.errorColorDark),
-          //   ),
-          // ),
           darkTheme: ThemeData(
             colorScheme: ColorScheme.fromSeed(
-              seedColor: Color(BrandTheme.primaryColor),
-              primary: Color(BrandTheme.primaryColor),
-              secondary: Color(BrandTheme.secondaryColor),
+              seedColor: BrandTheme.primaryColorDark,
+              primary: BrandTheme.primaryColorDark,
+              // secondary: BrandTheme.secondaryColorDark,
+              secondary: BrandTheme.secondaryColor,
               brightness: Brightness.dark,
-              // surface: Color(BrandTheme.surfaceColorDark),
-              // error: Color(BrandTheme.errorColorDark),
             ),
           ),
         ),

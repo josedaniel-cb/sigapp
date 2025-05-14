@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sigapp/core/infrastructure/ui/theme/brand_theme.dart';
 
 class BrandTextWidget extends StatelessWidget {
-  const BrandTextWidget({
-    super.key,
-    this.fontSize,
-  });
+  const BrandTextWidget({super.key, this.fontSize});
 
   final double? fontSize;
 
@@ -19,7 +15,7 @@ class BrandTextWidget extends StatelessWidget {
             text: 'SIG',
             style: GoogleFonts.montserrat(
               textStyle: TextStyle(
-                color: const Color(BrandTheme.primaryColor),
+                color: Theme.of(context).colorScheme.primary,
                 fontWeight: FontWeight.w600,
                 fontSize: fontSize,
               ),
@@ -29,7 +25,7 @@ class BrandTextWidget extends StatelessWidget {
             text: 'App',
             style: GoogleFonts.montserrat(
               textStyle: TextStyle(
-                color: const Color(BrandTheme.secondaryColor),
+                color: Theme.of(context).colorScheme.secondary,
                 fontWeight: FontWeight.w600,
                 fontSize: fontSize,
               ),

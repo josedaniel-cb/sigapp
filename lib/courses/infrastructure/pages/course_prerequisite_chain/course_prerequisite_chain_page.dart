@@ -26,76 +26,78 @@ class CoursePrerequisiteChainPage extends StatelessWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Cadena de requisitos'),
-      ),
-      body: (() {
-        final maxDepth = math.max(
-          prerequisiteCoursesTree?.depth ?? 0,
-          dependentCoursesTree?.depth ?? 0,
-        );
-        if (maxDepth < 5) {
-          return SingleChildScrollView(
-            child: _buildBody(
-              prerequisiteCoursesTree,
-              dependentCoursesTree,
-              context,
-            ),
-          );
-        }
+      appBar: AppBar(title: Text('Cadena de requisitos')),
+      body:
+          (() {
+            final maxDepth = math.max(
+              prerequisiteCoursesTree?.depth ?? 0,
+              dependentCoursesTree?.depth ?? 0,
+            );
+            if (maxDepth < 5) {
+              return SingleChildScrollView(
+                child: _buildBody(
+                  prerequisiteCoursesTree,
+                  dependentCoursesTree,
+                  context,
+                ),
+              );
+            }
 
-        return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: SizedBox(
-            width: (() {
-              final mediaQueryWidth = MediaQuery.of(context).size.width;
-              return mediaQueryWidth * (1 + (maxDepth - 5) * 0.1);
-            })(),
-            child: SingleChildScrollView(
-              child: _buildBody(
-                prerequisiteCoursesTree,
-                dependentCoursesTree,
-                context,
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SizedBox(
+                width:
+                    (() {
+                      final mediaQueryWidth = MediaQuery.of(context).size.width;
+                      return mediaQueryWidth * (1 + (maxDepth - 5) * 0.1);
+                    })(),
+                child: SingleChildScrollView(
+                  child: _buildBody(
+                    prerequisiteCoursesTree,
+                    dependentCoursesTree,
+                    context,
+                  ),
+                ),
               ),
-            ),
-          ),
-        );
-      })(),
+            );
+          })(),
     );
   }
 
-  Container _buildBody(CourseTreeNode? prerequisiteCoursesTree,
-      CourseTreeNode? dependentCoursesTree, BuildContext context) {
+  Container _buildBody(
+    CourseTreeNode? prerequisiteCoursesTree,
+    CourseTreeNode? dependentCoursesTree,
+    BuildContext context,
+  ) {
     return Container(
       padding: const EdgeInsets.all(8),
-      child: prerequisiteCoursesTree == null && dependentCoursesTree == null
-          ? Center(
-              child: Text('No hay cursos relacionados'),
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (prerequisiteCoursesTree != null)
-                  _buildTree(
-                    context,
-                    node: prerequisiteCoursesTree,
-                    title: 'Requisitos',
-                    subtitle:
-                        'Cursos necesarios para llevar ${course.info.courseName}',
-                  ),
-                if (prerequisiteCoursesTree != null &&
-                    dependentCoursesTree != null)
-                  SizedBox(height: 16),
-                if (dependentCoursesTree != null)
-                  _buildTree(
-                    context,
-                    node: dependentCoursesTree,
-                    title: 'Dependientes',
-                    subtitle:
-                        'Cursos que requieren aprobar ${course.info.courseName}',
-                  ),
-              ],
-            ),
+      child:
+          prerequisiteCoursesTree == null && dependentCoursesTree == null
+              ? Center(child: Text('No hay cursos relacionados'))
+              : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (prerequisiteCoursesTree != null)
+                    _buildTree(
+                      context,
+                      node: prerequisiteCoursesTree,
+                      title: 'Requisitos',
+                      subtitle:
+                          'Cursos necesarios para llevar ${course.info.courseName}',
+                    ),
+                  if (prerequisiteCoursesTree != null &&
+                      dependentCoursesTree != null)
+                    SizedBox(height: 16),
+                  if (dependentCoursesTree != null)
+                    _buildTree(
+                      context,
+                      node: dependentCoursesTree,
+                      title: 'Dependientes',
+                      subtitle:
+                          'Cursos que requieren aprobar ${course.info.courseName}',
+                    ),
+                ],
+              ),
     );
   }
 
@@ -113,23 +115,13 @@ class CoursePrerequisiteChainPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                title,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+              Text(title, style: Theme.of(context).textTheme.titleMedium),
               // SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+              Text(subtitle, style: Theme.of(context).textTheme.bodyLarge),
             ],
           ),
         ),
-        _buildTreeItem(
-          context,
-          node: node,
-          showRoot: false,
-        ),
+        _buildTreeItem(context, node: node, showRoot: false),
       ],
     );
   }
@@ -150,18 +142,22 @@ class CoursePrerequisiteChainPage extends StatelessWidget {
         width: MediaQuery.of(context).size.width - 8 * 8,
         child: ListTile(
           title: Text(course.info.courseName),
-          leading: (() {
-            if (course.isApproved == true) {
-              return const Icon(Icons.check, color: Colors.green);
-            }
-            if (course.isApproved == false) {
-              return const Icon(Icons.close, color: Colors.red);
-            }
-            if (course.hasPrerequisitesApproved == true) {
-              return Icon(Icons.lock_open_outlined, color: theme.primaryColor);
-            }
-            return Icon(Icons.lock_outlined);
-          })(),
+          leading:
+              (() {
+                if (course.isApproved == true) {
+                  return const Icon(Icons.check, color: Colors.green);
+                }
+                if (course.isApproved == false) {
+                  return const Icon(Icons.close, color: Colors.red);
+                }
+                if (course.hasPrerequisitesApproved == true) {
+                  return Icon(
+                    Icons.lock_open_outlined,
+                    color: theme.colorScheme.primary,
+                  );
+                }
+                return Icon(Icons.lock_outlined);
+              })(),
           // subtitle: Text('Ciclo ${course.info.termRomanNumeral}'),
           subtitle: CourseSubtitleWidget(
             children: [
@@ -171,18 +167,19 @@ class CoursePrerequisiteChainPage extends StatelessWidget {
               ),
               course.info.courseType == CourseType.mandatory
                   ? CourseSubtitleWidgetItem(
-                      text: 'Obligatorio',
-                      icon: Icons.school,
-                    )
+                    text: 'Obligatorio',
+                    icon: Icons.school,
+                  )
                   : CourseSubtitleWidgetItem(
-                      text: 'Electivo',
-                      icon: MdiIcons.leaf,
-                    ),
+                    text: 'Electivo',
+                    icon: MdiIcons.leaf,
+                  ),
               CourseSubtitleWidgetItem(
-                text: course.info.credits == 1
-                    ? '1 crédito'
-                    : '${course.info.credits} créditos',
-              )
+                text:
+                    course.info.credits == 1
+                        ? '1 crédito'
+                        : '${course.info.credits} créditos',
+              ),
             ],
           ),
         ),
@@ -202,49 +199,45 @@ class CoursePrerequisiteChainPage extends StatelessWidget {
         padding: const EdgeInsets.only(left: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: node.children.asMap().entries.map((entry) {
-            final child = entry.value;
-            final isLast = entry.key == node.children.length - 1;
-            return Stack(
-              children: [
-                Positioned(
-                  top: 0,
-                  child: Container(
-                    color: dividerColor,
-                    width: thickness,
-                    height: top,
-                  ),
-                ),
-                if (!isLast)
-                  Positioned(
-                    top: top,
-                    bottom: 0,
-                    child: Container(
-                      color: dividerColor,
-                      width: thickness,
-                      height: double.infinity,
-                    ),
-                  ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          children:
+              node.children.asMap().entries.map((entry) {
+                final child = entry.value;
+                final isLast = entry.key == node.children.length - 1;
+                return Stack(
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(top: top),
-                      color: dividerColor,
-                      width: width,
-                      height: thickness,
-                    ),
-                    Expanded(
-                      child: _buildTreeItem(
-                        context,
-                        node: child,
+                    Positioned(
+                      top: 0,
+                      child: Container(
+                        color: dividerColor,
+                        width: thickness,
+                        height: top,
                       ),
                     ),
+                    if (!isLast)
+                      Positioned(
+                        top: top,
+                        bottom: 0,
+                        child: Container(
+                          color: dividerColor,
+                          width: thickness,
+                          height: double.infinity,
+                        ),
+                      ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: top),
+                          color: dividerColor,
+                          width: width,
+                          height: thickness,
+                        ),
+                        Expanded(child: _buildTreeItem(context, node: child)),
+                      ],
+                    ),
                   ],
-                ),
-              ],
-            );
-          }).toList(),
+                );
+              }).toList(),
         ),
       );
     }
@@ -255,10 +248,7 @@ class CoursePrerequisiteChainPage extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        buildRoot(),
-        if (node.children.isNotEmpty) buildChildren(),
-      ],
+      children: [buildRoot(), if (node.children.isNotEmpty) buildChildren()],
     );
   }
 }
