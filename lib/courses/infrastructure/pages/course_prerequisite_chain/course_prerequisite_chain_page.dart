@@ -4,6 +4,8 @@ import 'package:sigapp/courses/domain/entities/course_type.dart';
 import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.dart';
 import 'package:sigapp/courses/infrastructure/pages/career/widgets/course_subtitle.dart';
 
+enum _ViewMode { tree, list }
+
 class CoursePrerequisiteChainPage extends StatefulWidget {
   const CoursePrerequisiteChainPage({
     super.key,
@@ -33,6 +35,8 @@ class _CoursePrerequisiteChainPageState
   String _approvalFilterDep = 'todos';
   bool _highlightCriticalPath = false;
   Set<String> _criticalPathIds = {};
+
+  _ViewMode _viewMode = _ViewMode.tree;
 
   void _toggleCriticalPath(CourseTreeNode? root) {
     if (!_highlightCriticalPath) {
@@ -140,7 +144,7 @@ class _CoursePrerequisiteChainPageState
     required ValueChanged<bool> onMandatoryChanged,
     required ValueChanged<bool> onElectiveChanged,
     required ValueChanged<String> onApprovalChanged,
-    required String subtitle,
+    required String subtitle, // <- dejar pero no usar
   }) {
     final bool showFilters = tree != null && tree.children.isNotEmpty;
     return Column(
@@ -150,116 +154,259 @@ class _CoursePrerequisiteChainPageState
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children:
-                  [
-                    _buildFilterChips(
-                      showMandatory,
-                      showElective,
-                      onMandatoryChanged,
-                      onElectiveChanged,
-                    ),
-                    _buildApprovalChips(approvalFilter, onApprovalChanged),
-                    _buildCriticalPathButton(tree),
-                  ].where((w) => w != null).map((e) => e!).toList(),
+              children: [
+                _buildFilterChips(
+                  showMandatory,
+                  showElective,
+                  onMandatoryChanged,
+                  onElectiveChanged,
+                ),
+                _buildApprovalChips(approvalFilter, onApprovalChanged),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    _buildViewModeButton(),
+                    const SizedBox(width: 8),
+                    if (tree.children.isNotEmpty)
+                      _buildCriticalPathButton(tree)!,
+                  ],
+                ),
+              ],
             ),
           ),
         Expanded(
-          child: _buildTreeFiltered(
-            context,
-            tree,
-            subtitle,
-            showMandatory,
-            showElective,
-            approvalFilter,
-            highlightCriticalPath: _highlightCriticalPath,
-            criticalPathIds: _criticalPathIds,
+          child:
+              _viewMode == _ViewMode.tree
+                  ? _buildTreeFiltered(
+                    context,
+                    tree,
+                    showMandatory,
+                    showElective,
+                    approvalFilter,
+                    highlightCriticalPath: _highlightCriticalPath,
+                    criticalPathIds: _criticalPathIds,
+                  )
+                  : _buildFlatListFiltered(
+                    context,
+                    tree,
+                    showMandatory,
+                    showElective,
+                    approvalFilter,
+                    highlightCriticalPath: _highlightCriticalPath,
+                    criticalPathIds: _criticalPathIds,
+                  ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildViewModeButton() {
+    return ElevatedButton.icon(
+      onPressed: () {
+        setState(() {
+          _viewMode =
+              _viewMode == _ViewMode.tree ? _ViewMode.list : _ViewMode.tree;
+        });
+      },
+      icon: Icon(
+        _viewMode == _ViewMode.tree ? Icons.account_tree : Icons.view_list,
+      ),
+      label: Text(_viewMode == _ViewMode.tree ? 'Vista árbol' : 'Vista lista'),
+    );
+  }
+
+  // Mejorada: lista plana con cards agrupadas por ciclo
+  Widget _buildFlatListFiltered(
+    BuildContext context,
+    CourseTreeNode? root,
+    bool showMandatory,
+    bool showElective,
+    String approvalFilter, {
+    bool highlightCriticalPath = false,
+    Set<String> criticalPathIds = const {},
+  }) {
+    List<CourseTreeNode> flatList = [];
+    void flatten(CourseTreeNode? node) {
+      if (node == null) return;
+      flatList.add(node);
+      for (final child in node.children) {
+        flatten(child);
+      }
+    }
+
+    if (root != null) {
+      flatten(root);
+      // Aplicar filtros
+      flatList =
+          flatList.where((node) {
+            final typeOk =
+                (node.course.info.courseType == CourseType.mandatory &&
+                    showMandatory) ||
+                (node.course.info.courseType == CourseType.elective &&
+                    showElective);
+            final approvalOk =
+                approvalFilter == 'todos' ||
+                (approvalFilter == 'aprobado' &&
+                    node.course.isApproved == true) ||
+                (approvalFilter == 'no_aprobado' &&
+                    node.course.isApproved == false);
+            return typeOk && approvalOk;
+          }).toList();
+    }
+    if (root == null) {
+      return Center(child: Text('No hay cursos relacionados'));
+    }
+    if (flatList.isEmpty) {
+      return Center(child: Text('No hay cursos que coincidan con los filtros'));
+    }
+    // Agrupar por ciclo
+    Map<String, List<CourseTreeNode>> grouped = {};
+    for (final node in flatList) {
+      final ciclo = node.course.info.termRomanNumeral;
+      grouped.putIfAbsent(ciclo, () => []).add(node);
+    }
+    final sortedKeys = grouped.keys.toList()..sort((a, b) => a.compareTo(b));
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: ListView.builder(
+            itemCount: sortedKeys.length,
+            itemBuilder: (context, idx) {
+              final ciclo = sortedKeys[idx];
+              final nodes = grouped[ciclo]!;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    color: theme.colorScheme.surfaceVariant,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.book,
+                          size: 18,
+                          color: theme.colorScheme.primary,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Ciclo $ciclo',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          '(${nodes.length} ${nodes.length == 1 ? 'curso' : 'cursos'})',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: theme.colorScheme.onSurfaceVariant
+                                .withOpacity(0.7),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ...nodes.map(
+                    (node) => _buildFlatListTile(
+                      context,
+                      node,
+                      highlightCriticalPath,
+                      criticalPathIds,
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ],
     );
   }
 
-  Widget? _buildCriticalPathButton(CourseTreeNode tree) {
-    if (tree.children.isEmpty) return null;
-    return Container(
-      margin: const EdgeInsets.only(top: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+  Widget _buildFlatListTile(
+    BuildContext context,
+    CourseTreeNode node,
+    bool highlightCriticalPath,
+    Set<String> criticalPathIds,
+  ) {
+    final course = node.course;
+    final theme = Theme.of(context);
+    final isCritical =
+        highlightCriticalPath &&
+        criticalPathIds.contains(course.info.courseCode);
+    return ListTile(
+      dense: true,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+      leading:
+          (() {
+            if (course.isApproved == true) {
+              return Icon(
+                Icons.check,
+                color: isCritical ? Colors.orange : Colors.green,
+              );
+            }
+            if (course.isApproved == false) {
+              return Icon(
+                Icons.close,
+                color: isCritical ? Colors.orange : Colors.red,
+              );
+            }
+            if (course.hasPrerequisitesApproved == true) {
+              return Icon(
+                Icons.lock_open_outlined,
+                color: isCritical ? Colors.orange : theme.colorScheme.primary,
+              );
+            }
+            return Icon(
+              Icons.lock_outlined,
+              color: isCritical ? Colors.orange : null,
+            );
+          })(),
+      title: Text(
+        course.info.courseName,
+        style:
+            isCritical
+                ? theme.textTheme.titleMedium?.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.bold,
+                )
+                : theme.textTheme.bodyLarge,
+      ),
+      subtitle: CourseSubtitleWidget(
         children: [
-          ElevatedButton.icon(
-            icon: Icon(
-              _highlightCriticalPath ? Icons.visibility_off : Icons.alt_route,
-            ),
-            label: Text(
-              _highlightCriticalPath
-                  ? 'Ocultar ruta crítica'
-                  : 'Mostrar ruta crítica',
-            ),
-            onPressed: () => _toggleCriticalPath(tree),
+          course.info.courseType == CourseType.mandatory
+              ? CourseSubtitleWidgetItem(
+                text: 'Obligatorio',
+                icon: Icons.school,
+              )
+              : CourseSubtitleWidgetItem(text: 'Electivo', icon: MdiIcons.leaf),
+          CourseSubtitleWidgetItem(
+            text:
+                course.info.credits == 1
+                    ? '1 crédito'
+                    : '${course.info.credits} créditos',
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildFilterChips(
-    bool showMandatory,
-    bool showElective,
-    ValueChanged<bool> onMandatoryChanged,
-    ValueChanged<bool> onElectiveChanged,
-  ) {
-    return Wrap(
-      spacing: 8,
-      children: [
-        FilterChip(
-          label: const Text('Obligatorios'),
-          selected: showMandatory,
-          onSelected: onMandatoryChanged,
-          padding: const EdgeInsets.all(4),
-        ),
-        FilterChip(
-          label: const Text('Electivos'),
-          selected: showElective,
-          onSelected: onElectiveChanged,
-          padding: const EdgeInsets.all(4),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildApprovalChips(
-    String approvalFilter,
-    ValueChanged<String> onApprovalChanged,
-  ) {
-    return Wrap(
-      spacing: 8,
-      children: [
-        ChoiceChip(
-          label: const Text('Todos'),
-          selected: approvalFilter == 'todos',
-          onSelected: (v) => onApprovalChanged('todos'),
-          padding: const EdgeInsets.all(4),
-        ),
-        ChoiceChip(
-          label: const Text('Aprobados'),
-          selected: approvalFilter == 'aprobado',
-          onSelected: (v) => onApprovalChanged('aprobado'),
-          padding: const EdgeInsets.all(4),
-        ),
-        ChoiceChip(
-          label: const Text('No aprobados'),
-          selected: approvalFilter == 'no_aprobado',
-          onSelected: (v) => onApprovalChanged('no_aprobado'),
-          padding: const EdgeInsets.all(4),
-        ),
-      ],
+      trailing:
+          isCritical
+              ? Tooltip(
+                message: 'En ruta crítica',
+                child: Icon(Icons.alt_route, color: Colors.orange, size: 20),
+              )
+              : null,
     );
   }
 
   Widget _buildTreeFiltered(
     BuildContext context,
     CourseTreeNode? root,
-    String subtitle,
     bool showMandatory,
     bool showElective,
     String approvalFilter, {
@@ -299,8 +446,6 @@ class _CoursePrerequisiteChainPageState
           child: _buildTree(
             context,
             node: filtered!,
-            title: '',
-            subtitle: subtitle,
             highlightCriticalPath: highlightCriticalPath,
             criticalPathIds: criticalPathIds,
           ),
@@ -350,27 +495,12 @@ class _CoursePrerequisiteChainPageState
   Widget _buildTree(
     BuildContext context, {
     required CourseTreeNode node,
-    required String title,
-    required String subtitle,
     bool highlightCriticalPath = false,
     Set<String> criticalPathIds = const {},
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (title.isNotEmpty) ...[
-                Text(title, style: Theme.of(context).textTheme.titleMedium),
-                SizedBox(height: 4),
-              ],
-              Text(subtitle, style: Theme.of(context).textTheme.bodyLarge),
-            ],
-          ),
-        ),
         _buildTreeItem(
           context,
           node: node,
@@ -531,6 +661,75 @@ class _CoursePrerequisiteChainPageState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [buildRoot(), if (node.children.isNotEmpty) buildChildren()],
+    );
+  }
+
+  Widget _buildFilterChips(
+    bool showMandatory,
+    bool showElective,
+    ValueChanged<bool> onMandatoryChanged,
+    ValueChanged<bool> onElectiveChanged,
+  ) {
+    return Wrap(
+      spacing: 8,
+      children: [
+        FilterChip(
+          label: const Text('Obligatorios'),
+          selected: showMandatory,
+          onSelected: onMandatoryChanged,
+          padding: const EdgeInsets.all(4),
+        ),
+        FilterChip(
+          label: const Text('Electivos'),
+          selected: showElective,
+          onSelected: onElectiveChanged,
+          padding: const EdgeInsets.all(4),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildApprovalChips(
+    String approvalFilter,
+    ValueChanged<String> onApprovalChanged,
+  ) {
+    return Wrap(
+      spacing: 8,
+      children: [
+        ChoiceChip(
+          label: const Text('Todos'),
+          selected: approvalFilter == 'todos',
+          onSelected: (v) => onApprovalChanged('todos'),
+          padding: const EdgeInsets.all(4),
+        ),
+        ChoiceChip(
+          label: const Text('Aprobados'),
+          selected: approvalFilter == 'aprobado',
+          onSelected: (v) => onApprovalChanged('aprobado'),
+          padding: const EdgeInsets.all(4),
+        ),
+        ChoiceChip(
+          label: const Text('No aprobados'),
+          selected: approvalFilter == 'no_aprobado',
+          onSelected: (v) => onApprovalChanged('no_aprobado'),
+          padding: const EdgeInsets.all(4),
+        ),
+      ],
+    );
+  }
+
+  Widget? _buildCriticalPathButton(CourseTreeNode tree) {
+    if (tree.children.isEmpty) return null;
+    return ElevatedButton.icon(
+      icon: Icon(
+        _highlightCriticalPath ? Icons.visibility_off : Icons.alt_route,
+      ),
+      label: Text(
+        _highlightCriticalPath
+            ? 'Ocultar ruta crítica'
+            : 'Mostrar ruta crítica',
+      ),
+      onPressed: () => _toggleCriticalPath(tree),
     );
   }
 }
