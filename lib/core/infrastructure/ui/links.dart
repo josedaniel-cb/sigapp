@@ -9,4 +9,6 @@ class Links {
   static const paymentsWebAppUrl = 'https://pagos.unp.edu.pe/';
   static const resetPasswordUrl =
       'https://academico.unp.edu.pe/Cuenta/ResetPassword';
+  static const citGoogleMapsUrl = 'https://maps.app.goo.gl/hu8cCQk6iCv8DDe28';
+  static const unpPeruGovernmentUrl = 'https://www.gob.pe/unp';
 }

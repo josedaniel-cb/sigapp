@@ -174,13 +174,13 @@ class _LoginPageState extends State<LoginPage> {
                                     SizedBox(
                                       width: double.infinity,
                                       child: FilledButton(
-                                        style: FilledButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              8,
-                                            ),
-                                          ),
-                                        ),
+                                        // style: FilledButton.styleFrom(
+                                        //   shape: RoundedRectangleBorder(
+                                        //     borderRadius: BorderRadius.circular(
+                                        //       8,
+                                        //     ),
+                                        //   ),
+                                        // ),
                                         onPressed:
                                             status is LoginLoading
                                                 ? null
@@ -201,14 +201,10 @@ class _LoginPageState extends State<LoginPage> {
                                       width: double.infinity,
                                       child: TextButton(
                                         onPressed: () {
-                                          launchUrl(
-                                            Uri.parse(Links.resetPasswordUrl),
-                                            mode:
-                                                LaunchMode.externalApplication,
-                                          );
+                                          _showTroubleshootDialog(context);
                                         },
                                         child: const Text(
-                                          'Olvidé mi contraseña',
+                                          'Tengo problemas para ingresar',
                                         ),
                                       ),
                                     ),
@@ -253,6 +249,73 @@ class _LoginPageState extends State<LoginPage> {
           }
         },
       ),
+    );
+  }
+
+  Future<dynamic> _showTroubleshootDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Dificultades para ingresar'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('1. Verifica que tu contraseña es correcta:'),
+                const SizedBox(height: 4),
+                FilledButton.icon(
+                  onPressed: () {
+                    launchUrl(
+                      Uri.parse(Links.sigaWebAppUrl),
+                      mode: LaunchMode.externalApplication,
+                    );
+                  },
+                  icon: const Icon(Icons.open_in_new),
+                  label: const Text('Verificar en SIGA Web'),
+                ),
+                const SizedBox(height: 8),
+
+                const Text('2. Si olvidaste tu contraseña, puedes cambiarla:'),
+                const SizedBox(height: 4),
+                FilledButton.icon(
+                  onPressed: () {
+                    launchUrl(
+                      Uri.parse(Links.resetPasswordUrl),
+                      mode: LaunchMode.externalApplication,
+                    );
+                  },
+                  icon: const Icon(Icons.open_in_new),
+                  label: const Text('Cambiar contraseña'),
+                ),
+                const SizedBox(height: 8),
+
+                const Text(
+                  '3. Si continúas con problemas, contacta al Centro de Informática y Telecomunicaciones (CIT):',
+                ),
+                const SizedBox(height: 4),
+                FilledButton.icon(
+                  onPressed: () {
+                    launchUrl(
+                      Uri.parse(Links.citGoogleMapsUrl),
+                      mode: LaunchMode.externalApplication,
+                    );
+                  },
+                  icon: const Icon(Icons.location_on),
+                  label: const Text('Ubicación del CIT'),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cerrar'),
+            ),
+          ],
+        );
+      },
     );
   }
 
