@@ -166,11 +166,28 @@ class _CoursePrerequisiteChainPageState
                           ? Icons.visibility_off
                           : Icons.alt_route,
                     ),
-                    title: Text(
-                      _highlightCriticalPath
-                          ? 'Ocultar ruta crítica'
-                          : 'Mostrar ruta crítica',
-                    ),
+                    title:
+                        _highlightCriticalPath
+                            // ? Text('Ocultar ruta crítica')
+                            ? RichText(
+                              text: TextSpan(
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.bodyLarge?.copyWith(fontSize: 18),
+                                children: [
+                                  TextSpan(
+                                    text: 'Ocultar ',
+                                    children: [
+                                      TextSpan(
+                                        text: 'ruta crítica',
+                                        style: TextStyle(color: Colors.orange),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                            : Text('Mostrar ruta crítica'),
                     onTap: () => Navigator.pop(context, 'critical'),
                   ),
                 ],
