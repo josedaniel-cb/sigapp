@@ -199,11 +199,11 @@ class _LoginPageState extends State<LoginPage> {
                                     const SizedBox(height: 8),
                                     SizedBox(
                                       width: double.infinity,
-                                      child: TextButton(
+                                      child: TextButton.icon(
                                         onPressed: () {
                                           _showTroubleshootDialog(context);
                                         },
-                                        child: const Text(
+                                        label: const Text(
                                           'Tengo problemas para ingresar',
                                         ),
                                       ),
@@ -213,7 +213,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               if (status is LoginError)
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 16.0),
+                                  padding: const EdgeInsets.only(top: 4),
                                   child: Text(
                                     status.message,
                                     style: const TextStyle(color: Colors.red),
@@ -326,8 +326,8 @@ class _LoginPageState extends State<LoginPage> {
       style: style.copyWith(color: color),
       child: Wrap(
         alignment: WrapAlignment.center,
-        spacing: 10, // x
-        runSpacing: 5, // y
+        spacing: 12, // x
+        runSpacing: 4, // y
         children: [
           GestureDetector(
             onTap: () {
@@ -369,6 +369,22 @@ class _LoginPageState extends State<LoginPage> {
                 Icon(Icons.email, size: 16, color: color),
                 const SizedBox(width: 4),
                 const Text('Contacto'),
+              ],
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              launchUrl(
+                Uri.parse(Links.unpPeruGovernmentUrl),
+                mode: LaunchMode.externalApplication,
+              );
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(MdiIcons.web, size: 16, color: color),
+                const SizedBox(width: 4),
+                const Text('gob.pe'),
               ],
             ),
           ),
