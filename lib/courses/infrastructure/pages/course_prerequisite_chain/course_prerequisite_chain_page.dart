@@ -3,7 +3,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:sigapp/courses/domain/entities/course_type.dart';
 import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.dart';
 import 'package:sigapp/courses/infrastructure/pages/career/widgets/course_subtitle.dart';
-import 'dart:math' as math;
 
 class CoursePrerequisiteChainPage extends StatefulWidget {
   const CoursePrerequisiteChainPage({
@@ -24,9 +23,14 @@ class _CoursePrerequisiteChainPageState
     extends State<CoursePrerequisiteChainPage>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
-  bool _showMandatory = true;
-  bool _showElective = true;
-  String _approvalFilter = 'todos'; // 'todos', 'aprobado', 'no_aprobado'
+  // Filtros para requisitos
+  bool _showMandatoryReq = true;
+  bool _showElectiveReq = true;
+  String _approvalFilterReq = 'todos';
+  // Filtros para dependientes
+  bool _showMandatoryDep = true;
+  bool _showElectiveDep = true;
+  String _approvalFilterDep = 'todos';
 
   @override
   void initState() {
@@ -58,8 +62,6 @@ class _CoursePrerequisiteChainPageState
     final dependentCoursesTree = widget.course.getDependentCoursesTree(
       programCurriculum: widget.programCurriculum,
     );
-    final showFilters =
-        _tabController.index == 1; // Solo mostrar filtros en Dependientes
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cadena de requisitos'),
@@ -68,76 +70,106 @@ class _CoursePrerequisiteChainPageState
           tabs: const [Tab(text: 'Requisitos'), Tab(text: 'Dependientes')],
         ),
       ),
-      body: Column(
+      body: TabBarView(
+        controller: _tabController,
         children: [
-          if (showFilters)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Wrap(
-                    spacing: 8,
-                    children: [
-                      FilterChip(
-                        label: const Text('Obligatorios'),
-                        selected: _showMandatory,
-                        onSelected: (v) => setState(() => _showMandatory = v),
-                      ),
-                      FilterChip(
-                        label: const Text('Electivos'),
-                        selected: _showElective,
-                        onSelected: (v) => setState(() => _showElective = v),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 8,
-                    children: [
-                      ChoiceChip(
-                        label: const Text('Todos'),
-                        selected: _approvalFilter == 'todos',
-                        onSelected:
-                            (v) => setState(() => _approvalFilter = 'todos'),
-                      ),
-                      ChoiceChip(
-                        label: const Text('Aprobados'),
-                        selected: _approvalFilter == 'aprobado',
-                        onSelected:
-                            (v) => setState(() => _approvalFilter = 'aprobado'),
-                      ),
-                      ChoiceChip(
-                        label: const Text('No aprobados'),
-                        selected: _approvalFilter == 'no_aprobado',
-                        onSelected:
-                            (v) =>
-                                setState(() => _approvalFilter = 'no_aprobado'),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                _buildTreeFiltered(
-                  context,
-                  prerequisiteCoursesTree,
-                  'Cursos necesarios para llevar \'${widget.course.info.courseName}\'',
-                ),
-                _buildTreeFiltered(
-                  context,
-                  dependentCoursesTree,
-                  'Cursos que requieren aprobar \'${widget.course.info.courseName}\'',
-                ),
-              ],
-            ),
+          _buildTabSection(
+            context,
+            tree: prerequisiteCoursesTree,
+            showMandatory: _showMandatoryReq,
+            showElective: _showElectiveReq,
+            approvalFilter: _approvalFilterReq,
+            onMandatoryChanged: (v) => setState(() => _showMandatoryReq = v),
+            onElectiveChanged: (v) => setState(() => _showElectiveReq = v),
+            onApprovalChanged: (v) => setState(() => _approvalFilterReq = v),
+            subtitle:
+                "Cursos necesarios para llevar '${widget.course.info.courseName}'",
+          ),
+          _buildTabSection(
+            context,
+            tree: dependentCoursesTree,
+            showMandatory: _showMandatoryDep,
+            showElective: _showElectiveDep,
+            approvalFilter: _approvalFilterDep,
+            onMandatoryChanged: (v) => setState(() => _showMandatoryDep = v),
+            onElectiveChanged: (v) => setState(() => _showElectiveDep = v),
+            onApprovalChanged: (v) => setState(() => _approvalFilterDep = v),
+            subtitle:
+                "Cursos que requieren aprobar '${widget.course.info.courseName}'",
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildTabSection(
+    BuildContext context, {
+    required CourseTreeNode? tree,
+    required bool showMandatory,
+    required bool showElective,
+    required String approvalFilter,
+    required ValueChanged<bool> onMandatoryChanged,
+    required ValueChanged<bool> onElectiveChanged,
+    required ValueChanged<String> onApprovalChanged,
+    required String subtitle,
+  }) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Wrap(
+                spacing: 8,
+                children: [
+                  FilterChip(
+                    label: const Text('Obligatorios'),
+                    selected: showMandatory,
+                    onSelected: onMandatoryChanged,
+                  ),
+                  FilterChip(
+                    label: const Text('Electivos'),
+                    selected: showElective,
+                    onSelected: onElectiveChanged,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                children: [
+                  ChoiceChip(
+                    label: const Text('Todos'),
+                    selected: approvalFilter == 'todos',
+                    onSelected: (v) => onApprovalChanged('todos'),
+                  ),
+                  ChoiceChip(
+                    label: const Text('Aprobados'),
+                    selected: approvalFilter == 'aprobado',
+                    onSelected: (v) => onApprovalChanged('aprobado'),
+                  ),
+                  ChoiceChip(
+                    label: const Text('No aprobados'),
+                    selected: approvalFilter == 'no_aprobado',
+                    onSelected: (v) => onApprovalChanged('no_aprobado'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: _buildTreeFiltered(
+            context,
+            tree,
+            subtitle,
+            showMandatory,
+            showElective,
+            approvalFilter,
+          ),
+        ),
+      ],
     );
   }
 
@@ -145,20 +177,26 @@ class _CoursePrerequisiteChainPageState
     BuildContext context,
     CourseTreeNode? root,
     String subtitle,
+    bool showMandatory,
+    bool showElective,
+    String approvalFilter,
   ) {
     if (root == null) {
       return const Center(child: Text('No hay cursos relacionados'));
     }
     // Si ambos chips están desactivados, no hay nada que mostrar
-    if (!_showMandatory && !_showElective) {
+    if (!showMandatory && !showElective) {
       return const Center(
         child: Text('Activa al menos un tipo de curso para ver resultados'),
       );
     }
     // Si no hay filtros activos (ambos chips activos y filtro 'todos'), mostrar el árbol completo
     final noFilters =
-        _showMandatory && _showElective && _approvalFilter == 'todos';
-    final filtered = noFilters ? root : _filterTree(root);
+        showMandatory && showElective && approvalFilter == 'todos';
+    final filtered =
+        noFilters
+            ? root
+            : _filterTree(root, showMandatory, showElective, approvalFilter);
     if (filtered == null) {
       return const Center(
         child: Text('No hay cursos que coincidan con los filtros'),
@@ -180,18 +218,33 @@ class _CoursePrerequisiteChainPageState
     );
   }
 
-  CourseTreeNode? _filterTree(CourseTreeNode node) {
+  CourseTreeNode? _filterTree(
+    CourseTreeNode node,
+    bool showMandatory,
+    bool showElective,
+    String approvalFilter,
+  ) {
     // Filtra recursivamente los nodos según los filtros activos
     bool matchesType =
         (node.course.info.courseType == CourseType.mandatory &&
-            _showMandatory) ||
-        (node.course.info.courseType == CourseType.elective && _showElective);
+            showMandatory) ||
+        (node.course.info.courseType == CourseType.elective && showElective);
     bool matchesApproval =
-        _approvalFilter == 'todos' ||
-        (_approvalFilter == 'aprobado' && node.course.isApproved == true) ||
-        (_approvalFilter == 'no_aprobado' && node.course.isApproved == false);
+        approvalFilter == 'todos' ||
+        (approvalFilter == 'aprobado' && node.course.isApproved == true) ||
+        (approvalFilter == 'no_aprobado' && node.course.isApproved == false);
     final filteredChildren =
-        node.children.map(_filterTree).whereType<CourseTreeNode>().toList();
+        node.children
+            .map(
+              (child) => _filterTree(
+                child,
+                showMandatory,
+                showElective,
+                approvalFilter,
+              ),
+            )
+            .whereType<CourseTreeNode>()
+            .toList();
     if (matchesType && matchesApproval) {
       return CourseTreeNode(course: node.course, children: filteredChildren);
     } else if (filteredChildren.isNotEmpty) {
@@ -201,43 +254,6 @@ class _CoursePrerequisiteChainPageState
       // Si ni el nodo ni los hijos cumplen, lo excluimos
       return null;
     }
-  }
-
-  Container _buildBody(
-    CourseTreeNode? prerequisiteCoursesTree,
-    CourseTreeNode? dependentCoursesTree,
-    BuildContext context,
-  ) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      child:
-          prerequisiteCoursesTree == null && dependentCoursesTree == null
-              ? Center(child: Text('No hay cursos relacionados'))
-              : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (prerequisiteCoursesTree != null)
-                    _buildTree(
-                      context,
-                      node: prerequisiteCoursesTree,
-                      title: 'Requisitos',
-                      subtitle:
-                          'Cursos necesarios para llevar ${widget.course.info.courseName}',
-                    ),
-                  if (prerequisiteCoursesTree != null &&
-                      dependentCoursesTree != null)
-                    SizedBox(height: 16),
-                  if (dependentCoursesTree != null)
-                    _buildTree(
-                      context,
-                      node: dependentCoursesTree,
-                      title: 'Dependientes',
-                      subtitle:
-                          'Cursos que requieren aprobar ${widget.course.info.courseName}',
-                    ),
-                ],
-              ),
-    );
   }
 
   Widget _buildTree(
