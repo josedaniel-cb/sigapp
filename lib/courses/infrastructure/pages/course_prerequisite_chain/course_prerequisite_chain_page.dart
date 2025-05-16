@@ -260,21 +260,6 @@ class _CoursePrerequisiteChainPageState
     );
   }
 
-  // Mejorada: lista plana con cards agrupadas por ciclo
-
-  Widget _buildTree(
-    BuildContext context, {
-    required CourseTreeNode node,
-    bool highlightCriticalPath = false,
-    Set<String> criticalPathIds = const {},
-  }) {
-    return TreeCourseChain(
-      node: node,
-      highlightCriticalPath: highlightCriticalPath,
-      criticalPathIds: criticalPathIds,
-    );
-  }
-
   Widget _buildTreeFiltered(
     BuildContext context,
     CourseTreeNode? root,
@@ -309,19 +294,10 @@ class _CoursePrerequisiteChainPageState
         ),
       );
     }
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width * 1.1,
-        child: SingleChildScrollView(
-          child: _buildTree(
-            context,
-            node: filtered!,
-            highlightCriticalPath: highlightCriticalPath,
-            criticalPathIds: criticalPathIds,
-          ),
-        ),
-      ),
+    return TreeCourseChain(
+      node: filtered!,
+      highlightCriticalPath: highlightCriticalPath,
+      criticalPathIds: criticalPathIds,
     );
   }
 
