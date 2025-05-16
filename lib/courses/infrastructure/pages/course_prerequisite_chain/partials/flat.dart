@@ -4,8 +4,8 @@ import 'package:sigapp/courses/domain/entities/course_type.dart';
 import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.dart';
 import 'package:sigapp/courses/infrastructure/pages/career/widgets/course_subtitle.dart';
 
-class FlatCourseChain extends StatelessWidget {
-  const FlatCourseChain({
+class FlatCourseChainWidget extends StatelessWidget {
+  const FlatCourseChainWidget({
     super.key,
     required this.root,
     required this.showMandatory,

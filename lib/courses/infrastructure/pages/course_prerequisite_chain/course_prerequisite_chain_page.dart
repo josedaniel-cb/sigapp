@@ -3,8 +3,13 @@ import 'package:sigapp/courses/domain/entities/course_type.dart';
 import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/flat.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/tree.dart';
+import 'package:sigapp/courses/infrastructure/services/course_chain_preferences.dart';
+import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/view_options_sheet.dart';
+import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/filter_chips.dart';
+import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/approval_chips.dart';
+import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/tab_section.dart';
 
-enum _ViewMode { tree, list }
+enum CoursePrerequisiteChainViewMode { tree, list }
 
 class CoursePrerequisiteChainPage extends StatefulWidget {
   const CoursePrerequisiteChainPage({
@@ -25,20 +30,70 @@ class _CoursePrerequisiteChainPageState
     extends State<CoursePrerequisiteChainPage>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
-  // Filtros para requisitos
+
+  bool _highlightCriticalPath = false;
+  Set<String> _criticalPathIds = {};
+  CoursePrerequisiteChainViewMode _viewMode =
+      CoursePrerequisiteChainViewMode.tree;
+  bool _loadingPrefs = true;
+
   bool _showMandatoryReq = true;
   bool _showElectiveReq = true;
   String _approvalFilterReq = 'todos';
-  // Filtros para dependientes
   bool _showMandatoryDep = true;
   bool _showElectiveDep = true;
   String _approvalFilterDep = 'todos';
-  bool _highlightCriticalPath = false;
-  Set<String> _criticalPathIds = {};
 
-  _ViewMode _viewMode = _ViewMode.tree;
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    _loadPreferences();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final prerequisiteCoursesTree = widget.course.getPrerequisiteCoursesTree(
+        programCurriculum: widget.programCurriculum,
+      );
+      if (prerequisiteCoursesTree == null) {
+        _tabController.index = 1;
+        setState(() {});
+      }
+    });
+  }
 
-  void _toggleCriticalPath(CourseTreeNode? root) {
+  Future<void> _loadPreferences() async {
+    final highlight = await CourseChainPreferences.getHighlightCriticalPath();
+    final viewMode = await CourseChainPreferences.getViewMode();
+    if (highlight) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final currentTree = widget.course.getPrerequisiteCoursesTree(
+          programCurriculum: widget.programCurriculum,
+        );
+        final path = _findCriticalPath(currentTree);
+        setState(() {
+          _highlightCriticalPath = true;
+          _criticalPathIds = path.map((n) => n.course.info.courseCode).toSet();
+          _viewMode =
+              viewMode == 'list'
+                  ? CoursePrerequisiteChainViewMode.list
+                  : CoursePrerequisiteChainViewMode.tree;
+          _loadingPrefs = false;
+        });
+      });
+    } else {
+      setState(() {
+        _highlightCriticalPath = false;
+        _criticalPathIds = {};
+        _viewMode =
+            viewMode == 'list'
+                ? CoursePrerequisiteChainViewMode.list
+                : CoursePrerequisiteChainViewMode.tree;
+        _loadingPrefs = false;
+      });
+    }
+  }
+
+  // --- Ruta crítica ---
+  void _toggleCriticalPath(CourseTreeNode? root) async {
     if (!_highlightCriticalPath) {
       // Calcular la ruta crítica solo si se va a activar
       final path = _findCriticalPath(root);
@@ -46,11 +101,13 @@ class _CoursePrerequisiteChainPageState
         _highlightCriticalPath = true;
         _criticalPathIds = path.map((n) => n.course.info.courseCode).toSet();
       });
+      await CourseChainPreferences.setHighlightCriticalPath(true);
     } else {
       setState(() {
         _highlightCriticalPath = false;
         _criticalPathIds = {};
       });
+      await CourseChainPreferences.setHighlightCriticalPath(false);
     }
   }
 
@@ -66,48 +123,35 @@ class _CoursePrerequisiteChainPageState
   }
 
   @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-    // Selecciona automáticamente 'Dependientes' si no hay requisitos
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final prerequisiteCoursesTree = widget.course.getPrerequisiteCoursesTree(
-        programCurriculum: widget.programCurriculum,
-      );
-      if (prerequisiteCoursesTree == null) {
-        _tabController.index = 1;
-        setState(() {});
-      }
-    });
-  }
-
-  @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final prerequisiteCoursesTree = widget.course.getPrerequisiteCoursesTree(
-      programCurriculum: widget.programCurriculum,
-    );
-    final dependentCoursesTree = widget.course.getDependentCoursesTree(
-      programCurriculum: widget.programCurriculum,
-    );
+  // --- Widgets extraídos para mayor claridad ---
+  Widget _buildLoading() =>
+      const Scaffold(body: Center(child: CircularProgressIndicator()));
+
+  PreferredSizeWidget _buildAppBar(TabController tabController) => AppBar(
+    title: const Text('Cadena de requisitos'),
+    bottom: TabBar(
+      controller: tabController,
+      tabs: const [Tab(text: 'Requisitos'), Tab(text: 'Dependientes')],
+    ),
+  );
+
+  Widget _buildMainScaffold(
+    BuildContext context,
+    TabController tabController,
+    CourseTreeNode? prerequisiteCoursesTree,
+    CourseTreeNode? dependentCoursesTree,
+  ) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Cadena de requisitos'),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [Tab(text: 'Requisitos'), Tab(text: 'Dependientes')],
-        ),
-      ),
+      appBar: _buildAppBar(tabController),
       body: TabBarView(
-        controller: _tabController,
+        controller: tabController,
         children: [
-          _buildTabSection(
-            context,
+          TabSectionWidget(
             tree: prerequisiteCoursesTree,
             showMandatory: _showMandatoryReq,
             showElective: _showElectiveReq,
@@ -115,10 +159,11 @@ class _CoursePrerequisiteChainPageState
             onMandatoryChanged: (v) => setState(() => _showMandatoryReq = v),
             onElectiveChanged: (v) => setState(() => _showElectiveReq = v),
             onApprovalChanged: (v) => setState(() => _approvalFilterReq = v),
-            subtitle: '',
+            isTreeView: _viewMode == CoursePrerequisiteChainViewMode.tree,
+            highlightCriticalPath: _highlightCriticalPath,
+            criticalPathIds: _criticalPathIds,
           ),
-          _buildTabSection(
-            context,
+          TabSectionWidget(
             tree: dependentCoursesTree,
             showMandatory: _showMandatoryDep,
             showElective: _showElectiveDep,
@@ -126,11 +171,30 @@ class _CoursePrerequisiteChainPageState
             onMandatoryChanged: (v) => setState(() => _showMandatoryDep = v),
             onElectiveChanged: (v) => setState(() => _showElectiveDep = v),
             onApprovalChanged: (v) => setState(() => _approvalFilterDep = v),
-            subtitle: '',
+            isTreeView: _viewMode == CoursePrerequisiteChainViewMode.tree,
+            highlightCriticalPath: _highlightCriticalPath,
+            criticalPathIds: _criticalPathIds,
           ),
         ],
       ),
       floatingActionButton: _buildFab(context),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_loadingPrefs) return _buildLoading();
+    final prerequisiteCoursesTree = widget.course.getPrerequisiteCoursesTree(
+      programCurriculum: widget.programCurriculum,
+    );
+    final dependentCoursesTree = widget.course.getDependentCoursesTree(
+      programCurriculum: widget.programCurriculum,
+    );
+    return _buildMainScaffold(
+      context,
+      _tabController,
+      prerequisiteCoursesTree,
+      dependentCoursesTree,
     );
   }
 
@@ -143,62 +207,21 @@ class _CoursePrerequisiteChainPageState
             borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
           ),
           builder: (context) {
-            return SafeArea(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ListTile(
-                    leading: Icon(Icons.account_tree),
-                    title: Text('Vista árbol'),
-                    selected: _viewMode == _ViewMode.tree,
-                    onTap: () => Navigator.pop(context, 'tree'),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.view_list),
-                    title: Text('Vista lista'),
-                    selected: _viewMode == _ViewMode.list,
-                    onTap: () => Navigator.pop(context, 'list'),
-                  ),
-                  const Divider(),
-                  ListTile(
-                    leading: Icon(
-                      _highlightCriticalPath
-                          ? Icons.visibility_off
-                          : Icons.alt_route,
-                    ),
-                    title:
-                        _highlightCriticalPath
-                            // ? Text('Ocultar ruta crítica')
-                            ? RichText(
-                              text: TextSpan(
-                                style: Theme.of(
-                                  context,
-                                ).textTheme.bodyLarge?.copyWith(fontSize: 18),
-                                children: [
-                                  TextSpan(
-                                    text: 'Ocultar ',
-                                    children: [
-                                      TextSpan(
-                                        text: 'ruta crítica',
-                                        style: TextStyle(color: Colors.orange),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            )
-                            : Text('Mostrar ruta crítica'),
-                    onTap: () => Navigator.pop(context, 'critical'),
-                  ),
-                ],
-              ),
+            return ViewOptionsSheetWidget(
+              viewMode: _viewMode,
+              highlightCriticalPath: _highlightCriticalPath,
+              onTree: () => Navigator.pop(context, 'tree'),
+              onList: () => Navigator.pop(context, 'list'),
+              onCritical: () => Navigator.pop(context, 'critical'),
             );
           },
         );
         if (selected == 'tree') {
-          setState(() => _viewMode = _ViewMode.tree);
+          setState(() => _viewMode = CoursePrerequisiteChainViewMode.tree);
+          await CourseChainPreferences.setViewMode('tree');
         } else if (selected == 'list') {
-          setState(() => _viewMode = _ViewMode.list);
+          setState(() => _viewMode = CoursePrerequisiteChainViewMode.list);
+          await CourseChainPreferences.setViewMode('list');
         } else if (selected == 'critical') {
           final currentTree =
               _tabController.index == 0
@@ -236,13 +259,16 @@ class _CoursePrerequisiteChainPageState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildFilterChips(
-                  showMandatory,
-                  showElective,
-                  onMandatoryChanged,
-                  onElectiveChanged,
+                FilterChipsWidget(
+                  showMandatory: showMandatory,
+                  showElective: showElective,
+                  onMandatoryChanged: onMandatoryChanged,
+                  onElectiveChanged: onElectiveChanged,
                 ),
-                _buildApprovalChips(approvalFilter, onApprovalChanged),
+                ApprovalChipsWidget(
+                  approvalFilter: approvalFilter,
+                  onApprovalChanged: onApprovalChanged,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -254,7 +280,7 @@ class _CoursePrerequisiteChainPageState
           ),
         Expanded(
           child:
-              _viewMode == _ViewMode.tree
+              _viewMode == CoursePrerequisiteChainViewMode.tree
                   ? _buildTreeFiltered(
                     context,
                     tree,
@@ -264,7 +290,7 @@ class _CoursePrerequisiteChainPageState
                     highlightCriticalPath: _highlightCriticalPath,
                     criticalPathIds: _criticalPathIds,
                   )
-                  : FlatCourseChain(
+                  : FlatCourseChainWidget(
                     root: tree,
                     showMandatory: showMandatory,
                     showElective: showElective,
@@ -311,7 +337,7 @@ class _CoursePrerequisiteChainPageState
         ),
       );
     }
-    return TreeCourseChain(
+    return TreeCourseChainWidget(
       node: filtered!,
       highlightCriticalPath: highlightCriticalPath,
       criticalPathIds: criticalPathIds,
@@ -354,59 +380,5 @@ class _CoursePrerequisiteChainPageState
       // Si ni el nodo ni los hijos cumplen, lo excluimos
       return null;
     }
-  }
-
-  Widget _buildFilterChips(
-    bool showMandatory,
-    bool showElective,
-    ValueChanged<bool> onMandatoryChanged,
-    ValueChanged<bool> onElectiveChanged,
-  ) {
-    return Wrap(
-      spacing: 8,
-      children: [
-        FilterChip(
-          label: const Text('Obligatorios'),
-          selected: showMandatory,
-          onSelected: onMandatoryChanged,
-          padding: const EdgeInsets.all(4),
-        ),
-        FilterChip(
-          label: const Text('Electivos'),
-          selected: showElective,
-          onSelected: onElectiveChanged,
-          padding: const EdgeInsets.all(4),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildApprovalChips(
-    String approvalFilter,
-    ValueChanged<String> onApprovalChanged,
-  ) {
-    return Wrap(
-      spacing: 8,
-      children: [
-        ChoiceChip(
-          label: const Text('Todos'),
-          selected: approvalFilter == 'todos',
-          onSelected: (v) => onApprovalChanged('todos'),
-          padding: const EdgeInsets.all(4),
-        ),
-        ChoiceChip(
-          label: const Text('Aprobados'),
-          selected: approvalFilter == 'aprobado',
-          onSelected: (v) => onApprovalChanged('aprobado'),
-          padding: const EdgeInsets.all(4),
-        ),
-        ChoiceChip(
-          label: const Text('No aprobados'),
-          selected: approvalFilter == 'no_aprobado',
-          onSelected: (v) => onApprovalChanged('no_aprobado'),
-          padding: const EdgeInsets.all(4),
-        ),
-      ],
-    );
   }
 }

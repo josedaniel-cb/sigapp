@@ -4,12 +4,12 @@ import 'package:sigapp/courses/domain/entities/course_type.dart';
 import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.dart';
 import 'package:sigapp/courses/infrastructure/pages/career/widgets/course_subtitle.dart';
 
-class TreeCourseChain extends StatelessWidget {
+class TreeCourseChainWidget extends StatelessWidget {
   final CourseTreeNode node;
   final bool highlightCriticalPath;
   final Set<String> criticalPathIds;
 
-  const TreeCourseChain({
+  const TreeCourseChainWidget({
     super.key,
     required this.node,
     required this.highlightCriticalPath,
@@ -30,7 +30,7 @@ class TreeCourseChain extends StatelessWidget {
               children: [
                 _CourseTreeItem(
                   node: node,
-                  showRoot: false,
+                  showRoot: true,
                   highlightCriticalPath: highlightCriticalPath,
                   criticalPathIds: criticalPathIds,
                 ),
