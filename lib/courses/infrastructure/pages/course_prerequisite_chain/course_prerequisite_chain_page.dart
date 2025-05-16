@@ -115,8 +115,7 @@ class _CoursePrerequisiteChainPageState
             onMandatoryChanged: (v) => setState(() => _showMandatoryReq = v),
             onElectiveChanged: (v) => setState(() => _showElectiveReq = v),
             onApprovalChanged: (v) => setState(() => _approvalFilterReq = v),
-            subtitle:
-                "Cursos necesarios para llevar '${widget.course.info.courseName}'",
+            subtitle: '',
           ),
           _buildTabSection(
             context,
@@ -127,11 +126,76 @@ class _CoursePrerequisiteChainPageState
             onMandatoryChanged: (v) => setState(() => _showMandatoryDep = v),
             onElectiveChanged: (v) => setState(() => _showElectiveDep = v),
             onApprovalChanged: (v) => setState(() => _approvalFilterDep = v),
-            subtitle:
-                "Cursos que requieren aprobar '${widget.course.info.courseName}'",
+            subtitle: '',
           ),
         ],
       ),
+      floatingActionButton: _buildFab(context),
+    );
+  }
+
+  Widget _buildFab(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () async {
+        final selected = await showModalBottomSheet<String>(
+          context: context,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          ),
+          builder: (context) {
+            return SafeArea(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.account_tree),
+                    title: Text('Vista árbol'),
+                    selected: _viewMode == _ViewMode.tree,
+                    onTap: () => Navigator.pop(context, 'tree'),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.view_list),
+                    title: Text('Vista lista'),
+                    selected: _viewMode == _ViewMode.list,
+                    onTap: () => Navigator.pop(context, 'list'),
+                  ),
+                  const Divider(),
+                  ListTile(
+                    leading: Icon(
+                      _highlightCriticalPath
+                          ? Icons.visibility_off
+                          : Icons.alt_route,
+                    ),
+                    title: Text(
+                      _highlightCriticalPath
+                          ? 'Ocultar ruta crítica'
+                          : 'Mostrar ruta crítica',
+                    ),
+                    onTap: () => Navigator.pop(context, 'critical'),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+        if (selected == 'tree') {
+          setState(() => _viewMode = _ViewMode.tree);
+        } else if (selected == 'list') {
+          setState(() => _viewMode = _ViewMode.list);
+        } else if (selected == 'critical') {
+          final currentTree =
+              _tabController.index == 0
+                  ? widget.course.getPrerequisiteCoursesTree(
+                    programCurriculum: widget.programCurriculum,
+                  )
+                  : widget.course.getDependentCoursesTree(
+                    programCurriculum: widget.programCurriculum,
+                  );
+          _toggleCriticalPath(currentTree);
+        }
+      },
+      child: const Icon(Icons.tune),
+      tooltip: 'Opciones de visualización',
     );
   }
 
@@ -165,10 +229,7 @@ class _CoursePrerequisiteChainPageState
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    _buildViewModeButton(),
-                    const SizedBox(width: 8),
-                    if (tree.children.isNotEmpty)
-                      _buildCriticalPathButton(tree)!,
+                    // Botón de ruta crítica eliminado, solo floating button
                   ],
                 ),
               ],
@@ -197,21 +258,6 @@ class _CoursePrerequisiteChainPageState
                   ),
         ),
       ],
-    );
-  }
-
-  Widget _buildViewModeButton() {
-    return ElevatedButton.icon(
-      onPressed: () {
-        setState(() {
-          _viewMode =
-              _viewMode == _ViewMode.tree ? _ViewMode.list : _ViewMode.tree;
-        });
-      },
-      icon: Icon(
-        _viewMode == _ViewMode.tree ? Icons.account_tree : Icons.view_list,
-      ),
-      label: Text(_viewMode == _ViewMode.tree ? 'Vista árbol' : 'Vista lista'),
     );
   }
 
