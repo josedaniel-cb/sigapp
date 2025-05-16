@@ -61,7 +61,7 @@ class _CourseTreeItem extends StatelessWidget {
                     ? TextStyle(
                       color: theme.colorScheme.primary,
                       fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
+                      // decoration: TextDecoration.underline,
                     )
                     : null,
           ),

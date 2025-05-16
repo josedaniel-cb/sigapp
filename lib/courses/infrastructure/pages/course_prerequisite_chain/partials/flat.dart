@@ -64,7 +64,9 @@ class FlatCourseChain extends StatelessWidget {
       final ciclo = node.course.info.termRomanNumeral;
       grouped.putIfAbsent(ciclo, () => []).add(node);
     }
-    final sortedKeys = grouped.keys.toList()..sort((a, b) => a.compareTo(b));
+    final sortedKeys =
+        grouped.keys.toList()
+          ..sort((a, b) => b.compareTo(a)); // Orden descendente
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -83,6 +85,10 @@ class FlatCourseChain extends StatelessWidget {
                       node: node,
                       highlightCriticalPath: highlightCriticalPath,
                       criticalPathIds: criticalPathIds,
+                      isRoot:
+                          root != null &&
+                          node.course.info.courseCode ==
+                              root!.course.info.courseCode,
                     ),
                   ),
                 ],
@@ -136,10 +142,12 @@ class _FlatCourseTile extends StatelessWidget {
   final CourseTreeNode node;
   final bool highlightCriticalPath;
   final Set<String> criticalPathIds;
+  final bool isRoot;
   const _FlatCourseTile({
     required this.node,
     required this.highlightCriticalPath,
     required this.criticalPathIds,
+    this.isRoot = false,
   });
   @override
   Widget build(BuildContext context) {
@@ -151,6 +159,7 @@ class _FlatCourseTile extends StatelessWidget {
     return ListTile(
       dense: true,
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+      tileColor: isRoot ? Colors.yellow.withValues(alpha: 0.075) : null,
       leading:
           (() {
             if (course.isApproved == true) {
