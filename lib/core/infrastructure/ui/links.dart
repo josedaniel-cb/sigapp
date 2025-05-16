@@ -5,4 +5,8 @@ class Links {
   static const projectUrl = 'https://github.com/josedaniel-cb/sigapp/';
   static const privacyPolicyUrl =
       'https://josedaniel-cb.github.io/sigapp-privacy-policy/';
+  static const sigaWebAppUrl = 'https://academico.unp.edu.pe/';
+  static const paymentsWebAppUrl = 'https://pagos.unp.edu.pe/';
+  static const resetPasswordUrl =
+      'https://academico.unp.edu.pe/Cuenta/ResetPassword';
 }

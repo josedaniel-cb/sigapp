@@ -173,7 +173,6 @@ class _LoginPageState extends State<LoginPage> {
                                     const SizedBox(height: 24),
                                     SizedBox(
                                       width: double.infinity,
-                                      height: 50,
                                       child: FilledButton(
                                         style: FilledButton.styleFrom(
                                           shape: RoundedRectangleBorder(
@@ -194,13 +193,23 @@ class _LoginPageState extends State<LoginPage> {
                                                   child:
                                                       CircularProgressIndicator(),
                                                 )
-                                                : const Text(
-                                                  'Ingresar',
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
+                                                : const Text('Ingresar'),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: TextButton(
+                                        onPressed: () {
+                                          launchUrl(
+                                            Uri.parse(Links.resetPasswordUrl),
+                                            mode:
+                                                LaunchMode.externalApplication,
+                                          );
+                                        },
+                                        child: const Text(
+                                          'Olvidé mi contraseña',
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -221,61 +230,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    // spacing: 8.0, // Espacio horizontal entre widgets
-                    runSpacing: 0, // Espacio vertical entre líneas
-                    children: [
-                      TextButton.icon(
-                        onPressed: () {
-                          launchUrl(
-                            Uri.parse(Links.privacyPolicyUrl),
-                            mode: LaunchMode.externalApplication,
-                          );
-                        },
-                        // icon: Icon(MdiIcons.web),
-                        label: const Text('Política de privacidad'),
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 0,
-                          ),
-                        ),
-                      ),
-                      TextButton.icon(
-                        onPressed: () {
-                          launchUrl(
-                            Uri.parse(Links.projectUrl),
-                            mode: LaunchMode.externalApplication,
-                          );
-                        },
-                        icon: Icon(MdiIcons.github),
-                        label: const Text('Proyecto'),
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 0,
-                          ),
-                        ),
-                      ),
-                      TextButton.icon(
-                        onPressed: () {
-                          MailUtils.launchEmail(
-                            context,
-                            email: Links.contactEmail,
-                          );
-                        },
-                        // icon: Icon(MdiIcons.handshake),
-                        label: const Text('Contacto'),
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  _buildFooter(context),
                   SizedBox(height: 10),
                 ],
               ),
@@ -297,6 +252,64 @@ class _LoginPageState extends State<LoginPage> {
             getIt<GoRouter>().pushReplacement('/');
           }
         },
+      ),
+    );
+  }
+
+  Widget _buildFooter(BuildContext context) {
+    final style = Theme.of(context).textTheme.bodySmall ?? const TextStyle();
+    final color = style.color?.withValues(alpha: 0.7);
+    return DefaultTextStyle(
+      style: style.copyWith(color: color),
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        spacing: 10, // x
+        runSpacing: 5, // y
+        children: [
+          GestureDetector(
+            onTap: () {
+              launchUrl(
+                Uri.parse(Links.privacyPolicyUrl),
+                mode: LaunchMode.externalApplication,
+              );
+            },
+            child: Text('Política de privacidad'),
+          ),
+          GestureDetector(
+            onTap: () {
+              launchUrl(
+                Uri.parse(Links.projectUrl),
+                mode: LaunchMode.externalApplication,
+              );
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(MdiIcons.github, size: 16, color: color),
+                const SizedBox(width: 4),
+                const Text('Proyecto'),
+              ],
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              MailUtils.launchEmail(
+                context,
+                email: Links.contactEmail,
+                subject: 'Hola!',
+                body: 'Me comunico porque ',
+              );
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.email, size: 16, color: color),
+                const SizedBox(width: 4),
+                const Text('Contacto'),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -84,17 +84,20 @@ class AboutPageWidget extends StatelessWidget {
               _buildLinkListTile(
                 context,
                 title: 'SIGA',
-                url: 'https://academico.unp.edu.pe/',
+                // url: 'https://academico.unp.edu.pe/',
+                url: Links.sigaWebAppUrl,
               ),
               _buildLinkListTile(
                 context,
                 title: 'Reporte pagos',
-                url: 'https://pagos.unp.edu.pe/',
+                // url: 'https://pagos.unp.edu.pe/',
+                url: Links.paymentsWebAppUrl,
               ),
               _buildLinkListTile(
                 context,
                 title: 'Recuperar contraseña',
-                url: 'https://academico.unp.edu.pe/Cuenta/ResetPassword',
+                // url: 'https://academico.unp.edu.pe/Cuenta/ResetPassword',
+                url: Links.resetPasswordUrl,
               ),
               const Divider(),
             ],
