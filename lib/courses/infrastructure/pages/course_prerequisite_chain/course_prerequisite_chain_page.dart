@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sigapp/courses/domain/entities/course_type.dart';
 import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.dart';
-import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/flat.dart';
-import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/tree.dart';
 import 'package:sigapp/courses/infrastructure/services/course_chain_preferences.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/view_options_sheet.dart';
-import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/filter_chips.dart';
-import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/approval_chips.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/tab_section.dart';
 
 enum CoursePrerequisiteChainViewMode { tree, list }
@@ -139,7 +134,6 @@ class _CoursePrerequisiteChainPageState
       tabs: const [Tab(text: 'Requisitos'), Tab(text: 'Dependientes')],
     ),
   );
-
   Widget _buildMainScaffold(
     BuildContext context,
     TabController tabController,
@@ -159,6 +153,7 @@ class _CoursePrerequisiteChainPageState
             onMandatoryChanged: (v) => setState(() => _showMandatoryReq = v),
             onElectiveChanged: (v) => setState(() => _showElectiveReq = v),
             onApprovalChanged: (v) => setState(() => _approvalFilterReq = v),
+            onResetFilters: () => _resetFilters(isRequirements: true),
             isTreeView: _viewMode == CoursePrerequisiteChainViewMode.tree,
             highlightCriticalPath: _highlightCriticalPath,
             criticalPathIds: _criticalPathIds,
@@ -171,6 +166,7 @@ class _CoursePrerequisiteChainPageState
             onMandatoryChanged: (v) => setState(() => _showMandatoryDep = v),
             onElectiveChanged: (v) => setState(() => _showElectiveDep = v),
             onApprovalChanged: (v) => setState(() => _approvalFilterDep = v),
+            onResetFilters: () => _resetFilters(isRequirements: false),
             isTreeView: _viewMode == CoursePrerequisiteChainViewMode.tree,
             highlightCriticalPath: _highlightCriticalPath,
             criticalPathIds: _criticalPathIds,
@@ -239,146 +235,18 @@ class _CoursePrerequisiteChainPageState
     );
   }
 
-  Widget _buildTabSection(
-    BuildContext context, {
-    required CourseTreeNode? tree,
-    required bool showMandatory,
-    required bool showElective,
-    required String approvalFilter,
-    required ValueChanged<bool> onMandatoryChanged,
-    required ValueChanged<bool> onElectiveChanged,
-    required ValueChanged<String> onApprovalChanged,
-    required String subtitle, // <- dejar pero no usar
-  }) {
-    final bool showFilters = tree != null && tree.children.isNotEmpty;
-    return Column(
-      children: [
-        if (showFilters)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FilterChipsWidget(
-                  showMandatory: showMandatory,
-                  showElective: showElective,
-                  onMandatoryChanged: onMandatoryChanged,
-                  onElectiveChanged: onElectiveChanged,
-                ),
-                ApprovalChipsWidget(
-                  approvalFilter: approvalFilter,
-                  onApprovalChanged: onApprovalChanged,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    // Botón de ruta crítica eliminado, solo floating button
-                  ],
-                ),
-              ],
-            ),
-          ),
-        Expanded(
-          child:
-              _viewMode == CoursePrerequisiteChainViewMode.tree
-                  ? _buildTreeFiltered(
-                    context,
-                    tree,
-                    showMandatory,
-                    showElective,
-                    approvalFilter,
-                    highlightCriticalPath: _highlightCriticalPath,
-                    criticalPathIds: _criticalPathIds,
-                  )
-                  : FlatCourseChainWidget(
-                    root: tree,
-                    showMandatory: showMandatory,
-                    showElective: showElective,
-                    approvalFilter: approvalFilter,
-                    highlightCriticalPath: _highlightCriticalPath,
-                    criticalPathIds: _criticalPathIds,
-                  ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTreeFiltered(
-    BuildContext context,
-    CourseTreeNode? root,
-    bool showMandatory,
-    bool showElective,
-    String approvalFilter, {
-    bool highlightCriticalPath = false,
-    Set<String> criticalPathIds = const {},
-  }) {
-    String? message;
-    CourseTreeNode? filtered;
-    if (root == null) {
-      message = 'No hay cursos relacionados';
-    } else if (!showMandatory && !showElective) {
-      message = 'Activa al menos un tipo de curso para ver resultados';
-    } else {
-      final noFilters =
-          showMandatory && showElective && approvalFilter == 'todos';
-      filtered =
-          noFilters
-              ? root
-              : _filterTree(root, showMandatory, showElective, approvalFilter);
-      if (filtered == null) {
-        message = 'No hay cursos que coincidan con los filtros';
+  // Método para resetear filtros
+  void _resetFilters({required bool isRequirements}) {
+    setState(() {
+      if (isRequirements) {
+        _showMandatoryReq = true;
+        _showElectiveReq = true;
+        _approvalFilterReq = 'todos';
+      } else {
+        _showMandatoryDep = true;
+        _showElectiveDep = true;
+        _approvalFilterDep = 'todos';
       }
-    }
-    if (message != null) {
-      return Center(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Text(message, textAlign: TextAlign.center),
-        ),
-      );
-    }
-    return TreeCourseChainWidget(
-      node: filtered!,
-      highlightCriticalPath: highlightCriticalPath,
-      criticalPathIds: criticalPathIds,
-    );
-  }
-
-  CourseTreeNode? _filterTree(
-    CourseTreeNode node,
-    bool showMandatory,
-    bool showElective,
-    String approvalFilter,
-  ) {
-    // Filtra recursivamente los nodos según los filtros activos
-    bool matchesType =
-        (node.course.info.courseType == CourseType.mandatory &&
-            showMandatory) ||
-        (node.course.info.courseType == CourseType.elective && showElective);
-    bool matchesApproval =
-        approvalFilter == 'todos' ||
-        (approvalFilter == 'aprobado' && node.course.isApproved == true) ||
-        (approvalFilter == 'no_aprobado' && node.course.isApproved == false);
-    final filteredChildren =
-        node.children
-            .map(
-              (child) => _filterTree(
-                child,
-                showMandatory,
-                showElective,
-                approvalFilter,
-              ),
-            )
-            .whereType<CourseTreeNode>()
-            .toList();
-    if (matchesType && matchesApproval) {
-      return CourseTreeNode(course: node.course, children: filteredChildren);
-    } else if (filteredChildren.isNotEmpty) {
-      // Si el nodo no cumple pero tiene hijos que sí, lo mostramos como rama
-      return CourseTreeNode(course: node.course, children: filteredChildren);
-    } else {
-      // Si ni el nodo ni los hijos cumplen, lo excluimos
-      return null;
-    }
+    });
   }
 }
