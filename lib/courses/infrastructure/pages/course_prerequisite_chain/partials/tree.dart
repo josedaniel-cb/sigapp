@@ -123,8 +123,7 @@ class TreeCourseChainWidget extends StatelessWidget {
       color = theme.colorScheme.primary;
     } else if (stats.completed > 0) {
       // All courses completed (rare case in a prerequisite chain)
-      message =
-          "¡Felicitaciones! Has completado todos los cursos de esta cadena";
+      message = "Has completado todos los cursos de esta cadena";
       icon = Icons.check_circle;
       color = Colors.green;
     } else if (stats.blocked > 0) {
@@ -255,21 +254,21 @@ class _CourseTreeItem extends StatelessWidget {
     final course = node.course;
     final theme = Theme.of(context);
     final isCritical = _isNodeInCriticalPath(course.info.courseCode);
-    final backgroundColor = _calculateBackgroundColor(theme);
-
-    // Simple, actionable student info (keeping the smart logic!)
     final studentInfo = _getStudentCourseInfo(course);
+    final backgroundColor = _calculateBackgroundColor(theme, studentInfo);
+
     return Container(
       margin: const EdgeInsets.only(top: 8),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(8),
-        // Subtle highlight for available courses
+        // Sutil border para cursos disponibles
         border:
-            studentInfo.isAvailableNow &&
-                    !studentInfo.actionMessage.contains("Completado") &&
-                    !studentInfo.actionMessage.contains("Repetir")
-                ? Border.all(color: Colors.green.withOpacity(0.3), width: 1)
+            _shouldShowActionableBorder(studentInfo)
+                ? Border.all(
+                  color: studentInfo.statusColor.withOpacity(0.4),
+                  width: 1.5,
+                )
                 : null,
       ),
       child: SizedBox(
@@ -282,7 +281,7 @@ class _CourseTreeItem extends StatelessWidget {
               Text(
                 course.info.courseCode,
                 style: TextStyle(
-                  color: theme.colorScheme.onSurface, // Original color always
+                  color: theme.colorScheme.onSurface,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
@@ -295,34 +294,21 @@ class _CourseTreeItem extends StatelessWidget {
                   fontWeight: isCritical ? FontWeight.bold : FontWeight.normal,
                   fontSize: 14,
                 ),
-              ), // Clear, actionable status (this is where the magic happens!)
-              const SizedBox(height: 4),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: studentInfo.statusColor.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(
-                  studentInfo.actionMessage,
-                  style: TextStyle(
-                    color: studentInfo.statusColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                  ),
-                ),
               ),
             ],
           ),
-          // Simple icon, no fancy container
-          leading: Icon(
-            studentInfo.icon,
-            color: studentInfo.statusColor,
-            size: 24,
-          ),
           subtitle: Padding(
             padding: const EdgeInsets.only(top: 8),
-            child: _buildSubtitle(course),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Student status badge
+                _buildStudentStatusBadge(course),
+                const SizedBox(height: 8),
+                // Original subtitle content
+                _buildSubtitle(course),
+              ],
+            ),
           ),
         ),
       ),
@@ -455,6 +441,37 @@ class _CourseTreeItem extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _buildStudentStatusBadge(ProgramCurriculumCourse course) {
+    final studentInfo = _getStudentCourseInfo(course);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: studentInfo.statusColor.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: studentInfo.statusColor.withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(studentInfo.icon, color: studentInfo.statusColor, size: 14),
+          const SizedBox(width: 6),
+          Text(
+            studentInfo.actionMessage,
+            style: TextStyle(
+              color: studentInfo.statusColor,
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+            ),
+          ),
+        ],
+      ),
+    );
   } // STUDENT-FOCUSED HELPERS - What students actually need to know
 
   _StudentCourseInfo _getStudentCourseInfo(ProgramCurriculumCourse course) {
@@ -462,7 +479,7 @@ class _CourseTreeItem extends StatelessWidget {
     if (course.isApproved == true) {
       return const _StudentCourseInfo(
         actionMessage: "Completado",
-        statusColor: Colors.green,
+        statusColor: Color(0xFF2E7D32), // Verde más rico y contrastante
         icon: Icons.check_circle,
         isAvailableNow: false,
       );
@@ -472,7 +489,7 @@ class _CourseTreeItem extends StatelessWidget {
     if (course.isApproved == false) {
       return const _StudentCourseInfo(
         actionMessage: "Repetir curso",
-        statusColor: Colors.red,
+        statusColor: Color(0xFFD32F2F), // Rojo más vibrante
         icon: Icons.refresh,
         isAvailableNow: true, // Can retake
       );
@@ -482,7 +499,9 @@ class _CourseTreeItem extends StatelessWidget {
     if (course.hasPrerequisitesApproved == true) {
       return const _StudentCourseInfo(
         actionMessage: "¡PUEDES TOMAR AHORA!",
-        statusColor: Colors.green,
+        statusColor: Color(
+          0xFF1B5E20,
+        ), // Verde oscuro que contrasta perfecto con azul
         icon: Icons.play_circle_fill,
         isAvailableNow: true,
       );
@@ -497,14 +516,14 @@ class _CourseTreeItem extends StatelessWidget {
       if (pendingCount == 1) {
         return const _StudentCourseInfo(
           actionMessage: "1 prerrequisito pendiente",
-          statusColor: Colors.orange,
+          statusColor: Color(0xFFE65100), // Naranja que funciona mejor con azul
           icon: Icons.lock,
           isAvailableNow: false,
         );
       } else {
         return _StudentCourseInfo(
           actionMessage: "$pendingCount prerrequisitos pendientes",
-          statusColor: Colors.orange,
+          statusColor: const Color(0xFFE65100), // Mismo naranja mejorado
           icon: Icons.lock,
           isAvailableNow: false,
         );
@@ -514,7 +533,7 @@ class _CourseTreeItem extends StatelessWidget {
     // No prerequisites (first semester course)
     return const _StudentCourseInfo(
       actionMessage: "¡PUEDES TOMAR AHORA!",
-      statusColor: Colors.green,
+      statusColor: Color(0xFF1B5E20), // Verde oscuro consistente
       icon: Icons.play_circle_fill,
       isAvailableNow: true,
     );
@@ -531,10 +550,46 @@ class _CourseTreeItem extends StatelessWidget {
         );
   }
 
-  Color _calculateBackgroundColor(ThemeData theme) {
+  Color _calculateBackgroundColor(
+    ThemeData theme,
+    _StudentCourseInfo studentInfo,
+  ) {
     if (depth == 0) return Colors.transparent;
-    final opacity = (0.06 * depth).clamp(0.0, 0.24);
-    return theme.colorScheme.primary.withValues(alpha: opacity);
+
+    // SIEMPRE aplicar el background progresivo azul basado en depth
+    final baseOpacity = (0.06 * depth).clamp(0.0, 0.24);
+    final baseColor = theme.colorScheme.primary.withOpacity(baseOpacity);
+
+    // Si el curso está disponible para tomar, agregar un tinte sutil del status
+    if (studentInfo.isAvailableNow &&
+        !studentInfo.actionMessage.contains("Completado")) {
+      // Combinar el azul progresivo con un toque del color del status
+      return Color.lerp(
+            baseColor,
+            studentInfo.statusColor.withOpacity(0.06),
+            0.3, // 30% del color del status, 70% del azul progresivo
+          ) ??
+          baseColor;
+    }
+
+    // Para cursos completados, agregar un toque verde muy sutil al azul progresivo
+    if (studentInfo.actionMessage.contains("Completado")) {
+      return Color.lerp(
+            baseColor,
+            Colors.green.withOpacity(0.04),
+            0.2, // 20% verde, 80% azul progresivo
+          ) ??
+          baseColor;
+    }
+
+    // Para cursos bloqueados, mantener el azul progresivo puro (se ve elegante)
+    return baseColor;
+  }
+
+  bool _shouldShowActionableBorder(_StudentCourseInfo studentInfo) {
+    // Solo mostrar border para cursos que el estudiante puede tomar AHORA
+    return studentInfo.isAvailableNow &&
+        !studentInfo.actionMessage.contains("Completado");
   }
 
   _ConnectionColors _calculateConnectionColors(
