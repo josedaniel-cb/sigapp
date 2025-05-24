@@ -11,7 +11,7 @@ class _ConnectionMetrics {
 
   _ConnectionMetrics(double fontSize)
     : verticalOffset = fontSize * 2.2,
-      horizontalWidth = fontSize * 1,
+      horizontalWidth = fontSize,
       thickness = 2.0;
 }
 
@@ -80,7 +80,6 @@ class _CourseTreeItem extends StatelessWidget {
     required this.criticalPathIds,
     this.depth = 0,
   });
-
   @override
   Widget build(BuildContext context) {
     return showRoot
@@ -133,7 +132,6 @@ class _CourseTreeItem extends StatelessWidget {
     final fontSize = theme.textTheme.bodyLarge?.fontSize ?? 16;
     final connectionMetrics = _ConnectionMetrics(fontSize);
     final isParentCritical = _isNodeInCriticalPath(node.course.info.courseCode);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children:
@@ -225,9 +223,8 @@ class _CourseTreeItem extends StatelessWidget {
   }
 
   // Helper methods
-  bool _isNodeInCriticalPath(String courseCode) {
-    return highlightCriticalPath && criticalPathIds.contains(courseCode);
-  }
+  bool _isNodeInCriticalPath(String courseCode) =>
+      highlightCriticalPath && criticalPathIds.contains(courseCode);
 
   bool _hasSiblingInCriticalPath(int fromIndex) {
     return node.children
@@ -239,7 +236,7 @@ class _CourseTreeItem extends StatelessWidget {
 
   Color _calculateBackgroundColor(ThemeData theme) {
     if (depth == 0) return Colors.transparent;
-    final double opacity = (0.06 * depth).clamp(0.0, 0.24);
+    final opacity = (0.06 * depth).clamp(0.0, 0.24);
     return theme.colorScheme.primary.withValues(alpha: opacity);
   }
 
@@ -249,17 +246,23 @@ class _CourseTreeItem extends StatelessWidget {
     bool isParentCritical,
     Color defaultColor,
   ) {
-    final criticalColor = Colors.orange.withOpacity(0.8);
+    const criticalColor = Colors.orange;
     final isChildCritical = _isNodeInCriticalPath(child.course.info.courseCode);
     final hasSiblingInPath = _hasSiblingInCriticalPath(childIndex + 1);
 
+    final useCriticalColor = isParentCritical && isChildCritical;
+    final connectionColor =
+        useCriticalColor ? criticalColor.withOpacity(0.8) : defaultColor;
+
+    final continueColor =
+        isParentCritical && hasSiblingInPath
+            ? criticalColor.withOpacity(0.8)
+            : defaultColor;
+
     return _ConnectionColors(
-      verticalTo:
-          isParentCritical && isChildCritical ? criticalColor : defaultColor,
-      horizontal:
-          isParentCritical && isChildCritical ? criticalColor : defaultColor,
-      verticalContinue:
-          isParentCritical && hasSiblingInPath ? criticalColor : defaultColor,
+      verticalTo: connectionColor,
+      horizontal: connectionColor,
+      verticalContinue: continueColor,
     );
   }
 
@@ -268,22 +271,27 @@ class _CourseTreeItem extends StatelessWidget {
     bool isCritical,
     ThemeData theme,
   ) {
+    final criticalColor = Colors.orange;
+
     if (course.isApproved == true) {
       return Icon(
         Icons.check,
-        color: isCritical ? Colors.orange : Colors.green,
+        color: isCritical ? criticalColor : Colors.green,
       );
     }
+
     if (course.isApproved == false) {
-      return Icon(Icons.close, color: isCritical ? Colors.orange : Colors.red);
+      return Icon(Icons.close, color: isCritical ? criticalColor : Colors.red);
     }
+
     if (course.hasPrerequisitesApproved == true) {
       return Icon(
         Icons.lock_open_outlined,
-        color: isCritical ? Colors.orange : theme.colorScheme.primary,
+        color: isCritical ? criticalColor : theme.colorScheme.primary,
       );
     }
-    return Icon(Icons.lock_outlined, color: isCritical ? Colors.orange : null);
+
+    return Icon(Icons.lock_outlined, color: isCritical ? criticalColor : null);
   }
 
   Widget _buildSubtitle(ProgramCurriculumCourse course) {
