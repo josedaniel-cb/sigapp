@@ -8,20 +8,13 @@ class FlatCourseChainWidget extends StatelessWidget {
   const FlatCourseChainWidget({
     super.key,
     required this.root,
-    required this.showMandatory,
-    required this.showElective,
-    required this.approvalFilter,
     required this.highlightCriticalPath,
     required this.criticalPathIds,
   });
 
   final CourseTreeNode? root;
-  final bool showMandatory;
-  final bool showElective;
-  final String approvalFilter;
   final bool highlightCriticalPath;
   final Set<String> criticalPathIds;
-
   @override
   Widget build(BuildContext context) {
     List<CourseTreeNode> flatList = [];
@@ -35,23 +28,9 @@ class FlatCourseChainWidget extends StatelessWidget {
 
     if (root != null) {
       flatten(root);
-      // Aplicar filtros
-      flatList =
-          flatList.where((node) {
-            final typeOk =
-                (node.course.info.courseType == CourseType.mandatory &&
-                    showMandatory) ||
-                (node.course.info.courseType == CourseType.elective &&
-                    showElective);
-            final approvalOk =
-                approvalFilter == 'todos' ||
-                (approvalFilter == 'aprobado' &&
-                    node.course.isApproved == true) ||
-                (approvalFilter == 'no_aprobado' &&
-                    node.course.isApproved == false);
-            return typeOk && approvalOk;
-          }).toList();
+      // No aplicamos filtros aquí porque el árbol ya viene filtrado desde TabSectionWidget
     }
+
     if (root == null) {
       return Center(child: Text('No hay cursos relacionados'));
     }

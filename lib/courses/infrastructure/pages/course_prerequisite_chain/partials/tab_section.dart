@@ -146,9 +146,6 @@ class TabSectionWidget extends StatelessWidget {
                   )
                   : FlatCourseChainWidget(
                     root: filtered,
-                    showMandatory: showMandatory,
-                    showElective: showElective,
-                    approvalFilter: approvalFilter,
                     highlightCriticalPath: highlightCriticalPath,
                     criticalPathIds: criticalPathIds,
                   ),

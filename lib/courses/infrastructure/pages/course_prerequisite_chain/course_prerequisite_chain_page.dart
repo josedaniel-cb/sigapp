@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sigapp/courses/domain/entities/course_type.dart';
 import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.dart';
 import 'package:sigapp/courses/infrastructure/services/course_chain_preferences.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/view_options_sheet.dart';
@@ -86,11 +87,16 @@ class _CoursePrerequisiteChainPageState
         _loadingPrefs = false;
       });
     }
-  }
+  } // --- Ruta crítica ---
 
-  // --- Ruta crítica ---
   void _toggleCriticalPath(CourseTreeNode? root) async {
     if (!_highlightCriticalPath) {
+      // Verificar si vale la pena mostrar la ruta crítica
+      if (!_isCriticalPathUseful(root)) {
+        // No hacer nada si no es útil
+        return;
+      }
+
       // Calcular la ruta crítica solo si se va a activar
       final path = _findCriticalPath(root);
       setState(() {
@@ -105,6 +111,46 @@ class _CoursePrerequisiteChainPageState
       });
       await CourseChainPreferences.setHighlightCriticalPath(false);
     }
+  }
+
+  bool _isCriticalPathUseful(CourseTreeNode? root) {
+    if (root == null) return false;
+
+    // Contar total de nodos en el árbol
+    int totalNodes = _countNodes(root);
+
+    // Contar nodos en la ruta crítica
+    List<CourseTreeNode> criticalPath = _findCriticalPath(root);
+    int criticalNodes = criticalPath.length;
+
+    // Contar nodos con múltiples hijos (ramificaciones)
+    int branchingNodes = _countBranchingNodes(root);
+
+    // La ruta crítica es útil si:
+    // 1. Hay al menos 3 nodos totales
+    // 2. La ruta crítica no representa más del 75% del árbol
+    // 3. Hay al menos 1 nodo con ramificaciones (alternativas)
+    return totalNodes >= 3 &&
+        (criticalNodes / totalNodes) <= 0.75 &&
+        branchingNodes >= 1;
+  }
+
+  int _countNodes(CourseTreeNode? node) {
+    if (node == null) return 0;
+    int count = 1;
+    for (final child in node.children) {
+      count += _countNodes(child);
+    }
+    return count;
+  }
+
+  int _countBranchingNodes(CourseTreeNode? node) {
+    if (node == null) return 0;
+    int count = node.children.length > 1 ? 1 : 0;
+    for (final child in node.children) {
+      count += _countBranchingNodes(child);
+    }
+    return count;
   }
 
   List<CourseTreeNode> _findCriticalPath(CourseTreeNode? node) {
@@ -151,9 +197,18 @@ class _CoursePrerequisiteChainPageState
             showMandatory: _showMandatoryReq,
             showElective: _showElectiveReq,
             approvalFilter: _approvalFilterReq,
-            onMandatoryChanged: (v) => setState(() => _showMandatoryReq = v),
-            onElectiveChanged: (v) => setState(() => _showElectiveReq = v),
-            onApprovalChanged: (v) => setState(() => _approvalFilterReq = v),
+            onMandatoryChanged: (v) {
+              setState(() => _showMandatoryReq = v);
+              _checkCriticalPathAfterFilterChange();
+            },
+            onElectiveChanged: (v) {
+              setState(() => _showElectiveReq = v);
+              _checkCriticalPathAfterFilterChange();
+            },
+            onApprovalChanged: (v) {
+              setState(() => _approvalFilterReq = v);
+              _checkCriticalPathAfterFilterChange();
+            },
             onResetFilters: () => _resetFilters(isRequirements: true),
             isTreeView: _viewMode == CoursePrerequisiteChainViewMode.tree,
             highlightCriticalPath: _highlightCriticalPath,
@@ -164,9 +219,18 @@ class _CoursePrerequisiteChainPageState
             showMandatory: _showMandatoryDep,
             showElective: _showElectiveDep,
             approvalFilter: _approvalFilterDep,
-            onMandatoryChanged: (v) => setState(() => _showMandatoryDep = v),
-            onElectiveChanged: (v) => setState(() => _showElectiveDep = v),
-            onApprovalChanged: (v) => setState(() => _approvalFilterDep = v),
+            onMandatoryChanged: (v) {
+              setState(() => _showMandatoryDep = v);
+              _checkCriticalPathAfterFilterChange();
+            },
+            onElectiveChanged: (v) {
+              setState(() => _showElectiveDep = v);
+              _checkCriticalPathAfterFilterChange();
+            },
+            onApprovalChanged: (v) {
+              setState(() => _approvalFilterDep = v);
+              _checkCriticalPathAfterFilterChange();
+            },
             onResetFilters: () => _resetFilters(isRequirements: false),
             isTreeView: _viewMode == CoursePrerequisiteChainViewMode.tree,
             highlightCriticalPath: _highlightCriticalPath,
@@ -214,10 +278,13 @@ class _CoursePrerequisiteChainPageState
                     : widget.course.getDependentCoursesTree(
                       programCurriculum: widget.programCurriculum,
                     );
+            // Aplicar filtros al árbol actual
+            final filteredTree = _getFilteredTree(currentTree);
+
             return ViewOptionsSheetWidget(
               viewMode: _viewMode,
               highlightCriticalPath: _highlightCriticalPath,
-              currentTree: currentTree,
+              currentTree: filteredTree,
               onTree: () => Navigator.pop(context, 'tree'),
               onList: () => Navigator.pop(context, 'list'),
               onCritical: () => Navigator.pop(context, 'critical'),
@@ -239,7 +306,8 @@ class _CoursePrerequisiteChainPageState
                   : widget.course.getDependentCoursesTree(
                     programCurriculum: widget.programCurriculum,
                   );
-          _toggleCriticalPath(currentTree);
+          final filteredTree = _getFilteredTree(currentTree);
+          _toggleCriticalPath(filteredTree);
         }
       },
     );
@@ -258,5 +326,90 @@ class _CoursePrerequisiteChainPageState
         _approvalFilterDep = 'todos';
       }
     });
+    _checkCriticalPathAfterFilterChange();
+  }
+
+  // Verificar la utilidad de la ruta crítica después de cambios en filtros
+  void _checkCriticalPathAfterFilterChange() {
+    if (_highlightCriticalPath) {
+      final currentTree =
+          _tabController.index == 0
+              ? widget.course.getPrerequisiteCoursesTree(
+                programCurriculum: widget.programCurriculum,
+              )
+              : widget.course.getDependentCoursesTree(
+                programCurriculum: widget.programCurriculum,
+              );
+
+      // Aplicar filtros para obtener el árbol actual
+      final filtered = _getFilteredTree(currentTree);
+
+      // Si la ruta crítica ya no es útil, desactivarla
+      if (!_isCriticalPathUseful(filtered)) {
+        setState(() {
+          _highlightCriticalPath = false;
+          _criticalPathIds = {};
+        });
+        CourseChainPreferences.setHighlightCriticalPath(false);
+      } else {
+        // Recalcular la ruta crítica con el nuevo árbol filtrado
+        final path = _findCriticalPath(filtered);
+        setState(() {
+          _criticalPathIds = path.map((n) => n.course.info.courseCode).toSet();
+        });
+      }
+    }
+  }
+
+  // Obtener el árbol filtrado según la pestaña activa
+  CourseTreeNode? _getFilteredTree(CourseTreeNode? tree) {
+    if (tree == null) return null;
+
+    final isRequirements = _tabController.index == 0;
+    final showMandatory =
+        isRequirements ? _showMandatoryReq : _showMandatoryDep;
+    final showElective = isRequirements ? _showElectiveReq : _showElectiveDep;
+    final approvalFilter =
+        isRequirements ? _approvalFilterReq : _approvalFilterDep;
+
+    return _filterTreeInPage(tree, showMandatory, showElective, approvalFilter);
+  }
+
+  // Función de filtrado similar a la de TabSectionWidget
+  CourseTreeNode? _filterTreeInPage(
+    CourseTreeNode node,
+    bool showMandatory,
+    bool showElective,
+    String approvalFilter,
+  ) {
+    bool matchesType =
+        (node.course.info.courseType == CourseType.mandatory &&
+            showMandatory) ||
+        (node.course.info.courseType == CourseType.elective && showElective);
+    bool matchesApproval =
+        approvalFilter == 'todos' ||
+        (approvalFilter == 'aprobado' && node.course.isApproved == true) ||
+        (approvalFilter == 'no_aprobado' && node.course.isApproved == false);
+
+    final filteredChildren =
+        node.children
+            .map(
+              (child) => _filterTreeInPage(
+                child,
+                showMandatory,
+                showElective,
+                approvalFilter,
+              ),
+            )
+            .whereType<CourseTreeNode>()
+            .toList();
+
+    if (matchesType && matchesApproval) {
+      return CourseTreeNode(course: node.course, children: filteredChildren);
+    } else if (filteredChildren.isNotEmpty) {
+      return CourseTreeNode(course: node.course, children: filteredChildren);
+    } else {
+      return null;
+    }
   }
 }

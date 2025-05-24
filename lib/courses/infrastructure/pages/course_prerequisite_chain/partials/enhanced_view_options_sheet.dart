@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/course_prerequisite_chain_page.dart';
 
-class ViewOptionsSheetWidget extends StatelessWidget {
+class EnhancedViewOptionsSheetWidget extends StatelessWidget {
   final CoursePrerequisiteChainViewMode viewMode;
   final bool highlightCriticalPath;
   final CourseTreeNode? currentTree;
@@ -10,7 +10,7 @@ class ViewOptionsSheetWidget extends StatelessWidget {
   final VoidCallback onList;
   final VoidCallback onCritical;
 
-  const ViewOptionsSheetWidget({
+  const EnhancedViewOptionsSheetWidget({
     super.key,
     required this.viewMode,
     required this.highlightCriticalPath,
@@ -289,28 +289,32 @@ class _CriticalPathOption extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    // Si no es útil la ruta crítica, mostrar deshabilitado
+    final isEnabled = isUseful;
+    final effectiveOnTap = isEnabled ? onTap : null;
+
     return ListTile(
-      enabled: isUseful, // Desactivar si no es útil
+      enabled: isEnabled,
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color:
-              !isUseful
-                  ? theme.colorScheme.surfaceVariant.withOpacity(0.1)
+              !isEnabled
+                  ? theme.colorScheme.surfaceVariant.withOpacity(0.5)
                   : isActive
                   ? Colors.orange.withOpacity(0.2)
                   : theme.colorScheme.surfaceVariant.withOpacity(0.3),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Icon(
-          !isUseful
+          !isEnabled
               ? Icons.block
               : isActive
               ? Icons.visibility_off
               : Icons.alt_route,
           color:
-              !isUseful
-                  ? theme.colorScheme.onSurfaceVariant.withOpacity(0.4)
+              !isEnabled
+                  ? theme.colorScheme.onSurfaceVariant.withOpacity(0.5)
                   : isActive
                   ? Colors.orange
                   : theme.colorScheme.onSurfaceVariant,
@@ -320,22 +324,22 @@ class _CriticalPathOption extends StatelessWidget {
       title: Row(
         children: [
           Text(
-            !isUseful
-                ? 'Ruta crítica no disponible'
+            !isEnabled
+                ? 'Ruta crítica no útil'
                 : isActive
                 ? 'Ocultar ruta crítica'
                 : 'Mostrar ruta crítica',
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w500,
               color:
-                  !isUseful
-                      ? theme.colorScheme.onSurfaceVariant.withOpacity(0.4)
+                  !isEnabled
+                      ? theme.colorScheme.onSurfaceVariant.withOpacity(0.5)
                       : isActive
                       ? Colors.orange
                       : null,
             ),
           ),
-          if (criticalPathLength > 0 && isUseful) ...[
+          if (isEnabled && criticalPathLength > 0) ...[
             const SizedBox(width: 8),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -355,19 +359,19 @@ class _CriticalPathOption extends StatelessWidget {
         ],
       ),
       subtitle: Text(
-        !isUseful
+        !isEnabled
             ? 'Solo hay una secuencia de cursos o muy pocas alternativas'
             : isActive
             ? 'Los cursos críticos se mostrarán normalmente'
             : 'Resalta la cadena más larga de prerrequisitos',
         style: theme.textTheme.bodySmall?.copyWith(
           color:
-              !isUseful
-                  ? theme.colorScheme.onSurfaceVariant.withOpacity(0.4)
+              !isEnabled
+                  ? theme.colorScheme.onSurfaceVariant.withOpacity(0.5)
                   : theme.colorScheme.onSurfaceVariant,
         ),
       ),
-      onTap: isUseful ? onTap : null, // Desactivar tap si no es útil
+      onTap: effectiveOnTap,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
     );
