@@ -14,42 +14,45 @@ class ScheduledCoursesPage extends StatelessWidget {
     return BlocBuilder<ScheduledCoursesPageCubit, ScheduledCoursesPageState>(
       builder: (context, state) {
         return state.map(
-          loading: (_) => Scaffold(
-            // appBar: AppBar(
-            //   title: Text('Cursos programados'),
-            // ),
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          ),
+          loading:
+              (_) => Scaffold(
+                // appBar: AppBar(
+                //   title: Text('Cursos programados'),
+                // ),
+                body: Center(child: CircularProgressIndicator()),
+              ),
           success: (state) => _buildSuccess(context, state),
-          error: (state) => Scaffold(
-            // appBar: AppBar(
-            //   title: const Text('Cursos programados'),
-            // ),
-            body: ErrorStateWidget.from(
-              state.error,
-              onRetry: () {
-                BlocProvider.of<ScheduledCoursesPageCubit>(context).setup();
-              },
-            ),
-          ),
+          error:
+              (state) => Scaffold(
+                // appBar: AppBar(
+                //   title: const Text('Cursos programados'),
+                // ),
+                body: ErrorStateWidget.from(
+                  state.error,
+                  onRetry: () {
+                    BlocProvider.of<ScheduledCoursesPageCubit>(context).setup();
+                  },
+                ),
+              ),
         );
       },
     );
   }
 
   Widget _buildSuccess(
-      BuildContext context, ScheduledCoursesPageSuccessState state) {
+    BuildContext context,
+    ScheduledCoursesPageSuccessState state,
+  ) {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Programación académica',
           style: textTheme.titleLarge?.copyWith(
-            fontSize: textTheme.titleLarge?.fontSize != null
-                ? textTheme.titleLarge!.fontSize! * 0.85
-                : null,
+            fontSize:
+                textTheme.titleLarge?.fontSize != null
+                    ? textTheme.titleLarge!.fontSize! * 0.85
+                    : null,
           ),
         ),
         bottom: PreferredSize(
@@ -68,15 +71,17 @@ class ScheduledCoursesPage extends StatelessWidget {
                     isDense: true,
                   ),
                   onChanged: (query) {
-                    context
-                        .read<ScheduledCoursesPageCubit>()
-                        .searchCourses(query);
+                    context.read<ScheduledCoursesPageCubit>().searchCourses(
+                      query,
+                    );
                   },
                 ),
               ),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -96,134 +101,133 @@ class ScheduledCoursesPage extends StatelessWidget {
           ),
         ),
       ),
-      body: state.filteredCourses.isEmpty
-          ? Center(
-              child: Text(
-                state.searchQuery.isEmpty
-                    ? 'No hay cursos disponibles'
-                    : 'No se encontraron resultados para "${state.searchQuery}"',
-                style: const TextStyle(fontSize: 16),
+      body:
+          state.filteredCourses.isEmpty
+              ? Center(
+                child: Text(
+                  state.searchQuery.isEmpty
+                      ? 'No hay cursos disponibles'
+                      : 'No se encontraron resultados para "${state.searchQuery}"',
+                  style: const TextStyle(fontSize: 16),
+                ),
+              )
+              : ListView.builder(
+                itemCount: state.filteredCourses.length,
+                itemBuilder: (context, index) {
+                  final course = state.filteredCourses[index];
+                  return Column(
+                    children: [
+                      const Divider(),
+                      _CourseListTile(course: course),
+                    ],
+                  );
+                },
               ),
-            )
-          : ListView.builder(
-              itemCount: state.filteredCourses.length,
-              itemBuilder: (context, index) {
-                final course = state.filteredCourses[index];
-                return _CourseCard(course: course);
-              },
-            ),
     );
   }
 }
 
-class _CourseCard extends StatelessWidget {
+class _CourseListTile extends StatelessWidget {
   final ScheduledCourse course;
 
-  const _CourseCard({required this.course});
+  const _CourseListTile({required this.course});
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  course.courseCode,
-                  style: textTheme.titleMedium
-                      ?.copyWith(fontWeight: FontWeight.w600),
-                ),
-                Row(
-                  children: [
-                    _buildCustomChip(
-                      backgroundColor:
-                          Theme.of(context).colorScheme.primaryContainer,
-                      text: 'Grupo ${course.groupCode.trim()}',
-                    ),
-                    const SizedBox(width: 4),
-                    _buildCustomChip(
-                      backgroundColor: Theme.of(context)
-                          .colorScheme
-                          .secondary
-                          .withValues(alpha: 0.4),
-                      text: 'Sección ${course.section}',
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Text(
-              course.courseDescription,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                const Icon(Icons.person, size: 16),
-                const SizedBox(width: 4),
-                Expanded(
-                  child: Text(
-                    'Teoría: ${course.theoryTeacher}',
-                    style: textTheme.bodyMedium,
-                  ),
-                ),
-              ],
-            ),
-            if (course.practiceTeacher != course.theoryTeacher)
-              Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: Row(
-                  children: [
-                    const Icon(Icons.person, size: 16),
-                    const SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        'Práctica: ${course.practiceTeacher}',
-                        style: textTheme.bodyMedium,
-                      ),
-                    ),
-                  ],
-                ),
+    return ListTile(
+      title: Row(
+        children: [
+          Expanded(
+            child: Text(
+              course.courseCode,
+              style: textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
               ),
-            const SizedBox(height: 4),
-            Row(
-              children: [
-                const Icon(Icons.room, size: 16),
-                const SizedBox(width: 4),
-                Text(
-                  'Aula: ${course.classroomDescription}',
+            ),
+          ),
+          _buildCustomChip(
+            context,
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            text: 'Grupo ${course.groupCode.trim()}',
+          ),
+          const SizedBox(width: 4),
+          _buildCustomChip(
+            context,
+            backgroundColor: Theme.of(
+              context,
+            ).colorScheme.secondary.withValues(alpha: 0.4),
+            text: 'Sección ${course.section}',
+          ),
+        ],
+      ),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 4),
+          Text(
+            course.courseDescription,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              const Icon(Icons.person, size: 16),
+              const SizedBox(width: 4),
+              Expanded(
+                child: Text(
+                  'Teoría: ${course.theoryTeacher}',
                   style: textTheme.bodyMedium,
                 ),
-              ],
+              ),
+            ],
+          ),
+          if (course.practiceTeacher != course.theoryTeacher)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Row(
+                children: [
+                  const Icon(Icons.person, size: 16),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      'Práctica: ${course.practiceTeacher}',
+                      style: textTheme.bodyMedium,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Clave: ${course.courseKey}',
-                  style: textTheme.bodySmall,
-                ),
-                Text(
-                  'Capacidad: ${course.enrollmentCapacity}',
-                  style: textTheme.bodySmall,
-                ),
-              ],
-            ),
-          ],
-        ),
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              const Icon(Icons.room, size: 16),
+              const SizedBox(width: 4),
+              Text(
+                'Aula: ${course.classroomDescription}',
+                style: textTheme.bodyMedium,
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Clave: ${course.courseKey}', style: textTheme.bodySmall),
+              Text(
+                'Capacidad: ${course.enrollmentCapacity}',
+                style: textTheme.bodySmall,
+              ),
+            ],
+          ),
+        ],
       ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     );
   }
 
-  Container _buildCustomChip({
+  Container _buildCustomChip(
+    BuildContext context, {
     required Color backgroundColor,
     required String text,
   }) {
@@ -231,10 +235,8 @@ class _CourseCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
-        // color: Theme.of(context).colorScheme.primaryContainer,
         color: backgroundColor,
       ),
-      // child: Text('Grupo ${course.groupCode.trim()}'),
       child: Text(text),
     );
   }
