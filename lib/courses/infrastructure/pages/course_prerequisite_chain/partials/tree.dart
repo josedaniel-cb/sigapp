@@ -27,6 +27,21 @@ class _ConnectionColors {
   });
 }
 
+// Status information for student-focused UX
+class _StudentCourseInfo {
+  final String actionMessage;
+  final Color statusColor;
+  final IconData icon;
+  final bool isAvailableNow;
+
+  const _StudentCourseInfo({
+    required this.actionMessage,
+    required this.statusColor,
+    required this.icon,
+    required this.isAvailableNow,
+  });
+}
+
 class TreeCourseChainWidget extends StatelessWidget {
   final CourseTreeNode node;
   final bool highlightCriticalPath;
@@ -38,7 +53,6 @@ class TreeCourseChainWidget extends StatelessWidget {
     required this.highlightCriticalPath,
     required this.criticalPathIds,
   });
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -51,6 +65,7 @@ class TreeCourseChainWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                _buildStudentSummary(context),
                 _CourseTreeItem(
                   node: node,
                   showRoot: true,
@@ -64,6 +79,149 @@ class TreeCourseChainWidget extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildStudentSummary(BuildContext context) {
+    final stats = _calculateStudentStats();
+
+    // Don't show summary if there are no courses at all
+    if (stats.availableNow == 0 &&
+        stats.completed == 0 &&
+        stats.needsRetake == 0 &&
+        stats.blocked == 0) {
+      return const SizedBox.shrink();
+    }
+
+    final theme = Theme.of(context);
+    String message;
+    IconData icon;
+    Color color;
+
+    // Priority: Show most actionable information first
+    if (stats.availableNew > 0 && stats.needsRetake > 0) {
+      // Mixed: both new courses and retakes available
+      message =
+          "${stats.availableNew + stats.needsRetake} cursos disponibles (${stats.availableNew} nuevos, ${stats.needsRetake} para repetir)";
+      icon = Icons.info;
+      color = theme.colorScheme.primary;
+    } else if (stats.availableNew > 0) {
+      // Only new courses available
+      message =
+          "${stats.availableNew} curso${stats.availableNew == 1 ? '' : 's'} disponible${stats.availableNew == 1 ? '' : 's'} para tomar";
+      icon = Icons.school;
+      color = Colors.green;
+    } else if (stats.needsRetake > 0) {
+      // Only retakes available
+      message =
+          "${stats.needsRetake} curso${stats.needsRetake == 1 ? '' : 's'} para repetir";
+      icon = Icons.refresh;
+      color = Colors.orange;
+    } else if (stats.completed > 0 && stats.blocked > 0) {
+      // Has completed courses but some are blocked
+      message =
+          "Revisa los prerrequisitos para planificar tu siguiente semestre";
+      icon = Icons.schedule;
+      color = theme.colorScheme.primary;
+    } else if (stats.completed > 0) {
+      // All courses completed (rare case in a prerequisite chain)
+      message =
+          "¡Felicitaciones! Has completado todos los cursos de esta cadena";
+      icon = Icons.check_circle;
+      color = Colors.green;
+    } else if (stats.blocked > 0) {
+      // Only blocked courses (student needs to complete prerequisites)
+      message = "Completa los prerrequisitos para desbloquear estos cursos";
+      icon = Icons.lock;
+      color = Colors.grey;
+    } else {
+      // Fallback (shouldn't happen)
+      return const SizedBox.shrink();
+    }
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        crossAxisAlignment:
+            CrossAxisAlignment.start, // Align icon to top for multiline
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 2,
+            ), // Small adjustment for visual alignment
+            child: Icon(icon, color: color, size: 20),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              message,
+              style: TextStyle(
+                color: theme.colorScheme.onSurface,
+                fontWeight: FontWeight.w500,
+                fontSize: 14,
+              ),
+              maxLines: null, // Allow unlimited lines
+              overflow: TextOverflow.visible, // Show full text
+              softWrap: true, // Enable text wrapping
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _StudentStats _calculateStudentStats() {
+    int availableNew = 0; // New courses that can be taken
+    int completed = 0;
+    int needsRetake = 0; // Failed courses that can be retaken
+    int blocked = 0; // Courses blocked by prerequisites
+
+    void countRecursive(CourseTreeNode currentNode) {
+      final course = currentNode.course;
+
+      if (course.isApproved == true) {
+        completed++;
+      } else if (course.isApproved == false) {
+        needsRetake++; // Failed, can retake
+      } else if (course.hasPrerequisitesApproved == true ||
+          course.prerequisites.isEmpty) {
+        availableNew++; // Available to take for first time
+      } else {
+        blocked++; // Blocked by prerequisites
+      }
+
+      for (final child in currentNode.children) {
+        countRecursive(child);
+      }
+    }
+
+    countRecursive(node);
+    return _StudentStats(
+      availableNew: availableNew,
+      completed: completed,
+      needsRetake: needsRetake,
+      blocked: blocked,
+    );
+  }
+}
+
+class _StudentStats {
+  final int availableNew; // New courses available to take
+  final int completed; // Approved courses
+  final int needsRetake; // Failed courses that can be retaken
+  final int blocked; // Courses blocked by prerequisites
+
+  _StudentStats({
+    required this.availableNew,
+    required this.completed,
+    required this.needsRetake,
+    required this.blocked,
+  });
+
+  // Computed property for backward compatibility
+  int get availableNow => availableNew + needsRetake;
 }
 
 class _CourseTreeItem extends StatelessWidget {
@@ -99,27 +257,73 @@ class _CourseTreeItem extends StatelessWidget {
     final isCritical = _isNodeInCriticalPath(course.info.courseCode);
     final backgroundColor = _calculateBackgroundColor(theme);
 
+    // Simple, actionable student info (keeping the smart logic!)
+    final studentInfo = _getStudentCourseInfo(course);
     return Container(
       margin: const EdgeInsets.only(top: 8),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(8),
+        // Subtle highlight for available courses
+        border:
+            studentInfo.isAvailableNow &&
+                    !studentInfo.actionMessage.contains("Completado") &&
+                    !studentInfo.actionMessage.contains("Repetir")
+                ? Border.all(color: Colors.green.withOpacity(0.3), width: 1)
+                : null,
       ),
       child: SizedBox(
         width: MediaQuery.of(context).size.width - 64,
         child: ListTile(
-          title: Text(
-            course.info.courseName,
-            style:
-                isCritical
-                    ? TextStyle(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.bold,
-                    )
-                    : null,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Course code - keep original color, no changes
+              Text(
+                course.info.courseCode,
+                style: TextStyle(
+                  color: theme.colorScheme.onSurface, // Original color always
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              // Course name
+              Text(
+                course.info.courseName,
+                style: TextStyle(
+                  color: isCritical ? theme.colorScheme.primary : null,
+                  fontWeight: isCritical ? FontWeight.bold : FontWeight.normal,
+                  fontSize: 14,
+                ),
+              ), // Clear, actionable status (this is where the magic happens!)
+              const SizedBox(height: 4),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: studentInfo.statusColor.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  studentInfo.actionMessage,
+                  style: TextStyle(
+                    color: studentInfo.statusColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ],
           ),
-          leading: _buildLeadingIcon(course, isCritical, theme),
-          subtitle: _buildSubtitle(course),
+          // Simple icon, no fancy container
+          leading: Icon(
+            studentInfo.icon,
+            color: studentInfo.statusColor,
+            size: 24,
+          ),
+          subtitle: Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: _buildSubtitle(course),
+          ),
         ),
       ),
     );
@@ -132,13 +336,17 @@ class _CourseTreeItem extends StatelessWidget {
     final fontSize = theme.textTheme.bodyLarge?.fontSize ?? 16;
     final connectionMetrics = _ConnectionMetrics(fontSize);
     final isParentCritical = _isNodeInCriticalPath(node.course.info.courseCode);
+
+    // Sort children to prioritize available courses for better student experience
+    final sortedChildren = _sortChildrenForStudentPriority(node.children);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children:
-          node.children.asMap().entries.map((entry) {
+          sortedChildren.asMap().entries.map((entry) {
             final child = entry.value;
             final childIndex = entry.key;
-            final isLast = childIndex == node.children.length - 1;
+            final isLast = childIndex == sortedChildren.length - 1;
 
             final connectionColors = _calculateConnectionColors(
               child,
@@ -155,6 +363,33 @@ class _CourseTreeItem extends StatelessWidget {
             );
           }).toList(),
     );
+  }
+
+  List<CourseTreeNode> _sortChildrenForStudentPriority(
+    List<CourseTreeNode> children,
+  ) {
+    // Sort to show available courses first, then blocked ones
+    // This helps students quickly see what they can take next
+    return List.from(children)..sort((a, b) {
+      final aInfo = _getStudentCourseInfo(a.course);
+      final bInfo = _getStudentCourseInfo(b.course);
+
+      // Priority order:
+      // 1. Available now (can take)
+      // 2. Needs retaking
+      // 3. Completed
+      // 4. Blocked by prerequisites
+      int getPriority(_StudentCourseInfo info) {
+        if (info.isAvailableNow && !info.actionMessage.contains("Completado")) {
+          if (info.actionMessage.contains("Repetir")) return 2; // Retake
+          return 1; // Available now
+        }
+        if (info.actionMessage.contains("Completado")) return 3; // Completed
+        return 4; // Blocked
+      }
+
+      return getPriority(aInfo).compareTo(getPriority(bInfo));
+    });
   }
 
   Widget _buildSingleChild(
@@ -220,9 +455,71 @@ class _CourseTreeItem extends StatelessWidget {
         ),
       ],
     );
-  }
+  } // STUDENT-FOCUSED HELPERS - What students actually need to know
 
-  // Helper methods
+  _StudentCourseInfo _getStudentCourseInfo(ProgramCurriculumCourse course) {
+    // Already passed/approved
+    if (course.isApproved == true) {
+      return const _StudentCourseInfo(
+        actionMessage: "Completado",
+        statusColor: Colors.green,
+        icon: Icons.check_circle,
+        isAvailableNow: false,
+      );
+    }
+
+    // Failed before - needs retaking
+    if (course.isApproved == false) {
+      return const _StudentCourseInfo(
+        actionMessage: "Repetir curso",
+        statusColor: Colors.red,
+        icon: Icons.refresh,
+        isAvailableNow: true, // Can retake
+      );
+    }
+
+    // Available to take now! - This is what students care about most
+    if (course.hasPrerequisitesApproved == true) {
+      return const _StudentCourseInfo(
+        actionMessage: "¡PUEDES TOMAR AHORA!",
+        statusColor: Colors.green,
+        icon: Icons.play_circle_fill,
+        isAvailableNow: true,
+      );
+    }
+
+    // Blocked by prerequisites - show what's blocking them with specifics
+    if (course.prerequisites.isNotEmpty) {
+      final pendingCount =
+          course.prerequisites
+              .where((prereq) => prereq.isApproved != true)
+              .length;
+      if (pendingCount == 1) {
+        return const _StudentCourseInfo(
+          actionMessage: "1 prerrequisito pendiente",
+          statusColor: Colors.orange,
+          icon: Icons.lock,
+          isAvailableNow: false,
+        );
+      } else {
+        return _StudentCourseInfo(
+          actionMessage: "$pendingCount prerrequisitos pendientes",
+          statusColor: Colors.orange,
+          icon: Icons.lock,
+          isAvailableNow: false,
+        );
+      }
+    }
+
+    // No prerequisites (first semester course)
+    return const _StudentCourseInfo(
+      actionMessage: "¡PUEDES TOMAR AHORA!",
+      statusColor: Colors.green,
+      icon: Icons.play_circle_fill,
+      isAvailableNow: true,
+    );
+  } // Helper methods
+
   bool _isNodeInCriticalPath(String courseCode) =>
       highlightCriticalPath && criticalPathIds.contains(courseCode);
 
@@ -264,34 +561,6 @@ class _CourseTreeItem extends StatelessWidget {
       horizontal: connectionColor,
       verticalContinue: continueColor,
     );
-  }
-
-  Widget _buildLeadingIcon(
-    ProgramCurriculumCourse course,
-    bool isCritical,
-    ThemeData theme,
-  ) {
-    final criticalColor = Colors.orange;
-
-    if (course.isApproved == true) {
-      return Icon(
-        Icons.check,
-        color: isCritical ? criticalColor : Colors.green,
-      );
-    }
-
-    if (course.isApproved == false) {
-      return Icon(Icons.close, color: isCritical ? criticalColor : Colors.red);
-    }
-
-    if (course.hasPrerequisitesApproved == true) {
-      return Icon(
-        Icons.lock_open_outlined,
-        color: isCritical ? criticalColor : theme.colorScheme.primary,
-      );
-    }
-
-    return Icon(Icons.lock_outlined, color: isCritical ? criticalColor : null);
   }
 
   Widget _buildSubtitle(ProgramCurriculumCourse course) {
