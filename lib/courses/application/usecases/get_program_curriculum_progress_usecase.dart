@@ -14,8 +14,11 @@ class GetProgramCurriculumProgressUsecase {
   final AcademicInfoService _academicInfoService;
   final GetEnrolledCoursesUsecase _getEnrolledCoursesUsecase;
 
-  GetProgramCurriculumProgressUsecase(this._programCurriculumRepository,
-      this._academicInfoService, this._getEnrolledCoursesUsecase);
+  GetProgramCurriculumProgressUsecase(
+    this._programCurriculumRepository,
+    this._academicInfoService,
+    this._getEnrolledCoursesUsecase,
+  );
 
   Future<ProgramCurriculumProgress> execute() async {
     final programCurriculum = await _getTermCoursesMap();
@@ -44,13 +47,20 @@ class GetProgramCurriculumProgressUsecase {
   Future<List<ProgramCurriculumTerm>> _getTermCoursesMap() async {
     final courseInfos =
         await _programCurriculumRepository.getProgramCurriculum();
-    final courses = courseInfos
-        .map((info) => ProgramCurriculumCourse(info: info, prerequisites: []))
-        .toList();
+    final courses =
+        courseInfos
+            .map(
+              (info) => ProgramCurriculumCourse(info: info, prerequisites: []),
+            )
+            .toList();
     final courseCodeMap = {for (var e in courses) e.info.courseCode: e};
     for (var course in courses) {
-      course.prerequisites.addAll(course.info.requirementCourseCodes
-          .map((code) => courseCodeMap[code]!));
+      for (final code in course.info.requirementCourseCodes) {
+        final prerequisite = courseCodeMap[code];
+        if (prerequisite != null) {
+          course.prerequisites.add(prerequisite);
+        }
+      }
     }
     final termNumberMap = <int, List<ProgramCurriculumCourse>>{};
     for (var course in courses) {
@@ -60,14 +70,15 @@ class GetProgramCurriculumProgressUsecase {
       }
       termNumberMap[termNumber]!.add(course);
     }
-    final terms = termNumberMap.entries
-        .map(
-          (entry) => ProgramCurriculumTerm(
-            termNumber: entry.key,
-            courses: entry.value,
-          ),
-        )
-        .toList();
+    final terms =
+        termNumberMap.entries
+            .map(
+              (entry) => ProgramCurriculumTerm(
+                termNumber: entry.key,
+                courses: entry.value,
+              ),
+            )
+            .toList();
     return terms;
   }
 
@@ -96,25 +107,29 @@ class GetProgramCurriculumProgressUsecase {
   }
 
   Future<void> _setEnrolledCourses(
-      List<ProgramCurriculumTerm> programCurriculum) async {
-    final semesterContext = await _academicInfoService
-        .getSessionInfo()
-        .then((v) => v.semesterContext);
+    List<ProgramCurriculumTerm> programCurriculum,
+  ) async {
+    final semesterContext = await _academicInfoService.getSessionInfo().then(
+      (v) => v.semesterContext,
+    );
 
     if (semesterContext.contextType != SemesterContextType.currentlyEnrolled) {
       return;
     }
 
-    final enrolledCourses = await _getEnrolledCoursesUsecase
-        .execute(semesterContext.defaultSemester.id);
+    final enrolledCourses = await _getEnrolledCoursesUsecase.execute(
+      semesterContext.defaultSemester.id,
+    );
 
     final coursesWithoutGrades = programCurriculum
         .expand((term) => term.courses)
         .where((course) => course.lastGrade == null);
 
     for (var course in coursesWithoutGrades) {
-      course.isEnrolled = enrolledCourses.any((enrolledCourse) =>
-          enrolledCourse.data.courseCode == course.info.courseCode);
+      course.isEnrolled = enrolledCourses.any(
+        (enrolledCourse) =>
+            enrolledCourse.data.courseCode == course.info.courseCode,
+      );
     }
   }
 }

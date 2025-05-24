@@ -234,8 +234,8 @@ class _CoursePrerequisiteChainPageState
           _toggleCriticalPath(currentTree);
         }
       },
-      child: const Icon(Icons.tune),
       tooltip: 'Opciones de visualización',
+      child: const Icon(Icons.tune),
     );
   }
 
