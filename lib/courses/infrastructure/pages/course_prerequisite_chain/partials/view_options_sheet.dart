@@ -121,7 +121,7 @@ class ViewOptionsSheetWidget extends StatelessWidget {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: theme.colorScheme.outline.withOpacity(0.3),
+                color: theme.colorScheme.outline.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -219,7 +219,9 @@ class _ViewModeOption extends StatelessWidget {
           color:
               isSelected
                   ? theme.colorScheme.primaryContainer
-                  : theme.colorScheme.surfaceVariant.withOpacity(0.3),
+                  : theme.colorScheme.surfaceContainerHighest.withValues(
+                    alpha: 0.3,
+                  ),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Icon(
@@ -245,7 +247,9 @@ class _ViewModeOption extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: theme.colorScheme.secondaryContainer.withOpacity(0.7),
+                color: theme.colorScheme.secondaryContainer.withValues(
+                  alpha: 0.7,
+                ),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
@@ -296,10 +300,14 @@ class _CriticalPathOption extends StatelessWidget {
         decoration: BoxDecoration(
           color:
               !isUseful
-                  ? theme.colorScheme.surfaceVariant.withOpacity(0.1)
+                  ? theme.colorScheme.surfaceContainerHighest.withValues(
+                    alpha: 0.1,
+                  )
                   : isActive
-                  ? Colors.orange.withOpacity(0.2)
-                  : theme.colorScheme.surfaceVariant.withOpacity(0.3),
+                  ? Colors.orange.withValues(alpha: 0.2)
+                  : theme.colorScheme.surfaceContainerHighest.withValues(
+                    alpha: 0.3,
+                  ),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Icon(
@@ -310,7 +318,7 @@ class _CriticalPathOption extends StatelessWidget {
               : Icons.alt_route,
           color:
               !isUseful
-                  ? theme.colorScheme.onSurfaceVariant.withOpacity(0.4)
+                  ? theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.4)
                   : isActive
                   ? Colors.orange
                   : theme.colorScheme.onSurfaceVariant,
@@ -329,7 +337,9 @@ class _CriticalPathOption extends StatelessWidget {
               fontWeight: FontWeight.w500,
               color:
                   !isUseful
-                      ? theme.colorScheme.onSurfaceVariant.withOpacity(0.4)
+                      ? theme.colorScheme.onSurfaceVariant.withValues(
+                        alpha: 0.4,
+                      )
                       : isActive
                       ? Colors.orange
                       : null,
@@ -340,7 +350,7 @@ class _CriticalPathOption extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.2),
+                color: Colors.orange.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
@@ -363,7 +373,7 @@ class _CriticalPathOption extends StatelessWidget {
         style: theme.textTheme.bodySmall?.copyWith(
           color:
               !isUseful
-                  ? theme.colorScheme.onSurfaceVariant.withOpacity(0.4)
+                  ? theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.4)
                   : theme.colorScheme.onSurfaceVariant,
         ),
       ),

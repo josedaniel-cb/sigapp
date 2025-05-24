@@ -72,7 +72,7 @@ dependencies:
   # open_filex: ^4.6.0
   open_file: ^3.5.10
 
-  skeletonizer: ^1.4.3
+  skeletonizer: ^2.0.1
 
   toastification: ^3.0.0
 

@@ -63,7 +63,7 @@ class FilterChipsWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     color:
                         showMandatory
-                            ? Colors.white.withOpacity(0.8)
+                            ? Colors.white.withValues(alpha: 0.8)
                             : Colors.grey.shade300,
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -102,7 +102,7 @@ class FilterChipsWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                     color:
                         showElective
-                            ? Colors.white.withOpacity(0.8)
+                            ? Colors.white.withValues(alpha: 0.8)
                             : Colors.grey.shade300,
                     borderRadius: BorderRadius.circular(10),
                   ),
