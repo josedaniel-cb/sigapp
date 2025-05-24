@@ -4,7 +4,7 @@ import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.da
 import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/flat.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/tree.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/filter_chips.dart';
-import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/enhanced_approval_chips.dart';
+import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/approval_chips.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/filter_results_counter.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/filter_reset_button.dart';
 
@@ -176,7 +176,7 @@ class TabSectionWidget extends StatelessWidget {
                   tree: tree,
                 ),
                 const SizedBox(height: 8),
-                EnhancedApprovalChipsWidget(
+                ApprovalChipsWidget(
                   approvalFilter: approvalFilter,
                   onApprovalChanged: onApprovalChanged,
                   tree: tree,

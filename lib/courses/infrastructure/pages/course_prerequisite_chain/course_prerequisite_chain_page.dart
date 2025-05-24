@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.dart';
 import 'package:sigapp/courses/infrastructure/services/course_chain_preferences.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/view_options_sheet.dart';
+import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/view_options_button.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_prerequisite_chain/partials/tab_section.dart';
 
 enum CoursePrerequisiteChainViewMode { tree, list }
@@ -195,7 +196,9 @@ class _CoursePrerequisiteChainPageState
   }
 
   Widget _buildFab(BuildContext context) {
-    return FloatingActionButton(
+    return ViewOptionsButton(
+      viewMode: _viewMode,
+      highlightCriticalPath: _highlightCriticalPath,
       onPressed: () async {
         final selected = await showModalBottomSheet<String>(
           context: context,
@@ -203,9 +206,18 @@ class _CoursePrerequisiteChainPageState
             borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
           ),
           builder: (context) {
+            final currentTree =
+                _tabController.index == 0
+                    ? widget.course.getPrerequisiteCoursesTree(
+                      programCurriculum: widget.programCurriculum,
+                    )
+                    : widget.course.getDependentCoursesTree(
+                      programCurriculum: widget.programCurriculum,
+                    );
             return ViewOptionsSheetWidget(
               viewMode: _viewMode,
               highlightCriticalPath: _highlightCriticalPath,
+              currentTree: currentTree,
               onTree: () => Navigator.pop(context, 'tree'),
               onList: () => Navigator.pop(context, 'list'),
               onCritical: () => Navigator.pop(context, 'critical'),
@@ -230,8 +242,6 @@ class _CoursePrerequisiteChainPageState
           _toggleCriticalPath(currentTree);
         }
       },
-      tooltip: 'Opciones de visualización',
-      child: const Icon(Icons.tune),
     );
   }
 
