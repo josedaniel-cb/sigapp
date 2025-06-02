@@ -40,54 +40,39 @@ class _CareerPageViewState extends State<CareerPageView>
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CareerPageCubit, CareerPageState>(
-        builder: (context, state) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Carrera'),
-              UserAvatarButtonWidget(),
-            ],
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [Text('Carrera'), UserAvatarButtonWidget()],
+            ),
+            bottom: TabBar(
+              controller: _tabController,
+              tabs: [
+                Tab(icon: Icon(MdiIcons.book), text: 'Plan'),
+                Tab(icon: Icon(MdiIcons.chartBar), text: 'Historial'),
+                Tab(icon: Icon(MdiIcons.calendarSearch), text: 'Programación'),
+              ],
+            ),
           ),
-          bottom: TabBar(
-            controller: _tabController,
-            tabs: [
-              Tab(
-                icon: Icon(MdiIcons.book),
-                text: 'Plan',
-              ),
-              Tab(
-                icon: Icon(MdiIcons.chartBar),
-                text: 'Historial',
-              ),
-              Tab(
-                icon: Icon(MdiIcons.calendarSearch),
-                text: 'Programación',
-              ),
-            ],
-          ),
-        ),
-        body: state.map(
-          loading: (_) => LoadingStateWidget(),
-          success: _buildReadyState,
-          error: (s) => ErrorStateWidget.from(
-            s.error,
-            onRetry: () => _cubit.fetch(),
-          ),
-        ),
-      );
-    });
+          body: switch (state) {
+            CareerPageLoadingState() => LoadingStateWidget(),
+            CareerPageSuccessState() => _buildReadyState(state),
+            CareerPageErrorState() => ErrorStateWidget.from(
+              state.error,
+              onRetry: () => _cubit.fetch(),
+            ),
+          },
+        );
+      },
+    );
   }
 
   Widget _buildReadyState(CareerPageSuccessState state) {
     return TabBarView(
       controller: _tabController,
-      children: [
-        _Tab1(state),
-        _Tab2(state),
-        _Tab3(state),
-      ],
+      children: [_Tab1(state), _Tab2(state), _Tab3(state)],
     );
   }
 }

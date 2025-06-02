@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:sigapp/courses/domain/entities/course_type.dart';
+import 'package:sigapp/courses/domain/value-objects/course_grade.dart';
 import 'package:sigapp/courses/infrastructure/pages/career/widgets/course_subtitle.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_cubit.dart';
 import 'package:sigapp/courses/infrastructure/pages/course_detail/course_detail_page.dart';
@@ -16,17 +17,18 @@ class CourseItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CourseDetailCubit, CourseDetailState>(
       builder: (context, state) {
-        return state.map(
-          empty: (_) => Container(),
-          ready: (state) => InkWell(
+        return switch (state) {
+          CourseDetailEmptyState() => Container(),
+          CourseDetailReadyState() => InkWell(
             onTap: () {
               final cubit = BlocProvider.of<CourseDetailCubit>(context);
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => BlocProvider.value(
-                    value: cubit,
-                    child: CourseDetailPageWidget(color: color),
-                  ),
+                  builder:
+                      (context) => BlocProvider.value(
+                        value: cubit,
+                        child: CourseDetailPageWidget(color: color),
+                      ),
                 ),
               );
             },
@@ -52,67 +54,82 @@ class CourseItemWidget extends StatelessWidget {
                             // Tipo de curso
                             state.course.data.courseType == CourseType.mandatory
                                 ? CourseSubtitleWidgetItem(
-                                    text: 'Obligatorio',
-                                    icon: Icons.school,
-                                  )
+                                  text: 'Obligatorio',
+                                  icon: Icons.school,
+                                )
                                 : state.course.data.courseType ==
-                                        CourseType.elective
-                                    ? CourseSubtitleWidgetItem(
-                                        text: 'Electivo',
-                                        icon: MdiIcons.leaf,
-                                      )
-                                    : CourseSubtitleWidgetItem(
-                                        text: 'Tipo desconocido',
-                                      ),
+                                    CourseType.elective
+                                ? CourseSubtitleWidgetItem(
+                                  text: 'Electivo',
+                                  icon: MdiIcons.leaf,
+                                )
+                                : CourseSubtitleWidgetItem(
+                                  text: 'Tipo desconocido',
+                                ),
                             // Créditos
                             CourseSubtitleWidgetItem(
-                              text: state.course.data.credits == 1
-                                  ? '1 crédito'
-                                  : '${state.course.data.credits} créditos',
+                              text:
+                                  state.course.data.credits == 1
+                                      ? '1 crédito'
+                                      : '${state.course.data.credits} créditos',
                             ),
                           ],
                         ),
                         Builder(
                           builder: (context) {
-                            final additionalItems = <CourseSubtitleWidgetItem?>[
-                              // Notas
-                              state.grades.maybeWhen(
-                                loading: () => CourseSubtitleWidgetItem(
-                                    text: 'Notas', loading: true),
-                                loaded: (courseGradeInfo) {
-                                  return courseGradeInfo.grade.maybeWhen(
-                                    loaded: (value, isPartial) =>
-                                        CourseSubtitleWidgetItem(
-                                      text: value.toStringAsFixed(2),
-                                      icon: isPartial
-                                          ? MdiIcons.clipboardCheckOutline
-                                          : MdiIcons.clipboardCheck,
-                                    ),
-                                    orElse: () => null,
-                                  );
-                                },
-                                orElse: () => null,
-                              ),
-                              // Syllabus
-                              state.syllabus.maybeWhen(
-                                loading: () => CourseSubtitleWidgetItem(
-                                  text: 'Syllabus',
-                                  loading: true,
-                                ),
-                                loaded: (_) => CourseSubtitleWidgetItem(
-                                  text: 'Syllabus',
-                                  icon: Icons.check_circle,
-                                ),
-                                orElse: () => null,
-                              ),
-                            ].whereType<CourseSubtitleWidgetItem>().toList();
+                            final readyState = state;
+                            final additionalItems =
+                                <CourseSubtitleWidgetItem?>[
+                                  // Notas
+                                  switch (readyState.grades) {
+                                    CourseDetailGradesStateLoading() =>
+                                      CourseSubtitleWidgetItem(
+                                        text: 'Notas',
+                                        loading: true,
+                                      ),
+                                    CourseDetailGradesStateLoaded(
+                                      :final value,
+                                    ) =>
+                                      switch (value.grade) {
+                                        CourseGradePreviewLoaded(
+                                          :final value,
+                                          :final isPartial,
+                                        ) =>
+                                          CourseSubtitleWidgetItem(
+                                            text: value.toStringAsFixed(2),
+                                            icon:
+                                                isPartial
+                                                    ? MdiIcons
+                                                        .clipboardCheckOutline
+                                                    : MdiIcons.clipboardCheck,
+                                          ),
+                                        _ => null,
+                                      },
+                                    _ => null,
+                                  },
+                                  // Syllabus
+                                  switch (readyState.syllabus) {
+                                    CourseDetailSyllabusStateLoading() =>
+                                      CourseSubtitleWidgetItem(
+                                        text: 'Syllabus',
+                                        loading: true,
+                                      ),
+                                    CourseDetailSyllabusStateLoaded() =>
+                                      CourseSubtitleWidgetItem(
+                                        text: 'Syllabus',
+                                        icon: Icons.check_circle,
+                                      ),
+                                    _ => null,
+                                  },
+                                ].whereType<CourseSubtitleWidgetItem>().toList();
 
                             if (additionalItems.isEmpty) {
                               return const SizedBox.shrink();
                             }
 
                             return CourseSubtitleWidget(
-                                children: additionalItems);
+                              children: additionalItems,
+                            );
                           },
                         ),
                       ],
@@ -122,7 +139,7 @@ class CourseItemWidget extends StatelessWidget {
               ],
             ),
           ),
-        );
+        };
       },
     );
   }

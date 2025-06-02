@@ -6,7 +6,7 @@ import 'package:sigapp/courses/infrastructure/services/course_visibility_prefere
 part 'course_visibility_cubit.freezed.dart';
 
 @freezed
-class CourseVisibilityState with _$CourseVisibilityState {
+abstract class CourseVisibilityState with _$CourseVisibilityState {
   const factory CourseVisibilityState({
     @Default(true) bool isLoading,
     @Default({}) Map<String, bool> hiddenEvents,

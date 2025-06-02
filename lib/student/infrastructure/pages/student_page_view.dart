@@ -37,20 +37,17 @@ class _StudentPageViewState extends State<StudentPageView> {
           appBar: AppBar(
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Estudiante'),
-                UserAvatarButtonWidget(),
-              ],
+              children: [Text('Estudiante'), UserAvatarButtonWidget()],
             ),
           ),
-          body: state.map(
-            loading: (_) => const LoadingStateWidget(),
-            success: (state) => _buildSuccessState(context, state),
-            error: (state) => ErrorStateWidget.from(
+          body: switch (state) {
+            LoadingState() => const LoadingStateWidget(),
+            SuccessState() => _buildSuccessState(context, state),
+            ErrorState() => ErrorStateWidget.from(
               state.error,
               onRetry: () => _cubit.setup(),
             ),
-          ),
+          },
         );
       },
       listener: (context, state) {
@@ -63,10 +60,7 @@ class _StudentPageViewState extends State<StudentPageView> {
     );
   }
 
-  Widget _buildSuccessState(
-    BuildContext context,
-    SuccessState state,
-  ) {
+  Widget _buildSuccessState(BuildContext context, SuccessState state) {
     final info = state.academicReport;
 
     return ListView(
@@ -144,35 +138,34 @@ class _StudentPageViewState extends State<StudentPageView> {
       ],
     ];
 
-    final filteredEntries = List.generate(rawData.length, (i) => i)
-        .where((i) => rawData[i][0] as double > 0)
-        .map((i) => (
-              value: rawData[i][0] as double,
-              label: rawData[i][1] as String,
-              color: rawData[i][2] as Color
-            ))
-        .toList();
+    final filteredEntries =
+        List.generate(rawData.length, (i) => i)
+            .where((i) => rawData[i][0] as double > 0)
+            .map(
+              (i) => (
+                value: rawData[i][0] as double,
+                label: rawData[i][1] as String,
+                color: rawData[i][2] as Color,
+              ),
+            )
+            .toList();
 
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Distribución de Créditos',
-              style: textTheme.titleMedium,
-            ),
+            Text('Distribución de Créditos', style: textTheme.titleMedium),
             if (overMsg.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 4.0),
                 child: Text(
                   overMsg,
-                  style:
-                      textTheme.bodyMedium?.copyWith(color: Colors.redAccent),
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: Colors.redAccent,
+                  ),
                 ),
               ),
             const SizedBox(height: 16),
@@ -245,9 +238,7 @@ class _StudentPageViewState extends State<StudentPageView> {
     final textTheme = Theme.of(context).textTheme;
 
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
@@ -280,34 +271,36 @@ class _StudentPageViewState extends State<StudentPageView> {
                     ];
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: data
-                          .map(
-                            (e) => Padding(
-                              padding: const EdgeInsets.only(top: 2.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    width: 100,
-                                    child: Text(
-                                      '${e[0]}:',
-                                      style: textTheme.bodyMedium,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      e[1],
-                                      style: textTheme.bodyMedium?.copyWith(
-                                        fontWeight: FontWeight.w500,
+                      children:
+                          data
+                              .map(
+                                (e) => Padding(
+                                  padding: const EdgeInsets.only(top: 2.0),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width: 100,
+                                        child: Text(
+                                          '${e[0]}:',
+                                          style: textTheme.bodyMedium,
+                                        ),
                                       ),
-                                      softWrap: true,
-                                    ),
+                                      Expanded(
+                                        child: Text(
+                                          e[1],
+                                          style: textTheme.bodyMedium?.copyWith(
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          softWrap: true,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                          )
-                          .toList(),
+                                ),
+                              )
+                              .toList(),
                     );
                   })(),
                 ],

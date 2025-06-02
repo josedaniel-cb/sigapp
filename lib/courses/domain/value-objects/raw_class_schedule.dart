@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'raw_class_schedule.freezed.dart';
 
 @freezed
-class RawClassSchedule with _$RawClassSchedule {
+abstract class RawClassSchedule with _$RawClassSchedule {
   factory RawClassSchedule({
     required String startHour,
     required String endHour,

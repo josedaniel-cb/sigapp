@@ -4,7 +4,7 @@ part 'get_scheduled_courses.freezed.dart';
 part 'get_scheduled_courses.g.dart';
 
 @freezed
-class GetScheduledCourseModel with _$GetScheduledCourseModel {
+abstract class GetScheduledCourseModel with _$GetScheduledCourseModel {
   /// TS equivalent:
   /// ```ts
   /// export type Root = {

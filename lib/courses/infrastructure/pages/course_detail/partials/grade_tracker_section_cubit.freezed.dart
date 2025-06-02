@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,687 +10,261 @@ part of 'grade_tracker_section_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
-mixin _$GradeTrackerSectionState {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() empty,
-    required TResult Function() loading,
-    required TResult Function(CourseTracking courseTracking) ready,
-    required TResult Function(Object error) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? empty,
-    TResult? Function()? loading,
-    TResult? Function(CourseTracking courseTracking)? ready,
-    TResult? Function(Object error)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? empty,
-    TResult Function()? loading,
-    TResult Function(CourseTracking courseTracking)? ready,
-    TResult Function(Object error)? error,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GradeTrackerSectionEmptyState value) empty,
-    required TResult Function(GradeTrackerSectionLoadingState value) loading,
-    required TResult Function(GradeTrackerSectionReadyState value) ready,
-    required TResult Function(GradeTrackerSectionErrorState value) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(GradeTrackerSectionEmptyState value)? empty,
-    TResult? Function(GradeTrackerSectionLoadingState value)? loading,
-    TResult? Function(GradeTrackerSectionReadyState value)? ready,
-    TResult? Function(GradeTrackerSectionErrorState value)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GradeTrackerSectionEmptyState value)? empty,
-    TResult Function(GradeTrackerSectionLoadingState value)? loading,
-    TResult Function(GradeTrackerSectionReadyState value)? ready,
-    TResult Function(GradeTrackerSectionErrorState value)? error,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+mixin _$GradeTrackerSectionState implements DiagnosticableTreeMixin {
+
+
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'GradeTrackerSectionState'))
+    ;
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GradeTrackerSectionState);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'GradeTrackerSectionState()';
+}
+
+
 }
 
 /// @nodoc
-abstract class $GradeTrackerSectionStateCopyWith<$Res> {
-  factory $GradeTrackerSectionStateCopyWith(GradeTrackerSectionState value,
-          $Res Function(GradeTrackerSectionState) then) =
-      _$GradeTrackerSectionStateCopyWithImpl<$Res, GradeTrackerSectionState>;
+class $GradeTrackerSectionStateCopyWith<$Res>  {
+$GradeTrackerSectionStateCopyWith(GradeTrackerSectionState _, $Res Function(GradeTrackerSectionState) __);
 }
 
-/// @nodoc
-class _$GradeTrackerSectionStateCopyWithImpl<$Res,
-        $Val extends GradeTrackerSectionState>
-    implements $GradeTrackerSectionStateCopyWith<$Res> {
-  _$GradeTrackerSectionStateCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of GradeTrackerSectionState
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$GradeTrackerSectionEmptyStateImplCopyWith<$Res> {
-  factory _$$GradeTrackerSectionEmptyStateImplCopyWith(
-          _$GradeTrackerSectionEmptyStateImpl value,
-          $Res Function(_$GradeTrackerSectionEmptyStateImpl) then) =
-      __$$GradeTrackerSectionEmptyStateImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$GradeTrackerSectionEmptyStateImplCopyWithImpl<$Res>
-    extends _$GradeTrackerSectionStateCopyWithImpl<$Res,
-        _$GradeTrackerSectionEmptyStateImpl>
-    implements _$$GradeTrackerSectionEmptyStateImplCopyWith<$Res> {
-  __$$GradeTrackerSectionEmptyStateImplCopyWithImpl(
-      _$GradeTrackerSectionEmptyStateImpl _value,
-      $Res Function(_$GradeTrackerSectionEmptyStateImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of GradeTrackerSectionState
-  /// with the given fields replaced by the non-null parameter values.
-}
 
 /// @nodoc
 
-class _$GradeTrackerSectionEmptyStateImpl
-    with DiagnosticableTreeMixin
-    implements GradeTrackerSectionEmptyState {
-  const _$GradeTrackerSectionEmptyStateImpl();
 
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'GradeTrackerSectionState.empty()';
-  }
+class GradeTrackerSectionEmptyState with DiagnosticableTreeMixin implements GradeTrackerSectionState {
+  const GradeTrackerSectionEmptyState();
+  
 
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'GradeTrackerSectionState.empty'));
-  }
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$GradeTrackerSectionEmptyStateImpl);
-  }
 
-  @override
-  int get hashCode => runtimeType.hashCode;
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() empty,
-    required TResult Function() loading,
-    required TResult Function(CourseTracking courseTracking) ready,
-    required TResult Function(Object error) error,
-  }) {
-    return empty();
-  }
 
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? empty,
-    TResult? Function()? loading,
-    TResult? Function(CourseTracking courseTracking)? ready,
-    TResult? Function(Object error)? error,
-  }) {
-    return empty?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? empty,
-    TResult Function()? loading,
-    TResult Function(CourseTracking courseTracking)? ready,
-    TResult Function(Object error)? error,
-    required TResult orElse(),
-  }) {
-    if (empty != null) {
-      return empty();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GradeTrackerSectionEmptyState value) empty,
-    required TResult Function(GradeTrackerSectionLoadingState value) loading,
-    required TResult Function(GradeTrackerSectionReadyState value) ready,
-    required TResult Function(GradeTrackerSectionErrorState value) error,
-  }) {
-    return empty(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(GradeTrackerSectionEmptyState value)? empty,
-    TResult? Function(GradeTrackerSectionLoadingState value)? loading,
-    TResult? Function(GradeTrackerSectionReadyState value)? ready,
-    TResult? Function(GradeTrackerSectionErrorState value)? error,
-  }) {
-    return empty?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GradeTrackerSectionEmptyState value)? empty,
-    TResult Function(GradeTrackerSectionLoadingState value)? loading,
-    TResult Function(GradeTrackerSectionReadyState value)? ready,
-    TResult Function(GradeTrackerSectionErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (empty != null) {
-      return empty(this);
-    }
-    return orElse();
-  }
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'GradeTrackerSectionState.empty'))
+    ;
 }
 
-abstract class GradeTrackerSectionEmptyState
-    implements GradeTrackerSectionState {
-  const factory GradeTrackerSectionEmptyState() =
-      _$GradeTrackerSectionEmptyStateImpl;
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GradeTrackerSectionEmptyState);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'GradeTrackerSectionState.empty()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class GradeTrackerSectionLoadingState with DiagnosticableTreeMixin implements GradeTrackerSectionState {
+  const GradeTrackerSectionLoadingState();
+  
+
+
+
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'GradeTrackerSectionState.loading'))
+    ;
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GradeTrackerSectionLoadingState);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'GradeTrackerSectionState.loading()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class GradeTrackerSectionReadyState with DiagnosticableTreeMixin implements GradeTrackerSectionState {
+  const GradeTrackerSectionReadyState({required this.courseTracking});
+  
+
+ final  CourseTracking courseTracking;
+
+/// Create a copy of GradeTrackerSectionState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$GradeTrackerSectionReadyStateCopyWith<GradeTrackerSectionReadyState> get copyWith => _$GradeTrackerSectionReadyStateCopyWithImpl<GradeTrackerSectionReadyState>(this, _$identity);
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'GradeTrackerSectionState.ready'))
+    ..add(DiagnosticsProperty('courseTracking', courseTracking));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GradeTrackerSectionReadyState&&(identical(other.courseTracking, courseTracking) || other.courseTracking == courseTracking));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,courseTracking);
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'GradeTrackerSectionState.ready(courseTracking: $courseTracking)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$GradeTrackerSectionLoadingStateImplCopyWith<$Res> {
-  factory _$$GradeTrackerSectionLoadingStateImplCopyWith(
-          _$GradeTrackerSectionLoadingStateImpl value,
-          $Res Function(_$GradeTrackerSectionLoadingStateImpl) then) =
-      __$$GradeTrackerSectionLoadingStateImplCopyWithImpl<$Res>;
+abstract mixin class $GradeTrackerSectionReadyStateCopyWith<$Res> implements $GradeTrackerSectionStateCopyWith<$Res> {
+  factory $GradeTrackerSectionReadyStateCopyWith(GradeTrackerSectionReadyState value, $Res Function(GradeTrackerSectionReadyState) _then) = _$GradeTrackerSectionReadyStateCopyWithImpl;
+@useResult
+$Res call({
+ CourseTracking courseTracking
+});
+
+
+
+
+}
+/// @nodoc
+class _$GradeTrackerSectionReadyStateCopyWithImpl<$Res>
+    implements $GradeTrackerSectionReadyStateCopyWith<$Res> {
+  _$GradeTrackerSectionReadyStateCopyWithImpl(this._self, this._then);
+
+  final GradeTrackerSectionReadyState _self;
+  final $Res Function(GradeTrackerSectionReadyState) _then;
+
+/// Create a copy of GradeTrackerSectionState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? courseTracking = null,}) {
+  return _then(GradeTrackerSectionReadyState(
+courseTracking: null == courseTracking ? _self.courseTracking : courseTracking // ignore: cast_nullable_to_non_nullable
+as CourseTracking,
+  ));
 }
 
-/// @nodoc
-class __$$GradeTrackerSectionLoadingStateImplCopyWithImpl<$Res>
-    extends _$GradeTrackerSectionStateCopyWithImpl<$Res,
-        _$GradeTrackerSectionLoadingStateImpl>
-    implements _$$GradeTrackerSectionLoadingStateImplCopyWith<$Res> {
-  __$$GradeTrackerSectionLoadingStateImplCopyWithImpl(
-      _$GradeTrackerSectionLoadingStateImpl _value,
-      $Res Function(_$GradeTrackerSectionLoadingStateImpl) _then)
-      : super(_value, _then);
 
-  /// Create a copy of GradeTrackerSectionState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$GradeTrackerSectionLoadingStateImpl
-    with DiagnosticableTreeMixin
-    implements GradeTrackerSectionLoadingState {
-  const _$GradeTrackerSectionLoadingStateImpl();
 
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'GradeTrackerSectionState.loading()';
-  }
+class GradeTrackerSectionErrorState with DiagnosticableTreeMixin implements GradeTrackerSectionState {
+  const GradeTrackerSectionErrorState(this.error);
+  
 
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'GradeTrackerSectionState.loading'));
-  }
+ final  Object error;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$GradeTrackerSectionLoadingStateImpl);
-  }
+/// Create a copy of GradeTrackerSectionState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$GradeTrackerSectionErrorStateCopyWith<GradeTrackerSectionErrorState> get copyWith => _$GradeTrackerSectionErrorStateCopyWithImpl<GradeTrackerSectionErrorState>(this, _$identity);
 
-  @override
-  int get hashCode => runtimeType.hashCode;
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() empty,
-    required TResult Function() loading,
-    required TResult Function(CourseTracking courseTracking) ready,
-    required TResult Function(Object error) error,
-  }) {
-    return loading();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? empty,
-    TResult? Function()? loading,
-    TResult? Function(CourseTracking courseTracking)? ready,
-    TResult? Function(Object error)? error,
-  }) {
-    return loading?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? empty,
-    TResult Function()? loading,
-    TResult Function(CourseTracking courseTracking)? ready,
-    TResult Function(Object error)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GradeTrackerSectionEmptyState value) empty,
-    required TResult Function(GradeTrackerSectionLoadingState value) loading,
-    required TResult Function(GradeTrackerSectionReadyState value) ready,
-    required TResult Function(GradeTrackerSectionErrorState value) error,
-  }) {
-    return loading(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(GradeTrackerSectionEmptyState value)? empty,
-    TResult? Function(GradeTrackerSectionLoadingState value)? loading,
-    TResult? Function(GradeTrackerSectionReadyState value)? ready,
-    TResult? Function(GradeTrackerSectionErrorState value)? error,
-  }) {
-    return loading?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GradeTrackerSectionEmptyState value)? empty,
-    TResult Function(GradeTrackerSectionLoadingState value)? loading,
-    TResult Function(GradeTrackerSectionReadyState value)? ready,
-    TResult Function(GradeTrackerSectionErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading(this);
-    }
-    return orElse();
-  }
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'GradeTrackerSectionState.error'))
+    ..add(DiagnosticsProperty('error', error));
 }
 
-abstract class GradeTrackerSectionLoadingState
-    implements GradeTrackerSectionState {
-  const factory GradeTrackerSectionLoadingState() =
-      _$GradeTrackerSectionLoadingStateImpl;
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GradeTrackerSectionErrorState&&const DeepCollectionEquality().equals(other.error, error));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(error));
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'GradeTrackerSectionState.error(error: $error)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$GradeTrackerSectionReadyStateImplCopyWith<$Res> {
-  factory _$$GradeTrackerSectionReadyStateImplCopyWith(
-          _$GradeTrackerSectionReadyStateImpl value,
-          $Res Function(_$GradeTrackerSectionReadyStateImpl) then) =
-      __$$GradeTrackerSectionReadyStateImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({CourseTracking courseTracking});
-}
+abstract mixin class $GradeTrackerSectionErrorStateCopyWith<$Res> implements $GradeTrackerSectionStateCopyWith<$Res> {
+  factory $GradeTrackerSectionErrorStateCopyWith(GradeTrackerSectionErrorState value, $Res Function(GradeTrackerSectionErrorState) _then) = _$GradeTrackerSectionErrorStateCopyWithImpl;
+@useResult
+$Res call({
+ Object error
+});
 
+
+
+
+}
 /// @nodoc
-class __$$GradeTrackerSectionReadyStateImplCopyWithImpl<$Res>
-    extends _$GradeTrackerSectionStateCopyWithImpl<$Res,
-        _$GradeTrackerSectionReadyStateImpl>
-    implements _$$GradeTrackerSectionReadyStateImplCopyWith<$Res> {
-  __$$GradeTrackerSectionReadyStateImplCopyWithImpl(
-      _$GradeTrackerSectionReadyStateImpl _value,
-      $Res Function(_$GradeTrackerSectionReadyStateImpl) _then)
-      : super(_value, _then);
+class _$GradeTrackerSectionErrorStateCopyWithImpl<$Res>
+    implements $GradeTrackerSectionErrorStateCopyWith<$Res> {
+  _$GradeTrackerSectionErrorStateCopyWithImpl(this._self, this._then);
 
-  /// Create a copy of GradeTrackerSectionState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? courseTracking = null,
-  }) {
-    return _then(_$GradeTrackerSectionReadyStateImpl(
-      courseTracking: null == courseTracking
-          ? _value.courseTracking
-          : courseTracking // ignore: cast_nullable_to_non_nullable
-              as CourseTracking,
-    ));
-  }
+  final GradeTrackerSectionErrorState _self;
+  final $Res Function(GradeTrackerSectionErrorState) _then;
+
+/// Create a copy of GradeTrackerSectionState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? error = null,}) {
+  return _then(GradeTrackerSectionErrorState(
+null == error ? _self.error : error ,
+  ));
 }
 
-/// @nodoc
 
-class _$GradeTrackerSectionReadyStateImpl
-    with DiagnosticableTreeMixin
-    implements GradeTrackerSectionReadyState {
-  const _$GradeTrackerSectionReadyStateImpl({required this.courseTracking});
-
-  @override
-  final CourseTracking courseTracking;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'GradeTrackerSectionState.ready(courseTracking: $courseTracking)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'GradeTrackerSectionState.ready'))
-      ..add(DiagnosticsProperty('courseTracking', courseTracking));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$GradeTrackerSectionReadyStateImpl &&
-            (identical(other.courseTracking, courseTracking) ||
-                other.courseTracking == courseTracking));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, courseTracking);
-
-  /// Create a copy of GradeTrackerSectionState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$GradeTrackerSectionReadyStateImplCopyWith<
-          _$GradeTrackerSectionReadyStateImpl>
-      get copyWith => __$$GradeTrackerSectionReadyStateImplCopyWithImpl<
-          _$GradeTrackerSectionReadyStateImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() empty,
-    required TResult Function() loading,
-    required TResult Function(CourseTracking courseTracking) ready,
-    required TResult Function(Object error) error,
-  }) {
-    return ready(courseTracking);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? empty,
-    TResult? Function()? loading,
-    TResult? Function(CourseTracking courseTracking)? ready,
-    TResult? Function(Object error)? error,
-  }) {
-    return ready?.call(courseTracking);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? empty,
-    TResult Function()? loading,
-    TResult Function(CourseTracking courseTracking)? ready,
-    TResult Function(Object error)? error,
-    required TResult orElse(),
-  }) {
-    if (ready != null) {
-      return ready(courseTracking);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GradeTrackerSectionEmptyState value) empty,
-    required TResult Function(GradeTrackerSectionLoadingState value) loading,
-    required TResult Function(GradeTrackerSectionReadyState value) ready,
-    required TResult Function(GradeTrackerSectionErrorState value) error,
-  }) {
-    return ready(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(GradeTrackerSectionEmptyState value)? empty,
-    TResult? Function(GradeTrackerSectionLoadingState value)? loading,
-    TResult? Function(GradeTrackerSectionReadyState value)? ready,
-    TResult? Function(GradeTrackerSectionErrorState value)? error,
-  }) {
-    return ready?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GradeTrackerSectionEmptyState value)? empty,
-    TResult Function(GradeTrackerSectionLoadingState value)? loading,
-    TResult Function(GradeTrackerSectionReadyState value)? ready,
-    TResult Function(GradeTrackerSectionErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (ready != null) {
-      return ready(this);
-    }
-    return orElse();
-  }
 }
 
-abstract class GradeTrackerSectionReadyState
-    implements GradeTrackerSectionState {
-  const factory GradeTrackerSectionReadyState(
-          {required final CourseTracking courseTracking}) =
-      _$GradeTrackerSectionReadyStateImpl;
-
-  CourseTracking get courseTracking;
-
-  /// Create a copy of GradeTrackerSectionState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GradeTrackerSectionReadyStateImplCopyWith<
-          _$GradeTrackerSectionReadyStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$GradeTrackerSectionErrorStateImplCopyWith<$Res> {
-  factory _$$GradeTrackerSectionErrorStateImplCopyWith(
-          _$GradeTrackerSectionErrorStateImpl value,
-          $Res Function(_$GradeTrackerSectionErrorStateImpl) then) =
-      __$$GradeTrackerSectionErrorStateImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({Object error});
-}
-
-/// @nodoc
-class __$$GradeTrackerSectionErrorStateImplCopyWithImpl<$Res>
-    extends _$GradeTrackerSectionStateCopyWithImpl<$Res,
-        _$GradeTrackerSectionErrorStateImpl>
-    implements _$$GradeTrackerSectionErrorStateImplCopyWith<$Res> {
-  __$$GradeTrackerSectionErrorStateImplCopyWithImpl(
-      _$GradeTrackerSectionErrorStateImpl _value,
-      $Res Function(_$GradeTrackerSectionErrorStateImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of GradeTrackerSectionState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? error = null,
-  }) {
-    return _then(_$GradeTrackerSectionErrorStateImpl(
-      null == error ? _value.error : error,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$GradeTrackerSectionErrorStateImpl
-    with DiagnosticableTreeMixin
-    implements GradeTrackerSectionErrorState {
-  const _$GradeTrackerSectionErrorStateImpl(this.error);
-
-  @override
-  final Object error;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'GradeTrackerSectionState.error(error: $error)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'GradeTrackerSectionState.error'))
-      ..add(DiagnosticsProperty('error', error));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$GradeTrackerSectionErrorStateImpl &&
-            const DeepCollectionEquality().equals(other.error, error));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(error));
-
-  /// Create a copy of GradeTrackerSectionState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$GradeTrackerSectionErrorStateImplCopyWith<
-          _$GradeTrackerSectionErrorStateImpl>
-      get copyWith => __$$GradeTrackerSectionErrorStateImplCopyWithImpl<
-          _$GradeTrackerSectionErrorStateImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() empty,
-    required TResult Function() loading,
-    required TResult Function(CourseTracking courseTracking) ready,
-    required TResult Function(Object error) error,
-  }) {
-    return error(this.error);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? empty,
-    TResult? Function()? loading,
-    TResult? Function(CourseTracking courseTracking)? ready,
-    TResult? Function(Object error)? error,
-  }) {
-    return error?.call(this.error);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? empty,
-    TResult Function()? loading,
-    TResult Function(CourseTracking courseTracking)? ready,
-    TResult Function(Object error)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this.error);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(GradeTrackerSectionEmptyState value) empty,
-    required TResult Function(GradeTrackerSectionLoadingState value) loading,
-    required TResult Function(GradeTrackerSectionReadyState value) ready,
-    required TResult Function(GradeTrackerSectionErrorState value) error,
-  }) {
-    return error(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(GradeTrackerSectionEmptyState value)? empty,
-    TResult? Function(GradeTrackerSectionLoadingState value)? loading,
-    TResult? Function(GradeTrackerSectionReadyState value)? ready,
-    TResult? Function(GradeTrackerSectionErrorState value)? error,
-  }) {
-    return error?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(GradeTrackerSectionEmptyState value)? empty,
-    TResult Function(GradeTrackerSectionLoadingState value)? loading,
-    TResult Function(GradeTrackerSectionReadyState value)? ready,
-    TResult Function(GradeTrackerSectionErrorState value)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class GradeTrackerSectionErrorState
-    implements GradeTrackerSectionState {
-  const factory GradeTrackerSectionErrorState(final Object error) =
-      _$GradeTrackerSectionErrorStateImpl;
-
-  Object get error;
-
-  /// Create a copy of GradeTrackerSectionState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GradeTrackerSectionErrorStateImplCopyWith<
-          _$GradeTrackerSectionErrorStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
-}
+// dart format on

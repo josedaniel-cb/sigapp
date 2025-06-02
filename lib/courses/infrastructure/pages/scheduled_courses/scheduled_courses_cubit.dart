@@ -8,7 +8,7 @@ import 'package:sigapp/courses/domain/entities/scheduled_course.dart';
 part 'scheduled_courses_cubit.freezed.dart';
 
 @freezed
-abstract class ScheduledCoursesPageState with _$ScheduledCoursesPageState {
+sealed class ScheduledCoursesPageState with _$ScheduledCoursesPageState {
   const factory ScheduledCoursesPageState.loading() = CoursesPageLoadingState;
   const factory ScheduledCoursesPageState.success({
     required List<ScheduledCourse> scheduledCourses,

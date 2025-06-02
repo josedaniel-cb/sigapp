@@ -26,7 +26,7 @@ part 'get_academic_report.g.dart';
 /// }
 /// ```
 @freezed
-class GetAcademicReportModel with _$GetAcademicReportModel {
+abstract class GetAcademicReportModel with _$GetAcademicReportModel {
   const factory GetAcademicReportModel({
     required String Facultad,
     required String NomAlumno,

@@ -28,8 +28,8 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!_initialized) {
         context.read<GradeTrackerSectionCubit>().init(
-              courseId: widget.enrolledCourse.data.courseCode,
-            );
+          courseId: widget.enrolledCourse.data.courseCode,
+        );
         _initialized = true;
       }
     });
@@ -41,17 +41,17 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
 
     return BlocConsumer<GradeTrackerSectionCubit, GradeTrackerSectionState>(
       listener: (context, state) {
-        state.maybeWhen(
-          error: (error) {
+        switch (state) {
+          case GradeTrackerSectionErrorState(error: final error):
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(error.toString()),
                 duration: const Duration(seconds: 3),
               ),
             );
-          },
-          orElse: () {},
-        );
+          default:
+            break;
+        }
       },
       builder: (context, state) {
         return Column(
@@ -88,30 +88,22 @@ class _GradeTrackerSectionWidgetState extends State<GradeTrackerSectionWidget> {
   }
 
   Widget _buildContent(BuildContext context, GradeTrackerSectionState state) {
-    return state.maybeMap(
-      empty: (_) => _EmptyStateView(
+    return switch (state) {
+      GradeTrackerSectionEmptyState() => _EmptyStateView(
         enrolledCourse: widget.enrolledCourse,
         cubit: _cubit,
       ),
-      loading: (_) => const LoadingStateWidget(),
-      ready: (readyState) => _ReadyStateView(
-        tracking: readyState.courseTracking,
-        cubit: _cubit,
-      ),
-      error: (errorState) => ErrorStateWidget.from(
-        errorState.error,
-        onRetry: () => _cubit.retry(),
-      ),
-      orElse: () => const SizedBox.shrink(),
-    );
+      GradeTrackerSectionLoadingState() => const LoadingStateWidget(),
+      GradeTrackerSectionReadyState(courseTracking: final tracking) =>
+        _ReadyStateView(tracking: tracking, cubit: _cubit),
+      GradeTrackerSectionErrorState(error: final error) =>
+        ErrorStateWidget.from(error, onRetry: () => _cubit.retry()),
+    };
   }
 }
 
 class _EmptyStateView extends StatelessWidget {
-  const _EmptyStateView({
-    required this.enrolledCourse,
-    required this.cubit,
-  });
+  const _EmptyStateView({required this.enrolledCourse, required this.cubit});
 
   final EnrolledCourse enrolledCourse;
   final GradeTrackerSectionCubit cubit;
@@ -148,10 +140,7 @@ class _EmptyStateView extends StatelessWidget {
 }
 
 class _ReadyStateView extends StatelessWidget {
-  const _ReadyStateView({
-    required this.tracking,
-    required this.cubit,
-  });
+  const _ReadyStateView({required this.tracking, required this.cubit});
 
   final CourseTracking tracking;
   final GradeTrackerSectionCubit cubit;
@@ -164,10 +153,7 @@ class _ReadyStateView extends StatelessWidget {
         FinalGradeCardWidget(tracking: tracking),
         const SizedBox(height: 8),
         ...tracking.categories.map((category) {
-          return CategoryCardWidget(
-            category: category,
-            cubit: cubit,
-          );
+          return CategoryCardWidget(category: category, cubit: cubit);
         }),
         // const SizedBox(height: 12),
         // Container(

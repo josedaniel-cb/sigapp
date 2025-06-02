@@ -6,7 +6,7 @@ import 'package:sigapp/student/domain/entities/weekly_schedule_event.dart';
 part 'student_semester_schedule.freezed.dart';
 
 @freezed
-class SemesterSchedule with _$SemesterSchedule {
+abstract class SemesterSchedule with _$SemesterSchedule {
   factory SemesterSchedule({
     required AcademicReport studentAcademicReport,
     required List<ScheduledTermIdentifier> semesterList,

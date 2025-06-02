@@ -9,15 +9,15 @@ import 'package:sigapp/student/domain/value_objects/academic_info_data.dart';
 part 'user_avatar_button_cubit.freezed.dart';
 
 @freezed
-class UserAvatarButtonState with _$UserAvatarButtonState {
-  factory UserAvatarButtonState.initial() = _UserAvatarButtonInitialState;
-  factory UserAvatarButtonState.loading() = _UserAvatarButtonLoadingState;
+sealed class UserAvatarButtonState with _$UserAvatarButtonState {
+  factory UserAvatarButtonState.initial() = UserAvatarButtonInitialState;
+  factory UserAvatarButtonState.loading() = UserAvatarButtonLoadingState;
   factory UserAvatarButtonState.success({
     required AcademicInfoData data,
     String? errorMessage,
-  }) = _UserAvatarButtonSuccessState;
+  }) = UserAvatarButtonSuccessState;
   factory UserAvatarButtonState.error(dynamic error) =
-      _UserAvatarButtonErrorState;
+      UserAvatarButtonErrorState;
 }
 
 @injectable
@@ -26,10 +26,10 @@ class UserAvatarButtonCubit extends Cubit<UserAvatarButtonState> {
   final SignOutUseCase _signOutUseCase;
 
   UserAvatarButtonCubit(this._sessionInfoService, this._signOutUseCase)
-      : super(UserAvatarButtonState.initial());
+    : super(UserAvatarButtonState.initial());
 
   void init() async {
-    if (state is _UserAvatarButtonLoadingState) {
+    if (state is UserAvatarButtonLoadingState) {
       return;
     }
     try {
@@ -46,12 +46,14 @@ class UserAvatarButtonCubit extends Cubit<UserAvatarButtonState> {
 
   void signOut() async {
     AcademicInfoData? loadedData;
-    state.mapOrNull(
-      success: (s) {
-        loadedData = s.data;
+    switch (state) {
+      case UserAvatarButtonSuccessState(:final data):
+        loadedData = data;
         emit(UserAvatarButtonState.loading());
-      },
-    );
+        break;
+      default:
+        break;
+    }
     try {
       await _signOutUseCase.execute();
       emit(UserAvatarButtonState.initial());
@@ -64,10 +66,12 @@ class UserAvatarButtonCubit extends Cubit<UserAvatarButtonState> {
         emit(UserAvatarButtonState.error(e));
         return;
       }
-      emit(UserAvatarButtonState.success(
-        data: loadedData!,
-        errorMessage: e.toString(),
-      ));
+      emit(
+        UserAvatarButtonState.success(
+          data: loadedData,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 }

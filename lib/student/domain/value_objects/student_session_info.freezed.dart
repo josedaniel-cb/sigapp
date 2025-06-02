@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,157 +10,136 @@ part of 'student_session_info.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
 mixin _$StudentSessionInfo {
-  String get currentSemesterName => throw _privateConstructorUsedError;
-  String get schoolName => throw _privateConstructorUsedError;
 
-  /// Create a copy of StudentSessionInfo
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $StudentSessionInfoCopyWith<StudentSessionInfo> get copyWith =>
-      throw _privateConstructorUsedError;
+ String get currentSemesterName; String get schoolName;
+/// Create a copy of StudentSessionInfo
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$StudentSessionInfoCopyWith<StudentSessionInfo> get copyWith => _$StudentSessionInfoCopyWithImpl<StudentSessionInfo>(this as StudentSessionInfo, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is StudentSessionInfo&&(identical(other.currentSemesterName, currentSemesterName) || other.currentSemesterName == currentSemesterName)&&(identical(other.schoolName, schoolName) || other.schoolName == schoolName));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,currentSemesterName,schoolName);
+
+@override
+String toString() {
+  return 'StudentSessionInfo(currentSemesterName: $currentSemesterName, schoolName: $schoolName)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $StudentSessionInfoCopyWith<$Res> {
-  factory $StudentSessionInfoCopyWith(
-          StudentSessionInfo value, $Res Function(StudentSessionInfo) then) =
-      _$StudentSessionInfoCopyWithImpl<$Res, StudentSessionInfo>;
-  @useResult
-  $Res call({String currentSemesterName, String schoolName});
-}
+abstract mixin class $StudentSessionInfoCopyWith<$Res>  {
+  factory $StudentSessionInfoCopyWith(StudentSessionInfo value, $Res Function(StudentSessionInfo) _then) = _$StudentSessionInfoCopyWithImpl;
+@useResult
+$Res call({
+ String currentSemesterName, String schoolName
+});
 
+
+
+
+}
 /// @nodoc
-class _$StudentSessionInfoCopyWithImpl<$Res, $Val extends StudentSessionInfo>
+class _$StudentSessionInfoCopyWithImpl<$Res>
     implements $StudentSessionInfoCopyWith<$Res> {
-  _$StudentSessionInfoCopyWithImpl(this._value, this._then);
+  _$StudentSessionInfoCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final StudentSessionInfo _self;
+  final $Res Function(StudentSessionInfo) _then;
 
-  /// Create a copy of StudentSessionInfo
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? currentSemesterName = null,
-    Object? schoolName = null,
-  }) {
-    return _then(_value.copyWith(
-      currentSemesterName: null == currentSemesterName
-          ? _value.currentSemesterName
-          : currentSemesterName // ignore: cast_nullable_to_non_nullable
-              as String,
-      schoolName: null == schoolName
-          ? _value.schoolName
-          : schoolName // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
+/// Create a copy of StudentSessionInfo
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? currentSemesterName = null,Object? schoolName = null,}) {
+  return _then(_self.copyWith(
+currentSemesterName: null == currentSemesterName ? _self.currentSemesterName : currentSemesterName // ignore: cast_nullable_to_non_nullable
+as String,schoolName: null == schoolName ? _self.schoolName : schoolName // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
 
-/// @nodoc
-abstract class _$$StudentSessionInfoImplCopyWith<$Res>
-    implements $StudentSessionInfoCopyWith<$Res> {
-  factory _$$StudentSessionInfoImplCopyWith(_$StudentSessionInfoImpl value,
-          $Res Function(_$StudentSessionInfoImpl) then) =
-      __$$StudentSessionInfoImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String currentSemesterName, String schoolName});
 }
 
-/// @nodoc
-class __$$StudentSessionInfoImplCopyWithImpl<$Res>
-    extends _$StudentSessionInfoCopyWithImpl<$Res, _$StudentSessionInfoImpl>
-    implements _$$StudentSessionInfoImplCopyWith<$Res> {
-  __$$StudentSessionInfoImplCopyWithImpl(_$StudentSessionInfoImpl _value,
-      $Res Function(_$StudentSessionInfoImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of StudentSessionInfo
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? currentSemesterName = null,
-    Object? schoolName = null,
-  }) {
-    return _then(_$StudentSessionInfoImpl(
-      currentSemesterName: null == currentSemesterName
-          ? _value.currentSemesterName
-          : currentSemesterName // ignore: cast_nullable_to_non_nullable
-              as String,
-      schoolName: null == schoolName
-          ? _value.schoolName
-          : schoolName // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
 
 /// @nodoc
 
-class _$StudentSessionInfoImpl implements _StudentSessionInfo {
-  _$StudentSessionInfoImpl(
-      {required this.currentSemesterName, required this.schoolName});
 
-  @override
-  final String currentSemesterName;
-  @override
-  final String schoolName;
+class _StudentSessionInfo implements StudentSessionInfo {
+   _StudentSessionInfo({required this.currentSemesterName, required this.schoolName});
+  
 
-  @override
-  String toString() {
-    return 'StudentSessionInfo(currentSemesterName: $currentSemesterName, schoolName: $schoolName)';
-  }
+@override final  String currentSemesterName;
+@override final  String schoolName;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$StudentSessionInfoImpl &&
-            (identical(other.currentSemesterName, currentSemesterName) ||
-                other.currentSemesterName == currentSemesterName) &&
-            (identical(other.schoolName, schoolName) ||
-                other.schoolName == schoolName));
-  }
+/// Create a copy of StudentSessionInfo
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$StudentSessionInfoCopyWith<_StudentSessionInfo> get copyWith => __$StudentSessionInfoCopyWithImpl<_StudentSessionInfo>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, currentSemesterName, schoolName);
 
-  /// Create a copy of StudentSessionInfo
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$StudentSessionInfoImplCopyWith<_$StudentSessionInfoImpl> get copyWith =>
-      __$$StudentSessionInfoImplCopyWithImpl<_$StudentSessionInfoImpl>(
-          this, _$identity);
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StudentSessionInfo&&(identical(other.currentSemesterName, currentSemesterName) || other.currentSemesterName == currentSemesterName)&&(identical(other.schoolName, schoolName) || other.schoolName == schoolName));
 }
 
-abstract class _StudentSessionInfo implements StudentSessionInfo {
-  factory _StudentSessionInfo(
-      {required final String currentSemesterName,
-      required final String schoolName}) = _$StudentSessionInfoImpl;
 
-  @override
-  String get currentSemesterName;
-  @override
-  String get schoolName;
+@override
+int get hashCode => Object.hash(runtimeType,currentSemesterName,schoolName);
 
-  /// Create a copy of StudentSessionInfo
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$StudentSessionInfoImplCopyWith<_$StudentSessionInfoImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'StudentSessionInfo(currentSemesterName: $currentSemesterName, schoolName: $schoolName)';
 }
+
+
+}
+
+/// @nodoc
+abstract mixin class _$StudentSessionInfoCopyWith<$Res> implements $StudentSessionInfoCopyWith<$Res> {
+  factory _$StudentSessionInfoCopyWith(_StudentSessionInfo value, $Res Function(_StudentSessionInfo) _then) = __$StudentSessionInfoCopyWithImpl;
+@override @useResult
+$Res call({
+ String currentSemesterName, String schoolName
+});
+
+
+
+
+}
+/// @nodoc
+class __$StudentSessionInfoCopyWithImpl<$Res>
+    implements _$StudentSessionInfoCopyWith<$Res> {
+  __$StudentSessionInfoCopyWithImpl(this._self, this._then);
+
+  final _StudentSessionInfo _self;
+  final $Res Function(_StudentSessionInfo) _then;
+
+/// Create a copy of StudentSessionInfo
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? currentSemesterName = null,Object? schoolName = null,}) {
+  return _then(_StudentSessionInfo(
+currentSemesterName: null == currentSemesterName ? _self.currentSemesterName : currentSemesterName // ignore: cast_nullable_to_non_nullable
+as String,schoolName: null == schoolName ? _self.schoolName : schoolName // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+// dart format on

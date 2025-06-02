@@ -49,9 +49,7 @@ class SignInUseCase {
         error: e,
         stackTrace: s,
       );
-      throw Exception(
-        'No se pudo obtener tu información en este momento, por favor intenta en unos minutos.',
-      );
+      throw Exception('Ocurrió un error al obtener tu información: $e');
     }
 
     await _supabaseSignInAndSignUp(username, password);
@@ -61,7 +59,9 @@ class SignInUseCase {
   }
 
   Future<void> _supabaseSignInAndSignUp(
-      String username, String password) async {
+    String username,
+    String password,
+  ) async {
     try {
       await _supabaseAuthService.loginUser(
         password: password,
@@ -84,10 +84,7 @@ class SignInUseCase {
           password: password,
           studentCode: username,
         );
-        developer.log(
-          'Registro exitoso en Supabase.',
-          name: 'SignInUseCase',
-        );
+        developer.log('Registro exitoso en Supabase.', name: 'SignInUseCase');
       } catch (registerError, registerStack) {
         developer.log(
           'No se pudo registrar en Supabase.',

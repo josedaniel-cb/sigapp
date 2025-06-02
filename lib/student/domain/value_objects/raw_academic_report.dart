@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'raw_academic_report.freezed.dart';
 
 @freezed
-class RawAcademicReport with _$RawAcademicReport {
+abstract class RawAcademicReport with _$RawAcademicReport {
   factory RawAcademicReport({
     required String faculty,
     required String studentName,

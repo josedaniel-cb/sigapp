@@ -5,7 +5,7 @@ part 'get_academic_history_term.freezed.dart';
 part 'get_academic_history_term.g.dart';
 
 @freezed
-class GetAcademicHistoryTermModel with _$GetAcademicHistoryTermModel {
+abstract class GetAcademicHistoryTermModel with _$GetAcademicHistoryTermModel {
   const factory GetAcademicHistoryTermModel({
     required String termLabel,
     required GetAcademicHistoryTermStatisticsModel? statistics,
@@ -17,7 +17,7 @@ class GetAcademicHistoryTermModel with _$GetAcademicHistoryTermModel {
 }
 
 @freezed
-class GetAcademicHistoryTermStatisticsModel
+abstract class GetAcademicHistoryTermStatisticsModel
     with _$GetAcademicHistoryTermStatisticsModel {
   const factory GetAcademicHistoryTermStatisticsModel({
     required double PPS,
@@ -43,7 +43,7 @@ class GetAcademicHistoryTermStatisticsModel
 }
 
 @freezed
-class GetAcademicHistoryCourseModel with _$GetAcademicHistoryCourseModel {
+abstract class GetAcademicHistoryCourseModel with _$GetAcademicHistoryCourseModel {
   const factory GetAcademicHistoryCourseModel({
     required String courseCode,
     required String courseName,

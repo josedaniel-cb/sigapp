@@ -30,7 +30,7 @@ part 'scheduled_course.freezed.dart';
 /// }
 /// ```
 @freezed
-class ScheduledCourse with _$ScheduledCourse {
+abstract class ScheduledCourse with _$ScheduledCourse {
   factory ScheduledCourse({
     required int? enrollmentCapacity,
     required String period,

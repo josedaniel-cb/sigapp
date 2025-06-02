@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,196 +10,139 @@ part of 'schedule_share_button_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
 mixin _$ScheduleShareButtonState {
-  bool get loadingShare => throw _privateConstructorUsedError;
-  String? get errorMessage => throw _privateConstructorUsedError;
-  bool? get errorMessageWasShown => throw _privateConstructorUsedError;
 
-  /// Create a copy of ScheduleShareButtonState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $ScheduleShareButtonStateCopyWith<ScheduleShareButtonState> get copyWith =>
-      throw _privateConstructorUsedError;
+ bool get loadingShare; String? get errorMessage; bool? get errorMessageWasShown;
+/// Create a copy of ScheduleShareButtonState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ScheduleShareButtonStateCopyWith<ScheduleShareButtonState> get copyWith => _$ScheduleShareButtonStateCopyWithImpl<ScheduleShareButtonState>(this as ScheduleShareButtonState, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ScheduleShareButtonState&&(identical(other.loadingShare, loadingShare) || other.loadingShare == loadingShare)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.errorMessageWasShown, errorMessageWasShown) || other.errorMessageWasShown == errorMessageWasShown));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,loadingShare,errorMessage,errorMessageWasShown);
+
+@override
+String toString() {
+  return 'ScheduleShareButtonState(loadingShare: $loadingShare, errorMessage: $errorMessage, errorMessageWasShown: $errorMessageWasShown)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $ScheduleShareButtonStateCopyWith<$Res> {
-  factory $ScheduleShareButtonStateCopyWith(ScheduleShareButtonState value,
-          $Res Function(ScheduleShareButtonState) then) =
-      _$ScheduleShareButtonStateCopyWithImpl<$Res, ScheduleShareButtonState>;
-  @useResult
-  $Res call(
-      {bool loadingShare, String? errorMessage, bool? errorMessageWasShown});
-}
+abstract mixin class $ScheduleShareButtonStateCopyWith<$Res>  {
+  factory $ScheduleShareButtonStateCopyWith(ScheduleShareButtonState value, $Res Function(ScheduleShareButtonState) _then) = _$ScheduleShareButtonStateCopyWithImpl;
+@useResult
+$Res call({
+ bool loadingShare, String? errorMessage, bool? errorMessageWasShown
+});
 
+
+
+
+}
 /// @nodoc
-class _$ScheduleShareButtonStateCopyWithImpl<$Res,
-        $Val extends ScheduleShareButtonState>
+class _$ScheduleShareButtonStateCopyWithImpl<$Res>
     implements $ScheduleShareButtonStateCopyWith<$Res> {
-  _$ScheduleShareButtonStateCopyWithImpl(this._value, this._then);
+  _$ScheduleShareButtonStateCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final ScheduleShareButtonState _self;
+  final $Res Function(ScheduleShareButtonState) _then;
 
-  /// Create a copy of ScheduleShareButtonState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? loadingShare = null,
-    Object? errorMessage = freezed,
-    Object? errorMessageWasShown = freezed,
-  }) {
-    return _then(_value.copyWith(
-      loadingShare: null == loadingShare
-          ? _value.loadingShare
-          : loadingShare // ignore: cast_nullable_to_non_nullable
-              as bool,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
-      errorMessageWasShown: freezed == errorMessageWasShown
-          ? _value.errorMessageWasShown
-          : errorMessageWasShown // ignore: cast_nullable_to_non_nullable
-              as bool?,
-    ) as $Val);
-  }
+/// Create a copy of ScheduleShareButtonState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? loadingShare = null,Object? errorMessage = freezed,Object? errorMessageWasShown = freezed,}) {
+  return _then(_self.copyWith(
+loadingShare: null == loadingShare ? _self.loadingShare : loadingShare // ignore: cast_nullable_to_non_nullable
+as bool,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+as String?,errorMessageWasShown: freezed == errorMessageWasShown ? _self.errorMessageWasShown : errorMessageWasShown // ignore: cast_nullable_to_non_nullable
+as bool?,
+  ));
 }
 
-/// @nodoc
-abstract class _$$ScheduleShareButtonStateImplCopyWith<$Res>
-    implements $ScheduleShareButtonStateCopyWith<$Res> {
-  factory _$$ScheduleShareButtonStateImplCopyWith(
-          _$ScheduleShareButtonStateImpl value,
-          $Res Function(_$ScheduleShareButtonStateImpl) then) =
-      __$$ScheduleShareButtonStateImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {bool loadingShare, String? errorMessage, bool? errorMessageWasShown});
 }
 
-/// @nodoc
-class __$$ScheduleShareButtonStateImplCopyWithImpl<$Res>
-    extends _$ScheduleShareButtonStateCopyWithImpl<$Res,
-        _$ScheduleShareButtonStateImpl>
-    implements _$$ScheduleShareButtonStateImplCopyWith<$Res> {
-  __$$ScheduleShareButtonStateImplCopyWithImpl(
-      _$ScheduleShareButtonStateImpl _value,
-      $Res Function(_$ScheduleShareButtonStateImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ScheduleShareButtonState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? loadingShare = null,
-    Object? errorMessage = freezed,
-    Object? errorMessageWasShown = freezed,
-  }) {
-    return _then(_$ScheduleShareButtonStateImpl(
-      loadingShare: null == loadingShare
-          ? _value.loadingShare
-          : loadingShare // ignore: cast_nullable_to_non_nullable
-              as bool,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
-      errorMessageWasShown: freezed == errorMessageWasShown
-          ? _value.errorMessageWasShown
-          : errorMessageWasShown // ignore: cast_nullable_to_non_nullable
-              as bool?,
-    ));
-  }
-}
 
 /// @nodoc
 
-class _$ScheduleShareButtonStateImpl
-    with DiagnosticableTreeMixin
-    implements _ScheduleShareButtonState {
-  const _$ScheduleShareButtonStateImpl(
-      {required this.loadingShare,
-      this.errorMessage,
-      this.errorMessageWasShown});
 
-  @override
-  final bool loadingShare;
-  @override
-  final String? errorMessage;
-  @override
-  final bool? errorMessageWasShown;
+class _ScheduleShareButtonState implements ScheduleShareButtonState {
+  const _ScheduleShareButtonState({required this.loadingShare, this.errorMessage, this.errorMessageWasShown});
+  
 
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ScheduleShareButtonState(loadingShare: $loadingShare, errorMessage: $errorMessage, errorMessageWasShown: $errorMessageWasShown)';
-  }
+@override final  bool loadingShare;
+@override final  String? errorMessage;
+@override final  bool? errorMessageWasShown;
 
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'ScheduleShareButtonState'))
-      ..add(DiagnosticsProperty('loadingShare', loadingShare))
-      ..add(DiagnosticsProperty('errorMessage', errorMessage))
-      ..add(DiagnosticsProperty('errorMessageWasShown', errorMessageWasShown));
-  }
+/// Create a copy of ScheduleShareButtonState
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ScheduleShareButtonStateCopyWith<_ScheduleShareButtonState> get copyWith => __$ScheduleShareButtonStateCopyWithImpl<_ScheduleShareButtonState>(this, _$identity);
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ScheduleShareButtonStateImpl &&
-            (identical(other.loadingShare, loadingShare) ||
-                other.loadingShare == loadingShare) &&
-            (identical(other.errorMessage, errorMessage) ||
-                other.errorMessage == errorMessage) &&
-            (identical(other.errorMessageWasShown, errorMessageWasShown) ||
-                other.errorMessageWasShown == errorMessageWasShown));
-  }
 
-  @override
-  int get hashCode => Object.hash(
-      runtimeType, loadingShare, errorMessage, errorMessageWasShown);
 
-  /// Create a copy of ScheduleShareButtonState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ScheduleShareButtonStateImplCopyWith<_$ScheduleShareButtonStateImpl>
-      get copyWith => __$$ScheduleShareButtonStateImplCopyWithImpl<
-          _$ScheduleShareButtonStateImpl>(this, _$identity);
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ScheduleShareButtonState&&(identical(other.loadingShare, loadingShare) || other.loadingShare == loadingShare)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.errorMessageWasShown, errorMessageWasShown) || other.errorMessageWasShown == errorMessageWasShown));
 }
 
-abstract class _ScheduleShareButtonState implements ScheduleShareButtonState {
-  const factory _ScheduleShareButtonState(
-      {required final bool loadingShare,
-      final String? errorMessage,
-      final bool? errorMessageWasShown}) = _$ScheduleShareButtonStateImpl;
 
-  @override
-  bool get loadingShare;
-  @override
-  String? get errorMessage;
-  @override
-  bool? get errorMessageWasShown;
+@override
+int get hashCode => Object.hash(runtimeType,loadingShare,errorMessage,errorMessageWasShown);
 
-  /// Create a copy of ScheduleShareButtonState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ScheduleShareButtonStateImplCopyWith<_$ScheduleShareButtonStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'ScheduleShareButtonState(loadingShare: $loadingShare, errorMessage: $errorMessage, errorMessageWasShown: $errorMessageWasShown)';
 }
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ScheduleShareButtonStateCopyWith<$Res> implements $ScheduleShareButtonStateCopyWith<$Res> {
+  factory _$ScheduleShareButtonStateCopyWith(_ScheduleShareButtonState value, $Res Function(_ScheduleShareButtonState) _then) = __$ScheduleShareButtonStateCopyWithImpl;
+@override @useResult
+$Res call({
+ bool loadingShare, String? errorMessage, bool? errorMessageWasShown
+});
+
+
+
+
+}
+/// @nodoc
+class __$ScheduleShareButtonStateCopyWithImpl<$Res>
+    implements _$ScheduleShareButtonStateCopyWith<$Res> {
+  __$ScheduleShareButtonStateCopyWithImpl(this._self, this._then);
+
+  final _ScheduleShareButtonState _self;
+  final $Res Function(_ScheduleShareButtonState) _then;
+
+/// Create a copy of ScheduleShareButtonState
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? loadingShare = null,Object? errorMessage = freezed,Object? errorMessageWasShown = freezed,}) {
+  return _then(_ScheduleShareButtonState(
+loadingShare: null == loadingShare ? _self.loadingShare : loadingShare // ignore: cast_nullable_to_non_nullable
+as bool,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+as String?,errorMessageWasShown: freezed == errorMessageWasShown ? _self.errorMessageWasShown : errorMessageWasShown // ignore: cast_nullable_to_non_nullable
+as bool?,
+  ));
+}
+
+
+}
+
+// dart format on

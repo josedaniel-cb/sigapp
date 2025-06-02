@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,167 +10,148 @@ part of 'home_page_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
-mixin _$HomePageState {
-  int get selectedTabIndex => throw _privateConstructorUsedError;
-  String? get errorMessage => throw _privateConstructorUsedError;
+mixin _$HomePageState implements DiagnosticableTreeMixin {
 
-  /// Create a copy of HomePageState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $HomePageStateCopyWith<HomePageState> get copyWith =>
-      throw _privateConstructorUsedError;
+ int get selectedTabIndex; String? get errorMessage;
+/// Create a copy of HomePageState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$HomePageStateCopyWith<HomePageState> get copyWith => _$HomePageStateCopyWithImpl<HomePageState>(this as HomePageState, _$identity);
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'HomePageState'))
+    ..add(DiagnosticsProperty('selectedTabIndex', selectedTabIndex))..add(DiagnosticsProperty('errorMessage', errorMessage));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomePageState&&(identical(other.selectedTabIndex, selectedTabIndex) || other.selectedTabIndex == selectedTabIndex)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,selectedTabIndex,errorMessage);
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'HomePageState(selectedTabIndex: $selectedTabIndex, errorMessage: $errorMessage)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $HomePageStateCopyWith<$Res> {
-  factory $HomePageStateCopyWith(
-          HomePageState value, $Res Function(HomePageState) then) =
-      _$HomePageStateCopyWithImpl<$Res, HomePageState>;
-  @useResult
-  $Res call({int selectedTabIndex, String? errorMessage});
-}
+abstract mixin class $HomePageStateCopyWith<$Res>  {
+  factory $HomePageStateCopyWith(HomePageState value, $Res Function(HomePageState) _then) = _$HomePageStateCopyWithImpl;
+@useResult
+$Res call({
+ int selectedTabIndex, String? errorMessage
+});
 
+
+
+
+}
 /// @nodoc
-class _$HomePageStateCopyWithImpl<$Res, $Val extends HomePageState>
+class _$HomePageStateCopyWithImpl<$Res>
     implements $HomePageStateCopyWith<$Res> {
-  _$HomePageStateCopyWithImpl(this._value, this._then);
+  _$HomePageStateCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final HomePageState _self;
+  final $Res Function(HomePageState) _then;
 
-  /// Create a copy of HomePageState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? selectedTabIndex = null,
-    Object? errorMessage = freezed,
-  }) {
-    return _then(_value.copyWith(
-      selectedTabIndex: null == selectedTabIndex
-          ? _value.selectedTabIndex
-          : selectedTabIndex // ignore: cast_nullable_to_non_nullable
-              as int,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
+/// Create a copy of HomePageState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? selectedTabIndex = null,Object? errorMessage = freezed,}) {
+  return _then(_self.copyWith(
+selectedTabIndex: null == selectedTabIndex ? _self.selectedTabIndex : selectedTabIndex // ignore: cast_nullable_to_non_nullable
+as int,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
 }
 
-/// @nodoc
-abstract class _$$HomePageStateImplCopyWith<$Res>
-    implements $HomePageStateCopyWith<$Res> {
-  factory _$$HomePageStateImplCopyWith(
-          _$HomePageStateImpl value, $Res Function(_$HomePageStateImpl) then) =
-      __$$HomePageStateImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({int selectedTabIndex, String? errorMessage});
 }
 
-/// @nodoc
-class __$$HomePageStateImplCopyWithImpl<$Res>
-    extends _$HomePageStateCopyWithImpl<$Res, _$HomePageStateImpl>
-    implements _$$HomePageStateImplCopyWith<$Res> {
-  __$$HomePageStateImplCopyWithImpl(
-      _$HomePageStateImpl _value, $Res Function(_$HomePageStateImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of HomePageState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? selectedTabIndex = null,
-    Object? errorMessage = freezed,
-  }) {
-    return _then(_$HomePageStateImpl(
-      selectedTabIndex: null == selectedTabIndex
-          ? _value.selectedTabIndex
-          : selectedTabIndex // ignore: cast_nullable_to_non_nullable
-              as int,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
-}
 
 /// @nodoc
 
-class _$HomePageStateImpl
-    with DiagnosticableTreeMixin
-    implements _HomePageState {
-  const _$HomePageStateImpl(
-      {required this.selectedTabIndex, this.errorMessage});
 
-  @override
-  final int selectedTabIndex;
-  @override
-  final String? errorMessage;
+class _HomePageState with DiagnosticableTreeMixin implements HomePageState {
+  const _HomePageState({required this.selectedTabIndex, this.errorMessage});
+  
 
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'HomePageState(selectedTabIndex: $selectedTabIndex, errorMessage: $errorMessage)';
-  }
+@override final  int selectedTabIndex;
+@override final  String? errorMessage;
 
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'HomePageState'))
-      ..add(DiagnosticsProperty('selectedTabIndex', selectedTabIndex))
-      ..add(DiagnosticsProperty('errorMessage', errorMessage));
-  }
+/// Create a copy of HomePageState
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$HomePageStateCopyWith<_HomePageState> get copyWith => __$HomePageStateCopyWithImpl<_HomePageState>(this, _$identity);
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$HomePageStateImpl &&
-            (identical(other.selectedTabIndex, selectedTabIndex) ||
-                other.selectedTabIndex == selectedTabIndex) &&
-            (identical(other.errorMessage, errorMessage) ||
-                other.errorMessage == errorMessage));
-  }
 
-  @override
-  int get hashCode => Object.hash(runtimeType, selectedTabIndex, errorMessage);
-
-  /// Create a copy of HomePageState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$HomePageStateImplCopyWith<_$HomePageStateImpl> get copyWith =>
-      __$$HomePageStateImplCopyWithImpl<_$HomePageStateImpl>(this, _$identity);
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'HomePageState'))
+    ..add(DiagnosticsProperty('selectedTabIndex', selectedTabIndex))..add(DiagnosticsProperty('errorMessage', errorMessage));
 }
 
-abstract class _HomePageState implements HomePageState {
-  const factory _HomePageState(
-      {required final int selectedTabIndex,
-      final String? errorMessage}) = _$HomePageStateImpl;
-
-  @override
-  int get selectedTabIndex;
-  @override
-  String? get errorMessage;
-
-  /// Create a copy of HomePageState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$HomePageStateImplCopyWith<_$HomePageStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomePageState&&(identical(other.selectedTabIndex, selectedTabIndex) || other.selectedTabIndex == selectedTabIndex)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
+
+
+@override
+int get hashCode => Object.hash(runtimeType,selectedTabIndex,errorMessage);
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'HomePageState(selectedTabIndex: $selectedTabIndex, errorMessage: $errorMessage)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$HomePageStateCopyWith<$Res> implements $HomePageStateCopyWith<$Res> {
+  factory _$HomePageStateCopyWith(_HomePageState value, $Res Function(_HomePageState) _then) = __$HomePageStateCopyWithImpl;
+@override @useResult
+$Res call({
+ int selectedTabIndex, String? errorMessage
+});
+
+
+
+
+}
+/// @nodoc
+class __$HomePageStateCopyWithImpl<$Res>
+    implements _$HomePageStateCopyWith<$Res> {
+  __$HomePageStateCopyWithImpl(this._self, this._then);
+
+  final _HomePageState _self;
+  final $Res Function(_HomePageState) _then;
+
+/// Create a copy of HomePageState
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? selectedTabIndex = null,Object? errorMessage = freezed,}) {
+  return _then(_HomePageState(
+selectedTabIndex: null == selectedTabIndex ? _self.selectedTabIndex : selectedTabIndex // ignore: cast_nullable_to_non_nullable
+as int,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+// dart format on

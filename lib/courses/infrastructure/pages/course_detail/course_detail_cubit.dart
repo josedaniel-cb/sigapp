@@ -11,7 +11,7 @@ import 'package:sigapp/student/domain/value_objects/enrolled_course.dart';
 part 'course_detail_cubit.freezed.dart';
 
 @freezed
-class CourseDetailState with _$CourseDetailState {
+sealed class CourseDetailState with _$CourseDetailState {
   const factory CourseDetailState.empty() = CourseDetailEmptyState;
   const factory CourseDetailState.ready({
     required EnrolledCourse course,
@@ -22,32 +22,31 @@ class CourseDetailState with _$CourseDetailState {
 }
 
 @freezed
-class CourseDetailSyllabusState with _$CourseDetailSyllabusState {
+sealed class CourseDetailSyllabusState with _$CourseDetailSyllabusState {
   const factory CourseDetailSyllabusState.initial() =
-      _CourseDetailSyllabusStateInitial;
+      CourseDetailSyllabusStateInitial;
   const factory CourseDetailSyllabusState.loading() =
-      _CourseDetailSyllabusStateLoading;
+      CourseDetailSyllabusStateLoading;
   const factory CourseDetailSyllabusState.loaded(File syllabusFile) =
-      _CourseDetailSyllabusStateLoaded;
+      CourseDetailSyllabusStateLoaded;
   const factory CourseDetailSyllabusState.notFound() =
-      _CourseDetailSyllabusStateNotFound;
+      CourseDetailSyllabusStateNotFound;
   // TODO: must be `dynamic error`
   const factory CourseDetailSyllabusState.error(String message) =
-      _CourseDetailSyllabusStateError;
+      CourseDetailSyllabusStateError;
 }
 
 @freezed
-class CourseDetailGradesState with _$CourseDetailGradesState {
+sealed class CourseDetailGradesState with _$CourseDetailGradesState {
   const factory CourseDetailGradesState.initial() =
-      _CourseDetailGradesStateInitial;
+      CourseDetailGradesStateInitial;
   const factory CourseDetailGradesState.loading() =
-      _CourseDetailGradesStateLoading;
-  const factory CourseDetailGradesState.loaded(
-    CourseGradeInfo value,
-  ) = _CourseDetailGradesStateLoaded;
+      CourseDetailGradesStateLoading;
+  const factory CourseDetailGradesState.loaded(CourseGradeInfo value) =
+      CourseDetailGradesStateLoaded;
   // TODO: must be `dynamic error`
   const factory CourseDetailGradesState.error(String message) =
-      _CourseDetailGradesStateError;
+      CourseDetailGradesStateError;
 }
 
 @injectable
@@ -56,18 +55,20 @@ class CourseDetailCubit extends Cubit<CourseDetailState> {
   final GetCourseGradeUsecase _getCourseGradeUsecase;
 
   CourseDetailCubit(this._getSyllabusFileUsecase, this._getCourseGradeUsecase)
-      : super(const CourseDetailState.empty());
+    : super(const CourseDetailState.empty());
 
   Future<void> init({
     required EnrolledCourse course,
     required String regevaScheduledCourseId,
   }) async {
-    emit(CourseDetailState.ready(
-      course: course,
-      regevaScheduledCourseId: regevaScheduledCourseId,
-      syllabus: CourseDetailSyllabusState.initial(),
-      grades: CourseDetailGradesState.initial(),
-    ));
+    emit(
+      CourseDetailState.ready(
+        course: course,
+        regevaScheduledCourseId: regevaScheduledCourseId,
+        syllabus: CourseDetailSyllabusState.initial(),
+        grades: CourseDetailGradesState.initial(),
+      ),
+    );
     await fetchSyllabus();
     await fetchGrades();
   }
@@ -89,23 +90,30 @@ class CourseDetailCubit extends Cubit<CourseDetailState> {
         forceDownload: forceDownload,
       );
       if (file == null) {
-        emit((state as CourseDetailReadyState).copyWith(
-          syllabus: CourseDetailSyllabusState.notFound(),
-        ));
+        emit(
+          (state as CourseDetailReadyState).copyWith(
+            syllabus: CourseDetailSyllabusState.notFound(),
+          ),
+        );
       } else {
-        emit((state as CourseDetailReadyState).copyWith(
-          syllabus: CourseDetailSyllabusState.loaded(file),
-        ));
+        emit(
+          (state as CourseDetailReadyState).copyWith(
+            syllabus: CourseDetailSyllabusState.loaded(file),
+          ),
+        );
       }
     } catch (e, s) {
       if (kDebugMode) {
         print(e);
         print(s);
       }
-      emit((state as CourseDetailReadyState).copyWith(
-        syllabus:
-            CourseDetailSyllabusState.error('Error al descargar syllabus'),
-      ));
+      emit(
+        (state as CourseDetailReadyState).copyWith(
+          syllabus: CourseDetailSyllabusState.error(
+            'Error al descargar syllabus',
+          ),
+        ),
+      );
     }
   }
 
@@ -125,19 +133,21 @@ class CourseDetailCubit extends Cubit<CourseDetailState> {
         regevaScheduledCourseId,
         forceDownload,
       );
-      emit((state as CourseDetailReadyState).copyWith(
-        grades: CourseDetailGradesState.loaded(courseGradeInfo),
-      ));
+      emit(
+        (state as CourseDetailReadyState).copyWith(
+          grades: CourseDetailGradesState.loaded(courseGradeInfo),
+        ),
+      );
     } catch (e, s) {
       if (kDebugMode) {
         print(e);
         print(s);
       }
-      emit((state as CourseDetailReadyState).copyWith(
-        grades: CourseDetailGradesState.error(
-          'Error al descargar notas',
+      emit(
+        (state as CourseDetailReadyState).copyWith(
+          grades: CourseDetailGradesState.error('Error al descargar notas'),
         ),
-      ));
+      );
     }
   }
 }

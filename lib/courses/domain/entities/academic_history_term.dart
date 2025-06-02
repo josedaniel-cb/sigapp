@@ -7,7 +7,7 @@ import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
 part 'academic_history_term.freezed.dart';
 
 @freezed
-class AcademicHistoryTerm with _$AcademicHistoryTerm {
+abstract class AcademicHistoryTerm with _$AcademicHistoryTerm {
   const factory AcademicHistoryTerm({
     // required String termLabel,
     required ScheduledTermIdentifier term,
@@ -17,7 +17,8 @@ class AcademicHistoryTerm with _$AcademicHistoryTerm {
 }
 
 @freezed
-class AcademicHistoryTermStatistics with _$AcademicHistoryTermStatistics {
+abstract class AcademicHistoryTermStatistics
+    with _$AcademicHistoryTermStatistics {
   const factory AcademicHistoryTermStatistics({
     // required String PPS,
     required double termWeightedAverage,
@@ -68,5 +69,5 @@ class AcademicHistoryCourse {
     required this.grade,
   });
 
-  get isApproved => grade >= 11;
+  bool get isApproved => grade >= 11;
 }

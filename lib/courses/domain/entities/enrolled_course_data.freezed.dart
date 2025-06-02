@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,431 +10,217 @@ part of 'enrolled_course_data.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
-mixin _$EnrolledCourseData {
+mixin _$EnrolledCourseData implements DiagnosticableTreeMixin {
+
 // required String? Acta,
-  String? get googleClassroomCode =>
-      throw _privateConstructorUsedError; // required String? Activo,
+ String? get googleClassroomCode;// required String? Activo,
 // required String Aula,
-  String get url =>
-      throw _privateConstructorUsedError; // required int CeroEnActa,
+ String get url;// required int CeroEnActa,
 // required String ClaveCurso,
 // required String CodCurso,
-  String get courseCode =>
-      throw _privateConstructorUsedError; // required int Creditos,
-  int get credits => throw _privateConstructorUsedError; // required int Cupos,
+ String get courseCode;// required int Creditos,
+ int get credits;// required int Cupos,
 // required String Curso,
-  String get courseName =>
-      throw _privateConstructorUsedError; // required int Desaprobados,
+ String get courseName;// required int Desaprobados,
 // required String Docente,
-  String get professor =>
-      throw _privateConstructorUsedError; // required String? EstadoInscripcion,
+ String get professor;// required String? EstadoInscripcion,
 // required String Fecha,
-  DateTime get date =>
-      throw _privateConstructorUsedError; // required String FechaInscripcion,
+ DateTime get date;// required String FechaInscripcion,
 // required String Grupo,
-  String get group => throw _privateConstructorUsedError; // required int Item,
+ String get group;// required int Item,
 // required String ItemProg,
-  String get regevaScheduledCourseId =>
-      throw _privateConstructorUsedError; // required String Observacion,
+ String get regevaScheduledCourseId;// required String Observacion,
 // required String Seccion,
-  String get section =>
-      throw _privateConstructorUsedError; // required dynamic Sylabus,
+ String get section;// required dynamic Sylabus,
 // required String TipoCurso,
-  CourseType? get courseType => throw _privateConstructorUsedError;
+ CourseType? get courseType;
+/// Create a copy of EnrolledCourseData
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$EnrolledCourseDataCopyWith<EnrolledCourseData> get copyWith => _$EnrolledCourseDataCopyWithImpl<EnrolledCourseData>(this as EnrolledCourseData, _$identity);
 
-  /// Create a copy of EnrolledCourseData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $EnrolledCourseDataCopyWith<EnrolledCourseData> get copyWith =>
-      throw _privateConstructorUsedError;
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'EnrolledCourseData'))
+    ..add(DiagnosticsProperty('googleClassroomCode', googleClassroomCode))..add(DiagnosticsProperty('url', url))..add(DiagnosticsProperty('courseCode', courseCode))..add(DiagnosticsProperty('credits', credits))..add(DiagnosticsProperty('courseName', courseName))..add(DiagnosticsProperty('professor', professor))..add(DiagnosticsProperty('date', date))..add(DiagnosticsProperty('group', group))..add(DiagnosticsProperty('regevaScheduledCourseId', regevaScheduledCourseId))..add(DiagnosticsProperty('section', section))..add(DiagnosticsProperty('courseType', courseType));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is EnrolledCourseData&&(identical(other.googleClassroomCode, googleClassroomCode) || other.googleClassroomCode == googleClassroomCode)&&(identical(other.url, url) || other.url == url)&&(identical(other.courseCode, courseCode) || other.courseCode == courseCode)&&(identical(other.credits, credits) || other.credits == credits)&&(identical(other.courseName, courseName) || other.courseName == courseName)&&(identical(other.professor, professor) || other.professor == professor)&&(identical(other.date, date) || other.date == date)&&(identical(other.group, group) || other.group == group)&&(identical(other.regevaScheduledCourseId, regevaScheduledCourseId) || other.regevaScheduledCourseId == regevaScheduledCourseId)&&(identical(other.section, section) || other.section == section)&&(identical(other.courseType, courseType) || other.courseType == courseType));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,googleClassroomCode,url,courseCode,credits,courseName,professor,date,group,regevaScheduledCourseId,section,courseType);
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'EnrolledCourseData(googleClassroomCode: $googleClassroomCode, url: $url, courseCode: $courseCode, credits: $credits, courseName: $courseName, professor: $professor, date: $date, group: $group, regevaScheduledCourseId: $regevaScheduledCourseId, section: $section, courseType: $courseType)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $EnrolledCourseDataCopyWith<$Res> {
-  factory $EnrolledCourseDataCopyWith(
-          EnrolledCourseData value, $Res Function(EnrolledCourseData) then) =
-      _$EnrolledCourseDataCopyWithImpl<$Res, EnrolledCourseData>;
-  @useResult
-  $Res call(
-      {String? googleClassroomCode,
-      String url,
-      String courseCode,
-      int credits,
-      String courseName,
-      String professor,
-      DateTime date,
-      String group,
-      String regevaScheduledCourseId,
-      String section,
-      CourseType? courseType});
-}
+abstract mixin class $EnrolledCourseDataCopyWith<$Res>  {
+  factory $EnrolledCourseDataCopyWith(EnrolledCourseData value, $Res Function(EnrolledCourseData) _then) = _$EnrolledCourseDataCopyWithImpl;
+@useResult
+$Res call({
+ String? googleClassroomCode, String url, String courseCode, int credits, String courseName, String professor, DateTime date, String group, String regevaScheduledCourseId, String section, CourseType? courseType
+});
 
+
+
+
+}
 /// @nodoc
-class _$EnrolledCourseDataCopyWithImpl<$Res, $Val extends EnrolledCourseData>
+class _$EnrolledCourseDataCopyWithImpl<$Res>
     implements $EnrolledCourseDataCopyWith<$Res> {
-  _$EnrolledCourseDataCopyWithImpl(this._value, this._then);
+  _$EnrolledCourseDataCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final EnrolledCourseData _self;
+  final $Res Function(EnrolledCourseData) _then;
 
-  /// Create a copy of EnrolledCourseData
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? googleClassroomCode = freezed,
-    Object? url = null,
-    Object? courseCode = null,
-    Object? credits = null,
-    Object? courseName = null,
-    Object? professor = null,
-    Object? date = null,
-    Object? group = null,
-    Object? regevaScheduledCourseId = null,
-    Object? section = null,
-    Object? courseType = freezed,
-  }) {
-    return _then(_value.copyWith(
-      googleClassroomCode: freezed == googleClassroomCode
-          ? _value.googleClassroomCode
-          : googleClassroomCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      url: null == url
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
-              as String,
-      courseCode: null == courseCode
-          ? _value.courseCode
-          : courseCode // ignore: cast_nullable_to_non_nullable
-              as String,
-      credits: null == credits
-          ? _value.credits
-          : credits // ignore: cast_nullable_to_non_nullable
-              as int,
-      courseName: null == courseName
-          ? _value.courseName
-          : courseName // ignore: cast_nullable_to_non_nullable
-              as String,
-      professor: null == professor
-          ? _value.professor
-          : professor // ignore: cast_nullable_to_non_nullable
-              as String,
-      date: null == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      group: null == group
-          ? _value.group
-          : group // ignore: cast_nullable_to_non_nullable
-              as String,
-      regevaScheduledCourseId: null == regevaScheduledCourseId
-          ? _value.regevaScheduledCourseId
-          : regevaScheduledCourseId // ignore: cast_nullable_to_non_nullable
-              as String,
-      section: null == section
-          ? _value.section
-          : section // ignore: cast_nullable_to_non_nullable
-              as String,
-      courseType: freezed == courseType
-          ? _value.courseType
-          : courseType // ignore: cast_nullable_to_non_nullable
-              as CourseType?,
-    ) as $Val);
-  }
+/// Create a copy of EnrolledCourseData
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? googleClassroomCode = freezed,Object? url = null,Object? courseCode = null,Object? credits = null,Object? courseName = null,Object? professor = null,Object? date = null,Object? group = null,Object? regevaScheduledCourseId = null,Object? section = null,Object? courseType = freezed,}) {
+  return _then(_self.copyWith(
+googleClassroomCode: freezed == googleClassroomCode ? _self.googleClassroomCode : googleClassroomCode // ignore: cast_nullable_to_non_nullable
+as String?,url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
+as String,courseCode: null == courseCode ? _self.courseCode : courseCode // ignore: cast_nullable_to_non_nullable
+as String,credits: null == credits ? _self.credits : credits // ignore: cast_nullable_to_non_nullable
+as int,courseName: null == courseName ? _self.courseName : courseName // ignore: cast_nullable_to_non_nullable
+as String,professor: null == professor ? _self.professor : professor // ignore: cast_nullable_to_non_nullable
+as String,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
+as DateTime,group: null == group ? _self.group : group // ignore: cast_nullable_to_non_nullable
+as String,regevaScheduledCourseId: null == regevaScheduledCourseId ? _self.regevaScheduledCourseId : regevaScheduledCourseId // ignore: cast_nullable_to_non_nullable
+as String,section: null == section ? _self.section : section // ignore: cast_nullable_to_non_nullable
+as String,courseType: freezed == courseType ? _self.courseType : courseType // ignore: cast_nullable_to_non_nullable
+as CourseType?,
+  ));
 }
 
-/// @nodoc
-abstract class _$$EnrolledCourseDataImplCopyWith<$Res>
-    implements $EnrolledCourseDataCopyWith<$Res> {
-  factory _$$EnrolledCourseDataImplCopyWith(_$EnrolledCourseDataImpl value,
-          $Res Function(_$EnrolledCourseDataImpl) then) =
-      __$$EnrolledCourseDataImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String? googleClassroomCode,
-      String url,
-      String courseCode,
-      int credits,
-      String courseName,
-      String professor,
-      DateTime date,
-      String group,
-      String regevaScheduledCourseId,
-      String section,
-      CourseType? courseType});
 }
 
-/// @nodoc
-class __$$EnrolledCourseDataImplCopyWithImpl<$Res>
-    extends _$EnrolledCourseDataCopyWithImpl<$Res, _$EnrolledCourseDataImpl>
-    implements _$$EnrolledCourseDataImplCopyWith<$Res> {
-  __$$EnrolledCourseDataImplCopyWithImpl(_$EnrolledCourseDataImpl _value,
-      $Res Function(_$EnrolledCourseDataImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of EnrolledCourseData
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? googleClassroomCode = freezed,
-    Object? url = null,
-    Object? courseCode = null,
-    Object? credits = null,
-    Object? courseName = null,
-    Object? professor = null,
-    Object? date = null,
-    Object? group = null,
-    Object? regevaScheduledCourseId = null,
-    Object? section = null,
-    Object? courseType = freezed,
-  }) {
-    return _then(_$EnrolledCourseDataImpl(
-      googleClassroomCode: freezed == googleClassroomCode
-          ? _value.googleClassroomCode
-          : googleClassroomCode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      url: null == url
-          ? _value.url
-          : url // ignore: cast_nullable_to_non_nullable
-              as String,
-      courseCode: null == courseCode
-          ? _value.courseCode
-          : courseCode // ignore: cast_nullable_to_non_nullable
-              as String,
-      credits: null == credits
-          ? _value.credits
-          : credits // ignore: cast_nullable_to_non_nullable
-              as int,
-      courseName: null == courseName
-          ? _value.courseName
-          : courseName // ignore: cast_nullable_to_non_nullable
-              as String,
-      professor: null == professor
-          ? _value.professor
-          : professor // ignore: cast_nullable_to_non_nullable
-              as String,
-      date: null == date
-          ? _value.date
-          : date // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      group: null == group
-          ? _value.group
-          : group // ignore: cast_nullable_to_non_nullable
-              as String,
-      regevaScheduledCourseId: null == regevaScheduledCourseId
-          ? _value.regevaScheduledCourseId
-          : regevaScheduledCourseId // ignore: cast_nullable_to_non_nullable
-              as String,
-      section: null == section
-          ? _value.section
-          : section // ignore: cast_nullable_to_non_nullable
-              as String,
-      courseType: freezed == courseType
-          ? _value.courseType
-          : courseType // ignore: cast_nullable_to_non_nullable
-              as CourseType?,
-    ));
-  }
-}
 
 /// @nodoc
 
-class _$EnrolledCourseDataImpl
-    with DiagnosticableTreeMixin
-    implements _EnrolledCourseData {
-  const _$EnrolledCourseDataImpl(
-      {required this.googleClassroomCode,
-      required this.url,
-      required this.courseCode,
-      required this.credits,
-      required this.courseName,
-      required this.professor,
-      required this.date,
-      required this.group,
-      required this.regevaScheduledCourseId,
-      required this.section,
-      required this.courseType});
+
+class _EnrolledCourseData with DiagnosticableTreeMixin implements EnrolledCourseData {
+  const _EnrolledCourseData({required this.googleClassroomCode, required this.url, required this.courseCode, required this.credits, required this.courseName, required this.professor, required this.date, required this.group, required this.regevaScheduledCourseId, required this.section, required this.courseType});
+  
 
 // required String? Acta,
-  @override
-  final String? googleClassroomCode;
+@override final  String? googleClassroomCode;
 // required String? Activo,
 // required String Aula,
-  @override
-  final String url;
+@override final  String url;
 // required int CeroEnActa,
 // required String ClaveCurso,
 // required String CodCurso,
-  @override
-  final String courseCode;
+@override final  String courseCode;
 // required int Creditos,
-  @override
-  final int credits;
+@override final  int credits;
 // required int Cupos,
 // required String Curso,
-  @override
-  final String courseName;
+@override final  String courseName;
 // required int Desaprobados,
 // required String Docente,
-  @override
-  final String professor;
+@override final  String professor;
 // required String? EstadoInscripcion,
 // required String Fecha,
-  @override
-  final DateTime date;
+@override final  DateTime date;
 // required String FechaInscripcion,
 // required String Grupo,
-  @override
-  final String group;
+@override final  String group;
 // required int Item,
 // required String ItemProg,
-  @override
-  final String regevaScheduledCourseId;
+@override final  String regevaScheduledCourseId;
 // required String Observacion,
 // required String Seccion,
-  @override
-  final String section;
+@override final  String section;
 // required dynamic Sylabus,
 // required String TipoCurso,
-  @override
-  final CourseType? courseType;
+@override final  CourseType? courseType;
 
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EnrolledCourseData(googleClassroomCode: $googleClassroomCode, url: $url, courseCode: $courseCode, credits: $credits, courseName: $courseName, professor: $professor, date: $date, group: $group, regevaScheduledCourseId: $regevaScheduledCourseId, section: $section, courseType: $courseType)';
-  }
+/// Create a copy of EnrolledCourseData
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$EnrolledCourseDataCopyWith<_EnrolledCourseData> get copyWith => __$EnrolledCourseDataCopyWithImpl<_EnrolledCourseData>(this, _$identity);
 
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'EnrolledCourseData'))
-      ..add(DiagnosticsProperty('googleClassroomCode', googleClassroomCode))
-      ..add(DiagnosticsProperty('url', url))
-      ..add(DiagnosticsProperty('courseCode', courseCode))
-      ..add(DiagnosticsProperty('credits', credits))
-      ..add(DiagnosticsProperty('courseName', courseName))
-      ..add(DiagnosticsProperty('professor', professor))
-      ..add(DiagnosticsProperty('date', date))
-      ..add(DiagnosticsProperty('group', group))
-      ..add(DiagnosticsProperty(
-          'regevaScheduledCourseId', regevaScheduledCourseId))
-      ..add(DiagnosticsProperty('section', section))
-      ..add(DiagnosticsProperty('courseType', courseType));
-  }
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$EnrolledCourseDataImpl &&
-            (identical(other.googleClassroomCode, googleClassroomCode) ||
-                other.googleClassroomCode == googleClassroomCode) &&
-            (identical(other.url, url) || other.url == url) &&
-            (identical(other.courseCode, courseCode) ||
-                other.courseCode == courseCode) &&
-            (identical(other.credits, credits) || other.credits == credits) &&
-            (identical(other.courseName, courseName) ||
-                other.courseName == courseName) &&
-            (identical(other.professor, professor) ||
-                other.professor == professor) &&
-            (identical(other.date, date) || other.date == date) &&
-            (identical(other.group, group) || other.group == group) &&
-            (identical(
-                    other.regevaScheduledCourseId, regevaScheduledCourseId) ||
-                other.regevaScheduledCourseId == regevaScheduledCourseId) &&
-            (identical(other.section, section) || other.section == section) &&
-            (identical(other.courseType, courseType) ||
-                other.courseType == courseType));
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      googleClassroomCode,
-      url,
-      courseCode,
-      credits,
-      courseName,
-      professor,
-      date,
-      group,
-      regevaScheduledCourseId,
-      section,
-      courseType);
-
-  /// Create a copy of EnrolledCourseData
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$EnrolledCourseDataImplCopyWith<_$EnrolledCourseDataImpl> get copyWith =>
-      __$$EnrolledCourseDataImplCopyWithImpl<_$EnrolledCourseDataImpl>(
-          this, _$identity);
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'EnrolledCourseData'))
+    ..add(DiagnosticsProperty('googleClassroomCode', googleClassroomCode))..add(DiagnosticsProperty('url', url))..add(DiagnosticsProperty('courseCode', courseCode))..add(DiagnosticsProperty('credits', credits))..add(DiagnosticsProperty('courseName', courseName))..add(DiagnosticsProperty('professor', professor))..add(DiagnosticsProperty('date', date))..add(DiagnosticsProperty('group', group))..add(DiagnosticsProperty('regevaScheduledCourseId', regevaScheduledCourseId))..add(DiagnosticsProperty('section', section))..add(DiagnosticsProperty('courseType', courseType));
 }
 
-abstract class _EnrolledCourseData implements EnrolledCourseData {
-  const factory _EnrolledCourseData(
-      {required final String? googleClassroomCode,
-      required final String url,
-      required final String courseCode,
-      required final int credits,
-      required final String courseName,
-      required final String professor,
-      required final DateTime date,
-      required final String group,
-      required final String regevaScheduledCourseId,
-      required final String section,
-      required final CourseType? courseType}) = _$EnrolledCourseDataImpl;
-
-// required String? Acta,
-  @override
-  String? get googleClassroomCode; // required String? Activo,
-// required String Aula,
-  @override
-  String get url; // required int CeroEnActa,
-// required String ClaveCurso,
-// required String CodCurso,
-  @override
-  String get courseCode; // required int Creditos,
-  @override
-  int get credits; // required int Cupos,
-// required String Curso,
-  @override
-  String get courseName; // required int Desaprobados,
-// required String Docente,
-  @override
-  String get professor; // required String? EstadoInscripcion,
-// required String Fecha,
-  @override
-  DateTime get date; // required String FechaInscripcion,
-// required String Grupo,
-  @override
-  String get group; // required int Item,
-// required String ItemProg,
-  @override
-  String get regevaScheduledCourseId; // required String Observacion,
-// required String Seccion,
-  @override
-  String get section; // required dynamic Sylabus,
-// required String TipoCurso,
-  @override
-  CourseType? get courseType;
-
-  /// Create a copy of EnrolledCourseData
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$EnrolledCourseDataImplCopyWith<_$EnrolledCourseDataImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EnrolledCourseData&&(identical(other.googleClassroomCode, googleClassroomCode) || other.googleClassroomCode == googleClassroomCode)&&(identical(other.url, url) || other.url == url)&&(identical(other.courseCode, courseCode) || other.courseCode == courseCode)&&(identical(other.credits, credits) || other.credits == credits)&&(identical(other.courseName, courseName) || other.courseName == courseName)&&(identical(other.professor, professor) || other.professor == professor)&&(identical(other.date, date) || other.date == date)&&(identical(other.group, group) || other.group == group)&&(identical(other.regevaScheduledCourseId, regevaScheduledCourseId) || other.regevaScheduledCourseId == regevaScheduledCourseId)&&(identical(other.section, section) || other.section == section)&&(identical(other.courseType, courseType) || other.courseType == courseType));
 }
+
+
+@override
+int get hashCode => Object.hash(runtimeType,googleClassroomCode,url,courseCode,credits,courseName,professor,date,group,regevaScheduledCourseId,section,courseType);
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'EnrolledCourseData(googleClassroomCode: $googleClassroomCode, url: $url, courseCode: $courseCode, credits: $credits, courseName: $courseName, professor: $professor, date: $date, group: $group, regevaScheduledCourseId: $regevaScheduledCourseId, section: $section, courseType: $courseType)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$EnrolledCourseDataCopyWith<$Res> implements $EnrolledCourseDataCopyWith<$Res> {
+  factory _$EnrolledCourseDataCopyWith(_EnrolledCourseData value, $Res Function(_EnrolledCourseData) _then) = __$EnrolledCourseDataCopyWithImpl;
+@override @useResult
+$Res call({
+ String? googleClassroomCode, String url, String courseCode, int credits, String courseName, String professor, DateTime date, String group, String regevaScheduledCourseId, String section, CourseType? courseType
+});
+
+
+
+
+}
+/// @nodoc
+class __$EnrolledCourseDataCopyWithImpl<$Res>
+    implements _$EnrolledCourseDataCopyWith<$Res> {
+  __$EnrolledCourseDataCopyWithImpl(this._self, this._then);
+
+  final _EnrolledCourseData _self;
+  final $Res Function(_EnrolledCourseData) _then;
+
+/// Create a copy of EnrolledCourseData
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? googleClassroomCode = freezed,Object? url = null,Object? courseCode = null,Object? credits = null,Object? courseName = null,Object? professor = null,Object? date = null,Object? group = null,Object? regevaScheduledCourseId = null,Object? section = null,Object? courseType = freezed,}) {
+  return _then(_EnrolledCourseData(
+googleClassroomCode: freezed == googleClassroomCode ? _self.googleClassroomCode : googleClassroomCode // ignore: cast_nullable_to_non_nullable
+as String?,url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
+as String,courseCode: null == courseCode ? _self.courseCode : courseCode // ignore: cast_nullable_to_non_nullable
+as String,credits: null == credits ? _self.credits : credits // ignore: cast_nullable_to_non_nullable
+as int,courseName: null == courseName ? _self.courseName : courseName // ignore: cast_nullable_to_non_nullable
+as String,professor: null == professor ? _self.professor : professor // ignore: cast_nullable_to_non_nullable
+as String,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
+as DateTime,group: null == group ? _self.group : group // ignore: cast_nullable_to_non_nullable
+as String,regevaScheduledCourseId: null == regevaScheduledCourseId ? _self.regevaScheduledCourseId : regevaScheduledCourseId // ignore: cast_nullable_to_non_nullable
+as String,section: null == section ? _self.section : section // ignore: cast_nullable_to_non_nullable
+as String,courseType: freezed == courseType ? _self.courseType : courseType // ignore: cast_nullable_to_non_nullable
+as CourseType?,
+  ));
+}
+
+
+}
+
+// dart format on

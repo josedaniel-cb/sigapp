@@ -4,7 +4,7 @@ import 'package:sigapp/auth/domain/value-objects/api_path_and_method.dart';
 part 'api_response.freezed.dart';
 
 @freezed
-class ApiResponse with _$ApiResponse {
+abstract class ApiResponse with _$ApiResponse {
   factory ApiResponse({
     required ApiPathAndMethod pathAndMethod,
     required int statusCode,

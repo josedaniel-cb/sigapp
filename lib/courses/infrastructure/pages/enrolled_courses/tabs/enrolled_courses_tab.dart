@@ -10,22 +10,26 @@ import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/tabs/enroll
 import 'package:skeletonizer/skeletonizer.dart';
 
 class EnrolledCoursesTabWidget extends StatelessWidget {
-  const EnrolledCoursesTabWidget(
-      {super.key, required this.enrolledCourses, required this.onRetry});
+  const EnrolledCoursesTabWidget({
+    super.key,
+    required this.enrolledCourses,
+    required this.onRetry,
+  });
 
   final EnrolledCoursesState enrolledCourses;
   final void Function() onRetry;
-
   @override
   Widget build(BuildContext context) {
-    return enrolledCourses.map(
-      loading: (_) => _buildSkeleton(),
-      error: (state) => ErrorStateWidget.from(
-        state.error,
+    return switch (enrolledCourses) {
+      EnrolledCoursesLoadingState() => _buildSkeleton(),
+      EnrolledCoursesErrorState(:final error) => ErrorStateWidget.from(
+        error,
         onRetry: onRetry,
       ),
-      success: (state) => _buildSuccessState(state),
-    );
+      EnrolledCoursesSuccessState() => _buildSuccessState(
+        enrolledCourses as EnrolledCoursesSuccessState,
+      ),
+    };
   }
 
   Widget _buildSkeleton() {
@@ -47,7 +51,7 @@ class EnrolledCoursesTabWidget extends StatelessWidget {
                   Bone.text(width: MediaQuery.of(context).size.width * 0.2),
                   SizedBox(height: 32),
                 ],
-              )
+              ),
             ],
           );
         },
@@ -77,9 +81,7 @@ class EnrolledCoursesTabWidget extends StatelessWidget {
             );
             return newCubit;
           },
-          child: CourseItemWidget(
-            color: ColorsUtils.getColorByIndex(index),
-          ),
+          child: CourseItemWidget(color: ColorsUtils.getColorByIndex(index)),
         );
       },
     );

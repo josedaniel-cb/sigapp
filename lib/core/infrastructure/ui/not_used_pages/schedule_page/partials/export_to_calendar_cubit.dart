@@ -9,7 +9,7 @@ import 'package:sigapp/student/domain/entities/weekly_schedule_event.dart';
 part 'export_to_calendar_cubit.freezed.dart';
 
 @freezed
-abstract class ExportToCalendarState with _$ExportToCalendarState {
+sealed class ExportToCalendarState with _$ExportToCalendarState {
   const factory ExportToCalendarState.loading() = LoadingState;
   const factory ExportToCalendarState.success({
     required List<Calendar> calendars,

@@ -24,7 +24,7 @@ enum ApiMethod {
 }
 
 @freezed
-class ApiPathAndMethod with _$ApiPathAndMethod {
+abstract class ApiPathAndMethod with _$ApiPathAndMethod {
   factory ApiPathAndMethod(
     ApiMethod method,
     String path,

@@ -15,15 +15,15 @@ class UserAvatarButtonWidget extends StatelessWidget {
       value: getIt<UserAvatarButtonCubit>(),
       child: BlocBuilder<UserAvatarButtonCubit, UserAvatarButtonState>(
         builder: (context, state) {
-          return state.map(
-            initial: (_) {
+          return switch (state) {
+            UserAvatarButtonInitialState() => () {
               BlocProvider.of<UserAvatarButtonCubit>(context).init();
               return _buildCircularProgressIndicator();
-            },
-            loading: (_) => _buildCircularProgressIndicator(),
-            success: (s) => _build(context, s),
-            error: (s) => _build(context, s),
-          );
+            }(),
+            UserAvatarButtonLoadingState() => _buildCircularProgressIndicator(),
+            UserAvatarButtonSuccessState() => _build(context, state),
+            UserAvatarButtonErrorState() => _build(context, state),
+          };
         },
       ),
     );
@@ -38,9 +38,10 @@ class UserAvatarButtonWidget extends StatelessWidget {
   }
 
   Widget _build(BuildContext context, UserAvatarButtonState state) {
-    final academicProgram = state.mapOrNull(
-      success: (s) => s.data.academicProgram,
-    );
+    final academicProgram = switch (state) {
+      UserAvatarButtonSuccessState(:final data) => data.academicProgram,
+      _ => null,
+    };
 
     final userData = _extractUserData(state);
     final cubit = BlocProvider.of<UserAvatarButtonCubit>(context);
@@ -71,8 +72,8 @@ class UserAvatarButtonWidget extends StatelessWidget {
     var id = 'Desconocido';
     String? errorMessage;
 
-    state.mapOrNull(
-      success: (state) {
+    switch (state) {
+      case UserAvatarButtonSuccessState():
         initials =
             state.data.academicReport.firstName
                 .split(' ')
@@ -83,13 +84,15 @@ class UserAvatarButtonWidget extends StatelessWidget {
             '${state.data.academicReport.firstName} ${state.data.academicReport.lastName}';
         id = state.data.academicReport.code;
         errorMessage = state.errorMessage;
-      },
-      error: (state) {
+        break;
+      case UserAvatarButtonErrorState():
         if (state.error != null) {
           errorMessage = state.error.toString();
         }
-      },
-    );
+        break;
+      default:
+        break;
+    }
 
     return _UserData(
       initials: initials,

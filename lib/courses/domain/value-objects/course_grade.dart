@@ -16,11 +16,11 @@ class CourseGradeInfo {
 }
 
 @freezed
-class CourseGradePreview with _$CourseGradePreview {
+sealed class CourseGradePreview with _$CourseGradePreview {
   factory CourseGradePreview.loaded({
     required double value,
     required bool isPartial,
-  }) = _CourseGradePreviewLoaded;
-  factory CourseGradePreview.empty() = _CourseGradePreviewEmpty;
-  factory CourseGradePreview.error(dynamic error) = _CourseGradePreviewError;
+  }) = CourseGradePreviewLoaded;
+  factory CourseGradePreview.empty() = CourseGradePreviewEmpty;
+  factory CourseGradePreview.error(dynamic error) = CourseGradePreviewError;
 }

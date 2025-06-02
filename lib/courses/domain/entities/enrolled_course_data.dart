@@ -180,7 +180,7 @@ part 'enrolled_course_data.freezed.dart';
 /// }
 /// ```
 @freezed
-class EnrolledCourseData with _$EnrolledCourseData {
+abstract class EnrolledCourseData with _$EnrolledCourseData {
   const factory EnrolledCourseData({
     // required String? Acta,
     required String? googleClassroomCode,

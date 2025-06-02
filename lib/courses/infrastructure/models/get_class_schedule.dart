@@ -4,7 +4,7 @@ part 'get_class_schedule.freezed.dart';
 part 'get_class_schedule.g.dart';
 
 @freezed
-class GetClassScheduleModel with _$GetClassScheduleModel {
+abstract class GetClassScheduleModel with _$GetClassScheduleModel {
   factory GetClassScheduleModel({
     required String HoraFinal,
     required String HoraInicio,

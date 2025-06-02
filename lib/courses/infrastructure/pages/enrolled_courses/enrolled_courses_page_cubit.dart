@@ -12,7 +12,7 @@ import 'package:sigapp/student/domain/value_objects/enrolled_course.dart';
 part 'enrolled_courses_page_cubit.freezed.dart';
 
 @freezed
-abstract class EnrolledCoursesState with _$EnrolledCoursesState {
+sealed class EnrolledCoursesState with _$EnrolledCoursesState {
   const factory EnrolledCoursesState.loading() = EnrolledCoursesLoadingState;
   const factory EnrolledCoursesState.success({
     required List<EnrolledCourse> value,
@@ -22,7 +22,7 @@ abstract class EnrolledCoursesState with _$EnrolledCoursesState {
 }
 
 @freezed
-abstract class EnrolledCoursesPageState with _$EnrolledCoursesPageState {
+sealed class EnrolledCoursesPageState with _$EnrolledCoursesPageState {
   const factory EnrolledCoursesPageState.loading() = CoursesPageLoadingState;
   const factory EnrolledCoursesPageState.success({
     required AcademicReport academicReport,
@@ -40,19 +40,22 @@ class EnrolledCoursesPageCubit extends Cubit<EnrolledCoursesPageState> {
   final GetEnrolledCoursesUsecase _getEnrolledCoursesUsecase;
 
   EnrolledCoursesPageCubit(
-      this._getEnrolledCoursesUsecase, this._sessionInfoService)
-      : super(EnrolledCoursesPageState.loading());
+    this._getEnrolledCoursesUsecase,
+    this._sessionInfoService,
+  ) : super(EnrolledCoursesPageState.loading());
 
   Future<void> init() async {
     emit(EnrolledCoursesPageState.loading());
     try {
       final sessionInfo = await _sessionInfoService.getSessionInfo();
-      final nextState = EnrolledCoursesPageState.success(
-        academicReport: sessionInfo.academicReport,
-        semesterContext: sessionInfo.semesterContext,
-        selectedSemester: sessionInfo.semesterContext.defaultSemester,
-        enrolledCourses: const EnrolledCoursesState.loading(),
-      ) as CoursesPageSuccessState;
+      final nextState =
+          EnrolledCoursesPageState.success(
+                academicReport: sessionInfo.academicReport,
+                semesterContext: sessionInfo.semesterContext,
+                selectedSemester: sessionInfo.semesterContext.defaultSemester,
+                enrolledCourses: const EnrolledCoursesState.loading(),
+              )
+              as CoursesPageSuccessState;
       emit(nextState);
       _fetchEnrolledCourses(nextState);
     } catch (e, s) {
@@ -65,41 +68,53 @@ class EnrolledCoursesPageCubit extends Cubit<EnrolledCoursesPageState> {
   }
 
   void retryFetchEnrolledCourses() {
-    state.mapOrNull(
-      success: (state) {
-        final nextState = state.copyWith(
+    switch (state) {
+      case CoursesPageSuccessState():
+        final currentState = state as CoursesPageSuccessState;
+        final nextState = CoursesPageSuccessState(
+          academicReport: currentState.academicReport,
+          semesterContext: currentState.semesterContext,
+          selectedSemester: currentState.selectedSemester,
           enrolledCourses: EnrolledCoursesState.loading(),
-        ) as CoursesPageSuccessState;
+        );
         emit(nextState);
         _fetchEnrolledCourses(nextState);
-      },
-    );
+      default:
+        break;
+    }
   }
 
   void changeSemester(ScheduledTermIdentifier semester) {
-    state.mapOrNull(
-      success: (state) {
-        final nextState = state.copyWith(
+    switch (state) {
+      case CoursesPageSuccessState(
+        academicReport: final academicReport,
+        semesterContext: final semesterContext,
+      ):
+        final nextState = CoursesPageSuccessState(
+          academicReport: academicReport,
+          semesterContext: semesterContext,
           selectedSemester: semester,
           enrolledCourses: EnrolledCoursesState.loading(),
-        ) as CoursesPageSuccessState;
+        );
         emit(nextState);
         _fetchEnrolledCourses(nextState);
-      },
-    );
+      default:
+        break;
+    }
   }
 
   void _fetchEnrolledCourses(CoursesPageSuccessState state) {
     _getEnrolledCoursesUsecase
         .execute(state.selectedSemester.id)
         .then((courses) {
-      emit(state.copyWith(
-        enrolledCourses: EnrolledCoursesState.success(value: courses),
-      ));
-    }).catchError((e) {
-      emit(state.copyWith(
-        enrolledCourses: EnrolledCoursesState.error(e),
-      ));
-    });
+          emit(
+            state.copyWith(
+              enrolledCourses: EnrolledCoursesState.success(value: courses),
+            ),
+          );
+        })
+        .catchError((e) {
+          emit(state.copyWith(enrolledCourses: EnrolledCoursesState.error(e)));
+        });
   }
 }

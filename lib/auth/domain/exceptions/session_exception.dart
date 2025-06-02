@@ -4,7 +4,7 @@ part 'session_exception.freezed.dart';
 
 /// Base exception class for all (auth) session-related exceptions
 @freezed
-class SessionException with _$SessionException implements Exception {
+sealed class SessionException with _$SessionException implements Exception {
   const factory SessionException.networkError({
     required String message,
     required dynamic originalError,

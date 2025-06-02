@@ -39,14 +39,14 @@ class _EnrolledCoursesPageWidgetState extends State<EnrolledCoursesPageWidget>
   Widget build(BuildContext context) {
     return BlocBuilder<EnrolledCoursesPageCubit, EnrolledCoursesPageState>(
       builder: (context, state) {
-        return state.map(
-          loading: (_) => const LoadingStateWidget(),
-          error: (state) => ErrorStateWidget.from(
-            state.error,
+        return switch (state) {
+          CoursesPageLoadingState() => const LoadingStateWidget(),
+          CoursesPageErrorState(:final error) => ErrorStateWidget.from(
+            error,
             onRetry: () => _cubit.init(),
           ),
-          success: _buildSuccessState,
-        );
+          CoursesPageSuccessState() => _buildSuccessState(state),
+        };
       },
     );
   }

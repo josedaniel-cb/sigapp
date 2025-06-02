@@ -26,21 +26,25 @@ class ScheduleTabWidget extends StatelessWidget {
   final ScheduledTermIdentifier selectedSemester;
   final AcademicReport academicReport;
   final void Function() onRetry;
-
   @override
   Widget build(BuildContext context) {
-    return enrolledCoursesState.map(
-      loading: (_) => LoadingStateWidget(),
-      error: (state) => ErrorStateWidget.from(
-        state.error,
+    return switch (enrolledCoursesState) {
+      EnrolledCoursesLoadingState() => LoadingStateWidget(),
+      EnrolledCoursesErrorState(:final error) => ErrorStateWidget.from(
+        error,
         onRetry: onRetry,
       ),
-      success: (state) => _buildSuccessState(context, state),
-    );
+      EnrolledCoursesSuccessState() => _buildSuccessState(
+        context,
+        enrolledCoursesState as EnrolledCoursesSuccessState,
+      ),
+    };
   }
 
   Widget _buildSuccessState(
-      BuildContext context, EnrolledCoursesSuccessState state) {
+    BuildContext context,
+    EnrolledCoursesSuccessState state,
+  ) {
     final enrolledCourses = state.value;
 
     if (enrolledCourses.isEmpty) {
@@ -51,43 +55,49 @@ class ScheduleTabWidget extends StatelessWidget {
       create: (context) {
         final cubit = CourseVisibilityCubit();
         cubit.loadHiddenEvents(
-            WeeklyScheduleWidget(courses: enrolledCourses).events);
+          WeeklyScheduleWidget(courses: enrolledCourses).events,
+        );
         return cubit;
       },
-      child: Builder(builder: (context) {
-        return Scaffold(
-          body: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Stack(
-              children: [
-                // Usar BlocBuilder para reconstruir el widget cuando cambie el estado
-                BlocBuilder<CourseVisibilityCubit, CourseVisibilityState>(
-                  builder: (context, state) {
-                    return WeeklyScheduleWidget(
-                      courses: enrolledCourses,
-                      onEventTap: (event) => _showCourseDetails(context, event),
-                    );
-                  },
-                ),
-              ],
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            body: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Stack(
+                children: [
+                  // Usar BlocBuilder para reconstruir el widget cuando cambie el estado
+                  BlocBuilder<CourseVisibilityCubit, CourseVisibilityState>(
+                    builder: (context, state) {
+                      return WeeklyScheduleWidget(
+                        courses: enrolledCourses,
+                        onEventTap:
+                            (event) => _showCourseDetails(context, event),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-          floatingActionButton: BlocProvider(
-            create: (context) => getIt<ScheduleShareButtonCubit>(),
-            child: ScheduleShareButtonWidget(
-              enrolledCourses: enrolledCourses,
-              selectedSemester: selectedSemester,
-              academicReport: academicReport,
+            floatingActionButton: BlocProvider(
+              create: (context) => getIt<ScheduleShareButtonCubit>(),
+              child: ScheduleShareButtonWidget(
+                enrolledCourses: enrolledCourses,
+                selectedSemester: selectedSemester,
+                academicReport: academicReport,
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 
   void _showCourseDetails(
-      BuildContext context, WeeklyScheduleWidgetItem event) {
+    BuildContext context,
+    WeeklyScheduleWidgetItem event,
+  ) {
     final cubit = BlocProvider.of<CourseVisibilityCubit>(context);
 
     showDialog(
@@ -95,9 +105,7 @@ class ScheduleTabWidget extends StatelessWidget {
       builder: (BuildContext dialogContext) {
         return BlocProvider.value(
           value: cubit,
-          child: CourseDetailsDialog(
-            event: event,
-          ),
+          child: CourseDetailsDialog(event: event),
         );
       },
     );

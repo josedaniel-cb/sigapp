@@ -10,7 +10,7 @@ import 'package:sigapp/auth/domain/value-objects/stored_credentials.dart';
 part 'login_cubit.freezed.dart';
 
 @freezed
-class LoginState with _$LoginState {
+abstract class LoginState with _$LoginState {
   const factory LoginState({
     required String username,
     required String password,
@@ -19,7 +19,7 @@ class LoginState with _$LoginState {
 }
 
 @freezed
-abstract class LoginStatus with _$LoginStatus {
+sealed class LoginStatus with _$LoginStatus {
   const factory LoginStatus.initial() = LoginInitial;
   const factory LoginStatus.loading() = LoginLoading;
   const factory LoginStatus.success() = LoginSuccess;

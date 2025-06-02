@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,285 +10,154 @@ part of 'raw_class_schedule.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
 mixin _$RawClassSchedule {
-  String get startHour => throw _privateConstructorUsedError;
-  String get endHour => throw _privateConstructorUsedError;
-  String get monday => throw _privateConstructorUsedError;
-  String get tuesday => throw _privateConstructorUsedError;
-  String get wednesday => throw _privateConstructorUsedError;
-  String get thursday => throw _privateConstructorUsedError;
-  String get friday => throw _privateConstructorUsedError;
-  String get saturday => throw _privateConstructorUsedError;
 
-  /// Create a copy of RawClassSchedule
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $RawClassScheduleCopyWith<RawClassSchedule> get copyWith =>
-      throw _privateConstructorUsedError;
+ String get startHour; String get endHour; String get monday; String get tuesday; String get wednesday; String get thursday; String get friday; String get saturday;
+/// Create a copy of RawClassSchedule
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$RawClassScheduleCopyWith<RawClassSchedule> get copyWith => _$RawClassScheduleCopyWithImpl<RawClassSchedule>(this as RawClassSchedule, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RawClassSchedule&&(identical(other.startHour, startHour) || other.startHour == startHour)&&(identical(other.endHour, endHour) || other.endHour == endHour)&&(identical(other.monday, monday) || other.monday == monday)&&(identical(other.tuesday, tuesday) || other.tuesday == tuesday)&&(identical(other.wednesday, wednesday) || other.wednesday == wednesday)&&(identical(other.thursday, thursday) || other.thursday == thursday)&&(identical(other.friday, friday) || other.friday == friday)&&(identical(other.saturday, saturday) || other.saturday == saturday));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,startHour,endHour,monday,tuesday,wednesday,thursday,friday,saturday);
+
+@override
+String toString() {
+  return 'RawClassSchedule(startHour: $startHour, endHour: $endHour, monday: $monday, tuesday: $tuesday, wednesday: $wednesday, thursday: $thursday, friday: $friday, saturday: $saturday)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $RawClassScheduleCopyWith<$Res> {
-  factory $RawClassScheduleCopyWith(
-          RawClassSchedule value, $Res Function(RawClassSchedule) then) =
-      _$RawClassScheduleCopyWithImpl<$Res, RawClassSchedule>;
-  @useResult
-  $Res call(
-      {String startHour,
-      String endHour,
-      String monday,
-      String tuesday,
-      String wednesday,
-      String thursday,
-      String friday,
-      String saturday});
-}
+abstract mixin class $RawClassScheduleCopyWith<$Res>  {
+  factory $RawClassScheduleCopyWith(RawClassSchedule value, $Res Function(RawClassSchedule) _then) = _$RawClassScheduleCopyWithImpl;
+@useResult
+$Res call({
+ String startHour, String endHour, String monday, String tuesday, String wednesday, String thursday, String friday, String saturday
+});
 
+
+
+
+}
 /// @nodoc
-class _$RawClassScheduleCopyWithImpl<$Res, $Val extends RawClassSchedule>
+class _$RawClassScheduleCopyWithImpl<$Res>
     implements $RawClassScheduleCopyWith<$Res> {
-  _$RawClassScheduleCopyWithImpl(this._value, this._then);
+  _$RawClassScheduleCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final RawClassSchedule _self;
+  final $Res Function(RawClassSchedule) _then;
 
-  /// Create a copy of RawClassSchedule
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? startHour = null,
-    Object? endHour = null,
-    Object? monday = null,
-    Object? tuesday = null,
-    Object? wednesday = null,
-    Object? thursday = null,
-    Object? friday = null,
-    Object? saturday = null,
-  }) {
-    return _then(_value.copyWith(
-      startHour: null == startHour
-          ? _value.startHour
-          : startHour // ignore: cast_nullable_to_non_nullable
-              as String,
-      endHour: null == endHour
-          ? _value.endHour
-          : endHour // ignore: cast_nullable_to_non_nullable
-              as String,
-      monday: null == monday
-          ? _value.monday
-          : monday // ignore: cast_nullable_to_non_nullable
-              as String,
-      tuesday: null == tuesday
-          ? _value.tuesday
-          : tuesday // ignore: cast_nullable_to_non_nullable
-              as String,
-      wednesday: null == wednesday
-          ? _value.wednesday
-          : wednesday // ignore: cast_nullable_to_non_nullable
-              as String,
-      thursday: null == thursday
-          ? _value.thursday
-          : thursday // ignore: cast_nullable_to_non_nullable
-              as String,
-      friday: null == friday
-          ? _value.friday
-          : friday // ignore: cast_nullable_to_non_nullable
-              as String,
-      saturday: null == saturday
-          ? _value.saturday
-          : saturday // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
+/// Create a copy of RawClassSchedule
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? startHour = null,Object? endHour = null,Object? monday = null,Object? tuesday = null,Object? wednesday = null,Object? thursday = null,Object? friday = null,Object? saturday = null,}) {
+  return _then(_self.copyWith(
+startHour: null == startHour ? _self.startHour : startHour // ignore: cast_nullable_to_non_nullable
+as String,endHour: null == endHour ? _self.endHour : endHour // ignore: cast_nullable_to_non_nullable
+as String,monday: null == monday ? _self.monday : monday // ignore: cast_nullable_to_non_nullable
+as String,tuesday: null == tuesday ? _self.tuesday : tuesday // ignore: cast_nullable_to_non_nullable
+as String,wednesday: null == wednesday ? _self.wednesday : wednesday // ignore: cast_nullable_to_non_nullable
+as String,thursday: null == thursday ? _self.thursday : thursday // ignore: cast_nullable_to_non_nullable
+as String,friday: null == friday ? _self.friday : friday // ignore: cast_nullable_to_non_nullable
+as String,saturday: null == saturday ? _self.saturday : saturday // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
 
-/// @nodoc
-abstract class _$$RawClassScheduleImplCopyWith<$Res>
-    implements $RawClassScheduleCopyWith<$Res> {
-  factory _$$RawClassScheduleImplCopyWith(_$RawClassScheduleImpl value,
-          $Res Function(_$RawClassScheduleImpl) then) =
-      __$$RawClassScheduleImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String startHour,
-      String endHour,
-      String monday,
-      String tuesday,
-      String wednesday,
-      String thursday,
-      String friday,
-      String saturday});
 }
 
-/// @nodoc
-class __$$RawClassScheduleImplCopyWithImpl<$Res>
-    extends _$RawClassScheduleCopyWithImpl<$Res, _$RawClassScheduleImpl>
-    implements _$$RawClassScheduleImplCopyWith<$Res> {
-  __$$RawClassScheduleImplCopyWithImpl(_$RawClassScheduleImpl _value,
-      $Res Function(_$RawClassScheduleImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of RawClassSchedule
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? startHour = null,
-    Object? endHour = null,
-    Object? monday = null,
-    Object? tuesday = null,
-    Object? wednesday = null,
-    Object? thursday = null,
-    Object? friday = null,
-    Object? saturday = null,
-  }) {
-    return _then(_$RawClassScheduleImpl(
-      startHour: null == startHour
-          ? _value.startHour
-          : startHour // ignore: cast_nullable_to_non_nullable
-              as String,
-      endHour: null == endHour
-          ? _value.endHour
-          : endHour // ignore: cast_nullable_to_non_nullable
-              as String,
-      monday: null == monday
-          ? _value.monday
-          : monday // ignore: cast_nullable_to_non_nullable
-              as String,
-      tuesday: null == tuesday
-          ? _value.tuesday
-          : tuesday // ignore: cast_nullable_to_non_nullable
-              as String,
-      wednesday: null == wednesday
-          ? _value.wednesday
-          : wednesday // ignore: cast_nullable_to_non_nullable
-              as String,
-      thursday: null == thursday
-          ? _value.thursday
-          : thursday // ignore: cast_nullable_to_non_nullable
-              as String,
-      friday: null == friday
-          ? _value.friday
-          : friday // ignore: cast_nullable_to_non_nullable
-              as String,
-      saturday: null == saturday
-          ? _value.saturday
-          : saturday // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
 
 /// @nodoc
 
-class _$RawClassScheduleImpl implements _RawClassSchedule {
-  _$RawClassScheduleImpl(
-      {required this.startHour,
-      required this.endHour,
-      required this.monday,
-      required this.tuesday,
-      required this.wednesday,
-      required this.thursday,
-      required this.friday,
-      required this.saturday});
 
-  @override
-  final String startHour;
-  @override
-  final String endHour;
-  @override
-  final String monday;
-  @override
-  final String tuesday;
-  @override
-  final String wednesday;
-  @override
-  final String thursday;
-  @override
-  final String friday;
-  @override
-  final String saturday;
+class _RawClassSchedule implements RawClassSchedule {
+   _RawClassSchedule({required this.startHour, required this.endHour, required this.monday, required this.tuesday, required this.wednesday, required this.thursday, required this.friday, required this.saturday});
+  
 
-  @override
-  String toString() {
-    return 'RawClassSchedule(startHour: $startHour, endHour: $endHour, monday: $monday, tuesday: $tuesday, wednesday: $wednesday, thursday: $thursday, friday: $friday, saturday: $saturday)';
-  }
+@override final  String startHour;
+@override final  String endHour;
+@override final  String monday;
+@override final  String tuesday;
+@override final  String wednesday;
+@override final  String thursday;
+@override final  String friday;
+@override final  String saturday;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$RawClassScheduleImpl &&
-            (identical(other.startHour, startHour) ||
-                other.startHour == startHour) &&
-            (identical(other.endHour, endHour) || other.endHour == endHour) &&
-            (identical(other.monday, monday) || other.monday == monday) &&
-            (identical(other.tuesday, tuesday) || other.tuesday == tuesday) &&
-            (identical(other.wednesday, wednesday) ||
-                other.wednesday == wednesday) &&
-            (identical(other.thursday, thursday) ||
-                other.thursday == thursday) &&
-            (identical(other.friday, friday) || other.friday == friday) &&
-            (identical(other.saturday, saturday) ||
-                other.saturday == saturday));
-  }
+/// Create a copy of RawClassSchedule
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$RawClassScheduleCopyWith<_RawClassSchedule> get copyWith => __$RawClassScheduleCopyWithImpl<_RawClassSchedule>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, startHour, endHour, monday,
-      tuesday, wednesday, thursday, friday, saturday);
 
-  /// Create a copy of RawClassSchedule
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$RawClassScheduleImplCopyWith<_$RawClassScheduleImpl> get copyWith =>
-      __$$RawClassScheduleImplCopyWithImpl<_$RawClassScheduleImpl>(
-          this, _$identity);
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RawClassSchedule&&(identical(other.startHour, startHour) || other.startHour == startHour)&&(identical(other.endHour, endHour) || other.endHour == endHour)&&(identical(other.monday, monday) || other.monday == monday)&&(identical(other.tuesday, tuesday) || other.tuesday == tuesday)&&(identical(other.wednesday, wednesday) || other.wednesday == wednesday)&&(identical(other.thursday, thursday) || other.thursday == thursday)&&(identical(other.friday, friday) || other.friday == friday)&&(identical(other.saturday, saturday) || other.saturday == saturday));
 }
 
-abstract class _RawClassSchedule implements RawClassSchedule {
-  factory _RawClassSchedule(
-      {required final String startHour,
-      required final String endHour,
-      required final String monday,
-      required final String tuesday,
-      required final String wednesday,
-      required final String thursday,
-      required final String friday,
-      required final String saturday}) = _$RawClassScheduleImpl;
 
-  @override
-  String get startHour;
-  @override
-  String get endHour;
-  @override
-  String get monday;
-  @override
-  String get tuesday;
-  @override
-  String get wednesday;
-  @override
-  String get thursday;
-  @override
-  String get friday;
-  @override
-  String get saturday;
+@override
+int get hashCode => Object.hash(runtimeType,startHour,endHour,monday,tuesday,wednesday,thursday,friday,saturday);
 
-  /// Create a copy of RawClassSchedule
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$RawClassScheduleImplCopyWith<_$RawClassScheduleImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'RawClassSchedule(startHour: $startHour, endHour: $endHour, monday: $monday, tuesday: $tuesday, wednesday: $wednesday, thursday: $thursday, friday: $friday, saturday: $saturday)';
 }
+
+
+}
+
+/// @nodoc
+abstract mixin class _$RawClassScheduleCopyWith<$Res> implements $RawClassScheduleCopyWith<$Res> {
+  factory _$RawClassScheduleCopyWith(_RawClassSchedule value, $Res Function(_RawClassSchedule) _then) = __$RawClassScheduleCopyWithImpl;
+@override @useResult
+$Res call({
+ String startHour, String endHour, String monday, String tuesday, String wednesday, String thursday, String friday, String saturday
+});
+
+
+
+
+}
+/// @nodoc
+class __$RawClassScheduleCopyWithImpl<$Res>
+    implements _$RawClassScheduleCopyWith<$Res> {
+  __$RawClassScheduleCopyWithImpl(this._self, this._then);
+
+  final _RawClassSchedule _self;
+  final $Res Function(_RawClassSchedule) _then;
+
+/// Create a copy of RawClassSchedule
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? startHour = null,Object? endHour = null,Object? monday = null,Object? tuesday = null,Object? wednesday = null,Object? thursday = null,Object? friday = null,Object? saturday = null,}) {
+  return _then(_RawClassSchedule(
+startHour: null == startHour ? _self.startHour : startHour // ignore: cast_nullable_to_non_nullable
+as String,endHour: null == endHour ? _self.endHour : endHour // ignore: cast_nullable_to_non_nullable
+as String,monday: null == monday ? _self.monday : monday // ignore: cast_nullable_to_non_nullable
+as String,tuesday: null == tuesday ? _self.tuesday : tuesday // ignore: cast_nullable_to_non_nullable
+as String,wednesday: null == wednesday ? _self.wednesday : wednesday // ignore: cast_nullable_to_non_nullable
+as String,thursday: null == thursday ? _self.thursday : thursday // ignore: cast_nullable_to_non_nullable
+as String,friday: null == friday ? _self.friday : friday // ignore: cast_nullable_to_non_nullable
+as String,saturday: null == saturday ? _self.saturday : saturday // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+// dart format on

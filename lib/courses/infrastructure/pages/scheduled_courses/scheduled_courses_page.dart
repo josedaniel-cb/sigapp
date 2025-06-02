@@ -13,28 +13,20 @@ class ScheduledCoursesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ScheduledCoursesPageCubit, ScheduledCoursesPageState>(
       builder: (context, state) {
-        return state.map(
-          loading:
-              (_) => Scaffold(
-                // appBar: AppBar(
-                //   title: Text('Cursos programados'),
-                // ),
-                body: Center(child: CircularProgressIndicator()),
-              ),
-          success: (state) => _buildSuccess(context, state),
-          error:
-              (state) => Scaffold(
-                // appBar: AppBar(
-                //   title: const Text('Cursos programados'),
-                // ),
-                body: ErrorStateWidget.from(
-                  state.error,
-                  onRetry: () {
-                    BlocProvider.of<ScheduledCoursesPageCubit>(context).setup();
-                  },
-                ),
-              ),
-        );
+        return switch (state) {
+          CoursesPageLoadingState() => Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          ),
+          ScheduledCoursesPageSuccessState() => _buildSuccess(context, state),
+          CoursesPageErrorState(:final error) => Scaffold(
+            body: ErrorStateWidget.from(
+              error,
+              onRetry: () {
+                BlocProvider.of<ScheduledCoursesPageCubit>(context).setup();
+              },
+            ),
+          ),
+        };
       },
     );
   }

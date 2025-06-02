@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,169 +10,142 @@ part of 'course_visibility_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
 mixin _$CourseVisibilityState {
-  bool get isLoading => throw _privateConstructorUsedError;
-  Map<String, bool> get hiddenEvents => throw _privateConstructorUsedError;
 
-  /// Create a copy of CourseVisibilityState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $CourseVisibilityStateCopyWith<CourseVisibilityState> get copyWith =>
-      throw _privateConstructorUsedError;
+ bool get isLoading; Map<String, bool> get hiddenEvents;
+/// Create a copy of CourseVisibilityState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CourseVisibilityStateCopyWith<CourseVisibilityState> get copyWith => _$CourseVisibilityStateCopyWithImpl<CourseVisibilityState>(this as CourseVisibilityState, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CourseVisibilityState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other.hiddenEvents, hiddenEvents));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,isLoading,const DeepCollectionEquality().hash(hiddenEvents));
+
+@override
+String toString() {
+  return 'CourseVisibilityState(isLoading: $isLoading, hiddenEvents: $hiddenEvents)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $CourseVisibilityStateCopyWith<$Res> {
-  factory $CourseVisibilityStateCopyWith(CourseVisibilityState value,
-          $Res Function(CourseVisibilityState) then) =
-      _$CourseVisibilityStateCopyWithImpl<$Res, CourseVisibilityState>;
-  @useResult
-  $Res call({bool isLoading, Map<String, bool> hiddenEvents});
-}
+abstract mixin class $CourseVisibilityStateCopyWith<$Res>  {
+  factory $CourseVisibilityStateCopyWith(CourseVisibilityState value, $Res Function(CourseVisibilityState) _then) = _$CourseVisibilityStateCopyWithImpl;
+@useResult
+$Res call({
+ bool isLoading, Map<String, bool> hiddenEvents
+});
 
+
+
+
+}
 /// @nodoc
-class _$CourseVisibilityStateCopyWithImpl<$Res,
-        $Val extends CourseVisibilityState>
+class _$CourseVisibilityStateCopyWithImpl<$Res>
     implements $CourseVisibilityStateCopyWith<$Res> {
-  _$CourseVisibilityStateCopyWithImpl(this._value, this._then);
+  _$CourseVisibilityStateCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final CourseVisibilityState _self;
+  final $Res Function(CourseVisibilityState) _then;
 
-  /// Create a copy of CourseVisibilityState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? isLoading = null,
-    Object? hiddenEvents = null,
-  }) {
-    return _then(_value.copyWith(
-      isLoading: null == isLoading
-          ? _value.isLoading
-          : isLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
-      hiddenEvents: null == hiddenEvents
-          ? _value.hiddenEvents
-          : hiddenEvents // ignore: cast_nullable_to_non_nullable
-              as Map<String, bool>,
-    ) as $Val);
-  }
+/// Create a copy of CourseVisibilityState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? hiddenEvents = null,}) {
+  return _then(_self.copyWith(
+isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,hiddenEvents: null == hiddenEvents ? _self.hiddenEvents : hiddenEvents // ignore: cast_nullable_to_non_nullable
+as Map<String, bool>,
+  ));
 }
 
-/// @nodoc
-abstract class _$$CourseVisibilityStateImplCopyWith<$Res>
-    implements $CourseVisibilityStateCopyWith<$Res> {
-  factory _$$CourseVisibilityStateImplCopyWith(
-          _$CourseVisibilityStateImpl value,
-          $Res Function(_$CourseVisibilityStateImpl) then) =
-      __$$CourseVisibilityStateImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({bool isLoading, Map<String, bool> hiddenEvents});
 }
 
-/// @nodoc
-class __$$CourseVisibilityStateImplCopyWithImpl<$Res>
-    extends _$CourseVisibilityStateCopyWithImpl<$Res,
-        _$CourseVisibilityStateImpl>
-    implements _$$CourseVisibilityStateImplCopyWith<$Res> {
-  __$$CourseVisibilityStateImplCopyWithImpl(_$CourseVisibilityStateImpl _value,
-      $Res Function(_$CourseVisibilityStateImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of CourseVisibilityState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? isLoading = null,
-    Object? hiddenEvents = null,
-  }) {
-    return _then(_$CourseVisibilityStateImpl(
-      isLoading: null == isLoading
-          ? _value.isLoading
-          : isLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
-      hiddenEvents: null == hiddenEvents
-          ? _value._hiddenEvents
-          : hiddenEvents // ignore: cast_nullable_to_non_nullable
-              as Map<String, bool>,
-    ));
-  }
-}
 
 /// @nodoc
 
-class _$CourseVisibilityStateImpl implements _CourseVisibilityState {
-  const _$CourseVisibilityStateImpl(
-      {this.isLoading = true, final Map<String, bool> hiddenEvents = const {}})
-      : _hiddenEvents = hiddenEvents;
 
-  @override
-  @JsonKey()
-  final bool isLoading;
-  final Map<String, bool> _hiddenEvents;
-  @override
-  @JsonKey()
-  Map<String, bool> get hiddenEvents {
-    if (_hiddenEvents is EqualUnmodifiableMapView) return _hiddenEvents;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_hiddenEvents);
-  }
+class _CourseVisibilityState implements CourseVisibilityState {
+  const _CourseVisibilityState({this.isLoading = true, final  Map<String, bool> hiddenEvents = const {}}): _hiddenEvents = hiddenEvents;
+  
 
-  @override
-  String toString() {
-    return 'CourseVisibilityState(isLoading: $isLoading, hiddenEvents: $hiddenEvents)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$CourseVisibilityStateImpl &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            const DeepCollectionEquality()
-                .equals(other._hiddenEvents, _hiddenEvents));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, isLoading,
-      const DeepCollectionEquality().hash(_hiddenEvents));
-
-  /// Create a copy of CourseVisibilityState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$CourseVisibilityStateImplCopyWith<_$CourseVisibilityStateImpl>
-      get copyWith => __$$CourseVisibilityStateImplCopyWithImpl<
-          _$CourseVisibilityStateImpl>(this, _$identity);
+@override@JsonKey() final  bool isLoading;
+ final  Map<String, bool> _hiddenEvents;
+@override@JsonKey() Map<String, bool> get hiddenEvents {
+  if (_hiddenEvents is EqualUnmodifiableMapView) return _hiddenEvents;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_hiddenEvents);
 }
 
-abstract class _CourseVisibilityState implements CourseVisibilityState {
-  const factory _CourseVisibilityState(
-      {final bool isLoading,
-      final Map<String, bool> hiddenEvents}) = _$CourseVisibilityStateImpl;
 
-  @override
-  bool get isLoading;
-  @override
-  Map<String, bool> get hiddenEvents;
+/// Create a copy of CourseVisibilityState
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$CourseVisibilityStateCopyWith<_CourseVisibilityState> get copyWith => __$CourseVisibilityStateCopyWithImpl<_CourseVisibilityState>(this, _$identity);
 
-  /// Create a copy of CourseVisibilityState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$CourseVisibilityStateImplCopyWith<_$CourseVisibilityStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CourseVisibilityState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&const DeepCollectionEquality().equals(other._hiddenEvents, _hiddenEvents));
 }
+
+
+@override
+int get hashCode => Object.hash(runtimeType,isLoading,const DeepCollectionEquality().hash(_hiddenEvents));
+
+@override
+String toString() {
+  return 'CourseVisibilityState(isLoading: $isLoading, hiddenEvents: $hiddenEvents)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$CourseVisibilityStateCopyWith<$Res> implements $CourseVisibilityStateCopyWith<$Res> {
+  factory _$CourseVisibilityStateCopyWith(_CourseVisibilityState value, $Res Function(_CourseVisibilityState) _then) = __$CourseVisibilityStateCopyWithImpl;
+@override @useResult
+$Res call({
+ bool isLoading, Map<String, bool> hiddenEvents
+});
+
+
+
+
+}
+/// @nodoc
+class __$CourseVisibilityStateCopyWithImpl<$Res>
+    implements _$CourseVisibilityStateCopyWith<$Res> {
+  __$CourseVisibilityStateCopyWithImpl(this._self, this._then);
+
+  final _CourseVisibilityState _self;
+  final $Res Function(_CourseVisibilityState) _then;
+
+/// Create a copy of CourseVisibilityState
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? hiddenEvents = null,}) {
+  return _then(_CourseVisibilityState(
+isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,hiddenEvents: null == hiddenEvents ? _self._hiddenEvents : hiddenEvents // ignore: cast_nullable_to_non_nullable
+as Map<String, bool>,
+  ));
+}
+
+
+}
+
+// dart format on

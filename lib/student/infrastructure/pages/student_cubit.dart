@@ -8,7 +8,7 @@ import 'package:sigapp/student/domain/services/academic_info_service.dart';
 part 'student_cubit.freezed.dart';
 
 @freezed
-abstract class StudentPageViewState with _$StudentPageViewState {
+sealed class StudentPageViewState with _$StudentPageViewState {
   const factory StudentPageViewState.loading() = LoadingState;
   const factory StudentPageViewState.success(
     AcademicReport academicReport,

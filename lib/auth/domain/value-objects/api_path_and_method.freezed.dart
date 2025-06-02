@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,153 +10,136 @@ part of 'api_path_and_method.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
 mixin _$ApiPathAndMethod {
-  ApiMethod get method => throw _privateConstructorUsedError;
-  String get path => throw _privateConstructorUsedError;
 
-  /// Create a copy of ApiPathAndMethod
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $ApiPathAndMethodCopyWith<ApiPathAndMethod> get copyWith =>
-      throw _privateConstructorUsedError;
+ ApiMethod get method; String get path;
+/// Create a copy of ApiPathAndMethod
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ApiPathAndMethodCopyWith<ApiPathAndMethod> get copyWith => _$ApiPathAndMethodCopyWithImpl<ApiPathAndMethod>(this as ApiPathAndMethod, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ApiPathAndMethod&&(identical(other.method, method) || other.method == method)&&(identical(other.path, path) || other.path == path));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,method,path);
+
+@override
+String toString() {
+  return 'ApiPathAndMethod(method: $method, path: $path)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $ApiPathAndMethodCopyWith<$Res> {
-  factory $ApiPathAndMethodCopyWith(
-          ApiPathAndMethod value, $Res Function(ApiPathAndMethod) then) =
-      _$ApiPathAndMethodCopyWithImpl<$Res, ApiPathAndMethod>;
-  @useResult
-  $Res call({ApiMethod method, String path});
-}
+abstract mixin class $ApiPathAndMethodCopyWith<$Res>  {
+  factory $ApiPathAndMethodCopyWith(ApiPathAndMethod value, $Res Function(ApiPathAndMethod) _then) = _$ApiPathAndMethodCopyWithImpl;
+@useResult
+$Res call({
+ ApiMethod method, String path
+});
 
+
+
+
+}
 /// @nodoc
-class _$ApiPathAndMethodCopyWithImpl<$Res, $Val extends ApiPathAndMethod>
+class _$ApiPathAndMethodCopyWithImpl<$Res>
     implements $ApiPathAndMethodCopyWith<$Res> {
-  _$ApiPathAndMethodCopyWithImpl(this._value, this._then);
+  _$ApiPathAndMethodCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final ApiPathAndMethod _self;
+  final $Res Function(ApiPathAndMethod) _then;
 
-  /// Create a copy of ApiPathAndMethod
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? method = null,
-    Object? path = null,
-  }) {
-    return _then(_value.copyWith(
-      method: null == method
-          ? _value.method
-          : method // ignore: cast_nullable_to_non_nullable
-              as ApiMethod,
-      path: null == path
-          ? _value.path
-          : path // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
+/// Create a copy of ApiPathAndMethod
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? method = null,Object? path = null,}) {
+  return _then(_self.copyWith(
+method: null == method ? _self.method : method // ignore: cast_nullable_to_non_nullable
+as ApiMethod,path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
 
-/// @nodoc
-abstract class _$$ApiPathAndMethodImplCopyWith<$Res>
-    implements $ApiPathAndMethodCopyWith<$Res> {
-  factory _$$ApiPathAndMethodImplCopyWith(_$ApiPathAndMethodImpl value,
-          $Res Function(_$ApiPathAndMethodImpl) then) =
-      __$$ApiPathAndMethodImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({ApiMethod method, String path});
 }
 
-/// @nodoc
-class __$$ApiPathAndMethodImplCopyWithImpl<$Res>
-    extends _$ApiPathAndMethodCopyWithImpl<$Res, _$ApiPathAndMethodImpl>
-    implements _$$ApiPathAndMethodImplCopyWith<$Res> {
-  __$$ApiPathAndMethodImplCopyWithImpl(_$ApiPathAndMethodImpl _value,
-      $Res Function(_$ApiPathAndMethodImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ApiPathAndMethod
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? method = null,
-    Object? path = null,
-  }) {
-    return _then(_$ApiPathAndMethodImpl(
-      null == method
-          ? _value.method
-          : method // ignore: cast_nullable_to_non_nullable
-              as ApiMethod,
-      null == path
-          ? _value.path
-          : path // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
 
 /// @nodoc
 
-class _$ApiPathAndMethodImpl implements _ApiPathAndMethod {
-  _$ApiPathAndMethodImpl(this.method, this.path);
 
-  @override
-  final ApiMethod method;
-  @override
-  final String path;
+class _ApiPathAndMethod implements ApiPathAndMethod {
+   _ApiPathAndMethod(this.method, this.path);
+  
 
-  @override
-  String toString() {
-    return 'ApiPathAndMethod(method: $method, path: $path)';
-  }
+@override final  ApiMethod method;
+@override final  String path;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ApiPathAndMethodImpl &&
-            (identical(other.method, method) || other.method == method) &&
-            (identical(other.path, path) || other.path == path));
-  }
+/// Create a copy of ApiPathAndMethod
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ApiPathAndMethodCopyWith<_ApiPathAndMethod> get copyWith => __$ApiPathAndMethodCopyWithImpl<_ApiPathAndMethod>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, method, path);
 
-  /// Create a copy of ApiPathAndMethod
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ApiPathAndMethodImplCopyWith<_$ApiPathAndMethodImpl> get copyWith =>
-      __$$ApiPathAndMethodImplCopyWithImpl<_$ApiPathAndMethodImpl>(
-          this, _$identity);
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ApiPathAndMethod&&(identical(other.method, method) || other.method == method)&&(identical(other.path, path) || other.path == path));
 }
 
-abstract class _ApiPathAndMethod implements ApiPathAndMethod {
-  factory _ApiPathAndMethod(final ApiMethod method, final String path) =
-      _$ApiPathAndMethodImpl;
 
-  @override
-  ApiMethod get method;
-  @override
-  String get path;
+@override
+int get hashCode => Object.hash(runtimeType,method,path);
 
-  /// Create a copy of ApiPathAndMethod
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ApiPathAndMethodImplCopyWith<_$ApiPathAndMethodImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'ApiPathAndMethod(method: $method, path: $path)';
 }
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ApiPathAndMethodCopyWith<$Res> implements $ApiPathAndMethodCopyWith<$Res> {
+  factory _$ApiPathAndMethodCopyWith(_ApiPathAndMethod value, $Res Function(_ApiPathAndMethod) _then) = __$ApiPathAndMethodCopyWithImpl;
+@override @useResult
+$Res call({
+ ApiMethod method, String path
+});
+
+
+
+
+}
+/// @nodoc
+class __$ApiPathAndMethodCopyWithImpl<$Res>
+    implements _$ApiPathAndMethodCopyWith<$Res> {
+  __$ApiPathAndMethodCopyWithImpl(this._self, this._then);
+
+  final _ApiPathAndMethod _self;
+  final $Res Function(_ApiPathAndMethod) _then;
+
+/// Create a copy of ApiPathAndMethod
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? method = null,Object? path = null,}) {
+  return _then(_ApiPathAndMethod(
+null == method ? _self.method : method // ignore: cast_nullable_to_non_nullable
+as ApiMethod,null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+// dart format on

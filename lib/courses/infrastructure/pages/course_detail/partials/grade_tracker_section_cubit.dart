@@ -8,7 +8,7 @@ import 'package:sigapp/courses/domain/entities/grade_tracking.dart';
 part 'grade_tracker_section_cubit.freezed.dart';
 
 @freezed
-class GradeTrackerSectionState with _$GradeTrackerSectionState {
+sealed class GradeTrackerSectionState with _$GradeTrackerSectionState {
   const factory GradeTrackerSectionState.empty() =
       GradeTrackerSectionEmptyState;
 

@@ -4,7 +4,7 @@ part 'get_course_requirements.freezed.dart';
 part 'get_course_requirements.g.dart';
 
 @freezed
-class GetCourseRequirementsModel with _$GetCourseRequirementsModel {
+abstract class GetCourseRequirementsModel with _$GetCourseRequirementsModel {
   // {
   //     "results": [
   //         {

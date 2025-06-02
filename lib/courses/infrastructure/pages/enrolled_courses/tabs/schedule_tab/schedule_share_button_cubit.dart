@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -17,7 +16,7 @@ abstract class ScheduleShareButtonState with _$ScheduleShareButtonState {
 @injectable
 class ScheduleShareButtonCubit extends Cubit<ScheduleShareButtonState> {
   ScheduleShareButtonCubit()
-      : super(ScheduleShareButtonState(loadingShare: false));
+    : super(ScheduleShareButtonState(loadingShare: false));
 
   void markErrorMessagesAsRead() {
     emit(state.copyWith(errorMessage: null));
@@ -28,15 +27,10 @@ class ScheduleShareButtonCubit extends Cubit<ScheduleShareButtonState> {
   }
 
   void showErrorMessage(String message) {
-    emit(state.copyWith(
-      errorMessage: message,
-      errorMessageWasShown: false,
-    ));
+    emit(state.copyWith(errorMessage: message, errorMessageWasShown: false));
   }
 
   void setErrorMessageAsShown() {
-    emit(state.copyWith(
-      errorMessageWasShown: true,
-    ));
+    emit(state.copyWith(errorMessageWasShown: true));
   }
 }

@@ -181,7 +181,7 @@ part 'get_enrolled_courses.g.dart';
 /// }
 /// ```
 @freezed
-class GetEnrolledCoursesModel with _$GetEnrolledCoursesModel {
+abstract class GetEnrolledCoursesModel with _$GetEnrolledCoursesModel {
   const factory GetEnrolledCoursesModel({
     required String? Acta,
     required String? Activo,

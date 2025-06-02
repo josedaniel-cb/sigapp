@@ -10,7 +10,7 @@ import 'package:sigapp/student/domain/services/academic_info_service.dart';
 part 'career_page_cubit.freezed.dart';
 
 @freezed
-abstract class CareerPageState with _$CareerPageState {
+sealed class CareerPageState with _$CareerPageState {
   const factory CareerPageState.loading() = CareerPageLoadingState;
   const factory CareerPageState.success({
     required ProgramCurriculumProgress programCurriculumProgress,
