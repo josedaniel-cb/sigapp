@@ -4,7 +4,7 @@ import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
 part 'student_academic_report.freezed.dart';
 
 @freezed
-class AcademicReport with _$AcademicReport {
+abstract class AcademicReport with _$AcademicReport {
   factory AcademicReport({
     required String faculty,
     required String school,
@@ -16,7 +16,8 @@ class AcademicReport with _$AcademicReport {
     // required String curriculumSemesterId,
     // required String? lastSemesterId,
     required ScheduledTermIdentifier enrollmentSemester,
-    required ScheduledTermIdentifier curriculumSemester,
+    // required ScheduledTermIdentifier curriculumSemester,
+    required String curriculumSemester,
     required ScheduledTermIdentifier? lastSemester,
     required double cumulativeWeightedAverage,
     required double cumulativeWeightedAverageOfPassedCourses,

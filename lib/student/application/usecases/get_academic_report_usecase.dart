@@ -10,17 +10,20 @@ class GetAcademicReportUsecase {
   final StudentSessionService _studentSessionService;
 
   GetAcademicReportUsecase(
-      this._studentRepository, this._studentSessionService);
+    this._studentRepository,
+    this._studentSessionService,
+  );
 
   Future<AcademicReport> execute() async {
-    final academicReportModel =
-        await _studentRepository.getAcademicReport().then(
-              (value) => value.copyWith(
-                lastSemesterId: value.lastSemesterId?.trim(),
-                curriculumSemesterId: value.curriculumSemesterId.trim(),
-                enrollmentSemesterId: value.enrollmentSemesterId.trim(),
-              ),
-            );
+    final academicReportModel = await _studentRepository
+        .getAcademicReport()
+        .then(
+          (value) => value.copyWith(
+            lastSemesterId: value.lastSemesterId?.trim(),
+            curriculumSemesterId: value.curriculumSemesterId.trim(),
+            enrollmentSemesterId: value.enrollmentSemesterId.trim(),
+          ),
+        );
     final studentSessionInfo = await _studentSessionService.getInfo();
 
     final studentInfoParts = academicReportModel.studentName.split(' - ');
@@ -33,13 +36,15 @@ class GetAcademicReportUsecase {
       code: studentInfoParts[0],
       cohort: academicReportModel.cohort,
       enrollmentSemester: ScheduledTermIdentifier.buildFromId(
-          academicReportModel.enrollmentSemesterId),
-      curriculumSemester: ScheduledTermIdentifier.buildFromId(
-          academicReportModel.curriculumSemesterId),
-      lastSemester: academicReportModel.lastSemesterId != null
-          ? ScheduledTermIdentifier.buildFromId(
-              academicReportModel.lastSemesterId!)
-          : null,
+        academicReportModel.enrollmentSemesterId,
+      ),
+      curriculumSemester: academicReportModel.curriculumSemesterId,
+      lastSemester:
+          academicReportModel.lastSemesterId != null
+              ? ScheduledTermIdentifier.buildFromId(
+                academicReportModel.lastSemesterId!,
+              )
+              : null,
       cumulativeWeightedAverage: academicReportModel.cumulativeWeightedAverage,
       cumulativeWeightedAverageOfPassedCourses:
           academicReportModel.cumulativeWeightedAverageOfPassedCourses,
