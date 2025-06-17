@@ -21,8 +21,9 @@ Logger createLogger() {
               dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
             ),
     output: MultiOutput([
-      if (kDebugMode) ConsoleOutput(),
-      if (kReleaseMode) FirebaseLogOutput(),
+      // if (kDebugMode) ConsoleOutput(),
+      // if (kReleaseMode) FirebaseLogOutput(),
+      FirebaseLogOutput(),
     ]),
   );
 }
