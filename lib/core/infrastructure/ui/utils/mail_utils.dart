@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:developer' as developer;
 
+@lazySingleton
 class MailUtils {
-  static void launchEmail(
+  final Logger _logger;
+
+  MailUtils(this._logger);
+
+  void launchEmail(
     BuildContext context, {
     required String email,
     String? subject,
@@ -25,14 +31,13 @@ class MailUtils {
         mode: LaunchMode.externalApplication,
       );
     } catch (e, s) {
-      developer.log(
-        'Error launching email app: $e',
-        name: 'MailUtils',
+      _logger.e(
+        '[UI] Error launching email app: $e',
         error: e,
         stackTrace: s,
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Ocurrió un error al abrir el correo'),
         ),
       );

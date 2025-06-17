@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:sigapp/courses/application/usecases/get_scheduled_courses_usecase.dart';
 import 'package:sigapp/courses/domain/entities/scheduled_course.dart';
 
@@ -22,8 +22,9 @@ sealed class ScheduledCoursesPageState with _$ScheduledCoursesPageState {
 @injectable
 class ScheduledCoursesPageCubit extends Cubit<ScheduledCoursesPageState> {
   final GetScheduledCoursesUsecase _getScheduledCoursesUsecase;
+  final Logger _logger;
 
-  ScheduledCoursesPageCubit(this._getScheduledCoursesUsecase)
+  ScheduledCoursesPageCubit(this._getScheduledCoursesUsecase, this._logger)
       : super(ScheduledCoursesPageState.loading());
 
   Future<void> setup() async {
@@ -36,10 +37,7 @@ class ScheduledCoursesPageCubit extends Cubit<ScheduledCoursesPageState> {
         searchQuery: '',
       ));
     } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
+      _logger.e('[UI] Error loading scheduled courses', error: e, stackTrace: s);
       emit(ScheduledCoursesPageState.error(e));
     }
   }

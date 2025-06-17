@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:sigapp/courses/domain/entities/course_type.dart';
@@ -64,27 +63,6 @@ class _CareerPageProgramCurriculumWidgetState
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-      final Map<String, List<ProgramCurriculumCourse>> courseGroups = {};
-      final RegExp regex = RegExp(r'^[A-Za-z]+');
-      for (final term in widget.programCurriculum) {
-        for (final course in term.courses) {
-          final match = regex.firstMatch(course.info.courseCode);
-          if (match != null) {
-            final type = match.group(0)!;
-            courseGroups.putIfAbsent(type, () => []).add(course);
-          }
-        }
-      }
-      for (final entry in courseGroups.entries) {
-        final category = entry.key;
-        final courses = entry.value;
-        print('Categoría: $category (${courses.length} cursos)');
-        for (final course in courses) {
-          print('  - ${course.info.courseName} (${course.info.courseCode})');
-        }
-      }
-    }
     return ListView(
       controller: _scrollController,
       children:

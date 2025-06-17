@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase.dart';
 import 'package:sigapp/courses/domain/entities/academic_history_term.dart';
 import 'package:sigapp/courses/domain/repositories/program_curriculum_repository.dart';
@@ -6,18 +7,19 @@ import 'package:sigapp/courses/domain/entities/program_curriculum_course_term.da
 import 'package:sigapp/courses/domain/value-objects/program_curriculum_progress.dart';
 import 'package:sigapp/student/domain/services/academic_info_service.dart';
 import 'package:sigapp/student/domain/value_objects/semester_context.dart';
-import 'dart:developer' as developer;
 
 @lazySingleton
 class GetProgramCurriculumProgressUsecase {
   final ProgramCurriculumRepository _programCurriculumRepository;
   final AcademicInfoService _academicInfoService;
   final GetEnrolledCoursesUsecase _getEnrolledCoursesUsecase;
+  final Logger _logger;
 
   GetProgramCurriculumProgressUsecase(
     this._programCurriculumRepository,
     this._academicInfoService,
     this._getEnrolledCoursesUsecase,
+    this._logger,
   );
 
   Future<ProgramCurriculumProgress> execute() async {
@@ -27,9 +29,8 @@ class GetProgramCurriculumProgressUsecase {
       academicHistoryTerms =
           await _programCurriculumRepository.getAcademicHistory();
     } catch (e, s) {
-      developer.log(
-        'Error obteniendo el historial académico: $e',
-        name: 'GetProgramCurriculumProgressUsecase',
+      _logger.e(
+        '[DOMAIN] Error getting academic history: $e',
         error: e,
         stackTrace: s,
       );

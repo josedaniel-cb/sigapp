@@ -13,17 +13,11 @@ part of 'enrolled_courses_page_cubit.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$EnrolledCoursesState implements DiagnosticableTreeMixin {
+mixin _$EnrolledCoursesState {
 
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'EnrolledCoursesState'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -35,7 +29,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'EnrolledCoursesState()';
 }
 
@@ -51,7 +45,7 @@ $EnrolledCoursesStateCopyWith(EnrolledCoursesState _, $Res Function(EnrolledCour
 /// @nodoc
 
 
-class EnrolledCoursesLoadingState with DiagnosticableTreeMixin implements EnrolledCoursesState {
+class EnrolledCoursesLoadingState implements EnrolledCoursesState {
   const EnrolledCoursesLoadingState();
   
 
@@ -59,12 +53,6 @@ class EnrolledCoursesLoadingState with DiagnosticableTreeMixin implements Enroll
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'EnrolledCoursesState.loading'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -76,7 +64,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'EnrolledCoursesState.loading()';
 }
 
@@ -89,7 +77,7 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class EnrolledCoursesSuccessState with DiagnosticableTreeMixin implements EnrolledCoursesState {
+class EnrolledCoursesSuccessState implements EnrolledCoursesState {
   const EnrolledCoursesSuccessState({required final  List<EnrolledCourse> value}): _value = value;
   
 
@@ -108,12 +96,6 @@ class EnrolledCoursesSuccessState with DiagnosticableTreeMixin implements Enroll
 $EnrolledCoursesSuccessStateCopyWith<EnrolledCoursesSuccessState> get copyWith => _$EnrolledCoursesSuccessStateCopyWithImpl<EnrolledCoursesSuccessState>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'EnrolledCoursesState.success'))
-    ..add(DiagnosticsProperty('value', value));
-}
 
 @override
 bool operator ==(Object other) {
@@ -125,7 +107,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_value));
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'EnrolledCoursesState.success(value: $value)';
 }
 
@@ -167,7 +149,7 @@ as List<EnrolledCourse>,
 /// @nodoc
 
 
-class EnrolledCoursesErrorState with DiagnosticableTreeMixin implements EnrolledCoursesState {
+class EnrolledCoursesErrorState implements EnrolledCoursesState {
   const EnrolledCoursesErrorState(this.error);
   
 
@@ -180,12 +162,6 @@ class EnrolledCoursesErrorState with DiagnosticableTreeMixin implements Enrolled
 $EnrolledCoursesErrorStateCopyWith<EnrolledCoursesErrorState> get copyWith => _$EnrolledCoursesErrorStateCopyWithImpl<EnrolledCoursesErrorState>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'EnrolledCoursesState.error'))
-    ..add(DiagnosticsProperty('error', error));
-}
 
 @override
 bool operator ==(Object other) {
@@ -197,7 +173,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(error));
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'EnrolledCoursesState.error(error: $error)';
 }
 
@@ -236,17 +212,11 @@ null == error ? _self.error : error ,
 }
 
 /// @nodoc
-mixin _$EnrolledCoursesPageState implements DiagnosticableTreeMixin {
+mixin _$EnrolledCoursesPageState {
 
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'EnrolledCoursesPageState'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -258,7 +228,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'EnrolledCoursesPageState()';
 }
 
@@ -274,7 +244,7 @@ $EnrolledCoursesPageStateCopyWith(EnrolledCoursesPageState _, $Res Function(Enro
 /// @nodoc
 
 
-class CoursesPageLoadingState with DiagnosticableTreeMixin implements EnrolledCoursesPageState {
+class CoursesPageLoadingState implements EnrolledCoursesPageState {
   const CoursesPageLoadingState();
   
 
@@ -282,12 +252,6 @@ class CoursesPageLoadingState with DiagnosticableTreeMixin implements EnrolledCo
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'EnrolledCoursesPageState.loading'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -299,7 +263,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'EnrolledCoursesPageState.loading()';
 }
 
@@ -312,7 +276,7 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class CoursesPageSuccessState with DiagnosticableTreeMixin implements EnrolledCoursesPageState {
+class CoursesPageSuccessState implements EnrolledCoursesPageState {
   const CoursesPageSuccessState({required this.academicReport, required this.semesterContext, required this.selectedSemester, required this.enrolledCourses});
   
 
@@ -328,12 +292,6 @@ class CoursesPageSuccessState with DiagnosticableTreeMixin implements EnrolledCo
 $CoursesPageSuccessStateCopyWith<CoursesPageSuccessState> get copyWith => _$CoursesPageSuccessStateCopyWithImpl<CoursesPageSuccessState>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'EnrolledCoursesPageState.success'))
-    ..add(DiagnosticsProperty('academicReport', academicReport))..add(DiagnosticsProperty('semesterContext', semesterContext))..add(DiagnosticsProperty('selectedSemester', selectedSemester))..add(DiagnosticsProperty('enrolledCourses', enrolledCourses));
-}
 
 @override
 bool operator ==(Object other) {
@@ -345,7 +303,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,academicReport,semesterContext,selectedSemester,enrolledCourses);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'EnrolledCoursesPageState.success(academicReport: $academicReport, semesterContext: $semesterContext, selectedSemester: $selectedSemester, enrolledCourses: $enrolledCourses)';
 }
 
@@ -408,7 +366,7 @@ $EnrolledCoursesStateCopyWith<$Res> get enrolledCourses {
 /// @nodoc
 
 
-class CoursesPageErrorState with DiagnosticableTreeMixin implements EnrolledCoursesPageState {
+class CoursesPageErrorState implements EnrolledCoursesPageState {
   const CoursesPageErrorState(this.error);
   
 
@@ -421,12 +379,6 @@ class CoursesPageErrorState with DiagnosticableTreeMixin implements EnrolledCour
 $CoursesPageErrorStateCopyWith<CoursesPageErrorState> get copyWith => _$CoursesPageErrorStateCopyWithImpl<CoursesPageErrorState>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'EnrolledCoursesPageState.error'))
-    ..add(DiagnosticsProperty('error', error));
-}
 
 @override
 bool operator ==(Object other) {
@@ -438,7 +390,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(error));
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'EnrolledCoursesPageState.error(error: $error)';
 }
 

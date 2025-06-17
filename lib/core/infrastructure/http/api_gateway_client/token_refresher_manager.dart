@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:developer' as developer;
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:logger/logger.dart';
 
 /// Manages secure storage and retrieval of auth tokens
 class TokenManager {
@@ -36,6 +36,7 @@ class TokenManager {
 class TokenRefreshManager {
   final TokenManager _tokenManager;
   final String _baseUrl;
+  final Logger _logger;
 
   // Refresh token lock mechanism
   bool _isRefreshing = false;
@@ -44,7 +45,7 @@ class TokenRefreshManager {
   // Queue to track pending requests during token refresh
   final List<_QueuedRequest> _requestQueue = [];
 
-  TokenRefreshManager(this._tokenManager, this._baseUrl);
+  TokenRefreshManager(this._tokenManager, this._baseUrl, this._logger);
 
   /// Handle a token refresh based on a failed request
   Future<Response?> handleTokenRefresh(RequestOptions failedRequest) async {
@@ -60,17 +61,14 @@ class TokenRefreshManager {
       try {
         return await completer.future;
       } catch (e) {
-        developer.log(
-          'Queued request failed after token refresh: $e',
-          name: 'TokenRefreshManager',
+        _logger.e(
+          '[INFRASTRUCTURE] Queued request failed after token refresh: $e',
         );
         return null;
       }
     } else {
       // Clean up the queued request since refresh failed
-      _requestQueue.removeWhere(
-        (request) => request == queuedRequest,
-      );
+      _requestQueue.removeWhere((request) => request == queuedRequest);
       return null;
     }
   }
@@ -79,9 +77,8 @@ class TokenRefreshManager {
   Future<bool> _refreshTokenWithLock() async {
     // If already refreshing, wait for that refresh to complete
     if (_isRefreshing) {
-      developer.log(
-        'Token refresh already in progress, waiting...',
-        name: 'TokenRefreshManager',
+      _logger.d(
+        '[INFRASTRUCTURE] Token refresh already in progress, waiting...',
       );
 
       // Use completer to wait for the refresh result
@@ -117,9 +114,8 @@ class TokenRefreshManager {
     try {
       final refreshToken = await _tokenManager.getRefreshToken();
       if (refreshToken == null) {
-        developer.log(
-          'Cannot refresh token: No refresh token available',
-          name: 'TokenRefreshManager',
+        _logger.w(
+          '[INFRASTRUCTURE] Cannot refresh token: No refresh token available',
         );
         return false;
       }
@@ -142,10 +138,7 @@ class TokenRefreshManager {
         final newAccessToken = data['access_token'];
         final newRefreshToken = data['refresh_token'];
 
-        developer.log(
-          'Token refresh successful',
-          name: 'TokenRefreshManager',
-        );
+        _logger.i('[INFRASTRUCTURE] Token refresh successful');
 
         if (newAccessToken != null) {
           await _tokenManager.setAccessToken(newAccessToken);
@@ -155,16 +148,14 @@ class TokenRefreshManager {
           return true;
         }
       } else {
-        developer.log(
-          'Token refresh failed: ${response.statusCode} - ${response.data}',
-          name: 'TokenRefreshManager',
+        _logger.w(
+          '[INFRASTRUCTURE] Token refresh failed: ${response.statusCode} - ${response.data}',
         );
       }
       return false;
     } catch (e, s) {
-      developer.log(
-        'Error refreshing token',
-        name: 'TokenRefreshManager',
+      _logger.e(
+        '[INFRASTRUCTURE] Error refreshing token',
         error: e,
         stackTrace: s,
       );
@@ -174,9 +165,8 @@ class TokenRefreshManager {
 
   /// Process all queued requests with the new token
   Future<void> _processQueue() async {
-    developer.log(
-      'Processing queue with ${_requestQueue.length} requests',
-      name: 'TokenRefreshManager',
+    _logger.d(
+      '[INFRASTRUCTURE] Processing queue with ${_requestQueue.length} requests',
     );
 
     // Create a copy to avoid concurrent modification issues
@@ -198,10 +188,7 @@ class TokenRefreshManager {
         final response = await dio.fetch(opts);
         request.completer.complete(response);
       } catch (e) {
-        developer.log(
-          'Failed to process queued request: $e',
-          name: 'TokenRefreshManager',
-        );
+        _logger.e('[INFRASTRUCTURE] Failed to process queued request: $e');
         request.completer.completeError(e);
       }
     }

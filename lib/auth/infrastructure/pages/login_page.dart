@@ -356,7 +356,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           GestureDetector(
             onTap: () {
-              MailUtils.launchEmail(
+              getIt<MailUtils>().launchEmail(
                 context,
                 email: Links.contactEmail,
                 subject: 'Hola!',

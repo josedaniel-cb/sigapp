@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:sigapp/courses/application/usecases/get_program_curriculum_progress_usecase.dart';
 import 'package:sigapp/courses/domain/value-objects/program_curriculum_progress.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
@@ -24,10 +24,12 @@ class CareerPageCubit extends Cubit<CareerPageState> {
   final GetProgramCurriculumProgressUsecase
       _getProgramCurriculumProgressUsecase;
   final AcademicInfoService _sessionInfoService;
+  final Logger _logger;
 
   CareerPageCubit(
     this._getProgramCurriculumProgressUsecase,
     this._sessionInfoService,
+    this._logger,
   ) : super(CareerPageState.loading());
 
   Future<void> fetch() async {
@@ -43,10 +45,11 @@ class CareerPageCubit extends Cubit<CareerPageState> {
         programCurriculumProgress: programCurriculumProgress,
       ));
     } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
+      _logger.e(
+        '[UI] Error fetching career page data: $e',
+        error: e,
+        stackTrace: s,
+      );
       emit(CareerPageState.error(e));
     }
   }

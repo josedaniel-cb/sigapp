@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:sigapp/courses/application/usecases/grade_tracking_usecases.dart';
 import 'package:sigapp/courses/domain/entities/grade_tracking.dart';
 
@@ -26,9 +27,10 @@ sealed class GradeTrackerSectionState with _$GradeTrackerSectionState {
 @injectable
 class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
   final GradeTrackingUseCases _gradeTrackingUseCases;
+  final Logger _logger;
   String? _courseCode;
 
-  GradeTrackerSectionCubit(this._gradeTrackingUseCases)
+  GradeTrackerSectionCubit(this._gradeTrackingUseCases, this._logger)
       : super(const GradeTrackerSectionState.empty());
 
   Future<void> init({required String courseId}) async {
@@ -57,10 +59,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
         emit(const GradeTrackerSectionState.empty());
       }
     } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
+      _logger.e('[UI] Error loading grade tracking data', error: e, stackTrace: s);
       emit(GradeTrackerSectionState.error(
         "Error al cargar el seguimiento de notas: ${e.toString()}",
       ));
@@ -91,10 +90,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
 
       emit(GradeTrackerSectionState.ready(courseTracking: tracking));
     } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
+      _logger.e('[UI] Error creating course tracking', error: e, stackTrace: s);
       emit(GradeTrackerSectionState.error(e));
     }
   }
@@ -113,10 +109,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
         );
         emit(GradeTrackerSectionState.ready(courseTracking: updatedTracking));
       } catch (e, s) {
-        if (kDebugMode) {
-          print(e);
-          print(s);
-        }
+        _logger.e('[UI] Error adding category', error: e, stackTrace: s);
         emit(GradeTrackerSectionState.error(e));
       }
     }
@@ -139,10 +132,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
         );
         emit(GradeTrackerSectionState.ready(courseTracking: updatedTracking));
       } catch (e, s) {
-        if (kDebugMode) {
-          print(e);
-          print(s);
-        }
+        _logger.e('[UI] Error updating category', error: e, stackTrace: s);
         emit(GradeTrackerSectionState.error(e));
       }
     }
@@ -159,10 +149,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
         );
         emit(GradeTrackerSectionState.ready(courseTracking: updatedTracking));
       } catch (e, s) {
-        if (kDebugMode) {
-          print(e);
-          print(s);
-        }
+        _logger.e('[UI] Error deleting category', error: e, stackTrace: s);
         emit(GradeTrackerSectionState.error(e));
       }
     }
@@ -186,10 +173,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
         );
         emit(GradeTrackerSectionState.ready(courseTracking: updatedTracking));
       } catch (e, s) {
-        if (kDebugMode) {
-          print(e);
-          print(s);
-        }
+        _logger.e('[UI] Error adding grade', error: e, stackTrace: s);
         emit(GradeTrackerSectionState.error(e));
       }
     }
@@ -214,10 +198,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
         );
         emit(GradeTrackerSectionState.ready(courseTracking: updatedTracking));
       } catch (e, s) {
-        if (kDebugMode) {
-          print(e);
-          print(s);
-        }
+        _logger.e('[UI] Error updating grade', error: e, stackTrace: s);
         emit(GradeTrackerSectionState.error(e));
       }
     }
@@ -240,10 +221,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
         );
         emit(GradeTrackerSectionState.ready(courseTracking: updatedTracking));
       } catch (e, s) {
-        if (kDebugMode) {
-          print(e);
-          print(s);
-        }
+        _logger.e('[UI] Error toggling grade enabled', error: e, stackTrace: s);
         emit(GradeTrackerSectionState.error(e));
       }
     }
@@ -264,10 +242,7 @@ class GradeTrackerSectionCubit extends Cubit<GradeTrackerSectionState> {
         );
         emit(GradeTrackerSectionState.ready(courseTracking: updatedTracking));
       } catch (e, s) {
-        if (kDebugMode) {
-          print(e);
-          print(s);
-        }
+        _logger.e('[UI] Error deleting grade', error: e, stackTrace: s);
         emit(GradeTrackerSectionState.error(e));
       }
     }

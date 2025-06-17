@@ -1,5 +1,5 @@
-import 'dart:developer' as developer;
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:sigapp/auth/application/services/api_gateway_auth_service.dart';
 import 'package:sigapp/auth/domain/exceptions/session_exception.dart';
 import 'package:sigapp/auth/domain/repositories/auth_repository.dart';
@@ -20,6 +20,7 @@ class SignOutUseCase {
   final ProgressIndicatorService _progressIndicatorService;
   final AcademicInfoService _sessionInfoService;
   final ApiGatewayAuthService _supabaseAuthService;
+  final Logger _logger;
 
   SignOutUseCase(
     this._sharedPreferencesAuthRepository,
@@ -30,13 +31,13 @@ class SignOutUseCase {
     this._sessionInfoService,
     this._supabaseAuthService,
     this._toastService,
+    this._logger,
   );
 
   Future<void> execute([SessionException? technicalReason]) async {
     // Registramos el motivo técnico del cierre de sesión para diagnóstico
-    developer.log(
-      'Ejecutando SignOutUseCase. Motivo técnico: ${technicalReason ?? "No especificado"}',
-      name: 'SignOutUseCase',
+    _logger.i(
+      '[AUTH] Executing SignOutUseCase. Technical reason: ${technicalReason ?? "Not specified"}',
     );
 
     await _progressIndicatorService.show();
@@ -54,12 +55,7 @@ class SignOutUseCase {
       await _authRepository.disposeCookies();
       await _regevaRepository.disposeCookies();
     } catch (e, s) {
-      developer.log(
-        'Error durante el cierre de sesión: $e',
-        name: 'SignOutUseCase',
-        error: e,
-        stackTrace: s,
-      );
+      _logger.e('[AUTH] Error during sign out: $e', error: e, stackTrace: s);
 
       await _progressIndicatorService.hide();
       rethrow;
@@ -68,9 +64,8 @@ class SignOutUseCase {
     try {
       await _supabaseAuthService.logoutUser();
     } catch (e, s) {
-      developer.log(
-        'Error al cerrar sesión en Supabase: $e (continuando de todas formas)',
-        name: 'SignOutUseCase',
+      _logger.w(
+        '[AUTH] Error logging out from Supabase: $e (continuing anyway)',
         error: e,
         stackTrace: s,
       );

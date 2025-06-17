@@ -6,4 +6,4 @@ import 'get_it.config.dart';
 final getIt = GetIt.instance;
 
 @injectableInit
-configureDependencies() => getIt.init();
+Future<GetIt> configureDependencies() => getIt.init();

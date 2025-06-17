@@ -13,17 +13,11 @@ part of 'student_cubit.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$StudentPageViewState implements DiagnosticableTreeMixin {
+mixin _$StudentPageViewState {
 
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'StudentPageViewState'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -35,7 +29,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'StudentPageViewState()';
 }
 
@@ -51,7 +45,7 @@ $StudentPageViewStateCopyWith(StudentPageViewState _, $Res Function(StudentPageV
 /// @nodoc
 
 
-class LoadingState with DiagnosticableTreeMixin implements StudentPageViewState {
+class LoadingState implements StudentPageViewState {
   const LoadingState();
   
 
@@ -59,12 +53,6 @@ class LoadingState with DiagnosticableTreeMixin implements StudentPageViewState 
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'StudentPageViewState.loading'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -76,7 +64,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'StudentPageViewState.loading()';
 }
 
@@ -89,7 +77,7 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class SuccessState with DiagnosticableTreeMixin implements StudentPageViewState {
+class SuccessState implements StudentPageViewState {
   const SuccessState(this.academicReport);
   
 
@@ -102,12 +90,6 @@ class SuccessState with DiagnosticableTreeMixin implements StudentPageViewState 
 $SuccessStateCopyWith<SuccessState> get copyWith => _$SuccessStateCopyWithImpl<SuccessState>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'StudentPageViewState.success'))
-    ..add(DiagnosticsProperty('academicReport', academicReport));
-}
 
 @override
 bool operator ==(Object other) {
@@ -119,7 +101,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,academicReport);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'StudentPageViewState.success(academicReport: $academicReport)';
 }
 
@@ -170,7 +152,7 @@ $AcademicReportCopyWith<$Res> get academicReport {
 /// @nodoc
 
 
-class ErrorState with DiagnosticableTreeMixin implements StudentPageViewState {
+class ErrorState implements StudentPageViewState {
   const ErrorState(this.error);
   
 
@@ -183,12 +165,6 @@ class ErrorState with DiagnosticableTreeMixin implements StudentPageViewState {
 $ErrorStateCopyWith<ErrorState> get copyWith => _$ErrorStateCopyWithImpl<ErrorState>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'StudentPageViewState.error'))
-    ..add(DiagnosticsProperty('error', error));
-}
 
 @override
 bool operator ==(Object other) {
@@ -200,7 +176,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(error));
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'StudentPageViewState.error(error: $error)';
 }
 

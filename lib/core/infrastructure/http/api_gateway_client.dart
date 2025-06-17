@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:developer' as developer;
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/core/infrastructure/http/api_gateway_client/api_logger.dart';
 import 'package:sigapp/core/infrastructure/http/api_gateway_client/token_refresher_manager.dart';
+import 'package:logger/logger.dart';
 
 /// Main client for API Gateway communication
 @singleton
@@ -13,11 +13,12 @@ class ApiGatewayClient {
   late final Dio http;
   final TokenManager tokenManager;
   final ApiLogger logger;
+  final Logger _logger;
   late final TokenRefreshManager refreshManager;
 
-  ApiGatewayClient()
-      : tokenManager = TokenManager(),
-        logger = ApiLogger() {
+  ApiGatewayClient(this._logger)
+    : tokenManager = TokenManager(),
+      logger = ApiLogger(_logger) {
     http = Dio();
 
     final baseUrl = dotenv.env['SUPABASE_GATEWAY_URL'];
@@ -33,7 +34,7 @@ class ApiGatewayClient {
     http.options.headers['Content-Type'] = 'application/json';
     // http.options.headers['X-Upstream'] = 'supabase';
 
-    refreshManager = TokenRefreshManager(tokenManager, _url);
+    refreshManager = TokenRefreshManager(tokenManager, _url, _logger);
 
     // Add interceptors
     http.interceptors.add(_createAuthInterceptor());
@@ -80,14 +81,14 @@ class ApiGatewayClient {
         }
 
         if (error.response?.statusCode == 401) {
-          developer.log(
-            '401 Unauthorized: Attempting token refresh',
-            name: 'ApiGatewayClient',
+          _logger.w(
+            '[INFRASTRUCTURE] 401 Unauthorized: Attempting token refresh',
           );
 
           // Queue this request and try token refresh
-          final result =
-              await refreshManager.handleTokenRefresh(error.requestOptions);
+          final result = await refreshManager.handleTokenRefresh(
+            error.requestOptions,
+          );
 
           if (result != null) {
             return handler.resolve(result);

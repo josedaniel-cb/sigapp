@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sigapp/core/infrastructure/ui/utils/colors_utils.dart';
@@ -98,9 +97,6 @@ class _WeeklyScheduleWidgetState extends State<WeeklyScheduleWidget> {
               .map((event) => event.data.endHour)
               .reduce((a, b) => a > b ? a : b) +
           1;
-    }
-    if (kDebugMode) {
-      print('startHour: $startHour, endHour: $endHour');
     }
   }
 

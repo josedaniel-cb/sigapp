@@ -13,17 +13,11 @@ part of 'scheduled_courses_cubit.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$ScheduledCoursesPageState implements DiagnosticableTreeMixin {
+mixin _$ScheduledCoursesPageState {
 
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'ScheduledCoursesPageState'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -35,7 +29,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'ScheduledCoursesPageState()';
 }
 
@@ -51,7 +45,7 @@ $ScheduledCoursesPageStateCopyWith(ScheduledCoursesPageState _, $Res Function(Sc
 /// @nodoc
 
 
-class CoursesPageLoadingState with DiagnosticableTreeMixin implements ScheduledCoursesPageState {
+class CoursesPageLoadingState implements ScheduledCoursesPageState {
   const CoursesPageLoadingState();
   
 
@@ -59,12 +53,6 @@ class CoursesPageLoadingState with DiagnosticableTreeMixin implements ScheduledC
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'ScheduledCoursesPageState.loading'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -76,7 +64,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'ScheduledCoursesPageState.loading()';
 }
 
@@ -89,7 +77,7 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class ScheduledCoursesPageSuccessState with DiagnosticableTreeMixin implements ScheduledCoursesPageState {
+class ScheduledCoursesPageSuccessState implements ScheduledCoursesPageState {
   const ScheduledCoursesPageSuccessState({required final  List<ScheduledCourse> scheduledCourses, required final  List<ScheduledCourse> filteredCourses, required this.searchQuery}): _scheduledCourses = scheduledCourses,_filteredCourses = filteredCourses;
   
 
@@ -116,12 +104,6 @@ class ScheduledCoursesPageSuccessState with DiagnosticableTreeMixin implements S
 $ScheduledCoursesPageSuccessStateCopyWith<ScheduledCoursesPageSuccessState> get copyWith => _$ScheduledCoursesPageSuccessStateCopyWithImpl<ScheduledCoursesPageSuccessState>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'ScheduledCoursesPageState.success'))
-    ..add(DiagnosticsProperty('scheduledCourses', scheduledCourses))..add(DiagnosticsProperty('filteredCourses', filteredCourses))..add(DiagnosticsProperty('searchQuery', searchQuery));
-}
 
 @override
 bool operator ==(Object other) {
@@ -133,7 +115,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_scheduledCourses),const DeepCollectionEquality().hash(_filteredCourses),searchQuery);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'ScheduledCoursesPageState.success(scheduledCourses: $scheduledCourses, filteredCourses: $filteredCourses, searchQuery: $searchQuery)';
 }
 
@@ -177,7 +159,7 @@ as String,
 /// @nodoc
 
 
-class CoursesPageErrorState with DiagnosticableTreeMixin implements ScheduledCoursesPageState {
+class CoursesPageErrorState implements ScheduledCoursesPageState {
   const CoursesPageErrorState(this.error);
   
 
@@ -190,12 +172,6 @@ class CoursesPageErrorState with DiagnosticableTreeMixin implements ScheduledCou
 $CoursesPageErrorStateCopyWith<CoursesPageErrorState> get copyWith => _$CoursesPageErrorStateCopyWithImpl<CoursesPageErrorState>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'ScheduledCoursesPageState.error'))
-    ..add(DiagnosticsProperty('error', error));
-}
 
 @override
 bool operator ==(Object other) {
@@ -207,7 +183,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(error));
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'ScheduledCoursesPageState.error(error: $error)';
 }
 

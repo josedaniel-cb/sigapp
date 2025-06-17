@@ -14,6 +14,7 @@ import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/partials/we
 import 'package:sigapp/courses/infrastructure/pages/enrolled_courses/tabs/schedule_tab/schedule_share_button_cubit.dart';
 import 'package:sigapp/student/domain/entities/student_academic_report.dart';
 import 'package:sigapp/student/domain/value_objects/enrolled_course.dart';
+import 'package:logger/logger.dart';
 
 class ScheduleShareButtonWidget extends StatefulWidget {
   const ScheduleShareButtonWidget({
@@ -34,6 +35,7 @@ class ScheduleShareButtonWidget extends StatefulWidget {
 
 class _ScheduleShareButtonWidgetState extends State<ScheduleShareButtonWidget> {
   late final ScheduleShareButtonCubit _cubit;
+  final Logger _logger = Logger(); // Replace with DI if possible
 
   @override
   void initState() {
@@ -154,19 +156,12 @@ class _ScheduleShareButtonWidgetState extends State<ScheduleShareButtonWidget> {
 
       // Handling the result of sharing
       if (result.status == ShareResultStatus.success) {
-        if (kDebugMode) {
-          print('Image shared successfully!');
-        }
+        _logger.i('[UI] Image shared successfully!');
       } else if (result.status == ShareResultStatus.dismissed) {
-        if (kDebugMode) {
-          print('Share dismissed.');
-        }
+        _logger.d('[UI] Share dismissed.');
       }
     } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
+      _logger.e('[UI] Error sharing schedule image', error: e, stackTrace: s);
       _cubit.updateRenderingImageForSharing(false);
 
       _cubit.showErrorMessage(

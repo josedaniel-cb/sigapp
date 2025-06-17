@@ -13,17 +13,11 @@ part of 'course_detail_cubit.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$CourseDetailState implements DiagnosticableTreeMixin {
+mixin _$CourseDetailState {
 
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'CourseDetailState'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -35,7 +29,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'CourseDetailState()';
 }
 
@@ -51,7 +45,7 @@ $CourseDetailStateCopyWith(CourseDetailState _, $Res Function(CourseDetailState)
 /// @nodoc
 
 
-class CourseDetailEmptyState with DiagnosticableTreeMixin implements CourseDetailState {
+class CourseDetailEmptyState implements CourseDetailState {
   const CourseDetailEmptyState();
   
 
@@ -59,12 +53,6 @@ class CourseDetailEmptyState with DiagnosticableTreeMixin implements CourseDetai
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'CourseDetailState.empty'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -76,7 +64,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'CourseDetailState.empty()';
 }
 
@@ -89,7 +77,7 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class CourseDetailReadyState with DiagnosticableTreeMixin implements CourseDetailState {
+class CourseDetailReadyState implements CourseDetailState {
   const CourseDetailReadyState({required this.course, required this.regevaScheduledCourseId, required this.syllabus, required this.grades});
   
 
@@ -105,12 +93,6 @@ class CourseDetailReadyState with DiagnosticableTreeMixin implements CourseDetai
 $CourseDetailReadyStateCopyWith<CourseDetailReadyState> get copyWith => _$CourseDetailReadyStateCopyWithImpl<CourseDetailReadyState>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'CourseDetailState.ready'))
-    ..add(DiagnosticsProperty('course', course))..add(DiagnosticsProperty('regevaScheduledCourseId', regevaScheduledCourseId))..add(DiagnosticsProperty('syllabus', syllabus))..add(DiagnosticsProperty('grades', grades));
-}
 
 @override
 bool operator ==(Object other) {
@@ -122,7 +104,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,course,regevaScheduledCourseId,syllabus,grades);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'CourseDetailState.ready(course: $course, regevaScheduledCourseId: $regevaScheduledCourseId, syllabus: $syllabus, grades: $grades)';
 }
 
@@ -183,17 +165,11 @@ $CourseDetailGradesStateCopyWith<$Res> get grades {
 }
 
 /// @nodoc
-mixin _$CourseDetailSyllabusState implements DiagnosticableTreeMixin {
+mixin _$CourseDetailSyllabusState {
 
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'CourseDetailSyllabusState'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -205,7 +181,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'CourseDetailSyllabusState()';
 }
 
@@ -221,7 +197,7 @@ $CourseDetailSyllabusStateCopyWith(CourseDetailSyllabusState _, $Res Function(Co
 /// @nodoc
 
 
-class CourseDetailSyllabusStateInitial with DiagnosticableTreeMixin implements CourseDetailSyllabusState {
+class CourseDetailSyllabusStateInitial implements CourseDetailSyllabusState {
   const CourseDetailSyllabusStateInitial();
   
 
@@ -229,12 +205,6 @@ class CourseDetailSyllabusStateInitial with DiagnosticableTreeMixin implements C
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'CourseDetailSyllabusState.initial'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -246,7 +216,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'CourseDetailSyllabusState.initial()';
 }
 
@@ -259,7 +229,7 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class CourseDetailSyllabusStateLoading with DiagnosticableTreeMixin implements CourseDetailSyllabusState {
+class CourseDetailSyllabusStateLoading implements CourseDetailSyllabusState {
   const CourseDetailSyllabusStateLoading();
   
 
@@ -267,12 +237,6 @@ class CourseDetailSyllabusStateLoading with DiagnosticableTreeMixin implements C
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'CourseDetailSyllabusState.loading'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -284,7 +248,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'CourseDetailSyllabusState.loading()';
 }
 
@@ -297,7 +261,7 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class CourseDetailSyllabusStateLoaded with DiagnosticableTreeMixin implements CourseDetailSyllabusState {
+class CourseDetailSyllabusStateLoaded implements CourseDetailSyllabusState {
   const CourseDetailSyllabusStateLoaded(this.syllabusFile);
   
 
@@ -310,12 +274,6 @@ class CourseDetailSyllabusStateLoaded with DiagnosticableTreeMixin implements Co
 $CourseDetailSyllabusStateLoadedCopyWith<CourseDetailSyllabusStateLoaded> get copyWith => _$CourseDetailSyllabusStateLoadedCopyWithImpl<CourseDetailSyllabusStateLoaded>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'CourseDetailSyllabusState.loaded'))
-    ..add(DiagnosticsProperty('syllabusFile', syllabusFile));
-}
 
 @override
 bool operator ==(Object other) {
@@ -327,7 +285,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,syllabusFile);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'CourseDetailSyllabusState.loaded(syllabusFile: $syllabusFile)';
 }
 
@@ -369,7 +327,7 @@ as File,
 /// @nodoc
 
 
-class CourseDetailSyllabusStateNotFound with DiagnosticableTreeMixin implements CourseDetailSyllabusState {
+class CourseDetailSyllabusStateNotFound implements CourseDetailSyllabusState {
   const CourseDetailSyllabusStateNotFound();
   
 
@@ -377,12 +335,6 @@ class CourseDetailSyllabusStateNotFound with DiagnosticableTreeMixin implements 
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'CourseDetailSyllabusState.notFound'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -394,7 +346,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'CourseDetailSyllabusState.notFound()';
 }
 
@@ -407,7 +359,7 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class CourseDetailSyllabusStateError with DiagnosticableTreeMixin implements CourseDetailSyllabusState {
+class CourseDetailSyllabusStateError implements CourseDetailSyllabusState {
   const CourseDetailSyllabusStateError(this.message);
   
 
@@ -420,12 +372,6 @@ class CourseDetailSyllabusStateError with DiagnosticableTreeMixin implements Cou
 $CourseDetailSyllabusStateErrorCopyWith<CourseDetailSyllabusStateError> get copyWith => _$CourseDetailSyllabusStateErrorCopyWithImpl<CourseDetailSyllabusStateError>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'CourseDetailSyllabusState.error'))
-    ..add(DiagnosticsProperty('message', message));
-}
 
 @override
 bool operator ==(Object other) {
@@ -437,7 +383,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,message);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'CourseDetailSyllabusState.error(message: $message)';
 }
 
@@ -477,17 +423,11 @@ as String,
 }
 
 /// @nodoc
-mixin _$CourseDetailGradesState implements DiagnosticableTreeMixin {
+mixin _$CourseDetailGradesState {
 
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'CourseDetailGradesState'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -499,7 +439,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'CourseDetailGradesState()';
 }
 
@@ -515,7 +455,7 @@ $CourseDetailGradesStateCopyWith(CourseDetailGradesState _, $Res Function(Course
 /// @nodoc
 
 
-class CourseDetailGradesStateInitial with DiagnosticableTreeMixin implements CourseDetailGradesState {
+class CourseDetailGradesStateInitial implements CourseDetailGradesState {
   const CourseDetailGradesStateInitial();
   
 
@@ -523,12 +463,6 @@ class CourseDetailGradesStateInitial with DiagnosticableTreeMixin implements Cou
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'CourseDetailGradesState.initial'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -540,7 +474,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'CourseDetailGradesState.initial()';
 }
 
@@ -553,7 +487,7 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class CourseDetailGradesStateLoading with DiagnosticableTreeMixin implements CourseDetailGradesState {
+class CourseDetailGradesStateLoading implements CourseDetailGradesState {
   const CourseDetailGradesStateLoading();
   
 
@@ -561,12 +495,6 @@ class CourseDetailGradesStateLoading with DiagnosticableTreeMixin implements Cou
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'CourseDetailGradesState.loading'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -578,7 +506,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'CourseDetailGradesState.loading()';
 }
 
@@ -591,7 +519,7 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class CourseDetailGradesStateLoaded with DiagnosticableTreeMixin implements CourseDetailGradesState {
+class CourseDetailGradesStateLoaded implements CourseDetailGradesState {
   const CourseDetailGradesStateLoaded(this.value);
   
 
@@ -604,12 +532,6 @@ class CourseDetailGradesStateLoaded with DiagnosticableTreeMixin implements Cour
 $CourseDetailGradesStateLoadedCopyWith<CourseDetailGradesStateLoaded> get copyWith => _$CourseDetailGradesStateLoadedCopyWithImpl<CourseDetailGradesStateLoaded>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'CourseDetailGradesState.loaded'))
-    ..add(DiagnosticsProperty('value', value));
-}
 
 @override
 bool operator ==(Object other) {
@@ -621,7 +543,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,value);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'CourseDetailGradesState.loaded(value: $value)';
 }
 
@@ -663,7 +585,7 @@ as CourseGradeInfo,
 /// @nodoc
 
 
-class CourseDetailGradesStateError with DiagnosticableTreeMixin implements CourseDetailGradesState {
+class CourseDetailGradesStateError implements CourseDetailGradesState {
   const CourseDetailGradesStateError(this.message);
   
 
@@ -676,12 +598,6 @@ class CourseDetailGradesStateError with DiagnosticableTreeMixin implements Cours
 $CourseDetailGradesStateErrorCopyWith<CourseDetailGradesStateError> get copyWith => _$CourseDetailGradesStateErrorCopyWithImpl<CourseDetailGradesStateError>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'CourseDetailGradesState.error'))
-    ..add(DiagnosticsProperty('message', message));
-}
 
 @override
 bool operator ==(Object other) {
@@ -693,7 +609,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,message);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'CourseDetailGradesState.error(message: $message)';
 }
 

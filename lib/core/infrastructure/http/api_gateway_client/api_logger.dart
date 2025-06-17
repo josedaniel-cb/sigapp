@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:developer' as developer;
+import 'package:logger/logger.dart';
 
 final _loggingHeaders = [
   'Authorization',
@@ -11,6 +11,9 @@ final _loggingHeaders = [
 
 /// Handles API request/response logging
 class ApiLogger {
+  final Logger _logger;
+  ApiLogger(this._logger);
+
   void logRequest(
     String method,
     Uri uri, {
@@ -20,18 +23,13 @@ class ApiLogger {
   }) {
     final sanitizedHeaders = Map<String, dynamic>.from(headers ?? {})
       ..removeWhere((key, _) => !_loggingHeaders.contains(key));
-
     if (sanitizedHeaders.containsKey('Authorization') && !isAuth) {
       sanitizedHeaders['Authorization'] = 'Bearer [REDACTED]';
     }
-
-    developer.log(
-      '📤 $method Request:\n'
-      'URL: ${Uri.decodeFull(uri.toString())}\n'
-      '${sanitizedHeaders.isNotEmpty ? 'Headers: ${_prettyPrint(sanitizedHeaders)}\n' : ''}'
-      '${body != null ? 'Body: ${_prettyPrint(body)}' : 'No body'}',
-      name: 'ApiLogger',
-    );
+    _logger.d('[INFRASTRUCTURE] 📤 $method Request:\n'
+        'URL: ${Uri.decodeFull(uri.toString())}\n'
+        '${sanitizedHeaders.isNotEmpty ? 'Headers: ${_prettyPrint(sanitizedHeaders)}\n' : ''}'
+        '${body != null ? 'Body: ${_prettyPrint(body)}' : 'No body'}');
   }
 
   void logSuccess(
@@ -43,14 +41,10 @@ class ApiLogger {
   ) {
     final filteredHeaders = Map<String, List<String>>.from(headers)
       ..removeWhere((key, _) => !_loggingHeaders.contains(key));
-
-    developer.log(
-      '📥 $method Success ($statusCode):\n'
-      'URL: ${Uri.decodeFull(uri.toString())}\n'
-      '${filteredHeaders.isNotEmpty ? 'Response Headers: ${_prettyPrint(filteredHeaders)}\n' : ''}'
-      'Response Body: ${_truncateAndPrettyPrint(responseBody)}',
-      name: 'ApiLogger',
-    );
+    _logger.i('[INFRASTRUCTURE] 📥 $method Success ($statusCode):\n'
+        'URL: ${Uri.decodeFull(uri.toString())}\n'
+        '${filteredHeaders.isNotEmpty ? 'Response Headers: ${_prettyPrint(filteredHeaders)}\n' : ''}'
+        'Response Body: ${_truncateAndPrettyPrint(responseBody)}');
   }
 
   void logFailure(
@@ -63,16 +57,11 @@ class ApiLogger {
   ) {
     final filteredHeaders = Map<String, List<String>>.from(headers)
       ..removeWhere((key, _) => !_loggingHeaders.contains(key));
-
-    developer.log(
-      '❌ $method Failure ($statusCode):\n'
-      'URL: ${Uri.decodeFull(uri.toString())}\n'
-      '${requestBody != null ? 'Request Body: ${_prettyPrint(requestBody)}\n' : ''}'
-      '${filteredHeaders.isNotEmpty ? 'Response Headers: ${_prettyPrint(filteredHeaders)}\n' : ''}'
-      'Response Body: $responseBody',
-      name: 'ApiLogger',
-      level: 1000,
-    );
+    _logger.e('[INFRASTRUCTURE] ❌ $method Failure ($statusCode):\n'
+        'URL: ${Uri.decodeFull(uri.toString())}\n'
+        '${requestBody != null ? 'Request Body: ${_prettyPrint(requestBody)}\n' : ''}'
+        '${filteredHeaders.isNotEmpty ? 'Response Headers: ${_prettyPrint(filteredHeaders)}\n' : ''}'
+        'Response Body: $responseBody');
   }
 
   String _prettyPrint(Object? object) {
@@ -86,15 +75,12 @@ class ApiLogger {
 
   String _truncateAndPrettyPrint(String text, {int maxLength = 500}) {
     if (text.isEmpty) return '[Empty]';
-
     try {
       final json = jsonDecode(text);
       var prettyJson = const JsonEncoder.withIndent('  ').convert(json);
-
       if (prettyJson.length > maxLength) {
         prettyJson = '${prettyJson.substring(0, maxLength)}... [truncated]';
       }
-
       return prettyJson;
     } catch (e) {
       if (text.length > maxLength) {

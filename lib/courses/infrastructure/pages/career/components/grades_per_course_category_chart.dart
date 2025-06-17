@@ -1,5 +1,4 @@
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sigapp/courses/domain/entities/academic_history_term.dart';
 import 'dart:math' as math;
@@ -27,8 +26,10 @@ final Map<String, String> coursePrefixes = {
 };
 
 class GradesPerCourseCategoryChart extends StatelessWidget {
-  const GradesPerCourseCategoryChart(
-      {super.key, required this.academicHistory});
+  const GradesPerCourseCategoryChart({
+    super.key,
+    required this.academicHistory,
+  });
 
   final List<AcademicHistoryTerm> academicHistory;
 
@@ -59,12 +60,12 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
     }
 
     // Ordenar los tipos para tener un orden consistente en el eje X
-    final List<String> sortedKeys = courseTypeGrades.keys.toList()
-      ..sort((a, b) {
-        final maxA = courseTypeGrades[a]!.reduce((x, y) => x > y ? x : y);
-        final maxB = courseTypeGrades[b]!.reduce((x, y) => x > y ? x : y);
-        return maxB.compareTo(maxA); // De mayor a menor
-      });
+    final List<String> sortedKeys =
+        courseTypeGrades.keys.toList()..sort((a, b) {
+          final maxA = courseTypeGrades[a]!.reduce((x, y) => x > y ? x : y);
+          final maxB = courseTypeGrades[b]!.reduce((x, y) => x > y ? x : y);
+          return maxB.compareTo(maxA); // De mayor a menor
+        });
 
     // Crear los grupos de barras para el gráfico
     final List<BarChartGroupData> barGroups = [];
@@ -85,7 +86,7 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
             color: Colors.red,
             borderRadius: BorderRadius.circular(0),
           ),
-          BarChartRodData(toY: -1, width: 3)
+          BarChartRodData(toY: -1, width: 3),
         ],
         BarChartRodData(
           toY: avgGrade,
@@ -108,8 +109,10 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
         BarChartGroupData(
           x: index,
           barRods: rods,
-          showingTooltipIndicators:
-              List.generate(rods.length, (index) => index),
+          showingTooltipIndicators: List.generate(
+            rods.length,
+            (index) => index,
+          ),
         ),
       );
 
@@ -123,9 +126,10 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
     final double finalMaxY = math.min(20, tentativeMaxY); // Nunca más de 20
 
     // Definir el valor mínimo del eje Y
-    final double globalMinGrade = allCourses.isNotEmpty
-        ? allCourses.map((c) => c.grade).reduce((a, b) => a < b ? a : b)
-        : 0;
+    final double globalMinGrade =
+        allCourses.isNotEmpty
+            ? allCourses.map((c) => c.grade).reduce((a, b) => a < b ? a : b)
+            : 0;
     final double tentativeMinY = globalMinGrade - 1;
     final double finalMinY = tentativeMinY < 0 ? 0 : tentativeMinY;
     return Container(
@@ -159,97 +163,100 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
           const SizedBox(height: 8),
           SizedBox(
             height: sortedKeys.length * 40.0,
-            child: BarChart(BarChartData(
-              // Hacemos la gráfica horizontal rotándola 90 grados
-              rotationQuarterTurns: 1,
-              alignment: BarChartAlignment.spaceAround,
-              maxY: finalMaxY,
-              minY: finalMinY,
-              barGroups: barGroups,
-              gridData: FlGridData(show: true),
-              borderData: FlBorderData(
-                show: true,
-                border: const Border(
-                  left: BorderSide(color: Colors.black12),
-                  bottom: BorderSide(color: Colors.black12),
-                  top: BorderSide(color: Colors.transparent),
-                  right: BorderSide(color: Colors.transparent),
-                ),
-              ),
-              titlesData: FlTitlesData(
-                leftTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 30,
-                    getTitlesWidget: (value, meta) {
-                      return SideTitleWidget(
-                        meta: meta,
-                        child: Text(
-                          value.toStringAsFixed(1),
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                      );
-                    },
+            child: BarChart(
+              BarChartData(
+                // Hacemos la gráfica horizontal rotándola 90 grados
+                rotationQuarterTurns: 1,
+                alignment: BarChartAlignment.spaceAround,
+                maxY: finalMaxY,
+                minY: finalMinY,
+                barGroups: barGroups,
+                gridData: FlGridData(show: true),
+                borderData: FlBorderData(
+                  show: true,
+                  border: const Border(
+                    left: BorderSide(color: Colors.black12),
+                    bottom: BorderSide(color: Colors.black12),
+                    top: BorderSide(color: Colors.transparent),
+                    right: BorderSide(color: Colors.transparent),
                   ),
                 ),
-                bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    reservedSize: 120,
-                    getTitlesWidget: (value, meta) {
-                      int idx = value.toInt();
-                      if (idx < 0 || idx >= sortedKeys.length) {
-                        return const SizedBox.shrink();
-                      }
-                      final prefix = sortedKeys[idx];
-                      final displayName = coursePrefixes.containsKey(prefix)
-                          ? '($prefix) ${coursePrefixes[prefix]}'
-                          : prefix;
-                      return SideTitleWidget(
-                        meta: meta,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
+                titlesData: FlTitlesData(
+                  leftTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 30,
+                      getTitlesWidget: (value, meta) {
+                        return SideTitleWidget(
+                          meta: meta,
                           child: Text(
-                            displayName,
-                            style: const TextStyle(fontSize: 10),
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
+                            value.toStringAsFixed(1),
+                            style: const TextStyle(fontSize: 12),
                           ),
-                        ),
+                        );
+                      },
+                    ),
+                  ),
+                  bottomTitles: AxisTitles(
+                    sideTitles: SideTitles(
+                      showTitles: true,
+                      reservedSize: 120,
+                      getTitlesWidget: (value, meta) {
+                        int idx = value.toInt();
+                        if (idx < 0 || idx >= sortedKeys.length) {
+                          return const SizedBox.shrink();
+                        }
+                        final prefix = sortedKeys[idx];
+                        final displayName =
+                            coursePrefixes.containsKey(prefix)
+                                ? '($prefix) ${coursePrefixes[prefix]}'
+                                : prefix;
+                        return SideTitleWidget(
+                          meta: meta,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Text(
+                              displayName,
+                              style: const TextStyle(fontSize: 10),
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  topTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  rightTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                ),
+                barTouchData: BarTouchData(
+                  enabled: false,
+                  touchTooltipData: BarTouchTooltipData(
+                    fitInsideHorizontally: true,
+                    fitInsideVertically: true,
+                    tooltipPadding: EdgeInsets.zero,
+                    tooltipMargin: 0,
+                    getTooltipColor: (group) => Colors.transparent,
+                    getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                      if (rod.toY == -1) {
+                        return BarTooltipItem('', const TextStyle());
+                      }
+
+                      return BarTooltipItem(
+                        '  ${rod.toY.toStringAsFixed(1)}',
+                        (Theme.of(context).textTheme.labelSmall ??
+                                const TextStyle())
+                            .copyWith(color: rod.color),
                       );
                     },
                   ),
                 ),
-                topTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
-                rightTitles: const AxisTitles(
-                  sideTitles: SideTitles(showTitles: false),
-                ),
               ),
-              barTouchData: BarTouchData(
-                enabled: false,
-                touchTooltipData: BarTouchTooltipData(
-                  fitInsideHorizontally: true,
-                  fitInsideVertically: true,
-                  tooltipPadding: EdgeInsets.zero,
-                  tooltipMargin: 0,
-                  getTooltipColor: (group) => Colors.transparent,
-                  getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                    if (rod.toY == -1) {
-                      return BarTooltipItem('', const TextStyle());
-                    }
-
-                    return BarTooltipItem(
-                      '  ${rod.toY.toStringAsFixed(1)}',
-                      (Theme.of(context).textTheme.labelSmall ??
-                              const TextStyle())
-                          .copyWith(color: rod.color),
-                    );
-                  },
-                ),
-              ),
-            )),
+            ),
           ),
           SizedBox(height: 8),
           Row(
@@ -260,9 +267,9 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
                   _showInfoDialog(context);
                 },
                 child: Text('¿Qué significa esto?'),
-              )
+              ),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -283,24 +290,13 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
     }
 
     // Ordenar las agrupaciones por cantidad de cursos (de mayor a menor)
-    final sortedGroups = courseGroups.entries.toList()
-      ..sort((a, b) => b.value.length.compareTo(a.value.length));
+    final sortedGroups =
+        courseGroups.entries.toList()
+          ..sort((a, b) => b.value.length.compareTo(a.value.length));
 
     showDialog(
       context: context,
       builder: (context) {
-        if (kDebugMode) {
-          // Imprimir en consola para depuración
-          for (final entry in sortedGroups) {
-            final category = entry.key;
-            final courses = entry.value;
-            print('Categoría: $category (${courses.length} cursos)');
-            for (final course in courses) {
-              print('  - ${course.courseName} (${course.courseCode})');
-            }
-          }
-        }
-
         return AlertDialog(
           title: const Text("Detalle de Categorías"),
           content: SizedBox(
@@ -331,11 +327,14 @@ class GradesPerCourseCategoryChart extends StatelessWidget {
                             "${coursePrefixes[category]}",
                             style: const TextStyle(fontStyle: FontStyle.italic),
                           ),
-                        ...courses.map((course) => Padding(
-                              padding: const EdgeInsets.only(left: 8.0, top: 2),
-                              child: Text(
-                                  "${course.courseName} (${course.courseCode})"),
-                            )),
+                        ...courses.map(
+                          (course) => Padding(
+                            padding: const EdgeInsets.only(left: 8.0, top: 2),
+                            child: Text(
+                              "${course.courseName} (${course.courseCode})",
+                            ),
+                          ),
+                        ),
                         const SizedBox(height: 10),
                       ],
                     );
@@ -373,26 +372,24 @@ class LegendsListWidget extends StatelessWidget {
     return Wrap(
       spacing: 16,
       runSpacing: 8,
-      children: legends.map((legend) {
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 16,
-              height: 16,
-              decoration: BoxDecoration(
-                color: legend.color,
-                shape: BoxShape.circle,
-              ),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              legend.name,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ],
-        );
-      }).toList(),
+      children:
+          legends.map((legend) {
+            return Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 16,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    color: legend.color,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(legend.name, style: Theme.of(context).textTheme.bodySmall),
+              ],
+            );
+          }).toList(),
     );
   }
 }

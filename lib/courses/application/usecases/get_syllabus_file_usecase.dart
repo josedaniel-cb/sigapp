@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:sigapp/courses/application/exceptions/regeva_authentication_exception.dart';
 import 'package:sigapp/courses/application/services/student_session_service.dart';
 import 'package:sigapp/courses/domain/repositories/local_syllabus_repository.dart';
@@ -13,9 +13,14 @@ class GetSyllabusFileUsecase {
   final RegevaRepository _regevaRepository;
   final StudentSessionService _studentSessionService;
   final LocalSyllabusRepository _localSyllabusRepository;
+  final Logger _logger;
 
-  GetSyllabusFileUsecase(this._regevaRepository, this._studentSessionService,
-      this._localSyllabusRepository);
+  GetSyllabusFileUsecase(
+    this._regevaRepository,
+    this._studentSessionService,
+    this._localSyllabusRepository,
+    this._logger,
+  );
 
   Future<File?> execute(String scheduledCourseId, {bool? forceDownload}) async {
     File? cached;
@@ -45,10 +50,11 @@ class GetSyllabusFileUsecase {
     try {
       return await _regevaRepository.downloadSyllabus(scheduledCourseId);
     } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
+      _logger.e(
+        '[DOMAIN] Error downloading syllabus file: $e',
+        error: e,
+        stackTrace: s,
+      );
       if (e is! RegevaAuthenticationException) rethrow;
     }
 

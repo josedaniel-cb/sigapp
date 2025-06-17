@@ -13,7 +13,7 @@ part of 'login_cubit.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$LoginState implements DiagnosticableTreeMixin {
+mixin _$LoginState {
 
  String get username; String get password; LoginStatus get status;
 /// Create a copy of LoginState
@@ -23,12 +23,6 @@ mixin _$LoginState implements DiagnosticableTreeMixin {
 $LoginStateCopyWith<LoginState> get copyWith => _$LoginStateCopyWithImpl<LoginState>(this as LoginState, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'LoginState'))
-    ..add(DiagnosticsProperty('username', username))..add(DiagnosticsProperty('password', password))..add(DiagnosticsProperty('status', status));
-}
 
 @override
 bool operator ==(Object other) {
@@ -40,7 +34,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,username,password,status);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'LoginState(username: $username, password: $password, status: $status)';
 }
 
@@ -93,7 +87,7 @@ $LoginStatusCopyWith<$Res> get status {
 /// @nodoc
 
 
-class _LoginState with DiagnosticableTreeMixin implements LoginState {
+class _LoginState implements LoginState {
   const _LoginState({required this.username, required this.password, required this.status});
   
 
@@ -108,12 +102,6 @@ class _LoginState with DiagnosticableTreeMixin implements LoginState {
 _$LoginStateCopyWith<_LoginState> get copyWith => __$LoginStateCopyWithImpl<_LoginState>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'LoginState'))
-    ..add(DiagnosticsProperty('username', username))..add(DiagnosticsProperty('password', password))..add(DiagnosticsProperty('status', status));
-}
 
 @override
 bool operator ==(Object other) {
@@ -125,7 +113,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,username,password,status);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'LoginState(username: $username, password: $password, status: $status)';
 }
 
@@ -176,17 +164,11 @@ $LoginStatusCopyWith<$Res> get status {
 }
 
 /// @nodoc
-mixin _$LoginStatus implements DiagnosticableTreeMixin {
+mixin _$LoginStatus {
 
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'LoginStatus'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -198,7 +180,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'LoginStatus()';
 }
 
@@ -214,7 +196,7 @@ $LoginStatusCopyWith(LoginStatus _, $Res Function(LoginStatus) __);
 /// @nodoc
 
 
-class LoginInitial with DiagnosticableTreeMixin implements LoginStatus {
+class LoginInitial implements LoginStatus {
   const LoginInitial();
   
 
@@ -222,12 +204,6 @@ class LoginInitial with DiagnosticableTreeMixin implements LoginStatus {
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'LoginStatus.initial'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -239,7 +215,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'LoginStatus.initial()';
 }
 
@@ -252,7 +228,7 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class LoginLoading with DiagnosticableTreeMixin implements LoginStatus {
+class LoginLoading implements LoginStatus {
   const LoginLoading();
   
 
@@ -260,12 +236,6 @@ class LoginLoading with DiagnosticableTreeMixin implements LoginStatus {
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'LoginStatus.loading'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -277,7 +247,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'LoginStatus.loading()';
 }
 
@@ -290,7 +260,7 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class LoginSuccess with DiagnosticableTreeMixin implements LoginStatus {
+class LoginSuccess implements LoginStatus {
   const LoginSuccess();
   
 
@@ -298,12 +268,6 @@ class LoginSuccess with DiagnosticableTreeMixin implements LoginStatus {
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'LoginStatus.success'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -315,7 +279,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'LoginStatus.success()';
 }
 
@@ -328,7 +292,7 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class LoginError with DiagnosticableTreeMixin implements LoginStatus {
+class LoginError implements LoginStatus {
   const LoginError(this.message);
   
 
@@ -341,12 +305,6 @@ class LoginError with DiagnosticableTreeMixin implements LoginStatus {
 $LoginErrorCopyWith<LoginError> get copyWith => _$LoginErrorCopyWithImpl<LoginError>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'LoginStatus.error'))
-    ..add(DiagnosticsProperty('message', message));
-}
 
 @override
 bool operator ==(Object other) {
@@ -358,7 +316,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,message);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'LoginStatus.error(message: $message)';
 }
 

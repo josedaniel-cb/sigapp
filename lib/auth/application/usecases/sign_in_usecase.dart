@@ -1,5 +1,3 @@
-import 'dart:developer' as developer;
-
 import 'package:injectable/injectable.dart';
 import 'package:sigapp/auth/application/services/api_gateway_auth_service.dart';
 import 'package:sigapp/auth/domain/repositories/auth_repository.dart';
@@ -7,6 +5,7 @@ import 'package:sigapp/auth/domain/repositories/shared_preferences_auth_reposito
 import 'package:sigapp/auth/domain/services/navigation_service.dart';
 import 'package:sigapp/auth/domain/services/session_lifecycle_service.dart';
 import 'package:sigapp/student/domain/services/academic_info_service.dart';
+import 'package:logger/logger.dart';
 
 @injectable
 class SignInUseCase {
@@ -18,6 +17,7 @@ class SignInUseCase {
   // TODO: Required refactor in order to not call services from usecases
   final AcademicInfoService _academicInfoService;
   final SessionLifecycleService _sessionLifecycleService;
+  final Logger _logger;
 
   SignInUseCase(
     this._authRepository,
@@ -26,6 +26,7 @@ class SignInUseCase {
     this._navigationService,
     this._academicInfoService,
     this._sessionLifecycleService,
+    this._logger,
   );
 
   Future<bool> execute(String username, String password) async {
@@ -43,9 +44,8 @@ class SignInUseCase {
     try {
       await _academicInfoService.getSessionInfo();
     } catch (e, s) {
-      developer.log(
-        'Error al obtener la información de la sesión del estudiante.',
-        name: 'SignInUseCase',
+      _logger.e(
+        '[APPLICATION] Error al obtener la información de la sesión del estudiante.',
         error: e,
         stackTrace: s,
       );
@@ -67,14 +67,10 @@ class SignInUseCase {
         password: password,
         studentCode: username,
       );
-      developer.log(
-        'Inicio de sesión exitoso en Supabase.',
-        name: 'SignInUseCase',
-      );
+      _logger.i('[APPLICATION] Inicio de sesión exitoso en Supabase.');
     } catch (e, s) {
-      developer.log(
-        'No se pudo iniciar sesión en Supabase, intentando registro.',
-        name: 'SignInUseCase',
+      _logger.w(
+        '[APPLICATION] No se pudo iniciar sesión en Supabase, intentando registro.',
         error: e,
         stackTrace: s,
       );
@@ -84,11 +80,10 @@ class SignInUseCase {
           password: password,
           studentCode: username,
         );
-        developer.log('Registro exitoso en Supabase.', name: 'SignInUseCase');
+        _logger.i('[APPLICATION] Registro exitoso en Supabase.');
       } catch (registerError, registerStack) {
-        developer.log(
-          'No se pudo registrar en Supabase.',
-          name: 'SignInUseCase',
+        _logger.e(
+          '[APPLICATION] No se pudo registrar en Supabase.',
           error: registerError,
           stackTrace: registerStack,
         );
@@ -96,9 +91,8 @@ class SignInUseCase {
       }
       // ignore: dead_code_catch_following_catch
     } catch (e, s) {
-      developer.log(
-        'Error general durante la autenticación con Supabase.',
-        name: 'SignInUseCase',
+      _logger.e(
+        '[APPLICATION] Error general durante la autenticación con Supabase.',
         error: e,
         stackTrace: s,
       );

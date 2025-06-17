@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sigapp/core/infrastructure/http/cookie_manager.dart';
-import 'dart:developer' as developer;
+import 'package:logger/logger.dart';
 
 final _loggingHeaders = [
   'Authorization',
@@ -18,45 +18,112 @@ class HttpClientBuilder {
   final Dio _dio = Dio();
   late String _id;
   late final CookieManager _cookieManager;
+  final Logger _logger;
 
   HttpClientBuilder({
     required String id,
     required SharedPreferences prefs,
-  }) {
+    required Logger logger,
+  }) : _logger = logger {
     _id = id;
-    _cookieManager = CookieManager(id: _id, prefs: prefs);
+    _cookieManager = CookieManager(id: _id, prefs: prefs, logger: logger);
     _setup();
   }
 
   void _setup() {
-    _dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) async {
-        final cookies = _cookieManager.getCookies(options.uri.host);
-        if (cookies.isNotEmpty) {
-          options.headers['cookie'] = cookies.join('; ');
-        }
-        _printRequest(options);
-        return handler.next(options);
-      },
-      onResponse: (response, handler) async {
-        _printResponse(response, '✅');
-        final setCookieHeader = response.headers['set-cookie'];
-        if (setCookieHeader != null && setCookieHeader.isNotEmpty) {
-          _cookieManager.saveCookies(
-            response.requestOptions.uri.host,
-            setCookieHeader,
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          final cookies = _cookieManager.getCookies(options.uri.host);
+          if (cookies.isNotEmpty) {
+            options.headers['cookie'] = cookies.join('; ');
+          }
+          _logger.d(
+            '[INFRASTRUCTURE] ⬆️ $_id: ${options.method} ${options.uri}',
           );
-        }
-        return handler.next(response);
-      },
-      onError: (err, handler) async {
-        final response = err.response;
-        if (response != null) {
-          _printResponse(response, '❌');
-        }
-        return handler.next(err);
-      },
-    ));
+          _logger.d(
+            '[INFRASTRUCTURE] Headers: ${json.encode(_processHeadersForLog(options.headers))}',
+          );
+          try {
+            _logger.d('[INFRASTRUCTURE] Data: ${json.encode(options.data)}');
+          } catch (e) {
+            _logger.d('[INFRASTRUCTURE] Data: ${options.data}');
+          }
+          return handler.next(options);
+        },
+        onResponse: (response, handler) async {
+          _logger.d(
+            '[INFRASTRUCTURE] ⬇️✅ $_id: ${response.requestOptions.method} ${response.requestOptions.uri} ${response.statusCode}',
+          );
+
+          final processedHeaders = _processHeadersForLog(response.headers.map);
+          _logger.d(
+            '[INFRASTRUCTURE] Headers: ${json.encode(processedHeaders)}',
+          );
+
+          if (response.headers.map.containsKey('location')) {
+            _logger.d(
+              '[INFRASTRUCTURE] Redirección a: ${response.headers.map['location']}',
+            );
+          }
+
+          try {
+            var responseData = json.encode(response.data);
+            _logger.d(
+              '[INFRASTRUCTURE] Data: ${_truncateString(responseData, 500)}',
+            );
+          } catch (e) {
+            var responseStr = response.data.toString();
+            _logger.d(
+              '[INFRASTRUCTURE] Data: ${_truncateString(responseStr, 500)}',
+            );
+          }
+
+          final setCookieHeader = response.headers['set-cookie'];
+          if (setCookieHeader != null && setCookieHeader.isNotEmpty) {
+            _cookieManager.saveCookies(
+              response.requestOptions.uri.host,
+              setCookieHeader,
+            );
+          }
+          return handler.next(response);
+        },
+        onError: (err, handler) async {
+          final response = err.response;
+          if (response != null) {
+            _logger.d(
+              '[INFRASTRUCTURE] ⬇️❌ $_id: ${response.requestOptions.method} ${response.requestOptions.uri} ${response.statusCode}',
+            );
+
+            final processedHeaders = _processHeadersForLog(
+              response.headers.map,
+            );
+            _logger.d(
+              '[INFRASTRUCTURE] Headers: ${json.encode(processedHeaders)}',
+            );
+
+            if (response.headers.map.containsKey('location')) {
+              _logger.d(
+                '[INFRASTRUCTURE] Redirección a: ${response.headers.map['location']}',
+              );
+            }
+
+            try {
+              var responseData = json.encode(response.data);
+              _logger.d(
+                '[INFRASTRUCTURE] Data: ${_truncateString(responseData, 500)}',
+              );
+            } catch (e) {
+              var responseStr = response.data.toString();
+              _logger.d(
+                '[INFRASTRUCTURE] Data: ${_truncateString(responseStr, 500)}',
+              );
+            }
+          }
+          return handler.next(err);
+        },
+      ),
+    );
   }
 
   HttpClientBuilder setBaseUrl(String baseUrl) {
@@ -80,40 +147,30 @@ class HttpClientBuilder {
   }
 
   HttpClientBuilder addRequestHandler(
-    void Function(
-      RequestOptions options,
-      RequestInterceptorHandler handler,
-    ) onRequest,
+    void Function(RequestOptions options, RequestInterceptorHandler handler)
+    onRequest,
   ) {
     _dio.interceptors.add(InterceptorsWrapper(onRequest: onRequest));
     return this;
   }
 
   HttpClientBuilder addResponseHandler(
-    void Function(
-      Response response,
-      ResponseInterceptorHandler handler,
-    ) onResponse,
+    void Function(Response response, ResponseInterceptorHandler handler)
+    onResponse,
   ) {
     _dio.interceptors.add(InterceptorsWrapper(onResponse: onResponse));
     return this;
   }
 
   HttpClientBuilder addErrorHandler(
-    void Function(
-      DioException err,
-      ErrorInterceptorHandler handler,
-    ) onError,
+    void Function(DioException err, ErrorInterceptorHandler handler) onError,
   ) {
     _dio.interceptors.add(InterceptorsWrapper(onError: onError));
     return this;
   }
 
   HttpClientBuilderResult build() {
-    return HttpClientBuilderResult(
-      http: _dio,
-      cookieManager: _cookieManager,
-    );
+    return HttpClientBuilderResult(http: _dio, cookieManager: _cookieManager);
   }
 
   String _truncateString(String text, int maxLength) {
@@ -131,50 +188,13 @@ class HttpClientBuilder {
     }
 
     if (processedHeaders.containsKey('cookie')) {
-      processedHeaders['cookie'] =
-          _truncateString(processedHeaders['cookie'], 50);
+      processedHeaders['cookie'] = _truncateString(
+        processedHeaders['cookie'],
+        50,
+      );
     }
 
     return processedHeaders;
-  }
-
-  void _printRequest(RequestOptions options) {
-    developer.log('⬆️ $_id: ${options.method} ${options.uri}',
-        name: 'HttpClientBuilder > Dio');
-    developer.log(
-        'Headers: ${json.encode(_processHeadersForLog(options.headers))}',
-        name: 'HttpClientBuilder > Dio');
-    try {
-      developer.log('Data: ${json.encode(options.data)}',
-          name: 'HttpClientBuilder > Dio');
-    } catch (e) {
-      developer.log('Data: ${options.data}', name: 'HttpClientBuilder > Dio');
-    }
-  }
-
-  void _printResponse(Response<dynamic> response, String emoji) {
-    developer.log(
-        '⬇️$emoji $_id: ${response.requestOptions.method} ${response.requestOptions.uri} ${response.statusCode}',
-        name: 'HttpClientBuilder > Dio');
-
-    final processedHeaders = _processHeadersForLog(response.headers.map);
-    developer.log('Headers: ${json.encode(processedHeaders)}',
-        name: 'HttpClientBuilder > Dio');
-
-    if (response.headers.map.containsKey('location')) {
-      developer.log('Redirección a: ${response.headers.map['location']}',
-          name: 'HttpClientBuilder > Redirección');
-    }
-
-    try {
-      var responseData = json.encode(response.data);
-      developer.log('Data: ${_truncateString(responseData, 500)}',
-          name: 'HttpClientBuilder > Dio');
-    } catch (e) {
-      var responseStr = response.data.toString();
-      developer.log('Data: ${_truncateString(responseStr, 500)}',
-          name: 'HttpClientBuilder > Dio');
-    }
   }
 }
 
@@ -182,8 +202,5 @@ class HttpClientBuilderResult {
   final Dio http;
   final CookieManager cookieManager;
 
-  HttpClientBuilderResult({
-    required this.http,
-    required this.cookieManager,
-  });
+  HttpClientBuilderResult({required this.http, required this.cookieManager});
 }

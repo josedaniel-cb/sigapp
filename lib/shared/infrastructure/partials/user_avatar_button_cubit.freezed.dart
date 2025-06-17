@@ -13,17 +13,11 @@ part of 'user_avatar_button_cubit.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$UserAvatarButtonState implements DiagnosticableTreeMixin {
+mixin _$UserAvatarButtonState {
 
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'UserAvatarButtonState'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -35,7 +29,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'UserAvatarButtonState()';
 }
 
@@ -51,7 +45,7 @@ $UserAvatarButtonStateCopyWith(UserAvatarButtonState _, $Res Function(UserAvatar
 /// @nodoc
 
 
-class UserAvatarButtonInitialState with DiagnosticableTreeMixin implements UserAvatarButtonState {
+class UserAvatarButtonInitialState implements UserAvatarButtonState {
    UserAvatarButtonInitialState();
   
 
@@ -59,12 +53,6 @@ class UserAvatarButtonInitialState with DiagnosticableTreeMixin implements UserA
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'UserAvatarButtonState.initial'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -76,7 +64,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'UserAvatarButtonState.initial()';
 }
 
@@ -89,7 +77,7 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class UserAvatarButtonLoadingState with DiagnosticableTreeMixin implements UserAvatarButtonState {
+class UserAvatarButtonLoadingState implements UserAvatarButtonState {
    UserAvatarButtonLoadingState();
   
 
@@ -97,12 +85,6 @@ class UserAvatarButtonLoadingState with DiagnosticableTreeMixin implements UserA
 
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'UserAvatarButtonState.loading'))
-    ;
-}
 
 @override
 bool operator ==(Object other) {
@@ -114,7 +96,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'UserAvatarButtonState.loading()';
 }
 
@@ -127,7 +109,7 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
-class UserAvatarButtonSuccessState with DiagnosticableTreeMixin implements UserAvatarButtonState {
+class UserAvatarButtonSuccessState implements UserAvatarButtonState {
    UserAvatarButtonSuccessState({required this.data, this.errorMessage});
   
 
@@ -141,12 +123,6 @@ class UserAvatarButtonSuccessState with DiagnosticableTreeMixin implements UserA
 $UserAvatarButtonSuccessStateCopyWith<UserAvatarButtonSuccessState> get copyWith => _$UserAvatarButtonSuccessStateCopyWithImpl<UserAvatarButtonSuccessState>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'UserAvatarButtonState.success'))
-    ..add(DiagnosticsProperty('data', data))..add(DiagnosticsProperty('errorMessage', errorMessage));
-}
 
 @override
 bool operator ==(Object other) {
@@ -158,7 +134,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,data,errorMessage);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'UserAvatarButtonState.success(data: $data, errorMessage: $errorMessage)';
 }
 
@@ -201,7 +177,7 @@ as String?,
 /// @nodoc
 
 
-class UserAvatarButtonErrorState with DiagnosticableTreeMixin implements UserAvatarButtonState {
+class UserAvatarButtonErrorState implements UserAvatarButtonState {
    UserAvatarButtonErrorState(this.error);
   
 
@@ -214,12 +190,6 @@ class UserAvatarButtonErrorState with DiagnosticableTreeMixin implements UserAva
 $UserAvatarButtonErrorStateCopyWith<UserAvatarButtonErrorState> get copyWith => _$UserAvatarButtonErrorStateCopyWithImpl<UserAvatarButtonErrorState>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'UserAvatarButtonState.error'))
-    ..add(DiagnosticsProperty('error', error));
-}
 
 @override
 bool operator ==(Object other) {
@@ -231,7 +201,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(error));
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'UserAvatarButtonState.error(error: $error)';
 }
 

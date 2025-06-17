@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.dart';
 import 'package:sigapp/auth/application/usecases/sign_in_usecase.dart';
 import 'package:sigapp/auth/domain/exceptions/session_exception.dart';
@@ -31,18 +31,21 @@ sealed class LoginStatus with _$LoginStatus {
 class LoginCubit extends Cubit<LoginState> {
   final GetStoredCredentialsUseCase _getStoredCredentials;
   final SignInUseCase _signInUseCase;
+  final Logger _logger;
 
-  LoginCubit(this._getStoredCredentials, this._signInUseCase)
-      : super(const LoginState(
+  LoginCubit(this._getStoredCredentials, this._signInUseCase, this._logger)
+    : super(
+        const LoginState(
           username: '',
           password: '',
           status: LoginStatus.initial(),
-        ));
+        ),
+      );
 
   Future<void> setup() async {
     final StoredCredentials(
       username: storedUsername,
-      password: storedPassword
+      password: storedPassword,
     ) = _getStoredCredentials.execute();
 
     if (storedUsername != null) {
@@ -50,47 +53,33 @@ class LoginCubit extends Cubit<LoginState> {
     }
 
     if (storedUsername != null && storedPassword != null) {
-      emit(state.copyWith(
-        username: storedUsername,
-        password: storedPassword,
-      ));
+      emit(state.copyWith(username: storedUsername, password: storedPassword));
       login(storedUsername, storedPassword);
     } else {
-      emit(state.copyWith(
-        status: const LoginStatus.initial(),
-      ));
+      emit(state.copyWith(status: const LoginStatus.initial()));
     }
   }
 
   Future<void> login(String username, String password) async {
-    emit(state.copyWith(
-      status: const LoginStatus.loading(),
-    ));
+    emit(state.copyWith(status: const LoginStatus.loading()));
     try {
       final successAuth = await _signInUseCase.execute(username, password);
       if (!successAuth) {
-        emit(state.copyWith(
-          status: const LoginStatus.error('Credenciales inválidos'),
-        ));
+        emit(
+          state.copyWith(
+            status: const LoginStatus.error('Credenciales inválidos'),
+          ),
+        );
         return;
       }
-      emit(state.copyWith(
-        status: const LoginStatus.success(),
-      ));
+      emit(state.copyWith(status: const LoginStatus.success()));
     } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
+      _logger.e('[UI] Login failed: $e', error: e, stackTrace: s);
       if (e is SessionException) {
-        emit(state.copyWith(
-          status: LoginStatus.error(e.message),
-        ));
+        emit(state.copyWith(status: LoginStatus.error(e.message)));
         return;
       }
-      emit(state.copyWith(
-        status: LoginStatus.error(e.toString()),
-      ));
+      emit(state.copyWith(status: LoginStatus.error(e.toString())));
     }
   }
 }

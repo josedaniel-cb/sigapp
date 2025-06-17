@@ -1,11 +1,11 @@
 import 'dart:async';
+import 'package:logger/logger.dart';
 import 'package:sigapp/auth/application/usecases/get_stored_credentials_usecase.dart';
 import 'package:sigapp/auth/application/usecases/keep_session_alive_usecase.dart';
 import 'package:sigapp/auth/application/usecases/sign_in_usecase.dart';
 import 'package:sigapp/auth/application/usecases/sign_out_usecase.dart';
 import 'package:sigapp/auth/domain/exceptions/session_exception.dart';
 import 'package:sigapp/auth/domain/services/toast_service.dart';
-import 'dart:developer' as developer;
 import 'dart:io';
 import 'package:dio/dio.dart';
 
@@ -18,6 +18,7 @@ class AuthTokenRefreshManager {
   final SignOutUseCase _signOutUseCase;
   final GetStoredCredentialsUseCase _getStoredCredentialsUseCase;
   final ToastService _toastService;
+  final Logger _logger;
 
   Completer<void>? _refreshSessionCompleter;
 
@@ -27,6 +28,7 @@ class AuthTokenRefreshManager {
     this._signOutUseCase,
     this._getStoredCredentialsUseCase,
     this._toastService,
+    this._logger,
   );
 
   /// Refresca la sesión con reintentos y backoff exponencial
@@ -43,9 +45,8 @@ class AuthTokenRefreshManager {
 
     for (int attempt = 1; attempt <= _maxRetries; attempt++) {
       try {
-        developer.log(
-          'Intento $attempt/$_maxRetries de refresco de sesión',
-          name: 'SessionRefreshManager',
+        _logger.i(
+          '[AUTH] Attempt $attempt/$_maxRetries of session refresh',
         );
 
         await _keepSessionAliveUsecase.execute();
@@ -62,9 +63,8 @@ class AuthTokenRefreshManager {
           );
         }
 
-        developer.log(
-          'Sesión refrescada exitosamente en intento $attempt',
-          name: 'SessionRefreshManager',
+        _logger.i(
+          '[AUTH] Session refreshed successfully on attempt $attempt',
         );
 
         _refreshSessionCompleter!.complete();
@@ -73,27 +73,24 @@ class AuthTokenRefreshManager {
         lastError = e;
         lastStack = s;
 
-        developer.log(
-          'Error al refrescar sesión (intento $attempt/$_maxRetries): $e',
-          name: 'SessionRefreshManager',
+        _logger.e(
+          '[AUTH] Error refreshing session (attempt $attempt/$_maxRetries): $e',
           error: e,
           stackTrace: s,
         );
 
         if (attempt < _maxRetries) {
           final waitTime = Duration(seconds: attempt * 2);
-          developer.log(
-            'Reintentando en ${waitTime.inSeconds} segundos...',
-            name: 'SessionRefreshManager',
+          _logger.i(
+            '[AUTH] Retrying in ${waitTime.inSeconds} seconds...',
           );
           await Future.delayed(waitTime);
         }
       }
     }
 
-    developer.log(
-      'Todos los intentos de refresco fallaron',
-      name: 'SessionRefreshManager',
+    _logger.e(
+      '[AUTH] All refresh attempts failed',
       error: lastError,
       stackTrace: lastStack,
     );
@@ -102,11 +99,10 @@ class AuthTokenRefreshManager {
 
     // Si el error es de red, NO cerrar sesión
     if (_isNetworkError(lastError)) {
-      developer.log(
-        'Error de red detectado, NO se cierra sesión para permitir modo offline',
-        name: 'SessionRefreshManager',
+      _logger.w(
+        '[AUTH] Network error detected, session will not be closed to allow offline mode',
       );
-      _toastService.show('Problemas de conexión. Modo sin conexión activo',
+      _toastService.show('Connection problems. Offline mode active',
           isError: false);
     } else {
       final sessionError = lastError is SessionException
@@ -139,9 +135,8 @@ class AuthTokenRefreshManager {
   /// Agrega un log al inicio de waitForOngoingRefresh para mayor visibilidad
   Future<void> waitForOngoingRefresh() async {
     if (_refreshSessionCompleter != null) {
-      developer.log(
-        'Esperando a que termine el refresco de sesión en curso',
-        name: 'SessionRefreshManager',
+      _logger.i(
+        '[AUTH] Waiting for ongoing session refresh to complete',
       );
       await _refreshSessionCompleter!.future;
     }
@@ -151,9 +146,8 @@ class AuthTokenRefreshManager {
 
   /// Reinicia el estado del refresco para evitar inconsistencias
   void reset() {
-    developer.log(
-      'Reiniciando estado de AuthTokenRefreshManager',
-      name: 'SessionRefreshManager',
+    _logger.i(
+      '[AUTH] Resetting AuthTokenRefreshManager state',
     );
     _refreshSessionCompleter = null;
   }

@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
-import 'dart:developer' as developer;
 
 @singleton
 class SQLiteClientManager {
@@ -10,6 +10,9 @@ class SQLiteClientManager {
   static const int _databaseVersion = 1;
 
   Database? _database;
+  final Logger _logger;
+
+  SQLiteClientManager(this._logger);
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -24,7 +27,7 @@ class SQLiteClientManager {
     final path = join(documentsDirectory.path, _databaseName);
 
     // Registrar la ubicación de la base de datos para depuración
-    developer.log('Ubicación de la base de datos: $path', name: 'sqflite');
+    _logger.i('[INFRASTRUCTURE] Database location: $path');
 
     return await openDatabase(
       path,
@@ -70,7 +73,7 @@ class SQLiteClientManager {
       )
     ''');
 
-    developer.log('Base de datos creada correctamente', name: 'sqflite');
+    _logger.i('[INFRASTRUCTURE] Database created successfully');
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {

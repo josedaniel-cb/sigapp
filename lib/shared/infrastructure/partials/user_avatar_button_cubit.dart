@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:sigapp/auth/application/usecases/sign_out_usecase.dart';
 import 'package:sigapp/student/domain/services/academic_info_service.dart';
 import 'package:sigapp/student/domain/value_objects/academic_info_data.dart';
@@ -24,8 +24,9 @@ sealed class UserAvatarButtonState with _$UserAvatarButtonState {
 class UserAvatarButtonCubit extends Cubit<UserAvatarButtonState> {
   final AcademicInfoService _sessionInfoService;
   final SignOutUseCase _signOutUseCase;
+  final Logger _logger;
 
-  UserAvatarButtonCubit(this._sessionInfoService, this._signOutUseCase)
+  UserAvatarButtonCubit(this._sessionInfoService, this._signOutUseCase, this._logger)
     : super(UserAvatarButtonState.initial());
 
   void init() async {
@@ -36,10 +37,7 @@ class UserAvatarButtonCubit extends Cubit<UserAvatarButtonState> {
       final result = await _sessionInfoService.getSessionInfo();
       emit(UserAvatarButtonState.success(data: result));
     } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
+      _logger.e('[UI] Error loading user avatar info', error: e, stackTrace: s);
       emit(UserAvatarButtonState.error(e));
     }
   }
@@ -58,10 +56,7 @@ class UserAvatarButtonCubit extends Cubit<UserAvatarButtonState> {
       await _signOutUseCase.execute();
       emit(UserAvatarButtonState.initial());
     } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
+      _logger.e('[UI] Error signing out from avatar button', error: e, stackTrace: s);
       if (loadedData == null) {
         emit(UserAvatarButtonState.error(e));
         return;

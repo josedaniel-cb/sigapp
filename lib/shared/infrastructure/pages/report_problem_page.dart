@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:sigapp/core/infrastructure/ui/links.dart';
 import 'package:sigapp/core/infrastructure/ui/utils/mail_utils.dart';
+import 'package:sigapp/core/injection/get_it.dart';
 
 class ReportProblemPage extends StatelessWidget {
   const ReportProblemPage({super.key});
@@ -72,7 +73,7 @@ class ReportProblemPage extends StatelessWidget {
               children: [
                 ElevatedButton.icon(
                   onPressed: () {
-                    MailUtils.launchEmail(
+                    getIt<MailUtils>().launchEmail(
                       context,
                       email: Links.contactEmail,
                       subject: 'Hola! Quiero reportar un error',

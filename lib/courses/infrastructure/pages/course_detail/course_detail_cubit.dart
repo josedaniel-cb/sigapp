@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:sigapp/courses/application/usecases/get_course_grade_usecase.dart';
 import 'package:sigapp/courses/application/usecases/get_syllabus_file_usecase.dart';
 import 'package:sigapp/courses/domain/value-objects/course_grade.dart';
@@ -53,9 +53,13 @@ sealed class CourseDetailGradesState with _$CourseDetailGradesState {
 class CourseDetailCubit extends Cubit<CourseDetailState> {
   final GetSyllabusFileUsecase _getSyllabusFileUsecase;
   final GetCourseGradeUsecase _getCourseGradeUsecase;
+  final Logger _logger;
 
-  CourseDetailCubit(this._getSyllabusFileUsecase, this._getCourseGradeUsecase)
-    : super(const CourseDetailState.empty());
+  CourseDetailCubit(
+    this._getSyllabusFileUsecase,
+    this._getCourseGradeUsecase,
+    this._logger,
+  ) : super(const CourseDetailState.empty());
 
   Future<void> init({
     required EnrolledCourse course,
@@ -103,10 +107,11 @@ class CourseDetailCubit extends Cubit<CourseDetailState> {
         );
       }
     } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
+      _logger.e(
+        '[UI] Error fetching syllabus: $e',
+        error: e,
+        stackTrace: s,
+      );
       emit(
         (state as CourseDetailReadyState).copyWith(
           syllabus: CourseDetailSyllabusState.error(
@@ -139,10 +144,11 @@ class CourseDetailCubit extends Cubit<CourseDetailState> {
         ),
       );
     } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
+      _logger.e(
+        '[UI] Error fetching grades: $e',
+        error: e,
+        stackTrace: s,
+      );
       emit(
         (state as CourseDetailReadyState).copyWith(
           grades: CourseDetailGradesState.error('Error al descargar notas'),

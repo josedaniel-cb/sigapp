@@ -13,7 +13,7 @@ part of 'home_page_cubit.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$HomePageState implements DiagnosticableTreeMixin {
+mixin _$HomePageState {
 
  int get selectedTabIndex; String? get errorMessage;
 /// Create a copy of HomePageState
@@ -23,12 +23,6 @@ mixin _$HomePageState implements DiagnosticableTreeMixin {
 $HomePageStateCopyWith<HomePageState> get copyWith => _$HomePageStateCopyWithImpl<HomePageState>(this as HomePageState, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'HomePageState'))
-    ..add(DiagnosticsProperty('selectedTabIndex', selectedTabIndex))..add(DiagnosticsProperty('errorMessage', errorMessage));
-}
 
 @override
 bool operator ==(Object other) {
@@ -40,7 +34,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,selectedTabIndex,errorMessage);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'HomePageState(selectedTabIndex: $selectedTabIndex, errorMessage: $errorMessage)';
 }
 
@@ -83,7 +77,7 @@ as String?,
 /// @nodoc
 
 
-class _HomePageState with DiagnosticableTreeMixin implements HomePageState {
+class _HomePageState implements HomePageState {
   const _HomePageState({required this.selectedTabIndex, this.errorMessage});
   
 
@@ -97,12 +91,6 @@ class _HomePageState with DiagnosticableTreeMixin implements HomePageState {
 _$HomePageStateCopyWith<_HomePageState> get copyWith => __$HomePageStateCopyWithImpl<_HomePageState>(this, _$identity);
 
 
-@override
-void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
-    ..add(DiagnosticsProperty('type', 'HomePageState'))
-    ..add(DiagnosticsProperty('selectedTabIndex', selectedTabIndex))..add(DiagnosticsProperty('errorMessage', errorMessage));
-}
 
 @override
 bool operator ==(Object other) {
@@ -114,7 +102,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,selectedTabIndex,errorMessage);
 
 @override
-String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+String toString() {
   return 'HomePageState(selectedTabIndex: $selectedTabIndex, errorMessage: $errorMessage)';
 }
 

@@ -1,6 +1,6 @@
-import 'dart:developer' as developer;
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:sigapp/core/infrastructure/http/api_gateway_client.dart';
 import 'package:sigapp/courses/domain/entities/grade_tracking.dart';
 import 'package:sigapp/courses/domain/repositories/grade_tracking_repository.dart';
@@ -8,8 +8,9 @@ import 'package:sigapp/courses/domain/repositories/grade_tracking_repository.dar
 @LazySingleton(as: GradeTrackingRepository)
 class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
   final ApiGatewayClient _workerClient;
+  final Logger _logger;
 
-  GradeTrackingRepositoryImpl(this._workerClient);
+  GradeTrackingRepositoryImpl(this._workerClient, this._logger);
 
   @override
   Future<CourseTracking?> getCourseTracking({
@@ -41,27 +42,30 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
           (courseData['gt_grade_categories'] as List)
               .cast<Map<String, dynamic>>();
 
-      final categories = categoriesData.map<GradeCategory>((categoryData) {
-        final List<Map<String, dynamic>> gradesData =
-            (categoryData['gt_grades'] as List).cast<Map<String, dynamic>>();
+      final categories =
+          categoriesData.map<GradeCategory>((categoryData) {
+            final List<Map<String, dynamic>> gradesData =
+                (categoryData['gt_grades'] as List)
+                    .cast<Map<String, dynamic>>();
 
-        // Transform grades data
-        final grades = gradesData.map<Grade>((gradeData) {
-          return Grade(
-            id: gradeData['id'],
-            name: gradeData['name'],
-            score: (gradeData['score'] as num).toDouble(),
-            enabled: gradeData['enabled'],
-          );
-        }).toList();
+            // Transform grades data
+            final grades =
+                gradesData.map<Grade>((gradeData) {
+                  return Grade(
+                    id: gradeData['id'],
+                    name: gradeData['name'],
+                    score: (gradeData['score'] as num).toDouble(),
+                    enabled: gradeData['enabled'],
+                  );
+                }).toList();
 
-        return GradeCategory(
-          id: categoryData['id'],
-          name: categoryData['name'],
-          weight: (categoryData['weight'] as num).toDouble(),
-          grades: grades,
-        );
-      }).toList();
+            return GradeCategory(
+              id: categoryData['id'],
+              name: categoryData['name'],
+              weight: (categoryData['weight'] as num).toDouble(),
+              grades: grades,
+            );
+          }).toList();
 
       return CourseTracking(
         id: courseData['id'],
@@ -70,9 +74,8 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
         categories: categories,
       );
     } catch (e, s) {
-      developer.log(
-        'Error en getCourseTracking',
-        name: 'WorkerGradeTrackingRepositoryImpl',
+      _logger.e(
+        '[INFRASTRUCTURE] Error in getCourseTracking',
         error: e,
         stackTrace: s,
       );
@@ -92,10 +95,12 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
       final createResponse = await _workerClient.http.post(
         '/rest/v1/gt_course_tracking',
         data: courseData,
-        options: Options(headers: {
-          'Prefer': 'return=representation',
-          'X-Upstream': 'supabase'
-        }),
+        options: Options(
+          headers: {
+            'Prefer': 'return=representation',
+            'X-Upstream': 'supabase',
+          },
+        ),
       );
 
       final courseResponse = createResponse.data[0];
@@ -113,10 +118,12 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
             'name': category.name,
             'weight': category.weight,
           },
-          options: Options(headers: {
-            'Prefer': 'return=representation',
-            'X-Upstream': 'supabase'
-          }),
+          options: Options(
+            headers: {
+              'Prefer': 'return=representation',
+              'X-Upstream': 'supabase',
+            },
+          ),
         );
 
         final categoryData = categoryResponse.data[0];
@@ -135,31 +142,37 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
               'score': grade.score,
               'enabled': grade.enabled,
             },
-            options: Options(headers: {
-              'Prefer': 'return=representation',
-              'X-Upstream': 'supabase'
-            }),
+            options: Options(
+              headers: {
+                'Prefer': 'return=representation',
+                'X-Upstream': 'supabase',
+              },
+            ),
           );
 
           final gradeData = gradeResponse.data[0];
           final String gradeId = gradeData['id'];
 
           // Add grade with ID to the list
-          gradesWithIds.add(Grade(
-            id: gradeId,
-            name: grade.name,
-            score: grade.score,
-            enabled: grade.enabled,
-          ));
+          gradesWithIds.add(
+            Grade(
+              id: gradeId,
+              name: grade.name,
+              score: grade.score,
+              enabled: grade.enabled,
+            ),
+          );
         }
 
         // Add category with ID and its grades to the list
-        categoriesWithIds.add(GradeCategory(
-          id: categoryId,
-          name: category.name,
-          weight: category.weight,
-          grades: gradesWithIds,
-        ));
+        categoriesWithIds.add(
+          GradeCategory(
+            id: categoryId,
+            name: category.name,
+            weight: category.weight,
+            grades: gradesWithIds,
+          ),
+        );
       }
 
       // Return the complete CourseTracking object with all IDs
@@ -170,12 +183,7 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
         categories: categoriesWithIds,
       );
     } catch (e, s) {
-      developer.log(
-        'Error en create',
-        name: 'WorkerGradeTrackingRepositoryImpl',
-        error: e,
-        stackTrace: s,
-      );
+      _logger.e('[INFRASTRUCTURE] Error in create', error: e, stackTrace: s);
       throw Exception('Failed to create course tracking data: $e');
     }
   }
@@ -187,14 +195,15 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
     required String courseName,
   }) async {
     try {
-      return await create(CourseTracking.createWithDefaults(
-        courseCode: courseCode,
-        studentCode: studentCode,
-      ));
+      return await create(
+        CourseTracking.createWithDefaults(
+          courseCode: courseCode,
+          studentCode: studentCode,
+        ),
+      );
     } catch (e, s) {
-      developer.log(
-        'Error en createWithDefaults',
-        name: 'WorkerGradeTrackingRepositoryImpl',
+      _logger.e(
+        '[INFRASTRUCTURE] Error in createWithDefaults',
         error: e,
         stackTrace: s,
       );
@@ -210,7 +219,9 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
     required double weight,
   }) async {
     final course = await getCourseTracking(
-        studentCode: studentCode, courseCode: courseCode);
+      studentCode: studentCode,
+      courseCode: courseCode,
+    );
     if (course == null) {
       throw Exception('Course not found');
     }
@@ -223,10 +234,12 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
           'name': categoryName,
           'weight': weight,
         },
-        options: Options(headers: {
-          'Prefer': 'return=representation',
-          'X-Upstream': 'supabase'
-        }),
+        options: Options(
+          headers: {
+            'Prefer': 'return=representation',
+            'X-Upstream': 'supabase',
+          },
+        ),
       );
 
       final categoryData = categoryResponse.data[0];
@@ -249,9 +262,8 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
 
       return updatedTracking;
     } catch (e, s) {
-      developer.log(
-        'Error en addCategory',
-        name: 'WorkerGradeTrackingRepositoryImpl',
+      _logger.e(
+        '[INFRASTRUCTURE] Error in addCategory',
         error: e,
         stackTrace: s,
       );
@@ -268,7 +280,9 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
     required double score,
   }) async {
     final course = await getCourseTracking(
-        studentCode: studentCode, courseCode: courseCode);
+      studentCode: studentCode,
+      courseCode: courseCode,
+    );
     if (course == null) {
       throw Exception('Course not found');
     }
@@ -282,32 +296,31 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
           'score': score,
           'enabled': true,
         },
-        options: Options(headers: {
-          'Prefer': 'return=representation',
-          'X-Upstream': 'supabase'
-        }),
+        options: Options(
+          headers: {
+            'Prefer': 'return=representation',
+            'X-Upstream': 'supabase',
+          },
+        ),
       );
 
       final gradeData = gradeResponse.data[0];
       final String gradeId = gradeData['id'];
 
-      final newGrade = Grade(
-        id: gradeId,
-        name: gradeName,
-        score: score,
-      );
+      final newGrade = Grade(id: gradeId, name: gradeName, score: score);
 
-      final updatedCategories = course.categories.map((category) {
-        if (category.id == categoryId) {
-          return GradeCategory(
-            id: category.id,
-            name: category.name,
-            weight: category.weight,
-            grades: [...category.grades, newGrade],
-          );
-        }
-        return category;
-      }).toList();
+      final updatedCategories =
+          course.categories.map((category) {
+            if (category.id == categoryId) {
+              return GradeCategory(
+                id: category.id,
+                name: category.name,
+                weight: category.weight,
+                grades: [...category.grades, newGrade],
+              );
+            }
+            return category;
+          }).toList();
 
       final updatedTracking = CourseTracking(
         id: course.id,
@@ -318,12 +331,7 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
 
       return updatedTracking;
     } catch (e, s) {
-      developer.log(
-        'Error en addGrade',
-        name: 'WorkerGradeTrackingRepositoryImpl',
-        error: e,
-        stackTrace: s,
-      );
+      _logger.e('[INFRASTRUCTURE] Error in addGrade', error: e, stackTrace: s);
       throw Exception('Failed to add grade: $e');
     }
   }
@@ -335,7 +343,9 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
     required String categoryId,
   }) async {
     final course = await getCourseTracking(
-        studentCode: studentCode, courseCode: courseCode);
+      studentCode: studentCode,
+      courseCode: courseCode,
+    );
     if (course == null) {
       throw Exception('Course not found');
     }
@@ -350,9 +360,10 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
         options: Options(headers: {'X-Upstream': 'supabase'}),
       );
 
-      final updatedCategories = course.categories
-          .where((category) => category.id != categoryId)
-          .toList();
+      final updatedCategories =
+          course.categories
+              .where((category) => category.id != categoryId)
+              .toList();
 
       final updatedTracking = CourseTracking(
         id: course.id,
@@ -363,9 +374,8 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
 
       return updatedTracking;
     } catch (e, s) {
-      developer.log(
-        'Error en deleteCategory',
-        name: 'WorkerGradeTrackingRepositoryImpl',
+      _logger.e(
+        '[INFRASTRUCTURE] Error in deleteCategory',
         error: e,
         stackTrace: s,
       );
@@ -381,7 +391,9 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
     required String gradeId,
   }) async {
     final course = await getCourseTracking(
-        studentCode: studentCode, courseCode: courseCode);
+      studentCode: studentCode,
+      courseCode: courseCode,
+    );
     if (course == null) {
       throw Exception('Course not found');
     }
@@ -389,27 +401,27 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
     try {
       await _workerClient.http.delete(
         '/rest/v1/gt_grades',
-        queryParameters: {
-          'id': 'eq.$gradeId',
-          'category_id': 'eq.$categoryId',
-        },
+        queryParameters: {'id': 'eq.$gradeId', 'category_id': 'eq.$categoryId'},
         options: Options(headers: {'X-Upstream': 'supabase'}),
       );
 
-      final updatedCategories = course.categories.map((category) {
-        if (category.id == categoryId) {
-          final updatedGrades =
-              category.grades.where((grade) => grade.id != gradeId).toList();
+      final updatedCategories =
+          course.categories.map((category) {
+            if (category.id == categoryId) {
+              final updatedGrades =
+                  category.grades
+                      .where((grade) => grade.id != gradeId)
+                      .toList();
 
-          return GradeCategory(
-            id: category.id,
-            name: category.name,
-            weight: category.weight,
-            grades: updatedGrades,
-          );
-        }
-        return category;
-      }).toList();
+              return GradeCategory(
+                id: category.id,
+                name: category.name,
+                weight: category.weight,
+                grades: updatedGrades,
+              );
+            }
+            return category;
+          }).toList();
 
       final updatedTracking = CourseTracking(
         id: course.id,
@@ -420,9 +432,8 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
 
       return updatedTracking;
     } catch (e, s) {
-      developer.log(
-        'Error en deleteGrade',
-        name: 'WorkerGradeTrackingRepositoryImpl',
+      _logger.e(
+        '[INFRASTRUCTURE] Error in deleteGrade',
         error: e,
         stackTrace: s,
       );
@@ -439,7 +450,9 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
     required double newWeight,
   }) async {
     final course = await getCourseTracking(
-        studentCode: studentCode, courseCode: courseCode);
+      studentCode: studentCode,
+      courseCode: courseCode,
+    );
     if (course == null) {
       throw Exception('Course not found');
     }
@@ -447,10 +460,7 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
     try {
       await _workerClient.http.patch(
         '/rest/v1/gt_grade_categories',
-        data: {
-          'name': newName,
-          'weight': newWeight,
-        },
+        data: {'name': newName, 'weight': newWeight},
         queryParameters: {
           'id': 'eq.$categoryId',
           'course_tracking_id': 'eq.${course.id}',
@@ -458,17 +468,18 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
         options: Options(headers: {'X-Upstream': 'supabase'}),
       );
 
-      final updatedCategories = course.categories.map((category) {
-        if (category.id == categoryId) {
-          return GradeCategory(
-            id: category.id,
-            name: newName,
-            weight: newWeight,
-            grades: category.grades,
-          );
-        }
-        return category;
-      }).toList();
+      final updatedCategories =
+          course.categories.map((category) {
+            if (category.id == categoryId) {
+              return GradeCategory(
+                id: category.id,
+                name: newName,
+                weight: newWeight,
+                grades: category.grades,
+              );
+            }
+            return category;
+          }).toList();
 
       final updatedTracking = CourseTracking(
         id: course.id,
@@ -479,9 +490,8 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
 
       return updatedTracking;
     } catch (e, s) {
-      developer.log(
-        'Error en updateCategory',
-        name: 'WorkerGradeTrackingRepositoryImpl',
+      _logger.e(
+        '[INFRASTRUCTURE] Error in updateCategory',
         error: e,
         stackTrace: s,
       );
@@ -499,7 +509,9 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
     required double newScore,
   }) async {
     final course = await getCourseTracking(
-        studentCode: studentCode, courseCode: courseCode);
+      studentCode: studentCode,
+      courseCode: courseCode,
+    );
     if (course == null) {
       throw Exception('Course not found');
     }
@@ -507,40 +519,36 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
     try {
       await _workerClient.http.patch(
         '/rest/v1/gt_grades',
-        data: {
-          'name': newName,
-          'score': newScore,
-        },
-        queryParameters: {
-          'id': 'eq.$gradeId',
-          'category_id': 'eq.$categoryId',
-        },
+        data: {'name': newName, 'score': newScore},
+        queryParameters: {'id': 'eq.$gradeId', 'category_id': 'eq.$categoryId'},
         options: Options(headers: {'X-Upstream': 'supabase'}),
       );
 
-      final updatedCategories = course.categories.map((category) {
-        if (category.id == categoryId) {
-          final updatedGrades = category.grades.map((grade) {
-            if (grade.id == gradeId) {
-              return Grade(
-                id: grade.id,
-                name: newName,
-                score: newScore,
-                enabled: grade.enabled,
+      final updatedCategories =
+          course.categories.map((category) {
+            if (category.id == categoryId) {
+              final updatedGrades =
+                  category.grades.map((grade) {
+                    if (grade.id == gradeId) {
+                      return Grade(
+                        id: grade.id,
+                        name: newName,
+                        score: newScore,
+                        enabled: grade.enabled,
+                      );
+                    }
+                    return grade;
+                  }).toList();
+
+              return GradeCategory(
+                id: category.id,
+                name: category.name,
+                weight: category.weight,
+                grades: updatedGrades,
               );
             }
-            return grade;
+            return category;
           }).toList();
-
-          return GradeCategory(
-            id: category.id,
-            name: category.name,
-            weight: category.weight,
-            grades: updatedGrades,
-          );
-        }
-        return category;
-      }).toList();
 
       final updatedTracking = CourseTracking(
         id: course.id,
@@ -551,9 +559,8 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
 
       return updatedTracking;
     } catch (e, s) {
-      developer.log(
-        'Error en updateGrade',
-        name: 'WorkerGradeTrackingRepositoryImpl',
+      _logger.e(
+        '[INFRASTRUCTURE] Error in updateGrade',
         error: e,
         stackTrace: s,
       );
@@ -570,7 +577,9 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
     required bool enabled,
   }) async {
     final course = await getCourseTracking(
-        studentCode: studentCode, courseCode: courseCode);
+      studentCode: studentCode,
+      courseCode: courseCode,
+    );
     if (course == null) {
       throw Exception('Course not found');
     }
@@ -578,29 +587,26 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
     try {
       await _workerClient.http.patch(
         '/rest/v1/gt_grades',
-        data: {
-          'enabled': enabled,
-        },
-        queryParameters: {
-          'id': 'eq.$gradeId',
-          'category_id': 'eq.$categoryId',
-        },
+        data: {'enabled': enabled},
+        queryParameters: {'id': 'eq.$gradeId', 'category_id': 'eq.$categoryId'},
         options: Options(headers: {'X-Upstream': 'supabase'}),
       );
 
-      final updatedCategories = course.categories.map((category) {
-        if (category.id == categoryId) {
-          final updatedGrades = category.grades.map((grade) {
-            if (grade.id == gradeId) {
-              return grade.copyWith(enabled: enabled);
-            }
-            return grade;
-          }).toList();
+      final updatedCategories =
+          course.categories.map((category) {
+            if (category.id == categoryId) {
+              final updatedGrades =
+                  category.grades.map((grade) {
+                    if (grade.id == gradeId) {
+                      return grade.copyWith(enabled: enabled);
+                    }
+                    return grade;
+                  }).toList();
 
-          return category.copyWith(grades: updatedGrades);
-        }
-        return category;
-      }).toList();
+              return category.copyWith(grades: updatedGrades);
+            }
+            return category;
+          }).toList();
 
       final updatedTracking = CourseTracking(
         id: course.id,
@@ -611,9 +617,8 @@ class GradeTrackingRepositoryImpl implements GradeTrackingRepository {
 
       return updatedTracking;
     } catch (e, s) {
-      developer.log(
-        'Error en toggleGradeEnabled',
-        name: 'WorkerGradeTrackingRepositoryImpl',
+      _logger.e(
+        '[INFRASTRUCTURE] Error in toggleGradeEnabled',
         error: e,
         stackTrace: s,
       );

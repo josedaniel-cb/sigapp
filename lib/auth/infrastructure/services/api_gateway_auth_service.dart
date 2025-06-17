@@ -1,14 +1,14 @@
-import 'dart:developer' as developer;
-
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:sigapp/auth/application/services/api_gateway_auth_service.dart';
 import 'package:sigapp/core/infrastructure/http/api_gateway_client.dart';
 
 @LazySingleton(as: ApiGatewayAuthService)
 class ApiGatewayAuthServiceImpl implements ApiGatewayAuthService {
   final ApiGatewayClient _client;
+  final Logger _logger;
 
-  ApiGatewayAuthServiceImpl(this._client);
+  ApiGatewayAuthServiceImpl(this._client, this._logger);
 
   @override
   Future<void> registerUser({
@@ -21,9 +21,7 @@ class ApiGatewayAuthServiceImpl implements ApiGatewayAuthService {
         data: {
           'email': _buildAuthEmail(studentCode),
           'password': password,
-          'data': {
-            'student_code': studentCode,
-          },
+          'data': {'student_code': studentCode},
         },
       );
 
@@ -35,13 +33,12 @@ class ApiGatewayAuthServiceImpl implements ApiGatewayAuthService {
       // Después de registrar, iniciamos sesión automáticamente
       await loginUser(password: password, studentCode: studentCode);
     } catch (e, s) {
-      developer.log(
-        'Error en el registro con Supabase',
-        name: 'ApiGatewayAuthServiceImpl',
+      _logger.e(
+        '[INFRASTRUCTURE] Error registering with Supabase',
         error: e,
         stackTrace: s,
       );
-      throw Exception('Error en el registro: $e');
+      throw Exception('Error on sign up: $e');
     }
   }
 
@@ -53,10 +50,7 @@ class ApiGatewayAuthServiceImpl implements ApiGatewayAuthService {
     try {
       final response = await _client.http.post(
         '/auth/v1/token?grant_type=password',
-        data: {
-          'email': _buildAuthEmail(studentCode),
-          'password': password,
-        },
+        data: {'email': _buildAuthEmail(studentCode), 'password': password},
       );
 
       final responseData = response.data;
@@ -66,7 +60,8 @@ class ApiGatewayAuthServiceImpl implements ApiGatewayAuthService {
 
       if (accessToken == null || userId == null) {
         throw Exception(
-            'Error al iniciar sesión: Token o ID de usuario no encontrados');
+          'Error al iniciar sesión: Token o ID de usuario no encontrados',
+        );
       }
 
       // Guardar tokens en almacenamiento seguro
@@ -75,13 +70,12 @@ class ApiGatewayAuthServiceImpl implements ApiGatewayAuthService {
         await _client.setRefreshToken(refreshToken);
       }
     } catch (e, s) {
-      developer.log(
-        'Error en el inicio de sesión con Supabase',
-        name: 'ApiGatewayAuthServiceImpl',
+      _logger.e(
+        '[INFRASTRUCTURE] Error logging in with Supabase',
         error: e,
         stackTrace: s,
       );
-      throw Exception('Error en el inicio de sesión: $e');
+      throw Exception('Error on login: $e');
     }
   }
 
@@ -91,17 +85,14 @@ class ApiGatewayAuthServiceImpl implements ApiGatewayAuthService {
       // Limpiar datos del almacenamiento seguro
       await _client.clearTokens();
     } catch (e, s) {
-      developer.log(
-        'Error al cerrar sesión con Supabase',
-        name: 'ApiGatewayAuthServiceImpl',
+      _logger.e(
+        '[INFRASTRUCTURE] Error logging out with Supabase',
         error: e,
         stackTrace: s,
       );
-      throw Exception('Error al cerrar sesión: $e');
+      throw Exception('Error on logout: $e');
     }
   }
 
-  String _buildAuthEmail(String studentCode) {
-    return '$studentCode@sigapp.dev';
-  }
+  String _buildAuthEmail(String studentCode) => '$studentCode@sigapp.com';
 }

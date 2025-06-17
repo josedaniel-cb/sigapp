@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:sigapp/courses/application/usecases/get_enrolled_courses_usecase.dart';
 import 'package:sigapp/courses/domain/entities/scheduled_term_identifier.dart';
 import 'package:sigapp/student/domain/value_objects/semester_context.dart';
@@ -38,10 +38,12 @@ sealed class EnrolledCoursesPageState with _$EnrolledCoursesPageState {
 class EnrolledCoursesPageCubit extends Cubit<EnrolledCoursesPageState> {
   final AcademicInfoService _sessionInfoService;
   final GetEnrolledCoursesUsecase _getEnrolledCoursesUsecase;
+  final Logger _logger;
 
   EnrolledCoursesPageCubit(
     this._getEnrolledCoursesUsecase,
     this._sessionInfoService,
+    this._logger,
   ) : super(EnrolledCoursesPageState.loading());
 
   Future<void> init() async {
@@ -59,10 +61,7 @@ class EnrolledCoursesPageCubit extends Cubit<EnrolledCoursesPageState> {
       emit(nextState);
       _fetchEnrolledCourses(nextState);
     } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
+      _logger.e('[UI] Error initializing enrolled courses page', error: e, stackTrace: s);
       emit(EnrolledCoursesPageState.error(e));
     }
   }

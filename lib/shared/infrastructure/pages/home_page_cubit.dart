@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:sigapp/auth/application/usecases/sign_out_usecase.dart';
 
 part 'home_page_cubit.freezed.dart';
@@ -17,9 +17,10 @@ abstract class HomePageState with _$HomePageState {
 @injectable
 class HomePageCubit extends Cubit<HomePageState> {
   final SignOutUseCase _signOutUseCase;
+  final Logger _logger;
 
-  HomePageCubit(this._signOutUseCase)
-      : super(const HomePageState(selectedTabIndex: 0));
+  HomePageCubit(this._signOutUseCase, this._logger)
+    : super(const HomePageState(selectedTabIndex: 0));
 
   void changeTab(int index) {
     emit(state.copyWith(selectedTabIndex: index));
@@ -29,10 +30,7 @@ class HomePageCubit extends Cubit<HomePageState> {
     try {
       await _signOutUseCase.execute();
     } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
+      _logger.e('[UI] Error logging out', error: e, stackTrace: s);
       emit(state.copyWith(errorMessage: e.toString()));
     }
   }
