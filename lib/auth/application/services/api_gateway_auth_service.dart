@@ -7,5 +7,10 @@ abstract class ApiGatewayAuthService {
     required String password,
     required String studentCode,
   });
+  Future<bool> userExists({required String studentCode});
+  Future<void> updateUserPassword({
+    required String newPassword,
+    required String studentCode,
+  });
   Future<void> logoutUser();
 }

@@ -63,36 +63,49 @@ class SignInUseCase {
     String password,
   ) async {
     try {
-      await _supabaseAuthService.loginUser(
-        password: password,
+      final userExists = await _supabaseAuthService.userExists(
         studentCode: username,
       );
-      _logger.i('[APPLICATION] Inicio de sesión exitoso en Supabase.');
-    } catch (e, s) {
-      _logger.w(
-        '[APPLICATION] No se pudo iniciar sesión en Supabase, intentando registro.',
-        error: e,
-        stackTrace: s,
-      );
 
-      try {
+      if (userExists) {
+        // Usuario existe - intentar login directo
+        try {
+          await _supabaseAuthService.loginUser(
+            password: password,
+            studentCode: username,
+          );
+          _logger.i('[APPLICATION] Login exitoso en Supabase.');
+        } catch (e) {
+          // Login falló - actualizar contraseña e intentar de nuevo
+          _logger.w(
+            '[APPLICATION] Actualizando contraseña y reintentando login.',
+          );
+          await _supabaseAuthService.updateUserPassword(
+            newPassword: password,
+            studentCode: username,
+          );
+          await _supabaseAuthService.loginUser(
+            password: password,
+            studentCode: username,
+          );
+          _logger.i('[APPLICATION] Contraseña actualizada y login exitoso.');
+        }
+      } else {
+        // Usuario no existe - registrar y hacer login
+        _logger.i('[APPLICATION] Registrando nuevo usuario.');
         await _supabaseAuthService.registerUser(
           password: password,
           studentCode: username,
         );
-        _logger.i('[APPLICATION] Registro exitoso en Supabase.');
-      } catch (registerError, registerStack) {
-        _logger.e(
-          '[APPLICATION] No se pudo registrar en Supabase.',
-          error: registerError,
-          stackTrace: registerStack,
+        await _supabaseAuthService.loginUser(
+          password: password,
+          studentCode: username,
         );
-        rethrow;
+        _logger.i('[APPLICATION] Usuario registrado y login exitoso.');
       }
-      // ignore: dead_code_catch_following_catch
     } catch (e, s) {
       _logger.e(
-        '[APPLICATION] Error general durante la autenticación con Supabase.',
+        '[APPLICATION] Error en autenticación Supabase: $username',
         error: e,
         stackTrace: s,
       );

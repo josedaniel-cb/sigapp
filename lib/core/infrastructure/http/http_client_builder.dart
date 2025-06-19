@@ -44,10 +44,12 @@ class HttpClientBuilder {
           _logger.d(
             '[INFRASTRUCTURE] Headers: ${json.encode(_processHeadersForLog(options.headers))}',
           );
-          try {
-            _logger.d('[INFRASTRUCTURE] Data: ${json.encode(options.data)}');
-          } catch (e) {
-            _logger.d('[INFRASTRUCTURE] Data: ${options.data}');
+          if (options.data != null) {
+            try {
+              _logger.d('[INFRASTRUCTURE] Data: ${json.encode(options.data)}');
+            } catch (e) {
+              _logger.d('[INFRASTRUCTURE] Data: ${options.data}');
+            }
           }
           return handler.next(options);
         },

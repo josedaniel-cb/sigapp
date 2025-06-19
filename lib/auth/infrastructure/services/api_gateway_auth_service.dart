@@ -1,7 +1,24 @@
+import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:sigapp/auth/application/services/api_gateway_auth_service.dart';
 import 'package:sigapp/core/infrastructure/http/api_gateway_client.dart';
+
+// TODO: move exceptions to a separate file
+class UserAlreadyExistsException implements Exception {
+  final String message;
+  UserAlreadyExistsException(this.message);
+  @override
+  String toString() => message;
+}
+
+// TODO: move exceptions to a separate file
+class InvalidCredentialsException implements Exception {
+  final String message;
+  InvalidCredentialsException(this.message);
+  @override
+  String toString() => message;
+}
 
 @LazySingleton(as: ApiGatewayAuthService)
 class ApiGatewayAuthServiceImpl implements ApiGatewayAuthService {
@@ -25,20 +42,27 @@ class ApiGatewayAuthServiceImpl implements ApiGatewayAuthService {
         },
       );
 
-      final responseData = response.data;
-      if (responseData['user'] == null) {
-        throw Exception('Error al registrar: No se pudo crear el usuario');
+      if (response.statusCode == 200 && response.data['user'] != null) {
+        _logger.i('[INFRASTRUCTURE] Usuario registrado: $studentCode');
+        return;
       }
 
-      // Después de registrar, iniciamos sesión automáticamente
-      await loginUser(password: password, studentCode: studentCode);
-    } catch (e, s) {
-      _logger.e(
-        '[INFRASTRUCTURE] Error registering with Supabase',
-        error: e,
-        stackTrace: s,
-      );
-      throw Exception('Error on sign up: $e');
+      throw Exception('Error al registrar usuario');
+    } on DioException catch (e) {
+      final statusCode = e.response?.statusCode ?? 0;
+      final data = e.response?.data;
+
+      _logger.e('[INFRASTRUCTURE] Error registro: $studentCode - $statusCode');
+
+      // Solo manejar los casos críticos
+      if (statusCode == 400 && data is Map) {
+        final msg = data['msg']?.toString() ?? '';
+        if (msg.toLowerCase().contains('already')) {
+          throw UserAlreadyExistsException('Usuario ya existe en Supabase');
+        }
+      }
+
+      throw Exception('Error al registrar: ${e.message}');
     }
   }
 
@@ -53,46 +77,101 @@ class ApiGatewayAuthServiceImpl implements ApiGatewayAuthService {
         data: {'email': _buildAuthEmail(studentCode), 'password': password},
       );
 
-      final responseData = response.data;
-      final accessToken = responseData['access_token'];
-      final refreshToken = responseData['refresh_token'];
-      final userId = responseData['user']?['id'];
+      if (response.statusCode == 200) {
+        final data = response.data;
+        final accessToken = data['access_token'];
+        final refreshToken = data['refresh_token'];
+        final userId = data['user']?['id'];
 
-      if (accessToken == null || userId == null) {
-        throw Exception(
-          'Error al iniciar sesión: Token o ID de usuario no encontrados',
+        if (accessToken != null && userId != null) {
+          await _client.setAccessToken(accessToken);
+          if (refreshToken != null) {
+            await _client.setRefreshToken(refreshToken);
+          }
+          _logger.i('[INFRASTRUCTURE] Login exitoso: $studentCode');
+          return;
+        }
+      }
+
+      throw Exception('Respuesta de login inválida');
+    } on DioException catch (e) {
+      final statusCode = e.response?.statusCode ?? 0;
+      final data = e.response?.data;
+
+      _logger.e('[INFRASTRUCTURE] Error login: $studentCode - $statusCode');
+
+      // Solo manejar credenciales inválidas
+      if (statusCode == 400 &&
+          data is Map &&
+          data['error'] == 'invalid_grant') {
+        throw InvalidCredentialsException('Credenciales incorrectas');
+      }
+
+      throw Exception('Error en login: ${e.message}');
+    }
+  }
+
+  @override
+  Future<bool> userExists({required String studentCode}) async {
+    try {
+      final response = await _client.http.post(
+        '/tools/verify-user-exists',
+        data: {'academicUsername': studentCode},
+      );
+
+      return response.data['exists'] ?? false;
+    } catch (e) {
+      _logger.e('[INFRASTRUCTURE] Error verificando usuario: $studentCode');
+      return false; // Asumir que no existe si hay error
+    }
+  }
+
+  @override
+  Future<void> updateUserPassword({
+    required String newPassword,
+    required String studentCode,
+  }) async {
+    try {
+      final response = await _client.http.post(
+        '/tools/password-reset',
+        data: {
+          'academicUsername': studentCode,
+          'academicPassword': newPassword,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        _logger.i('[INFRASTRUCTURE] Contraseña actualizada: $studentCode');
+        return;
+      }
+
+      throw Exception('Error al actualizar contraseña');
+    } on DioException catch (e) {
+      final statusCode = e.response?.statusCode ?? 0;
+
+      _logger.e(
+        '[INFRASTRUCTURE] Error actualizando contraseña: $studentCode - $statusCode',
+      );
+
+      if (statusCode == 401) {
+        throw InvalidCredentialsException(
+          'Credenciales académicas incorrectas',
         );
       }
 
-      // Guardar tokens en almacenamiento seguro
-      await _client.setAccessToken(accessToken);
-      if (refreshToken != null) {
-        await _client.setRefreshToken(refreshToken);
-      }
-    } catch (e, s) {
-      _logger.e(
-        '[INFRASTRUCTURE] Error logging in with Supabase',
-        error: e,
-        stackTrace: s,
-      );
-      throw Exception('Error on login: $e');
+      throw Exception('Error actualizando contraseña: ${e.message}');
     }
   }
 
   @override
   Future<void> logoutUser() async {
     try {
-      // Limpiar datos del almacenamiento seguro
       await _client.clearTokens();
-    } catch (e, s) {
-      _logger.e(
-        '[INFRASTRUCTURE] Error logging out with Supabase',
-        error: e,
-        stackTrace: s,
-      );
-      throw Exception('Error on logout: $e');
+    } catch (e) {
+      _logger.e('[INFRASTRUCTURE] Error en logout');
+      throw Exception('Error en logout: $e');
     }
   }
 
-  String _buildAuthEmail(String studentCode) => '$studentCode@sigapp.com';
+  String _buildAuthEmail(String studentCode) => '$studentCode@sigapp.dev';
 }

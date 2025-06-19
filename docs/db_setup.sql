@@ -72,3 +72,7 @@ CREATE TRIGGER update_gt_grades_timestamp
 BEFORE UPDATE ON gt_grades
 FOR EACH ROW
 EXECUTE FUNCTION update_timestamp();
+
+-- Expose the auth.users table
+create or replace view public.users as
+select * from auth.users;
