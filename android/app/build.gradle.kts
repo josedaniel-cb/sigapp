@@ -41,8 +41,8 @@ android {
         // update minSdk version and flutter_secure_storage dependency to latest
         minSdk = maxOf(flutter.minSdkVersion ?: 23, 23)
         targetSdk = flutter.targetSdkVersion
-        versionCode = 13
-        versionName = "2.0.5"
+        versionCode = 14
+        versionName = "2.0.6"
     }
 
     val storeFileProp = keystoreProperties["storeFile"] as String?
